@@ -1,0 +1,165 @@
+/* 改变主题色变量 */
+$--color-primary: #2B2C2F;
+
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+@import "~element-ui/packages/theme-chalk/src/index";
+.el-header,.el-main,.el-footer {padding: 0;}
+// 模态框样式
+.el-dialog__header {
+  padding: 0;
+  height: 48px;
+  line-height: 48px;
+  background: #F3EFEF;
+  font-size: 16px;
+  color: #1A1B20;
+  text-align: left;
+  padding-left: 32px;
+}
+.bb-w .el-dialog__header,
+.frane-w .el-dialog__header {
+  height: 0px!important;
+}
+
+.el-dialog--center .el-dialog__body {
+  padding: 0;
+}
+.el-dialog__headerbtn {
+  top: 0;
+}
+// 单选框样式
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: #FFFFFF;
+}
+.el-radio__inner {
+  background-color: transparent;
+}
+.el-radio__inner:hover {
+  border-color: #FFFFFF;
+}
+.el-radio__inner::after {
+  width: 8px;
+  height: 8px;
+  background-color: #F73535;
+}
+.el-radio__label {
+  color: #FFFFFF;
+}
+.el-radio__input.is-checked + .el-radio__label {
+  color: #FFFFFF;
+}
+.el-radio__input.is-disabled.is-checked .el-radio__inner::after {
+  background-color: #F73535;
+}
+.el-radio__input.is-disabled.is-checked .el-radio__inner {
+  background: transparent;
+}
+.el-dialog__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.el-radio__input.is-disabled .el-radio__inner {
+  background: transparent;
+  border-color: #FFFFFF;
+  cursor: auto;
+}
+.el-radio__input.is-disabled + span.el-radio__label {
+  color: #FFFFFF;
+  cursor: auto;
+}
+.el-dialog__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+// 提示框
+.el-message {
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.mymsg {
+  top: 72px!important;
+}
+.el-notification {
+  padding: 0;
+  height: 36px;
+  line-height: 36px;
+  font-size: 14px;
+  justify-content: center;
+}
+.el-notification__content p {color: #F73535;}
+.el-notification__closeBtn {
+  top: 10px;
+}
+.el-dialog__footer {
+  padding: 0px 32px 32px 32px;
+}
+
+/* 分页自定义样式 */
+.el-pagination.is-background .btn-prev,
+.el-pagination.is-background .btn-next,
+.el-pagination.is-background .el-pager li {
+  background: #1A1B20;
+  color: #FFFFFF;
+  border: 1px solid #393a3d;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  border: 1px solid #F73535;
+  color: #F73535;
+  background-color: none;
+}
+.el-pagination.is-background .el-pager li:not(.disabled):hover {
+  color: #F73535;
+}
+.el-icon-warning:before {
+  //content: ('./tip_warn.png');
+  background: url("./tip_warn.png") no-repeat left top;
+  background-size: 100%  100%;
+  width: 60px;
+  height: 60px;
+  display: block;
+}
+.el-message-box__status.el-icon-warning {
+  color: #e7e7e7;
+  width: 52px;
+  height: 52px;
+  padding-right: 0;
+}
+.el-message-box {
+  width: 506px;
+}
+
+.popup_eos .el-message-box__title {
+  background: none!important;
+  padding-left: 0!important;
+}
+
+.popup_eos .el-message-box__content {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.popup_eos .el-button--primary {
+  background: none;
+  border: 1px solid #F73535;
+  color: #F73535!important;
+}
+.popup_eos .el-button--primary:hover {
+  background: none;
+  border: 1px solid #F73535;
+  color: #F73535;
+}
+.popup_eos .el-message-box__btns {
+  padding: 21px 32px 0px;
+  justify-content: center;
+}
+.el-button--danger,
+.el-button--danger:hover {
+  background-color: #F73535;
+}
+
+.el-message-box__message p.cny {
+  margin-top: 12px;
+}
