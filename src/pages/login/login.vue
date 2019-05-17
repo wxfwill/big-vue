@@ -244,9 +244,7 @@ export default {
     },
     getTelEmailInit(parm) {
       ajax
-        .getEmailCode({
-          jsonString: JSON.stringify(parm)
-        })
+        .getEmailCode(parm)
         .then(response => {
           if (response.data.code == 1) {
             this.sendCodeInit();
