@@ -8,3 +8,5 @@ export const USER_NAME = 'USER_NAME'
 export const LOGIN = 'LOGIN'
 // 登陆后的信息
 export const ALL_LOGIN = 'ALL_LOGIN'
+//地图弹窗
+export const POPUPSHOW = 'POPUPSHOW'

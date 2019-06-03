@@ -1,6 +1,6 @@
 import Vue from "vue";
 import App from "./App";
-import ElementUI from "element-ui";
+// import ElementUI from "element-ui";
 import axios from "axios";
 
 // import "./public/scss/theme.scss";
@@ -20,6 +20,14 @@ Vue.prototype.$axios = axios;
 
 import router from "./router/index.js";
 
+import echarts from 'echarts' //引入echarts
+import "echarts-gl";
+Vue.prototype.$echarts = echarts //引入组件
+import china from 'echarts/map/js/china'
+import { DatePicker,Carousel,CarouselItem} from 'element-ui';
+Vue.use(DatePicker)
+Vue.use(Carousel)
+Vue.use(CarouselItem)
 var vt = new Vue();
 
 router.beforeEach((to, from, next) => {
