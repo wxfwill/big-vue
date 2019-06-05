@@ -272,12 +272,12 @@ console.log(max,one-0,(max+'').split('').length,
       Handle(item,index){
           switch (index) {
         case 0:
+        this.$router.push('/')
         this.now=0
-        console.log(0)
           break
         case 1:
         this.now=1
-          console.log(1)
+        this.$router.push('/judicial/criminal')
           break
           case 2:
         this.now=2

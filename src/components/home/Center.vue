@@ -32,7 +32,6 @@
               </ul>
           </div>
         <mapComponent></mapComponent>
-
       </div>
       <div class="qstjBox">
           <div class="qstj-label">
@@ -46,7 +45,7 @@
 
 <script>
 import echarts from 'echarts';
-import mapComponent from '@/components/map/react.vue'
+import mapComponent from '@/components/map/index.vue'
 export default {
   name: 'homeCenter',
   data() {
@@ -228,9 +227,8 @@ export default {
     padding-top:30px;
     .center-box{
         position: relative;
-        border:1px solid #00FFFF;
-        border-radius: 8px;
-        background: rgba(0,178,226, 0.2);
+        background:rgba(0,0,0,0.4);
+        border:1px solid rgba(1,218,226,1);
         width:1211px;
         height:550px;
         .year-data{

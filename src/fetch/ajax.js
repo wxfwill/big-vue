@@ -23,10 +23,6 @@ axios.interceptors.request.use(
     if (config.method === "post") {
       config.data = qs.stringify(config.data);
     }
-    // config.headers = {
-    //     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-    //     'token': '113930903cbc48ad9a00f22b9cde0aff'
-    // };
     return config;
   },
   error => {

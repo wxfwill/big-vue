@@ -109,15 +109,7 @@ export default {
         top: "25%",
         bottom: "10%"
     },
-    tooltip: {
-        trigger: "axis",
-        axisPointer: {
-            type: "shadow",
-            label: {
-                show: false
-            }
-        }
-    },
+    tooltip: {},
     legend: {
         data: ["同比", "投资额"],
         top: "15%",
@@ -228,7 +220,7 @@ export default {
             data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
         },
         {
-            name: "投资",
+            name: "",
             type: "bar",
             barWidth: 35,
             itemStyle: {
