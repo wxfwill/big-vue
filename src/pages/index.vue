@@ -8,7 +8,7 @@
       </div>
     <div class="bg_img bjt">  &nbsp;最高人民检察院大数据决策支持平台</div>
     <div class="header-time">{{clock}} &nbsp;{{week}}</div>
-      <ul class="title">
+      <ul class="ul-title">
           <li class="bg_img"  v-for="(item,index) in list" :key="index"
           :style="{backgroundImage:'url('+(index==now?buttonColorImg: buttonImg)+')'}" @click="Handle(item,index)"
           >{{item}}</li>
@@ -411,16 +411,16 @@ console.log(max,one-0,(max+'').split('').length,
           color:#ffffff;
           display: inline-block;
         }
-    .title{
+    .ul-title{
         position: absolute;
         top:42px;
-        left:910px;
+        left:720px;
         li{
           cursor: pointer;
             height:38px;
             width:178px;
             display: inline-block;
-            margin-right:30px;
+            margin-right:80px;
             text-align: center;
             line-height:45px;
             font-size:16px;
@@ -428,7 +428,7 @@ console.log(max,one-0,(max+'').split('').length,
             color:rgba(255,255,255,1);
         }
         li:nth-child(3){
-            margin-right:867px;
+            margin-right:1071px;
         }
     }
 }
