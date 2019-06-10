@@ -301,7 +301,7 @@ console.log(max,one-0,(max+'').split('').length,
 .home-page{
     display: flex;
     justify-content: flex-start;
-    padding: 69px 20px 20px 20px;
+    padding: 69px 20px 20px 39px;
     background: #143881;
     height:100%;
     width:100%;

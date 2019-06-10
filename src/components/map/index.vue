@@ -3,7 +3,20 @@
       <div class="bg_img initial" :style="{backgroundImage:'url('+initialImg+')'}" @click="initialHandle"></div>
       <div class="bg_img superior" :style="{backgroundImage:'url('+superiorImg+')'}" @click="backHandle"></div>
       <div class="bg_img popupIcon" :style="{backgroundImage:'url('+popupImg+')'}" @click="popupHandle"></div>
-    <div id="mapBox" :style="{width: '800px', height: '550px'}"></div>
+      <div class="year-data" :class="user==='civil'? 'civil':null">
+              <p>当年数据</p>
+              <ul>
+                 <span>受理数：</span><div class="array"><li v-for="(item,index) in slList" :key="index">{{item}}</li></div> 
+              </ul>
+              <ol>
+                  <span>办结数：</span><div class="array"><li v-for="(item,index) in bjList" :key="index">{{item}}</li></div> 
+              </ol>
+              <ul> 
+                  <span>在办数：</span><div class="array"><li v-for="(item,index) in zbList" :key="index">{{item}}</li> </div>    
+              </ul>
+       </div>
+    <!-- <div id="mapBox" :style="{width: user==='home'? '800px':'1010px', height: user==='home'? '550px':'860px'}"></div> -->
+    <div id="mapBox" :style="{width: '100%', height: '100%'}"></div>
     <div class="area-box">
               <p class="bg_img rotation" :style="{backgroundImage:'url('+shengdataImg+')'}"></p>
               <span class="title">青海省</span>
@@ -39,8 +52,19 @@ import * as types from '../../vuex/types.js'
 import { mapGetters } from 'vuex'
 export default {
     name:'china',
+    props:{
+        user: {
+            type: String,
+            default: function() {
+                return "home"
+            }
+        }
+    },
     data() {
         return {
+            slList:[3,2,4,4,9,8],
+            bjList:[2,3,4,5,6,7],
+            zbList:[1,2,3,4,5,6,7],
             show:false,
             shengdataImg:require('@/public/img/home/shengdata.png'),
             initialImg:require('@/public/img/home/initial.png'),
@@ -307,9 +331,10 @@ export default {
             name: '数据名称',
             type: 'map',
             roam: false,
-            zoom:  curlevel == 'province'?0.9:0.7,
-            bottom: curlevel == 'province'?-70:15,
-            left:10,
+            // zoom:  curlevel == 'province'?0.9:0.7,
+            zoom:  curlevel == 'province'?1.0:0.7,
+            bottom: curlevel == 'province'?0:15,
+            left:'center',
             top: curlevel == 'province'?20:20,
             mapType: mapName,
             selectedMode: 'single',
@@ -351,15 +376,59 @@ export default {
 </script>
 <style lang='scss' scoped>
 .map-page{
-    height:550px;
-    width:955px;
-    margin-left:250px;
+    height:100%;
+    width:100%;
+    // padding-left:135px;
     position: relative;
+    .year-data{
+            position: absolute;
+            left:14px;
+            top:90px;
+            font-size:18px;
+            color:rgba(11,193,244,1);
+            line-height:22px;
+            margin-bottom:20px;
+            // width:100px;
+            // height:200px;
+            p{
+                margin-bottom:20px;
+            }
+            ul,ol{
+                display: flex;
+                margin-bottom:20px;
+                span{
+                    width:74px;
+                }
+                .array{
+                    display: flex;
+                    flex-wrap: wrap;
+                    width:138px;
+                    li{
+                        width:19px;
+                        height:28px;
+                        text-align: center;
+                        line-height:28px;
+                        border-radius:4px;
+                        background: -webkit-linear-gradient(#0BE5F1, #0C99F7); /* Safari 5.1 - 6.0 */
+                        background: -o-linear-gradient(#0BE5F1, #0C99F7); /* Opera 11.1 - 12.0 */
+                        background: -moz-linear-gradient(#0BE5F1, #0C99F7); /* Firefox 3.6 - 15 */
+                        background: linear-gradient(#0BE5F1, #0C99F7); /* 标准的语法（必须放在最后） */
+                        font-size:27px;
+                        color:rgba(255,255,255,1);
+                        margin-left:4px;
+                        margin-bottom:5px;
+                    }
+                }
+            }
+        }
+        .civil{
+            top:551px;
+        }
     .area-box{
             position:absolute;
             width:200px;
-            right:50px;
-            top:150px; 
+            right:70px;
+            top:220px; 
             padding:20px 20px;
             background: rgba(0,178,226, 0.2);
             @-webkit-keyframes rotation {
@@ -411,21 +480,21 @@ export default {
         }
         .initial{
             position: absolute;
-            right:120px;
+            right:140px;
             top:43px;
             width:30px;
             height:30px;
         }
         .superior{
             position: absolute;
-            right:65px;
+            right:85px;
             top:43px;
             width:30px;
             height:30px;
         }
         .popupIcon{
             position: absolute;
-            left:-220px;
+            left:14px;
             top:43px;
             width:30px;
             height:30px;

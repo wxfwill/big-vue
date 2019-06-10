@@ -253,8 +253,8 @@ export default {
   // flex: 0 0 1242px;
   // min-width: 1242px;
   // height: 1000px;
-  width: 1338px;
-  padding: 50px 0 0 25px;
+  width: 1318px;
+  padding: 50px 0 0 0px;
   // position: relative;
   .left-left{
     display: flex;

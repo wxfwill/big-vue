@@ -2,6 +2,7 @@
     <div class="outer-criminal-page">
         <div class="criminal-page-left">
             <div class="left-left">
+                <p class="tab"><span></span>&nbsp;&nbsp;&nbsp;刑事</p>
             <div class="bg_img slajBox" :style="{backgroundImage:'url('+slajBorImg+')'}">
                 <p>受理案件数统计</p>
                 <ol>
@@ -26,18 +27,6 @@
             </div>
             <div class="left-right">
               <div class="center-box">
-                <div class="year-data">
-                    <p>当年数据</p>
-                    <ul>
-                        <span>受理数：</span><div class="array"><li v-for="(item,index) in slList" :key="index">{{item}}</li></div> 
-                    </ul>
-                    <ol>
-                        <span>办结数：</span><div class="array"><li v-for="(item,index) in bjList" :key="index">{{item}}</li></div> 
-                    </ol>
-                    <ul> 
-                        <span>在办数：</span><div class="array"><li v-for="(item,index) in zbList" :key="index">{{item}}</li> </div>    
-                    </ul>
-                </div>
                 <mapComponent></mapComponent>
               </div>
               <div class="increase-box">
@@ -133,6 +122,7 @@
 </template>
 <script>
 import echarts from 'echarts';
+import ajax from "@/fetch/ajax.js";
 import mapComponent from '@/components/map/index.vue'
 export default {
     components:{
@@ -171,11 +161,10 @@ export default {
                     {title:'不逮捕人数/率：',proportion:'20%'},{title:'批准逮捕人数/率：',proportion:'20%'},
                     {title:'逮捕人数/率：',proportion:'20%'},{title:'不逮捕人数/率：',proportion:'20%'},
                 ],
-            slList:[3,2,4,4,9,8],
-            bjList:[2,3,4,5,6,7],
-            zbList:[1,2,3,4,5,6,7],
             cityData:['北京', '山东', '河南', '黑龙江', '贵州', '陕西', '广东', '西藏', '新疆', '青海', '湖南', '湖北'],
-            proportionData:[50, -3, -5, -5, 14, -13, -7, -14, 24,-1,-2,-4]
+            proportionData:[50, -3, -5, -5, 14, -13, -7, -14, 24,-1,-2,-4],
+            cityData:[],
+            valData:[]
         }
     },
     mounted() {
@@ -191,8 +180,10 @@ export default {
     },
     methods: {
         moreCapit(){
-            this.capitPopup=true;
             var capitPopup =this.$echarts.init(document.getElementById("capitPopup"));
+            ajax.home()
+        .then(function(res){
+        console.log(res);
             var option = {
                 title:{
                     text:'全国各省份人均办结数统计表',
@@ -231,12 +222,7 @@ export default {
                     axisTick: {
                         show: false,
                     },
-                    data: [
-          '北京', '天津', '河北', '山西', '内蒙古', '辽宁', '吉林', '黑龙江',
-        '上海', '江苏', '浙江', '安徽', '福建', '江西', '山东', '河南',
-        '湖北', '湖南', '广东', '广西', '海南', '重庆', '四川', '贵州',
-        '云南', '西藏', '陕西', '甘肃', '青海', '宁夏', '新疆',
-          ],
+                    data:res.data.city,
                 }],
                 yAxis: [{
                     type: 'value',
@@ -284,10 +270,15 @@ export default {
                             color:'#00FFFF'
                         }
                     },
-                    data: [200, 382, 102, 267, 186, 315, 316,200, 382, 102, 267, 186, 315, 316,200, 382, 102, 267, 186, 315, 316,]
+                    data:res.data.value
                 }]
             };
             capitPopup.setOption(option,true)
+        })
+        .catch(function(err){
+        console.log(err);
+        })
+            this.capitPopup=true;
         },
         morefile(){
             this.filePopup=true;
@@ -1144,6 +1135,23 @@ for(var i=0;i<data.length;i++){
         height:100%;
         .left-left{
             margin-right:10px;
+            position: relative;
+            .tab{
+                position: absolute;
+                top:-88px;
+                left:30px;
+                font-size:22px;
+                font-family:PingFangSC-Regular;
+                font-weight:400;
+                color:rgba(48,226,226,1);
+                span{
+                    display: inline-block;
+                    border-radius: 50%;
+                    width:12px;
+                    height:12px;
+                    background:rgba(48,226,226,1);
+                }
+            }
             .slajBox{
                 padding:36px 0 0 85px;
                 width:733px;
@@ -1258,47 +1266,7 @@ for(var i=0;i<data.length;i++){
         border:1px solid rgba(1,218,226,1);
         width:1169px;
         height:575px;
-        .year-data{
-            position: absolute;
-            left:34px;
-            top:90px;
-            font-size:18px;
-            color:rgba(11,193,244,1);
-            line-height:22px;
-            margin-bottom:20px;
-            // width:100px;
-            // height:200px;
-            p{
-                margin-bottom:20px;
-            }
-            ul,ol{
-                display: flex;
-                margin-bottom:20px;
-                span{
-                    width:74px;
-                }
-                .array{
-                    display: flex;
-                    flex-wrap: wrap;
-                    width:138px;
-                    li{
-                        width:19px;
-                        height:28px;
-                        text-align: center;
-                        line-height:28px;
-                        border-radius:4px;
-                        background: -webkit-linear-gradient(#0BE5F1, #0C99F7); /* Safari 5.1 - 6.0 */
-                        background: -o-linear-gradient(#0BE5F1, #0C99F7); /* Opera 11.1 - 12.0 */
-                        background: -moz-linear-gradient(#0BE5F1, #0C99F7); /* Firefox 3.6 - 15 */
-                        background: linear-gradient(#0BE5F1, #0C99F7); /* 标准的语法（必须放在最后） */
-                        font-size:27px;
-                        color:rgba(255,255,255,1);
-                        margin-left:4px;
-                        margin-bottom:5px;
-                    }
-                }
-            }
-        }
+        
         
     } 
     .increase-box{

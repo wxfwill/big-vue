@@ -81,5 +81,8 @@ export default {
   // 获取个人信息的接口
   getInformationUser() {
     return fetch("/api/user/userList");
+  },
+  home() {
+    return fetch("/user/userInfo");
   }
 };
