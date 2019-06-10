@@ -18,19 +18,6 @@
               </p>
       </div>
       <div class="center-box">
-          
-          <div class="year-data">
-              <p>当年数据</p>
-              <ul>
-                 <span>受理数：</span><div class="array"><li v-for="(item,index) in slList" :key="index">{{item}}</li></div> 
-              </ul>
-              <ol>
-                  <span>办结数：</span><div class="array"><li v-for="(item,index) in bjList" :key="index">{{item}}</li></div> 
-              </ol>
-              <ul> 
-                  <span>在办数：</span><div class="array"><li v-for="(item,index) in zbList" :key="index">{{item}}</li> </div>    
-              </ul>
-          </div>
         <mapComponent></mapComponent>
       </div>
       <div class="qstjBox">
@@ -231,47 +218,6 @@ export default {
         border:1px solid rgba(1,218,226,1);
         width:1211px;
         height:550px;
-        .year-data{
-            position: absolute;
-            left:34px;
-            top:90px;
-            font-size:18px;
-            color:rgba(11,193,244,1);
-            line-height:22px;
-            margin-bottom:20px;
-            // width:100px;
-            // height:200px;
-            p{
-                margin-bottom:20px;
-            }
-            ul,ol{
-                display: flex;
-                margin-bottom:20px;
-                span{
-                    width:74px;
-                }
-                .array{
-                    display: flex;
-                    flex-wrap: wrap;
-                    width:138px;
-                    li{
-                        width:19px;
-                        height:28px;
-                        text-align: center;
-                        line-height:28px;
-                        border-radius:4px;
-                        background: -webkit-linear-gradient(#0BE5F1, #0C99F7); /* Safari 5.1 - 6.0 */
-                        background: -o-linear-gradient(#0BE5F1, #0C99F7); /* Opera 11.1 - 12.0 */
-                        background: -moz-linear-gradient(#0BE5F1, #0C99F7); /* Firefox 3.6 - 15 */
-                        background: linear-gradient(#0BE5F1, #0C99F7); /* 标准的语法（必须放在最后） */
-                        font-size:27px;
-                        color:rgba(255,255,255,1);
-                        margin-left:4px;
-                        margin-bottom:5px;
-                    }
-                }
-            }
-        }
         
     }
     .qstjBox{

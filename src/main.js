@@ -5,6 +5,7 @@ import axios from "axios";
 
 // import "./public/scss/theme.scss";
 
+require('./mock'); //引入mock数据，关闭则注释该行
 
 // 引入自定义图标
 // import "@/assets/fonts/iconfont.css";

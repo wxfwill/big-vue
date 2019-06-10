@@ -37,6 +37,14 @@ export default new Router({
                 title:'司法办案-刑事'
               }
             },
+            {
+              path: 'civil',
+              name: 'civil',
+              component: resolve => require(['@/pages/sfba/civil'], resolve),
+              meta: {
+                title:'司法办案-民事'
+              }
+            },
           ]
         }
       ]

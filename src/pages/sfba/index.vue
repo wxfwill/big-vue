@@ -50,9 +50,11 @@ export default {
             switch (i) {
                     case 0:
                     this.now=0;
+                    this.$router.push('/judicial/criminal')
                     break;
                     case 1:
                     this.now=1;
+                    this.$router.push('/judicial/civil')
                     break;
                     case 2:
                     this.now=2;
@@ -88,7 +90,7 @@ export default {
         width:149px;
         height:1080px;
         top:-69px;
-        left:-20px;
+        left:-40px;
         .menu{
         transition: width 1s;   
         width:0px;
