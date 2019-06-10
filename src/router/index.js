@@ -38,7 +38,15 @@ export default new Router({
               }
             },
           ]
-        }
+        },
+		  {
+			  path: 'teamManagement',
+			  name: 'teamManagement',
+			  component: resolve => require(['@/pages/teamManagement/index'], resolve),
+			  meta: {
+				  title:'队伍管理'
+			  }
+		  },
       ]
     }
   ]

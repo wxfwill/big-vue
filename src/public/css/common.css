@@ -71,6 +71,10 @@ body {
   -webkit-transform-origin: 0 0;
   transform-origin: 0 0;
 }
+.outer-home-page{
+    display: flex;
+}
+
 /* 【企业微信】【名片】在线咨询页面只展示了一半 改变外层iframe高度 */
 #chatIframe{
   height: 100%;

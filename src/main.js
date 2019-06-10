@@ -1,7 +1,6 @@
 import Vue from "vue";
 import App from "./App";
 // import ElementUI from "element-ui";
-import axios from "axios";
 
 // import "./public/scss/theme.scss";
 
@@ -14,9 +13,6 @@ import axios from "axios";
 import store from "./vuex/store.js";
 
 Vue.config.productionTip = false;
-
-Vue.prototype.$axios = axios;
-
 
 import router from "./router/index.js";
 

@@ -279,10 +279,10 @@ console.log(max,one-0,(max+'').split('').length,
         this.now=1
         this.$router.push('/judicial/criminal')
           break
-          case 2:
-        this.now=2
-          console.log(2)
-          break
+          case 2:{
+			  this.now=2;
+			  this.$router.push('/teamManagement');
+          } break;
           case 3:
         this.now=3
           console.log(3)
@@ -309,6 +309,7 @@ console.log(max,one-0,(max+'').split('').length,
     // width:3840px;
     background-image: url('../public/img/home/bj.png');
     position: relative;
+    background-size:100% 100%;
    .popupBox{
       z-index:5;
       position: fixed;
