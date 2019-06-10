@@ -18,7 +18,7 @@
               </p>
       </div>
       <div class="center-box">
-        <mapComponent></mapComponent>
+        <mapComponent :user="(this.$route.name)"></mapComponent>
       </div>
       <div class="qstjBox">
           <div class="qstj-label">

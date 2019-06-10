@@ -45,6 +45,22 @@ export default new Router({
                 title:'司法办案-民事'
               }
             },
+            {
+              path: 'administrative',
+              name: 'administrative',
+              component: resolve => require(['@/pages/sfba/administrative'], resolve),
+              meta: {
+                title:'司法办案-行政'
+              }
+            },
+            {
+              path: 'lawsuit',
+              name: 'lawsuit',
+              component: resolve => require(['@/pages/sfba/lawsuit'], resolve),
+              meta: {
+                title:'司法办案-公益诉讼'
+              }
+            },
           ]
         }
       ]

@@ -3,7 +3,7 @@
       <div class="bg_img initial" :style="{backgroundImage:'url('+initialImg+')'}" @click="initialHandle"></div>
       <div class="bg_img superior" :style="{backgroundImage:'url('+superiorImg+')'}" @click="backHandle"></div>
       <div class="bg_img popupIcon" :style="{backgroundImage:'url('+popupImg+')'}" @click="popupHandle"></div>
-      <div class="year-data" :class="user==='civil'? 'civil':null">
+      <div class="year-data" :class="user!=='home'? 'civil':null">
               <p>当年数据</p>
               <ul>
                  <span>受理数：</span><div class="array"><li v-for="(item,index) in slList" :key="index">{{item}}</li></div> 

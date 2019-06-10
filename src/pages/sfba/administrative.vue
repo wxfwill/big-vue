@@ -1,67 +1,88 @@
 <template>
-    <div class="outer-civil-page">
-        <div class="civil-page-left">
-            <p class="tab"><span></span>&nbsp;&nbsp;&nbsp;民事</p>
-            <div class="businessBox">
-                <p class="title">基本业务情况</p>
+    <div class="outer-administrative-page">
+        <div class="administrative-page-left">
+            <p class="tab"><span></span>&nbsp;&nbsp;&nbsp;行政</p>
+            <div class="left-top">
+                <div class="condition-box">
+                    <p class="title">受理情况</p>
+                    <ul>
+                        <p class="line"></p>
+                        <li v-for="(item,index) in conditionList" :key="index">
+                            {{item.title}}
+                            <span>{{item.num}}</span> 
+                        </li>
+                        
+                    </ul>
+                </div>
+                <div class="behavior-box">
+                    <p class="title">违法行为监督</p>
+                    <ol>
+                        <li v-for="(item,index) in behaviorList" :key="index">
+                            <span>{{item.title}}</span>
+                            <span></span>
+                            {{item.num}}
+                        </li>
+                    </ol>
+                </div>
+              </div>
+            <div class="judgment-box">
+                <p class="title">生效裁判监督</p>
                 <ul>
-                    <li v-for="(item,index) in businessList" :key="index">
-                        <p class="bg_img" :style="{backgroundImage:'url('+item.img+')'}">{{item.num}}</p>
+                    <li v-for="(item,index) in judgmentList" :key="index">
                         <p>{{item.title}}</p>
+                        <p>{{item.num}}</p>
                     </li>
                 </ul>
             </div>
-            <div class="judgmentBox">
-                <p class="title">生效裁判监督</p>
+            <div class="tendency-box">
+                <p class="title">受理案件趋势分析</p>
+                <div id="trendContent" :style="{width: '1230px', height: '220px'}"></div>
+            </div>
+        </div>
+        <div class="administrative-page-center">
+            <div class="sum">
+         <div class="accept">
+             受理总数
+             <ul>
+                 <li v-for="(item,index) in slList" :key="index">{{item}}</li>
+             </ul>
+         </div>
+         <div class="conclude">
+             办结总数
+             <ol>
+                 <li v-for="(item,index) in bjList" :key="index">{{item}}</li>
+             </ol>
+         </div>
+         <div class="office">
+             在办总数
+             <ul>
+                 <li v-for="(item,index) in zbList" :key="index">{{item}}</li>
+             </ul>
+         </div>
+         </div>
+         <div class="administrative-map">
+             <mapComponent :user="(this.$route.name)"></mapComponent>
+         </div>
+        </div>
+        <div class="administrative-page-rihgt">
+            <div class="right-left">
+            <div class="execute">
+                <p class="title">执行活动监督</p>
                 <ol>
-                    <li v-for="(item,index) in judgmentList" :key="index">
-                        <span>{{item.title}}</span>
-                        <span></span>
-                        {{item.num}}
-                    </li>
+                        <li v-for="(item,index) in executeList" :key="index">
+                            <span>{{item.title}}</span>
+                            <span></span>
+                            {{item.num}}
+                        </li>
                 </ol>
             </div>
-            <div class="executeBox">
-                <p class="title">执行活动监督</p>
-                <div class="canva">
-                    <div class="concludeBox">
-                        <div id="conclude" :style="{width: '315px', height: '195px'}"></div>
-                        <p>受理数：234,443,24</p>
-                        <p>办结率：99.78%</p>
-                    </div>
-                    <div class="acceptBox">
-                        <div id="accept" :style="{width: '315px', height: '195px'}"></div>
-                        <p>提出检察建议数：223,24</p>
-                        <p>办结率：99.78%</p>
-                    </div>
-                </div>
+            <div class="classify">
+                <p class="title">受理数分类情况统计</p>
+                <div id="classifyContent" :style="{width: '500px', height: '225px'}"></div>
             </div>
-            <div class="breakBox">
-                <p class="title">违法行为监督</p>
-                <div class="breakContent">
-                    <p>办结率：78.5%</p>
-                <div id="break1" :style="{width: '465px', height: '377px'}"></div>
-                    <p>建议采纳率：98.5%</p>
-                <!-- <div id="break2" :style="{width: '265px', height: '377px'}"></div> -->
-                </div>
-                <div class="lagend">
-                    <div>
-                    <p><span class="span1"></span>&nbsp;&nbsp;&nbsp;受理数</p>
-                    <p><span class="span2"></span>&nbsp;&nbsp;&nbsp;办结数</p>
-                    </div>
-                    <div>
-                    <p><span class="span3"></span>&nbsp;&nbsp;&nbsp;提出检察建议数</p>
-                    <p><span class="span4"></span>&nbsp;&nbsp;&nbsp;采纳检察建议数</p>
-                    </div>
-                </div>
             </div>
-        </div>
-        <div class="civil-page-content">
-            <mapComponent :user="(this.$route.name)"></mapComponent>
-        </div>
-        <div class="civil-page-right">
-            <div class="sortBox">
-                <p class="title">民事案件案由发生次数排序</p>
+            <div class="nature">
+                <p class="title">案件性质</p>
                 <p class="label">占比 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次数</p>
                 <ol>
                     <li v-for="(item,index) in sortList" :key="index">
@@ -78,22 +99,13 @@
                       <p class="bg_img" :style="{backgroundImage:'url('+rightImg+')'}" @click="downHandle"></p>
                   </div>
             </div>
-            <div class="dayBox">
-                <div class="fileBox">
-                    <p>案均办理天数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
-                    <div id="file" :style="{width:'490px',height:'205px'}"></div>
-                </div>
-                <div class="capitaBox">
+            <div class="capitaBox">
                 <p>人均办结数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
-                <div id="capita" :style="{width:'490px',height:'235px'}"></div>
-                </div>
+                <div id="capita" :style="{width:'470px',height:'255px'}"></div>
             </div>
-            <div class="trendBox">
-                <div class="trend-label">
-                  <span class="trend"></span>
-                  <i>受理案件趋势统计</i>
-                </div>
-                <div id="trendContent" :style="{width: '1070px', height: '220px'}"></div>
+            <div class="fileBox">
+                    <p>案均办理天数<span @click="popupShow=true;popupTitle='全国各省份案均办理天数统计表'">更多>></span></p>
+                    <div id="file" :style="{width:'470px',height:'225px'}"></div>
             </div>
         </div>
         <popup :show="popupShow" :title="popupTitle" :popupData='popupData'></popup>
@@ -113,16 +125,25 @@ export default {
             col:true,
             num:1,
             sum:3,
-            capitPopup:false,
-            filePopup:false,
-            businessList:[
-                {img: require('@/public/img/civil/demurrer.png'),title:'提出抗诉数',num: 3434},{img: require('@/public/img/civil/put.png'),title:'提出抗诉数',num: 3434},
-                {img: require('@/public/img/civil/accept.png'),title:'提出抗诉数',num: 3434},{img: require('@/public/img/civil/accept.png'),title:'提出抗诉数',num: 3434},
-                {img: require('@/public/img/civil/put.png'),title:'提出抗诉数',num: 3434},{img: require('@/public/img/civil/demurrer.png'),title:'提出抗诉数',num: 35345}
+            conditionList:[
+                {title:'受理件数',num:23456},{title:'受理件数',num:23456},
+                {title:'受理件数',num:23456},{title:'受理件数',num:23456},
+                {title:'受理件数',num:23456},{title:'受理件数',num:23456},
+            ],
+            behaviorList:[
+                {title:'提出抗诉数',num: 3434},{title:'提出抗诉数',num: 3434},{title:'提出抗诉数',num: 3434},
+                {title:'提出抗诉数',num: 3434},{title:'提出抗诉数',num: 3434}
             ],
             judgmentList:[
                 {title:'提出抗诉数',num: 3434},{title:'提出抗诉数',num: 3434},{title:'提出抗诉数',num: 3434},
                 {title:'提出抗诉数',num: 3434},{title:'提出抗诉数',num: 3434},{title:'提出抗诉数',num: 3434}
+            ],
+            slList:[3,2,4,4,9,8],
+            bjList:[2,3,4,5,6,7],
+            zbList:[1,2,3,4,5,6,7],
+            executeList:[
+                {title:'提晚饭出抗诉数',num: 3434},{title:'提出抗诉数',num: 3434},{title:'提出抗诉数',num: 3434},
+                {title:'诉数',num: 3434},{title:'抗诉数',num: 3434}
             ],
             lineImg:require('@/public/img/judicature/line.png'),
             leftImg:require('@/public/img/judicature/left.png'),
@@ -133,23 +154,29 @@ export default {
                 {title:'起诉案件数',num: 9090,proportion:'20%'},{title:'批捕逮捕数',num: 1231,proportion:'20%'},
                 {title:'犯罪又犯罪审查逮捕案件',num: 6767,proportion:'20%'},{title:'批捕逮捕数',num: 1231,proportion:'20%'},
                 {title:'批捕逮捕数',num: 1231,proportion:'20%'},{title:'批捕逮捕数',num: 1231,proportion:'20%'}],
-            popupShow:false,
-            popupTitle:'全国各省份人均办结数统计表',
-            popupData:[]
+             popupShow:false,
+             popupTitle:'全国各省份人均办结数统计表',
+             popupData:[]
         }
     },
-    created() {
-       
+    watch: {
+        // popupShow(val){
+        //     this.$emit('update:show',val)
+        // },
+        // show(val){
+        //     this.popupShow=val
+        // }
     },
     mounted(){
-        this.concludeHandle()//执行活动监督1
-        this.acceptHandle()//执行活动监督2
-        this.breakHandle()//违法行为监督
         this.trendHandle()//受理案件趋势分析
+        this.classifyHandle()//受理数分类情况统计
         this.capitaHandle()//人均办结数
         this.fileHandle()//案均办理天数
     },
     methods: {
+        popupHandle(){
+
+        },
         previousHandle(){
             if(this.num!=1){
                 this.num--
@@ -296,7 +323,7 @@ export default {
                     axisTick: {
                         show: false,
                     },
-                    data: ['1月', '2月', '3月', '4月', '5月', ],
+                    data: ['1月', '2月', '3月', '4月', '5月' ],
                 }],
                 yAxis: [{
                     name:'件数',
@@ -350,10 +377,61 @@ export default {
             };
             capita.setOption(option,true)
         },
+        classifyHandle(){
+            var classifyContent =this.$echarts.init(document.getElementById("classifyContent"));
+            var option = {
+               color: ['#6EB21F', '#31DBE8', '#EAD61F'],
+               bottom:'10%',
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)",
+        //饼图、仪表盘、漏斗图: {a}（系列名称）
+        // {b}（数据项名称），{c}（数值）, {d}（百分比,
+        textStyle:{
+            fontSize:14,
+            color:'rgba(255,255,255,1)'
+        }
+    },
+    legend: {
+        show:false,
+        orient: 'vertical',
+        right: '0%',
+        bottom:'10%',
+        data: ['0-18岁','18-25岁','25-35岁'],
+        itemWidth: 12,
+        itemHeight:12,
+        textStyle:{
+            color:'#ffffff',
+            fontSize:'12'
+        }
+    },
+    series : [
+        {
+            name: '受理案件数统计',
+            type: 'pie',
+            radius : ['0%','70%'],//数组时内，外
+            center: ['51%', '45%'],//x，y
+            data:[
+                {value:335, name:'执行活动监督'},
+                {value:310, name:'违法行为监督'},
+                {value:234, name:'生效裁判监督'}
+            ],
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
+            classifyContent.setOption(option,true)
+        },
         trendHandle(){
             var trendContent = this.$echarts.init(document.getElementById("trendContent"));
-            var dataIPSxAxis = ['1月', '2月', '3月', '4月', '5月', '6月','7月','8月','9月','10月'];
-            var dataIPS = [20, 60, 50, 80, 120, 100,20,19,60,88];
+            var dataIPSxAxis = ['1月', '2月', '3月', '4月', '5月', '6月','7月','8月','9月','10月','2019'];
+            var dataIPS = [20, 60, 50, 80, 120, 100,20,19,60,88,100];
             var option = {
                 tooltip: {
                     backgroundColor:'#0C99F7',
@@ -373,7 +451,7 @@ export default {
                 },
                 grid: {
                     left: '5px',
-                    top: '25px',
+                    top: '35px',
                     right: '70px',
                     bottom: '10px',
                     containLabel: true
@@ -389,6 +467,7 @@ export default {
                             color: 'rgba(255,255,255,1)',
                             fontSize: 12,
                         },
+                        margin:20
                     },
                     axisTick: {
                             show: false //隐藏X轴刻度
@@ -399,7 +478,8 @@ export default {
                             color: '#2EA7E0',
                             width: 0.5, //这里是为了突出显示加上的
                         }
-                    }
+                    },
+                    
                 }],
                 yAxis: [{
                     type: 'value',
@@ -482,366 +562,14 @@ export default {
             };
            // 绘制图表
            trendContent.setOption(option);
-        },
-        breakHandle(){
-            var breakb1 = this.$echarts.init(document.getElementById("break1"));
-            var option = {
-                tooltip: {},
-                legend: {
-                    show:false,
-                    orient: 'vertical',
-                    left: '45%',
-                    bottom:'3%',
-                    data: ['受理数','办结数'],
-                    itemWidth: 12,
-                    itemHeight:12,
-                    textStyle:{
-                        color:'#ffffff',
-                        fontSize:'12'
-                    }
-                },
-                grid: {//柱状图偏移
-                    top: '15%',
-                    left: '1%',
-                    right: '0%',
-                    bottom: '20%',
-                    containLabel: true,
-                },
-                xAxis: [{
-                    type: 'category',
-                    boundaryGap: true,
-                    axisLine: { //坐标轴轴线相关设置。数学上的x轴
-                        show: true,
-                        lineStyle: {
-                            color: '#00FFFF'
-                        },
-                    },
-                    axisLabel: { //坐标轴刻度标签的相关设置
-                        textStyle: {
-                            color: 'rab(255,255,255,1)',
-                            fontSize:16,
-                            margin: 20,
-                        },
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                    data: ['受理数','办结数'],
-                }],
-                yAxis: [{
-                    name:'',
-                    type: 'value',
-                    min: 0,
-                    // max: 140,
-                    // splitNumber: 1,//刻度条数决定距离
-                    splitLine:{
-                        show:false,
-                        lineStyle: { //y轴网格线设置
-                            color: 'rgb(193,193,193,0.2)',
-                            width: 1,
-                            type: 'dashed'
-                        }
-                    },
-                    axisLine: {
-                        lineStyle:{
-                            color:'#00FFFF'
-                        },
-                        show: true,
-                    },
-                    axisLabel: {
-                        margin: 20,//离右边距离
-                        textStyle: {
-                            color: '#FFFFFF',
-                            fontSize:14
-
-                        },
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                }],
-                series: [ {
-                    name: '受理数',
-                    type: 'bar',
-                    tooltip: {
-                        show: false
-                    },
-                    label: {//柱状头部出现数值
-                        show: true,
-                        position: 'top',
-                        textStyle: {
-                            color: '#31DBE8',
-                            fontSize:10
-                        }
-                    },
-                    barWidth:43,
-                    itemStyle: {
-                        normal: {
-                            color:function(params) { 
-                                var colorList = ['#31DBE8','#2FE0BE']; 
-                                return colorList[params.dataIndex] 
-                            }
-                        }
-                    },
-                    data: [2000,300]//办结数/采纳检察建议数
-                },
-                {
-                    name: '办结数',
-                    type: 'bar',
-                    tooltip: {
-                        show: false
-                    },
-                    label: {//柱状头部出现数值
-                        show: true,
-                        position: 'top',
-                        textStyle: {
-                            color: '#F7931E',
-                            fontSize:10
-                        }
-                    },
-                    barWidth:43,
-                    itemStyle: {
-                        normal: {
-                            // 定制显示（按顺序）
-                color: function(params) { 
-                    var colorList = ['#F7931E','#A920E2']; 
-                    return colorList[params.dataIndex] 
-                }
-                        }
-                    },
-                    data: [400,1000]//受理数/提出检察建议数
-                }
-                ]
-            };
-            breakb1.setOption(option,true)
-            // 
-            // var breakb2 = this.$echarts.init(document.getElementById("break2"));
-            // var option = {
-            //     tooltip: {},
-            //     legend: {
-            //         orient: 'vertical',
-            //         left: '25%',
-            //         bottom:'3%',
-            //         data: ['提出检察建议数','提出采纳建议数'],
-            //         itemWidth: 12,
-            //         itemHeight:12,
-            //         textStyle:{
-            //             color:'#ffffff',
-            //             fontSize:'12'
-            //         }
-            //     },
-            //     grid: {//柱状图偏移
-            //         top: '15%',
-            //         left: '0%',
-            //         right: '1%',
-            //         bottom: '20%',
-            //         containLabel: true,
-            //     },
-            //     xAxis: [{
-            //         type: 'category',
-            //         boundaryGap: true,
-            //         axisLine: { //坐标轴轴线相关设置。数学上的x轴
-            //             show: true,
-            //             lineStyle: {
-            //                 color: '#00FFFF'
-            //             },
-            //         },
-            //         axisLabel: { //坐标轴刻度标签的相关设置
-            //             textStyle: {
-            //                 color: '#d1e6eb',
-            //                 fontSize:10,
-            //                 margin: 15,
-            //             },
-            //         },
-            //         axisTick: {
-            //             show: false,
-            //         },
-            //         data: ['办结数'],
-            //     }],
-            //     yAxis: [{
-            //         name:'',
-            //         type: 'value',
-            //         show:false,
-            //         position:'right',
-            //         min: 0,
-            //         // max: 140,
-            //         // splitNumber: 1,//刻度条数决定距离
-            //         splitLine:{
-            //             show:false,
-            //             lineStyle: { //y轴网格线设置
-            //                 color: 'rgb(193,193,193,0.2)',
-            //                 width: 1,
-            //                 type: 'dashed'
-            //             }
-            //         },
-            //         axisLine: {
-            //             lineStyle:{
-            //                 color:'#00FFFF'
-            //             },
-            //             show: true,
-            //         },
-            //         axisLabel: {
-            //             margin: 20,//离右边距离
-            //             textStyle: {
-            //                 color: '#FFFFFF',
-            //                 fontSize:14
-
-            //             },
-            //         },
-            //         axisTick: {
-            //             show: false,
-            //         },
-            //     }],
-            //     series: [ {
-            //         name: '提出检察建议数',
-            //         type: 'bar',
-            //         tooltip: {
-            //             show: false
-            //         },
-            //         label: {//柱状头部出现数值
-            //             show: true,
-            //             position: 'top',
-            //             textStyle: {
-            //                 color: '#2FE0BE',
-            //                 fontSize:10
-            //             }
-            //         },
-            //         barWidth:43,
-            //         itemStyle: {
-            //             normal: {
-            //                 color:'#2FE0BE'
-            //             }
-            //         },
-            //         data: [20000],
-            //     },
-            //     {
-            //         name: '提出采纳建议数',
-            //         type: 'bar',
-            //         tooltip: {
-            //             show: false
-            //         },
-            //         label: {//柱状头部出现数值
-            //             show: true,
-            //             position: 'top',
-            //             textStyle: {
-            //                 color: '#A920E2',
-            //                 fontSize:10
-            //             }
-            //         },
-            //         barWidth:43,
-            //         itemStyle: {
-            //             normal: {
-            //                 color:'#A920E2'
-            //             }
-            //         },
-            //         data: [50]
-            //     }
-            //     ]
-            // };
-            // breakb2.setOption(option,true)
-        },
-        concludeHandle(){
-            var conclude =this.$echarts.init(document.getElementById("conclude"));
-            var option = {
-               color: ['#FCE830', '#1ED3CA'],
-    tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-        //饼图、仪表盘、漏斗图: {a}（系列名称）
-        // {b}（数据项名称），{c}（数值）, {d}（百分比）
-    },
-    legend: {
-        show:false,
-        orient: 'vertical',
-        right: '0%',
-        bottom:'10%',
-        data: [],
-        itemWidth: 12,
-        itemHeight:12,
-        textStyle:{
-            color:'#ffffff',
-            fontSize:'12'
-        }
-    },
-    series : [
-        {
-            name: '受理案件数统计',
-            type: 'pie',
-            radius : ['0%','80%'],//数组时内，外
-            center: ['51%', '51%'],//x，y
-            data:[
-                {value:335, name:'在办数'},
-                {value:310, name:'办结数'},
-            ],
-            itemStyle: {
-                emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
-        }
-    ]
-};
-            conclude.setOption(option,true)
-        },
-        acceptHandle(){
-             var accept =this.$echarts.init(document.getElementById("accept"));
-            var option = {
-               color: ['#A321E8', '#15D5FD'],
-    tooltip : {
-        trigger: 'item',
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-        //饼图、仪表盘、漏斗图: {a}（系列名称）
-        // {b}（数据项名称），{c}（数值）, {d}（百分比）
-    },
-    legend: {
-        show:false,
-        orient: 'vertical',
-        right: '0%',
-        bottom:'10%',
-        data: [],
-        itemWidth: 12,
-        itemHeight:12,
-        textStyle:{
-            color:'#ffffff',
-            fontSize:'12'
-        }
-    },
-    series : [
-        {
-            name: '受理案件数统计',
-            type: 'pie',
-            radius : ['0%','80%'],//数组时内，外
-            center: ['51%', '51%'],//x，y
-            data:[
-                {value:335, name:'未采纳建议数'},
-                {value:310, name:'采纳建设数'},
-            ],
-            itemStyle: {
-                emphasis: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                }
-            }
-        }
-    ]
-};
-            accept.setOption(option,true)
         }
     },
 }
 </script>
 <style lang="scss" scoped>
-.outer-civil-page{
-    width:100%;
-    height:100%;
+.outer-administrative-page{
     display: flex;
-    position: relative;
-    .civil-page-left{
-        display: flex;
-        flex-wrap: wrap;
+    .administrative-page-left{
         width:1283px;
         position: relative;
         .tab{
@@ -860,61 +588,76 @@ export default {
                     background:rgba(48,226,226,1);
                 }
             }
-        .businessBox{
-            margin-bottom:20px;
-            padding:19px 0 0 30px;
-            width:698px;
-            height:458px;
+        .left-top{
+            display: flex;
+            width:100%;
+        }
+        .condition-box{
+            padding: 20px 0 0 20px;
             border:1px solid #00FFFF;
             border-radius: 8px;
             background: rgba(0,178,226, 0.2);
+            width:631px;
+            height:345px;
             .title{
-                font-size:24px;
-                color:rgba(255,255,255,1);
+            font-size:24px;
+            font-family:MicrosoftYaHei;
+            color:rgba(255,255,255,1);
             }
             ul{  
-                display: flex;
-                flex-wrap: wrap;
+                margin-left:165px;
+                position: relative;
+                .line{
+                    position: absolute;
+                    left:133px;
+                    top:0px;
+                    width:1px;
+                    height:287px;
+                    background-color:#00FFFF;
+                }
                 li{ 
-                    text-align: center;
-                    margin:25px 50px 0 50px;
-                    p:nth-child(1){
-                        width:118px;
-                        height:118px;
-                        line-height:118px;
-                        font-size:24px;
-                        color:rgba(47,224,190,1);
-                    }
-                    p:nth-child(2){
-                        margin-top:16px;
-                        font-size:16px;
-                        color:rgba(255,255,255,1);
-                    }
+                    display: flex;
+                    justify-content: space-between;
+                    font-size:18px;
+                    font-family:MicrosoftYaHei;
+                    color:rgba(255,255,255,1);
+                    padding: 11px 20px;
+                    width:260px;
+                    border-bottom:1px solid #00FFFF;
+                }
+                li:last-child{
+                    border-bottom:none;
                 }
             }
         }
-        .judgmentBox{
-            margin:0 0 20px 19px;
+        .behavior-box{
+            margin-left:20px;
+            padding: 20px 0 0 20px;
             border:1px solid #00FFFF;
             border-radius: 8px;
             background: rgba(0,178,226, 0.2);
-            padding:19px 0 0 30px;
-            width:560px;
-            height:458px;
+            width:631px;
+            height:340px;
             .title{
-                font-size:24px;
-                color:rgba(255,255,255,1);
+            font-size:24px;
+            font-family:MicrosoftYaHei;
+            color:rgba(255,255,255,1);
             }
-            ol{
+            ol{ 
+                margin-left:30px;
+                margin-top:30px;
                 li{ 
                     font-size:18px;
                     color:rgba(255,255,255,1);
-                    margin-top:33px;
+                    margin-bottom:30px;
                     span:nth-child(1){
                         font-size:18px;
                         font-family:PingFangSC-Regular;
                         font-weight:400;
                         color:rgba(0,255,255,1);
+                        display: inline-block;
+                        width:145px;
+                        text-align: right;
                     }
                     span:nth-child(2){
                         display: inline-block;
@@ -927,120 +670,193 @@ export default {
                 }
             }
         }
-        .executeBox{
-            margin:0 20 0px 0px;
+        .judgment-box{
+            margin:19px 0;
+            padding: 20px 0 0 20px;
             border:1px solid #00FFFF;
             border-radius: 8px;
             background: rgba(0,178,226, 0.2);
-            padding:19px 0 0 30px;
-            width:698px;
-            height:430px;
+            width:1281px;
+            height:238px;
             .title{
-                font-size:24px;
-                color:rgba(255,255,255,1);
+            font-size:24px;
+            font-family:MicrosoftYaHei;
+            color:rgba(255,255,255,1);
             }
-            .canva{
+            ul{ 
+                margin-left:100px;
+                margin-top:27px;
                 display: flex;
-                font-size:19px;
-                color:rgba(255,255,255,1);
-                margin:48px 0 0 12px;
-                .concludeBox{
-                    text-align: center;
-                    p:nth-of-type(1){
-                        margin:18px 0 10px 0;
+                li{
+                    margin-right:39px;
+                    width:131px;
+                    height:131px;
+                    border-radius: 50%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    p:nth-child(1){
+                        font-size:14px;
+                        color:rgba(255,255,255,1);
+                    }
+                    p:nth-child(2){
+                        margin-top:7px;
+                        font-size:24px;
+                        color:rgba(255,255,255,1);
                     }
                 }
-                .acceptBox{
-                    text-align: center;
-                    p:nth-of-type(1){
-                        margin:18px 0 10px 0;
+                li:nth-child(1){background-color:#24D3B1 }
+                li:nth-child(2){background-color:#26A3EF }
+                li:nth-child(3){background-color:#6EB21F }
+                li:nth-child(4){background-color:#EAD61F }
+                li:nth-child(5){background-color:#25BDE5 }
+                li:nth-child(6){background-color:#31DBE8 }
+            }
+        }
+        .tendency-box{
+            // margin-top:10px;
+            padding: 20px 0 0 20px;
+            border:1px solid #00FFFF;
+            border-radius: 8px;
+            background: rgba(0,178,226, 0.2);
+            width:1281px;
+            height:295px;
+            .title{
+            font-size:24px;
+            font-family:MicrosoftYaHei;
+            color:rgba(255,255,255,1);
+            }
+        }
+    }
+    .administrative-page-center{
+        width: 1331px;
+        margin:0 19px 0 17px;
+        position: relative;
+        padding-top:45px;
+        .sum{
+            position: absolute;
+            top:-39px;
+            left:0;
+            width:100%;
+            display: flex;
+        }
+        .accept{
+            margin-left: 300px;
+        }
+        .conclude{
+            margin:0 44px;
+        }
+        .accept,.office,.conclude{
+            font-size:18px;
+            color:rgba(11,193,244,1);
+            line-height:22px;
+            text-align: center;
+            ul,ol{
+                    display: flex;
+                    margin-top:10px;
+                    li{
+                        width:25px;
+                        height:41px;
+                        text-align: center;
+                        line-height:44px;
+                        border-radius:4px;
+                        background: -webkit-linear-gradient(#0BE5F1, #0C99F7); /* Safari 5.1 - 6.0 */
+                        background: -o-linear-gradient(#0BE5F1, #0C99F7); /* Opera 11.1 - 12.0 */
+                        background: -moz-linear-gradient(#0BE5F1, #0C99F7); /* Firefox 3.6 - 15 */
+                        background: linear-gradient(#0BE5F1, #0C99F7); /* 标准的语法（必须放在最后） */
+                        font-size:36px;
+                        color:rgba(255,255,255,1);
+                        margin-left:4px;
+                        margin-bottom:5px;
+                    }
+            }
+        }
+        .administrative-map{
+            width:1331px;
+            height:869px;
+            background:rgba(0,0,0,0.4);
+            border:1px solid rgba(1,218,226,1);
+        }
+    }
+    .administrative-page-rihgt{
+        display: flex;
+        flex-wrap:wrap;
+        width:1106px;
+        .right-left{
+        .execute{
+            padding:8px 0 0 20px;
+            border:1px solid #00FFFF;
+            border-radius: 8px;
+            background: rgba(0,178,226, 0.2);
+            width:544px;
+            height:299px;
+            margin:0 20px 20px 0;
+            .title{
+            font-size:24px;
+            font-family:MicrosoftYaHei;
+            color:rgba(255,255,255,1);
+            }
+            ol{ 
+                margin-left:10px;
+                margin-top:20px;
+                li{ 
+                    font-size:18px;
+                    color:rgba(255,255,255,1);
+                    margin-bottom:25px;
+                    span:nth-child(1){
+                        font-size:18px;
+                        font-family:PingFangSC-Regular;
+                        font-weight:400;
+                        color:rgba(0,255,255,1);
+                        display: inline-block;
+                        width:145px;
+                        text-align: right;
+                    }
+                    span:nth-child(2){
+                        display: inline-block;
+                        width:247px;
+                        height:12px;
+                        border-radius:8px;
+                        background-color: #00FFFF;
+                        margin:0 19px 0 30px;
                     }
                 }
             }
         }
-        .breakBox{
+        .classify{
+            width:544px;
+            height:278px;
+            padding:18px 0 0 20px;
             border:1px solid #00FFFF;
             border-radius: 8px;
             background: rgba(0,178,226, 0.2);
-            padding:19px 0 0 0px;
-            width:560px;
-            height:430px;
-            margin-left:19px;
+            margin-bottom:20px;
+            .title{
+            font-size:24px;
+            font-family:MicrosoftYaHei;
+            color:rgba(255,255,255,1);
+            }
+        }
+        }
+        .nature{
+            width:541px;
+            height:597px;
+            padding:60px 49px 0 40px;
+            border:1px solid #00FFFF;
+            border-radius: 8px;
+            background: rgba(0,178,226, 0.2);
+            margin-bottom:20px;
             position: relative;
             .title{
-                margin-left:30px;
-                font-size:24px;
-                color:rgba(255,255,255,1);
-            }
-            .breakContent{
-                display: flex;
-                padding-left:10px;
-                position: relative;
-                font-size:14px;
-                color:rgba(247,147,30,1);
-                p:nth-of-type(1){
-                    position: absolute;
-                    left:123px;
-                    top:7px;
-                }
-                p:nth-of-type(2){
-                    position: absolute;
-                    right:123px;
-                    top:7px;
-                }
-            }
-            .lagend{
-                width:310px;
-                font-size:14px;
-                color:rgba(255,255,255,1);
-                display: flex;
-                position: absolute;
-                bottom: 20px;
-                left:130px;
-                justify-content: space-between;
-                p{
-                    display: flex;
-                    align-items: center;
-                }
-                span{
-                    width:14px;
-                    height:14px;
-                }
-                .span1{background-color:#F7931E}
-                .span2{background-color:#31DBE8}
-                .span3{background-color:#A920E2}
-                .span4{background-color:#2FE0BE}
-            }
-        }
-    }
-    .civil-page-content{
-        width:1331px;
-        height:916px;
-        margin-left: 19px;
-        background:rgba(0,0,0,0.4);
-        border:1px solid rgba(1,218,226,1);
-    }
-    .civil-page-right{
-        margin-left: 21px;
-        display: flex;
-        flex-wrap: wrap;
-        width:1106px;
-        .sortBox{
-                border:1px solid #00FFFF;
-                border-radius: 8px;
-                background: rgba(0,178,226, 0.2);
-                padding:60px 33px 0 33px;
-                width:517px;
-                height:600px;
-                position: relative;
-                .title{
                 position: absolute;
                 left:33px;
                 top:15px;
                 font-size:24px;
+                font-family:MicrosoftYaHei;
                 color:rgba(255,255,255,1);
-                }
-                .label{
+            }
+            .label{
                     display:flex;
                     justify-content: flex-end;
                     margin-right:5px;
@@ -1117,13 +933,10 @@ export default {
                         height:21px;
                     }
                 }
-            }
-            .dayBox{
-                margin-left: 21px;
-              .capitaBox{
-                        margin-top: 21px;
-                        width:565px;
-                        height:298px;
+        }
+        .capitaBox{
+                        width:544px;
+                        height:292px;
                         padding-top:19px;
                         border:1px solid #00FFFF;
                         border-radius: 8px;
@@ -1141,9 +954,10 @@ export default {
                             }
                         }
                     }
-                    .fileBox{
-                        width:565px;
-                        height:276px;
+        .fileBox{       
+                       margin-left:20px;
+                        width:541px;
+                        height:292px;
                         border:1px solid #00FFFF;
                         border-radius: 8px;
                         background: rgba(0,178,226, 0.2); 
@@ -1159,34 +973,7 @@ export default {
                                 margin-right:30px;
                             }
                         }
-                    }
-            }
-            .trendBox{
-                margin-top:19px;
-                width: 1100px;
-                height:290px;
-                padding:20px 0 0 20px;
-                border:1px solid #00FFFF;
-                border-radius: 8px;
-                background: rgba(0,178,226, 0.2);
-                .trend-label {
-                    display: flex;
-                    align-items: center;
-                    margin-bottom:10px;
-                    i {
-                    margin: 0 0 0 10px;
-                    font-size:24px;
-                    color:rgba(255,255,255,1);
-                    line-height:29px;
-                    }
-                    .trend {
-                    width:13px;
-                    height:13px;
-                    border-radius: 50%;
-                    background:rgba(0,178,226,1);
-                    }
                 }
-            }
     }
 }
 </style>

@@ -58,9 +58,11 @@ export default {
                     break;
                     case 2:
                     this.now=2;
+                    this.$router.push('/judicial/administrative')
                     break;
                     case 3:
                     this.now=3;
+                    this.$router.push('/judicial/lawsuit')
                     break;
                     case 4:
                     this.now=4;
