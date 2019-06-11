@@ -61,6 +61,14 @@ export default new Router({
                 title:'司法办案-公益诉讼'
               }
             },
+            {
+              path: 'control',
+              name: 'control',
+              component: resolve => require(['@/pages/sfba/control'], resolve),
+              meta: {
+                title:'司法办案-控申'
+              }
+            },
           ]
         }
       ]

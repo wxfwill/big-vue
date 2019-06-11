@@ -91,9 +91,12 @@ export default {
       }
     },
   created(){
+    if(!JSON.parse(sessionStorage.getItem('module'))){
+        sessionStorage.setItem('module',JSON.stringify(0))
+    }
+    this.now=JSON.parse(sessionStorage.getItem('module'))
           this.dateHandle()
     var rr = [22,13,6,5000,30];
-
 var max = Math.max.apply(null, rr);
 let one =(max+'').split('')[0]//字符串的第一位
 console.log(max,one-0,(max+'').split('').length,
@@ -274,22 +277,24 @@ console.log(max,one-0,(max+'').split('').length,
         case 0:
         this.$router.push('/')
         this.now=0
+        sessionStorage.setItem('module',JSON.stringify(0))
           break
         case 1:
         this.now=1
+        sessionStorage.setItem('module',JSON.stringify(1))
         this.$router.push('/judicial/criminal')
           break
           case 2:
         this.now=2
-          console.log(2)
+        sessionStorage.setItem('module',JSON.stringify(2))
           break
           case 3:
         this.now=3
-          console.log(3)
+        sessionStorage.setItem('module',JSON.stringify(3))
           break
           case 4:
         this.now=4
-          console.log(4)
+        sessionStorage.setItem('module',JSON.stringify(4))
           break
       }
       }
@@ -310,7 +315,7 @@ console.log(max,one-0,(max+'').split('').length,
     background-image: url('../public/img/home/bj.png');
     position: relative;
    .popupBox{
-      z-index:5;
+      z-index:55;
       position: fixed;
       top: 0;
       left: 0;

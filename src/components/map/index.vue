@@ -484,6 +484,7 @@ export default {
             top:43px;
             width:30px;
             height:30px;
+            z-index:11;
         }
         .superior{
             position: absolute;
@@ -491,6 +492,7 @@ export default {
             top:43px;
             width:30px;
             height:30px;
+            z-index:11;
         }
         .popupIcon{
             position: absolute;
@@ -498,6 +500,7 @@ export default {
             top:43px;
             width:30px;
             height:30px;
+            z-index:11;
         }
 }
 </style>

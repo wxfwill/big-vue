@@ -89,8 +89,9 @@
                 </div>
             </div>
             <div class="trendBox">
+                <span @click="retreatHandle">&lt;</span><span @click="advanceHandle">&gt;</span>
                 <div class="trend-label">
-                  <span class="trend"></span>
+                  <em class="trend"></em>
                   <i>受理案件趋势统计</i>
                 </div>
                 <div id="trendContent" :style="{width: '1070px', height: '220px'}"></div>
@@ -127,6 +128,8 @@ export default {
             lineImg:require('@/public/img/judicature/line.png'),
             leftImg:require('@/public/img/judicature/left.png'),
             rightImg:require('@/public/img/judicature/right.png'),
+            dataIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
+            dataIPS:[20, 60, 50, 80, 120, 100,20,19,60,88],
             sortList:[
                 {title:'受理件数',num: 3434,proportion:'20%'},{title:'办结件数',num: 4545,proportion:'20%'},
                 {title:'1111',num: 7877,proportion:'20%'},{title:'受理件数',num: 3434,proportion:'20%'},
@@ -150,18 +153,34 @@ export default {
         this.fileHandle()//案均办理天数
     },
     methods: {
-        previousHandle(){
+        advanceHandle(){//后一年
+            this.dataIPSxAxis.push('2020')
+            this.dataIPSxAxis.splice(0,1);
+            this.dataIPS.push(111)
+            this.dataIPS.splice(0,1)
+            this.trendHandle()
+            console.log('后一年')
+        },
+        retreatHandle(){//前一年
+            this.dataIPSxAxis.unshift('2009')
+            this.dataIPSxAxis.splice(10,1);
+            this.dataIPS.unshift(88)
+            this.dataIPS.splice(10,1)
+            this.trendHandle()
+            console.log('前一年')
+        },
+        previousHandle(){//上一页
             if(this.num!=1){
                 this.num--
                 if(this.num==1){this.col=true}
             }
-        },//上一页
-        downHandle(){
+        },
+        downHandle(){//下一页
             if(this.num!=3){
                 this.num++
                 this.col=false
             }
-        },//下一页
+        },
         fileHandle(){
             var file =this.$echarts.init(document.getElementById("file"));
            var option = {
@@ -352,8 +371,6 @@ export default {
         },
         trendHandle(){
             var trendContent = this.$echarts.init(document.getElementById("trendContent"));
-            var dataIPSxAxis = ['1月', '2月', '3月', '4月', '5月', '6月','7月','8月','9月','10月'];
-            var dataIPS = [20, 60, 50, 80, 120, 100,20,19,60,88];
             var option = {
                 tooltip: {
                     backgroundColor:'#0C99F7',
@@ -381,9 +398,10 @@ export default {
                 xAxis: [{
                     type: 'category',
                     boundaryGap: true,
-                    data: dataIPSxAxis,
+                    data: this.dataIPSxAxis,
                     axisLabel: {
                         show: true,
+                        margin:15,
                         textStyle: {
                             show:false,
                             color: 'rgba(255,255,255,1)',
@@ -476,7 +494,7 @@ export default {
                         areaStyle: {
                             normal: {}
                         },
-                        data: dataIPS,
+                        data: this.dataIPS,
                     },
                 ]
             };
@@ -504,7 +522,7 @@ export default {
                     top: '15%',
                     left: '1%',
                     right: '0%',
-                    bottom: '20%',
+                    bottom: '25%',
                     containLabel: true,
                 },
                 xAxis: [{
@@ -517,10 +535,10 @@ export default {
                         },
                     },
                     axisLabel: { //坐标轴刻度标签的相关设置
+                        margin: 20,
                         textStyle: {
                             color: 'rab(255,255,255,1)',
                             fontSize:16,
-                            margin: 20,
                         },
                     },
                     axisTick: {
@@ -995,20 +1013,23 @@ export default {
                 color:rgba(255,255,255,1);
                 display: flex;
                 position: absolute;
-                bottom: 20px;
+                bottom: 15px;
                 left:130px;
                 justify-content: space-between;
                 p{
                     display: flex;
                     align-items: center;
                 }
+                p:nth-of-type(1),p:nth-of-type(3){
+                    margin-bottom:15px;
+                }
                 span{
                     width:14px;
                     height:14px;
                 }
-                .span1{background-color:#F7931E}
-                .span2{background-color:#31DBE8}
-                .span3{background-color:#A920E2}
+                .span1{background-color:#F7931E;}
+                .span2{background-color:#31DBE8;}
+                .span3{background-color:#A920E2;}
                 .span4{background-color:#2FE0BE}
             }
         }
@@ -1169,6 +1190,20 @@ export default {
                 border:1px solid #00FFFF;
                 border-radius: 8px;
                 background: rgba(0,178,226, 0.2);
+                position: relative;
+                span{
+                position: absolute;
+                color:#FFFFFF;
+                font-size:20px;
+                z-index:2;
+                }
+                span:nth-child(1){  
+                    bottom:15px;
+                    left:48px;
+                }span:nth-child(2){
+                    bottom:15px;
+                    right:76px;
+                }
                 .trend-label {
                     display: flex;
                     align-items: center;

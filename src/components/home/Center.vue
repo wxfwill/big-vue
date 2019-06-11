@@ -86,7 +86,7 @@ export default {
          left: '5px',
          top: '25px',
          right: '20px',
-         bottom: '0px',
+         bottom: '10px',
          containLabel: true
      },
      xAxis: [{
@@ -95,33 +95,16 @@ export default {
          data: dataIPSxAxis,
          axisLabel: {
              show: true,
+             margin:15,
              textStyle: {
                  show:false,
                  color: 'rgba(255,255,255,1)',
                  fontSize: 12,
              },
-            //  formatter: function(value) {
-            //      //debugger
-            //      var ret = "222"; //拼接加\n返回的类目项
-            //      var maxLength = 5; //每项显示文字个数
-            //      var valLength = value.length; //X轴类目项的文字个数
-            //      var rowN = Math.ceil(valLength / maxLength); //类目项需要换行的行数
-            //      if (rowN > 1) //如果类目项的文字大于3,
-            //      {
-            //          for (var i = 0; i < rowN; i++) {
-            //              var temp = ""; //每次截取的字符串
-            //              var start = i * maxLength; //开始截取的位置
-            //              var end = start + maxLength; //结束截取的位置
-            //              //这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
-            //              temp = value.substring(start, end) + "\n";
-            //              ret += temp; //凭借最终的字符串
-            //          }
-            //          return ret;
-            //      } else {
-            //          return value;
-            //      }
-            //  },
          },
+         axisTick: {
+                        show: false,
+                    },
          axisLine: {
              show:false,
              lineStyle: {
@@ -140,6 +123,9 @@ export default {
                  width: 1, //这里是为了突出显示加上的
              }
          },
+         axisTick: {
+                        show: false,
+                    },
          axisLabel: {
              formatter: function(val) {
                  return val;

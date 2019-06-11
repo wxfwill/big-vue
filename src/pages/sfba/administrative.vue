@@ -35,6 +35,7 @@
                 </ul>
             </div>
             <div class="tendency-box">
+                <span @click="retreatHandle">&lt;</span><span @click="advanceHandle">&gt;</span>
                 <p class="title">受理案件趋势分析</p>
                 <div id="trendContent" :style="{width: '1230px', height: '220px'}"></div>
             </div>
@@ -148,6 +149,8 @@ export default {
             lineImg:require('@/public/img/judicature/line.png'),
             leftImg:require('@/public/img/judicature/left.png'),
             rightImg:require('@/public/img/judicature/right.png'),
+            dataIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
+            dataIPS:[20, 60, 50, 80, 120, 100,20,19,60,88],
             sortList:[
                 {title:'受理件数',num: 3434,proportion:'20%'},{title:'办结件数',num: 4545,proportion:'20%'},
                 {title:'1111',num: 7877,proportion:'20%'},{title:'受理件数',num: 3434,proportion:'20%'},
@@ -174,6 +177,22 @@ export default {
         this.fileHandle()//案均办理天数
     },
     methods: {
+        advanceHandle(){//后一年
+            this.dataIPSxAxis.push('2020')
+            this.dataIPSxAxis.splice(0,1);
+            this.dataIPS.push(111)
+            this.dataIPS.splice(0,1)
+            this.trendHandle()
+            console.log('后一年')
+        },
+        retreatHandle(){//前一年
+            this.dataIPSxAxis.unshift('2009')
+            this.dataIPSxAxis.splice(10,1);
+            this.dataIPS.unshift(88)
+            this.dataIPS.splice(10,1)
+            this.trendHandle()
+            console.log('前一年')
+        },
         popupHandle(){
 
         },
@@ -430,8 +449,6 @@ export default {
         },
         trendHandle(){
             var trendContent = this.$echarts.init(document.getElementById("trendContent"));
-            var dataIPSxAxis = ['1月', '2月', '3月', '4月', '5月', '6月','7月','8月','9月','10月','2019'];
-            var dataIPS = [20, 60, 50, 80, 120, 100,20,19,60,88,100];
             var option = {
                 tooltip: {
                     backgroundColor:'#0C99F7',
@@ -450,16 +467,16 @@ export default {
                     // }
                 },
                 grid: {
-                    left: '5px',
+                    left: '75px',
                     top: '35px',
-                    right: '70px',
+                    right: '10px',
                     bottom: '10px',
                     containLabel: true
                 },
                 xAxis: [{
                     type: 'category',
                     boundaryGap: true,
-                    data: dataIPSxAxis,
+                    data: this.dataIPSxAxis,
                     axisLabel: {
                         show: true,
                         textStyle: {
@@ -556,12 +573,12 @@ export default {
                         areaStyle: {
                             normal: {}
                         },
-                        data: dataIPS,
+                        data: this.dataIPS,
                     },
                 ]
             };
            // 绘制图表
-           trendContent.setOption(option);
+           trendContent.setOption(option,true);
         }
     },
 }
@@ -722,6 +739,20 @@ export default {
             background: rgba(0,178,226, 0.2);
             width:1281px;
             height:295px;
+            position: relative;
+            span{
+                position: absolute;
+                color:#FFFFFF;
+                font-size:20px;
+                z-index:2;
+            }
+            span:nth-child(1){  
+                bottom:28px;
+                left:124px;
+            }span:nth-child(2){
+                bottom:28px;
+                right:44px;
+            }
             .title{
             font-size:24px;
             font-family:MicrosoftYaHei;
