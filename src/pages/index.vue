@@ -351,6 +351,7 @@ console.log(max,one-0,(max+'').split('').length,
       position: absolute;
       right: 50px;
       top: 80px;
+      z-index:1;
       .block {
       display: inline-block;
       margin-right:6px;
