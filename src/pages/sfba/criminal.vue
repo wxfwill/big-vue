@@ -96,37 +96,27 @@
             </div>
             <div class="right-right-bottom">
             <div class="capitaBox">
-                <p>人均办结数<span @click="moreCapit">更多>></span></p>
+                <p>人均办结数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
                 <div id="capita" :style="{width:'450px',height:'330px'}"></div>
             </div>
             <div class="fileBox">
-                <p>案均办理天数<span @click="morefile">更多>></span></p>
+                <p>案均办理天数<span @click="popupShow=true;popupTitle='全国各省份案均办理天数统计表'">更多>></span></p>
                 <div id="file" :style="{width:'470px',height:'330px'}"></div>
             </div>
             </div>
         </div>
         </div>
-        <div class="capitPopup" v-show="capitPopup">
-            <div class="box">
-                <span class="popupClose" @click="capitPopup=false">X</span>
-            <div id="capitPopup" :style="{width:'2438px',height:'519px'}"></div>
-            </div>        
-        </div>
-        <div class="filePopup" v-show="filePopup">
-            <div class="box">
-                <span class="popupClose" @click="filePopup=false">X</span>
-            <div id="filePopup" :style="{width:'2438px',height:'519px'}"></div>
-            </div>
-        </div>
+        <popup :show="popupShow" :title="popupTitle" :popupData='popupData'></popup>
     </div>
 </template>
 <script>
 import echarts from 'echarts';
-import ajax from "@/fetch/ajax.js";
 import mapComponent from '@/components/map/index.vue'
+import Popup from '@/components/Popup.vue'
 export default {
     components:{
-        mapComponent
+        mapComponent,
+        Popup
     },
     data() {
         return {
@@ -164,7 +154,10 @@ export default {
             cityData:['北京', '山东', '河南', '黑龙江', '贵州', '陕西', '广东', '西藏', '新疆', '青海', '湖南', '湖北'],
             proportionData:[50, -3, -5, -5, 14, -13, -7, -14, 24,-1,-2,-4],
             cityData:[],
-            valData:[]
+            valData:[],
+            popupShow:false,
+            popupTitle:'全国各省份人均办结数统计表',
+            popupData:[]
         }
     },
     mounted() {
@@ -179,206 +172,6 @@ export default {
         this.fileHandle()//案均办理天数
     },
     methods: {
-        moreCapit(){
-            var capitPopup =this.$echarts.init(document.getElementById("capitPopup"));
-            ajax.home()
-        .then(function(res){
-        console.log(res);
-            var option = {
-                title:{
-                    text:'全国各省份人均办结数统计表',
-                    textStyle:{
-                        fontSize:36,
-                        color:'rgba(255,255,255,1)'
-                    },
-                    left:'center',
-                    top:'10%'
-                },
-                tooltip: {},
-                grid: {//柱状图偏移
-                    top: '35%',
-                    left: '3%',
-                    right: '3%',
-                    bottom: '0%',
-                    containLabel: true,
-                },
-                xAxis: [{
-                    type: 'category',
-                    boundaryGap: true,
-                    axisLine: { //坐标轴轴线相关设置。数学上的x轴
-                        show: true,
-                        lineStyle: {
-                            color: '#00FFFF'
-                        },
-                    },
-                    axisLabel: { //坐标轴刻度标签的相关设置
-                        textStyle: {
-                            color: 'rgba(0,255,255,1)',
-                            fontSize:21,
-                            margin: 15,
-                        },
-                        interval:0 //x轴太长会默认隔一个显示
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                    data:res.data.city,
-                }],
-                yAxis: [{
-                    type: 'value',
-                    // min: 0,
-                    // max: 140,
-                    // splitNumber: 1,//刻度条数决定距离
-                    splitLine:{
-                        show:false
-                    },
-                    axisLine: {
-                        lineStyle:{
-                            color:'#00FFFF'
-                        },
-                        show: true,
-                    },
-                    axisLabel: {
-                        margin: 20,//离右边距离
-                        textStyle: {
-                            color: 'rgba(0,255,255,1)',
-                            fontSize:21
-
-                        },
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                }],
-                series: [ {
-                    name: '最新注册量',
-                    type: 'bar',
-                    tooltip: {
-                        show: false
-                    },
-                    label: {//柱状头部出现数值
-                        show: true,
-                        position: 'top',
-                        textStyle: {
-                            color: 'rgba(0,255,255,1)',
-                            fontSize:20
-                        }
-                    },
-                    barWidth:22,
-                    itemStyle: {
-                        normal: {
-                            color:'#00FFFF'
-                        }
-                    },
-                    data:res.data.value
-                }]
-            };
-            capitPopup.setOption(option,true)
-        })
-        .catch(function(err){
-        console.log(err);
-        })
-            this.capitPopup=true;
-        },
-        morefile(){
-            this.filePopup=true;
-            var filePopup =this.$echarts.init(document.getElementById("filePopup"));
-            var option = {
-                tooltip: {},
-                title:{
-                    text:'全国各省份案均办理天数统计表',
-                    textStyle:{
-                        fontSize:36,
-                        color:'rgba(255,255,255,1)'
-                    },
-                    left:'center',
-                    top:'10%'
-                },
-                grid: {//柱状图偏移
-                    top: '35%',
-                    left: '3%',
-                    right: '3%',
-                    bottom: '0%',
-                    containLabel: true,
-                },
-                xAxis: [{
-                    type: 'category',
-                    boundaryGap: true,
-                    axisLine: { //坐标轴轴线相关设置。数学上的x轴
-                        show: true,
-                        lineStyle: {
-                            color: '#00FFFF'
-                        },
-                    },
-                    axisLabel: { //坐标轴刻度标签的相关设置
-                        textStyle: {
-                            color: 'rgba(0,255,255,1)',
-                            fontSize:21,
-                            margin: 15,
-                        },
-                        interval:0 //x轴太长会默认隔一个显示
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                    data: [
-          '北京', '天津', '河北', '山西', '内蒙古', '辽宁', '吉林', '黑龙江',
-        '上海', '江苏', '浙江', '安徽', '福建', '江西', '山东', '河南',
-        '湖北', '湖南', '广东', '广西', '海南', '重庆', '四川', '贵州',
-        '云南', '西藏', '陕西', '甘肃', '青海', '宁夏', '新疆',
-          ],
-                }],
-                yAxis: [{
-                    type: 'value',
-                    // min: 0,
-                    // max: 140,
-                    // splitNumber: 1,//刻度条数决定距离
-                    splitLine:{
-                        show:false
-                    },
-                    axisLine: {
-                        lineStyle:{
-                            color:'#00FFFF'
-                        },
-                        show: true,
-                    },
-                    axisLabel: {
-                        margin: 20,//离右边距离
-                        textStyle: {
-                            color: 'rgba(0,255,255,1)',
-                            fontSize:21
-
-                        },
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                }],
-                series: [ {
-                    name: '最新注册量',
-                    type: 'bar',
-                    tooltip: {
-                        show: false
-                    },
-                    label: {//柱状头部出现数值
-                        show: true,
-                        position: 'top',
-                        textStyle: {
-                            color: 'rgba(0,255,255,1)',
-                            fontSize:20
-                        }
-                    },
-                    barWidth:22,
-                    itemStyle: {
-                        normal: {
-                            color:'#00FFFF'
-                        }
-                    },
-                    data: [200, 382, 102, 267, 186, 315, 316,200, 382, 102, 267, 186, 315, 316,200, 382, 102, 267, 186, 315, 316,]
-                }]
-            };
-            filePopup.setOption(option,true)
-        },
         fileHandle(){
             var file =this.$echarts.init(document.getElementById("file"));
            var option = {
@@ -1546,66 +1339,6 @@ for(var i=0;i<data.length;i++){
                             }
                         }
                     }
-                    }
-                }
-            }
-            .capitPopup{
-                z-index:5;
-                position: fixed;
-                top:0;
-                left:0;
-                width:100%;
-                height:100%;
-                background:rgba(0,0,0,0.7);
-                .box{
-                    display: flex;
-                    width:2508px;
-                    height:559px;
-                    margin:262px 0 0 662px;
-                    background-color: #062355;
-                    border: 1px solid #12e9e9;
-                    position: relative;
-                    .popupClose{
-                        text-align: center;
-                        line-height:38px;
-                        position: absolute;
-                        right:32px;
-                        top:35px;
-                        width:38px;
-                        height:38px;
-                        background:rgba(18,175,171,1);
-                        border-radius:50%;
-                        color:#FFFFFF;
-                    }
-                }
-            }
-            .filePopup{
-                z-index:5;
-                position: fixed;
-                top:0;
-                left:0;
-                width:100%;
-                height:100%;
-                background:rgba(0,0,0,0.7);
-                .box{
-                    display: flex;
-                    width:2508px;
-                    height:559px;
-                    margin:262px 0 0 662px;
-                    background-color: #062355;
-                    border: 1px solid #12e9e9;
-                    position: relative;
-                    .popupClose{
-                        text-align: center;
-                        line-height:38px;
-                        position: absolute;
-                        right:32px;
-                        top:35px;
-                        width:38px;
-                        height:38px;
-                        background:rgba(18,175,171,1);
-                        border-radius:50%;
-                        color:#FFFFFF;
                     }
                 }
             }

@@ -40,9 +40,19 @@
                 <p class="title">违法行为监督</p>
                 <div class="breakContent">
                     <p>办结率：78.5%</p>
-                <div id="break1" :style="{width: '265px', height: '377px'}"></div>
+                <div id="break1" :style="{width: '465px', height: '377px'}"></div>
                     <p>建议采纳率：98.5%</p>
-                <div id="break2" :style="{width: '265px', height: '377px'}"></div>
+                <!-- <div id="break2" :style="{width: '265px', height: '377px'}"></div> -->
+                </div>
+                <div class="lagend">
+                    <div>
+                    <p><span class="span1"></span>&nbsp;&nbsp;&nbsp;受理数</p>
+                    <p><span class="span2"></span>&nbsp;&nbsp;&nbsp;办结数</p>
+                    </div>
+                    <div>
+                    <p><span class="span3"></span>&nbsp;&nbsp;&nbsp;提出检察建议数</p>
+                    <p><span class="span4"></span>&nbsp;&nbsp;&nbsp;采纳检察建议数</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,60 +65,55 @@
                 <p class="label">占比 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次数</p>
                 <ol>
                     <li v-for="(item,index) in sortList" :key="index">
-                    <i>{{index+1}}</i>
+                    <i :class="col===true&&index<3?'baCol':null">{{index+1}}</i>
                     <p :style="{backgroundImage:'url('+lineImg+')'}">
                         <span>{{item.title}}</span>
-                        <span>{{item.proportion}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{item.num}}</span>
+                        <span :class="col===true&&index<3?'col':null">{{item.proportion}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{item.num}}</span>
                     </p>
                     </li>
                 </ol>
                 <div class="next">
                       <p class="bg_img" :style="{backgroundImage:'url('+leftImg+')'}" @click="previousHandle"></p>
-                      <p>1/3</p>
+                      <p>{{num}}/{{sum}}</p>
                       <p class="bg_img" :style="{backgroundImage:'url('+rightImg+')'}" @click="downHandle"></p>
                   </div>
             </div>
             <div class="dayBox">
                 <div class="fileBox">
-                    <p>案均办理天数<span @click="morefile">更多>></span></p>
+                    <p>案均办理天数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
                     <div id="file" :style="{width:'490px',height:'205px'}"></div>
                 </div>
                 <div class="capitaBox">
-                <p>人均办结数<span @click="moreCapit">更多>></span></p>
+                <p>人均办结数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
                 <div id="capita" :style="{width:'490px',height:'235px'}"></div>
                 </div>
             </div>
             <div class="trendBox">
+                <span @click="retreatHandle">&lt;</span><span @click="advanceHandle">&gt;</span>
                 <div class="trend-label">
-                  <span class="trend"></span>
+                  <em class="trend"></em>
                   <i>受理案件趋势统计</i>
                 </div>
                 <div id="trendContent" :style="{width: '1070px', height: '220px'}"></div>
             </div>
         </div>
-        <div class="capitPopup" v-show="capitPopup">
-            <div class="box">
-                <span class="popupClose" @click="capitPopup=false">X</span>
-            <div id="capitPopup" :style="{width:'2438px',height:'519px'}"></div>
-            </div>        
-        </div>
-        <div class="filePopup" v-show="filePopup">
-            <div class="box">
-                <span class="popupClose" @click="filePopup=false">X</span>
-            <div id="filePopup" :style="{width:'2438px',height:'519px'}"></div>
-            </div>
-        </div>
+        <popup :show="popupShow" :title="popupTitle" :popupData='popupData'></popup>
     </div>
 </template>
 <script>
 import echarts from 'echarts';
 import mapComponent from '@/components/map/index.vue'
+import Popup from '@/components/Popup.vue'
 export default {
     components:{
-        mapComponent
+        mapComponent,
+        Popup
     },
     data() {
         return {
+            col:true,
+            num:1,
+            sum:3,
             capitPopup:false,
             filePopup:false,
             businessList:[
@@ -123,12 +128,17 @@ export default {
             lineImg:require('@/public/img/judicature/line.png'),
             leftImg:require('@/public/img/judicature/left.png'),
             rightImg:require('@/public/img/judicature/right.png'),
+            dataIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
+            dataIPS:[20, 60, 50, 80, 120, 100,20,19,60,88],
             sortList:[
                 {title:'受理件数',num: 3434,proportion:'20%'},{title:'办结件数',num: 4545,proportion:'20%'},
                 {title:'1111',num: 7877,proportion:'20%'},{title:'受理件数',num: 3434,proportion:'20%'},
                 {title:'起诉案件数',num: 9090,proportion:'20%'},{title:'批捕逮捕数',num: 1231,proportion:'20%'},
                 {title:'犯罪又犯罪审查逮捕案件',num: 6767,proportion:'20%'},{title:'批捕逮捕数',num: 1231,proportion:'20%'},
                 {title:'批捕逮捕数',num: 1231,proportion:'20%'},{title:'批捕逮捕数',num: 1231,proportion:'20%'}],
+            popupShow:false,
+            popupTitle:'全国各省份人均办结数统计表',
+            popupData:[]
         }
     },
     created() {
@@ -143,206 +153,34 @@ export default {
         this.fileHandle()//案均办理天数
     },
     methods: {
-        moreCapit(){
-            var capitPopup =this.$echarts.init(document.getElementById("capitPopup"));
-            var option = {
-                title:{
-                    text:'全国各省份人均办结数统计表',
-                    textStyle:{
-                        fontSize:36,
-                        color:'rgba(255,255,255,1)'
-                    },
-                    left:'center',
-                    top:'10%'
-                },
-                tooltip: {},
-                grid: {//柱状图偏移
-                    top: '35%',
-                    left: '3%',
-                    right: '3%',
-                    bottom: '0%',
-                    containLabel: true,
-                },
-                xAxis: [{
-                    type: 'category',
-                    boundaryGap: true,
-                    axisLine: { //坐标轴轴线相关设置。数学上的x轴
-                        show: true,
-                        lineStyle: {
-                            color: '#00FFFF'
-                        },
-                    },
-                    axisLabel: { //坐标轴刻度标签的相关设置
-                        textStyle: {
-                            color: 'rgba(0,255,255,1)',
-                            fontSize:21,
-                            margin: 15,
-                        },
-                        interval:0 //x轴太长会默认隔一个显示
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                    data:[
-          '北京', '天津', '河北', '山西', '内蒙古', '辽宁', '吉林', '黑龙江',
-        '上海', '江苏', '浙江', '安徽', '福建', '江西', '山东', '河南',
-        '湖北', '湖南', '广东', '广西', '海南', '重庆', '四川', '贵州',
-        '云南', '西藏', '陕西', '甘肃', '青海', '宁夏', '新疆',
-          ],
-                }],
-                yAxis: [{
-                    type: 'value',
-                    // min: 0,
-                    // max: 140,
-                    // splitNumber: 1,//刻度条数决定距离
-                    splitLine:{
-                        show:false
-                    },
-                    axisLine: {
-                        lineStyle:{
-                            color:'#00FFFF'
-                        },
-                        show: true,
-                    },
-                    axisLabel: {
-                        margin: 20,//离右边距离
-                        textStyle: {
-                            color: 'rgba(0,255,255,1)',
-                            fontSize:21
-
-                        },
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                }],
-                series: [ {
-                    name: '最新注册量',
-                    type: 'bar',
-                    tooltip: {
-                        show: false
-                    },
-                    label: {//柱状头部出现数值
-                        show: true,
-                        position: 'top',
-                        textStyle: {
-                            color: 'rgba(0,255,255,1)',
-                            fontSize:20
-                        }
-                    },
-                    barWidth:22,
-                    itemStyle: {
-                        normal: {
-                            color:'#00FFFF'
-                        }
-                    },
-                    data:[200, 382, 102, 267, 186, 315, 316,200, 382, 102, 267, 186, 315, 316,200, 382, 102, 267, 186, 315, 316,],
-                }]
-            };
-            capitPopup.setOption(option,true)
-                this.capitPopup=true;
+        advanceHandle(){//后一年
+            this.dataIPSxAxis.push('2020')
+            this.dataIPSxAxis.splice(0,1);
+            this.dataIPS.push(111)
+            this.dataIPS.splice(0,1)
+            this.trendHandle()
+            console.log('后一年')
         },
-        morefile(){
-            this.filePopup=true;
-            var filePopup =this.$echarts.init(document.getElementById("filePopup"));
-            var option = {
-                tooltip: {},
-                title:{
-                    text:'全国各省份案均办理天数统计表',
-                    textStyle:{
-                        fontSize:36,
-                        color:'rgba(255,255,255,1)'
-                    },
-                    left:'center',
-                    top:'10%'
-                },
-                grid: {//柱状图偏移
-                    top: '35%',
-                    left: '3%',
-                    right: '3%',
-                    bottom: '0%',
-                    containLabel: true,
-                },
-                xAxis: [{
-                    type: 'category',
-                    boundaryGap: true,
-                    axisLine: { //坐标轴轴线相关设置。数学上的x轴
-                        show: true,
-                        lineStyle: {
-                            color: '#00FFFF'
-                        },
-                    },
-                    axisLabel: { //坐标轴刻度标签的相关设置
-                        textStyle: {
-                            color: 'rgba(0,255,255,1)',
-                            fontSize:21,
-                            margin: 15,
-                        },
-                        interval:0 //x轴太长会默认隔一个显示
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                    data: [
-          '北京', '天津', '河北', '山西', '内蒙古', '辽宁', '吉林', '黑龙江',
-        '上海', '江苏', '浙江', '安徽', '福建', '江西', '山东', '河南',
-        '湖北', '湖南', '广东', '广西', '海南', '重庆', '四川', '贵州',
-        '云南', '西藏', '陕西', '甘肃', '青海', '宁夏', '新疆',
-          ],
-                }],
-                yAxis: [{
-                    type: 'value',
-                    // min: 0,
-                    // max: 140,
-                    // splitNumber: 1,//刻度条数决定距离
-                    splitLine:{
-                        show:false
-                    },
-                    axisLine: {
-                        lineStyle:{
-                            color:'#00FFFF'
-                        },
-                        show: true,
-                    },
-                    axisLabel: {
-                        margin: 20,//离右边距离
-                        textStyle: {
-                            color: 'rgba(0,255,255,1)',
-                            fontSize:21
-
-                        },
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                }],
-                series: [ {
-                    name: '最新注册量',
-                    type: 'bar',
-                    tooltip: {
-                        show: false
-                    },
-                    label: {//柱状头部出现数值
-                        show: true,
-                        position: 'top',
-                        textStyle: {
-                            color: 'rgba(0,255,255,1)',
-                            fontSize:20
-                        }
-                    },
-                    barWidth:22,
-                    itemStyle: {
-                        normal: {
-                            color:'#00FFFF'
-                        }
-                    },
-                    data: [200, 382, 102, 267, 186, 315, 316,200, 382, 102, 267, 186, 315, 316,200, 382, 102, 267, 186, 315, 316,]
-                }]
-            };
-            filePopup.setOption(option,true)
+        retreatHandle(){//前一年
+            this.dataIPSxAxis.unshift('2009')
+            this.dataIPSxAxis.splice(10,1);
+            this.dataIPS.unshift(88)
+            this.dataIPS.splice(10,1)
+            this.trendHandle()
+            console.log('前一年')
         },
-        previousHandle(){},//上一页
-        downHandle(){},//下一页
+        previousHandle(){//上一页
+            if(this.num!=1){
+                this.num--
+                if(this.num==1){this.col=true}
+            }
+        },
+        downHandle(){//下一页
+            if(this.num!=3){
+                this.num++
+                this.col=false
+            }
+        },
         fileHandle(){
             var file =this.$echarts.init(document.getElementById("file"));
            var option = {
@@ -351,6 +189,7 @@ export default {
                     // axisPointer: {
                     //     type: 'shadow'
                     // },
+                    show:false,
                     formatter: "{b} <br> 合格率: {c}%"//提示框内容修改
                 },
                 /*legend: {
@@ -369,7 +208,7 @@ export default {
                     // boundaryGap: [0, 0.01],
                     // min: 0,
                     // max: 100,
-                    interval: 25,
+                    interval: 20,
                     axisLine:{
                         lineStyle:{
                             color:'#00FFFF'
@@ -476,7 +315,7 @@ export default {
                     axisTick: {
                         show: false,
                     },
-                    data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', ],
+                    data: ['1月', '2月', '3月', '4月', '5月', ],
                 }],
                 yAxis: [{
                     name:'件数',
@@ -525,15 +364,13 @@ export default {
                             color:'#00FFFF'
                         }
                     },
-                    data: [200, 382, 102, 267, 186, 315, 316]
+                    data: [200, 382, 102, 267, 186]
                 }]
             };
             capita.setOption(option,true)
         },
         trendHandle(){
             var trendContent = this.$echarts.init(document.getElementById("trendContent"));
-            var dataIPSxAxis = ['1月', '2月', '3月', '4月', '5月', '6月','7月','8月','9月','10月'];
-            var dataIPS = [20, 60, 50, 80, 120, 100,20,19,60,88];
             var option = {
                 tooltip: {
                     backgroundColor:'#0C99F7',
@@ -561,9 +398,10 @@ export default {
                 xAxis: [{
                     type: 'category',
                     boundaryGap: true,
-                    data: dataIPSxAxis,
+                    data: this.dataIPSxAxis,
                     axisLabel: {
                         show: true,
+                        margin:15,
                         textStyle: {
                             show:false,
                             color: 'rgba(255,255,255,1)',
@@ -656,7 +494,7 @@ export default {
                         areaStyle: {
                             normal: {}
                         },
-                        data: dataIPS,
+                        data: this.dataIPS,
                     },
                 ]
             };
@@ -668,6 +506,7 @@ export default {
             var option = {
                 tooltip: {},
                 legend: {
+                    show:false,
                     orient: 'vertical',
                     left: '45%',
                     bottom:'3%',
@@ -683,7 +522,7 @@ export default {
                     top: '15%',
                     left: '1%',
                     right: '0%',
-                    bottom: '20%',
+                    bottom: '25%',
                     containLabel: true,
                 },
                 xAxis: [{
@@ -696,16 +535,16 @@ export default {
                         },
                     },
                     axisLabel: { //坐标轴刻度标签的相关设置
+                        margin: 20,
                         textStyle: {
-                            color: '#d1e6eb',
-                            fontSize:10,
-                            margin: 15,
+                            color: 'rab(255,255,255,1)',
+                            fontSize:16,
                         },
                     },
                     axisTick: {
                         show: false,
                     },
-                    data: ['受理数'],
+                    data: ['受理数','办结数'],
                 }],
                 yAxis: [{
                     name:'',
@@ -756,10 +595,13 @@ export default {
                     barWidth:43,
                     itemStyle: {
                         normal: {
-                            color:'#31DBE8'
+                            color:function(params) { 
+                                var colorList = ['#31DBE8','#2FE0BE']; 
+                                return colorList[params.dataIndex] 
+                            }
                         }
                     },
-                    data: [2000]
+                    data: [2000,300]//办结数/采纳检察建议数
                 },
                 {
                     name: '办结数',
@@ -778,138 +620,143 @@ export default {
                     barWidth:43,
                     itemStyle: {
                         normal: {
-                            color:'#F7931E'
+                            // 定制显示（按顺序）
+                color: function(params) { 
+                    var colorList = ['#F7931E','#A920E2']; 
+                    return colorList[params.dataIndex] 
+                }
                         }
                     },
-                    data: [400]
+                    data: [400,1000]//受理数/提出检察建议数
                 }
                 ]
             };
             breakb1.setOption(option,true)
             // 
-            var breakb2 = this.$echarts.init(document.getElementById("break2"));
-            var option = {
-                tooltip: {},
-                legend: {
-                    orient: 'vertical',
-                    left: '25%',
-                    bottom:'3%',
-                    data: ['提出检察建议数','提出采纳建议数'],
-                    itemWidth: 12,
-                    itemHeight:12,
-                    textStyle:{
-                        color:'#ffffff',
-                        fontSize:'12'
-                    }
-                },
-                grid: {//柱状图偏移
-                    top: '15%',
-                    left: '0%',
-                    right: '1%',
-                    bottom: '20%',
-                    containLabel: true,
-                },
-                xAxis: [{
-                    type: 'category',
-                    boundaryGap: true,
-                    axisLine: { //坐标轴轴线相关设置。数学上的x轴
-                        show: true,
-                        lineStyle: {
-                            color: '#00FFFF'
-                        },
-                    },
-                    axisLabel: { //坐标轴刻度标签的相关设置
-                        textStyle: {
-                            color: '#d1e6eb',
-                            fontSize:10,
-                            margin: 15,
-                        },
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                    data: ['办结数'],
-                }],
-                yAxis: [{
-                    name:'',
-                    type: 'value',
-                    position:'right',
-                    min: 0,
-                    // max: 140,
-                    // splitNumber: 1,//刻度条数决定距离
-                    splitLine:{
-                        show:false,
-                        lineStyle: { //y轴网格线设置
-                            color: 'rgb(193,193,193,0.2)',
-                            width: 1,
-                            type: 'dashed'
-                        }
-                    },
-                    axisLine: {
-                        lineStyle:{
-                            color:'#00FFFF'
-                        },
-                        show: true,
-                    },
-                    axisLabel: {
-                        margin: 20,//离右边距离
-                        textStyle: {
-                            color: '#FFFFFF',
-                            fontSize:14
+            // var breakb2 = this.$echarts.init(document.getElementById("break2"));
+            // var option = {
+            //     tooltip: {},
+            //     legend: {
+            //         orient: 'vertical',
+            //         left: '25%',
+            //         bottom:'3%',
+            //         data: ['提出检察建议数','提出采纳建议数'],
+            //         itemWidth: 12,
+            //         itemHeight:12,
+            //         textStyle:{
+            //             color:'#ffffff',
+            //             fontSize:'12'
+            //         }
+            //     },
+            //     grid: {//柱状图偏移
+            //         top: '15%',
+            //         left: '0%',
+            //         right: '1%',
+            //         bottom: '20%',
+            //         containLabel: true,
+            //     },
+            //     xAxis: [{
+            //         type: 'category',
+            //         boundaryGap: true,
+            //         axisLine: { //坐标轴轴线相关设置。数学上的x轴
+            //             show: true,
+            //             lineStyle: {
+            //                 color: '#00FFFF'
+            //             },
+            //         },
+            //         axisLabel: { //坐标轴刻度标签的相关设置
+            //             textStyle: {
+            //                 color: '#d1e6eb',
+            //                 fontSize:10,
+            //                 margin: 15,
+            //             },
+            //         },
+            //         axisTick: {
+            //             show: false,
+            //         },
+            //         data: ['办结数'],
+            //     }],
+            //     yAxis: [{
+            //         name:'',
+            //         type: 'value',
+            //         show:false,
+            //         position:'right',
+            //         min: 0,
+            //         // max: 140,
+            //         // splitNumber: 1,//刻度条数决定距离
+            //         splitLine:{
+            //             show:false,
+            //             lineStyle: { //y轴网格线设置
+            //                 color: 'rgb(193,193,193,0.2)',
+            //                 width: 1,
+            //                 type: 'dashed'
+            //             }
+            //         },
+            //         axisLine: {
+            //             lineStyle:{
+            //                 color:'#00FFFF'
+            //             },
+            //             show: true,
+            //         },
+            //         axisLabel: {
+            //             margin: 20,//离右边距离
+            //             textStyle: {
+            //                 color: '#FFFFFF',
+            //                 fontSize:14
 
-                        },
-                    },
-                    axisTick: {
-                        show: false,
-                    },
-                }],
-                series: [ {
-                    name: '提出检察建议数',
-                    type: 'bar',
-                    tooltip: {
-                        show: false
-                    },
-                    label: {//柱状头部出现数值
-                        show: true,
-                        position: 'top',
-                        textStyle: {
-                            color: '#2FE0BE',
-                            fontSize:10
-                        }
-                    },
-                    barWidth:43,
-                    itemStyle: {
-                        normal: {
-                            color:'#2FE0BE'
-                        }
-                    },
-                    data: [20000],
-                },
-                {
-                    name: '提出采纳建议数',
-                    type: 'bar',
-                    tooltip: {
-                        show: false
-                    },
-                    label: {//柱状头部出现数值
-                        show: true,
-                        position: 'top',
-                        textStyle: {
-                            color: '#A920E2',
-                            fontSize:10
-                        }
-                    },
-                    barWidth:43,
-                    itemStyle: {
-                        normal: {
-                            color:'#A920E2'
-                        }
-                    },
-                    data: [50]
-                }
-                ]
-            };
-            breakb2.setOption(option,true)
+            //             },
+            //         },
+            //         axisTick: {
+            //             show: false,
+            //         },
+            //     }],
+            //     series: [ {
+            //         name: '提出检察建议数',
+            //         type: 'bar',
+            //         tooltip: {
+            //             show: false
+            //         },
+            //         label: {//柱状头部出现数值
+            //             show: true,
+            //             position: 'top',
+            //             textStyle: {
+            //                 color: '#2FE0BE',
+            //                 fontSize:10
+            //             }
+            //         },
+            //         barWidth:43,
+            //         itemStyle: {
+            //             normal: {
+            //                 color:'#2FE0BE'
+            //             }
+            //         },
+            //         data: [20000],
+            //     },
+            //     {
+            //         name: '提出采纳建议数',
+            //         type: 'bar',
+            //         tooltip: {
+            //             show: false
+            //         },
+            //         label: {//柱状头部出现数值
+            //             show: true,
+            //             position: 'top',
+            //             textStyle: {
+            //                 color: '#A920E2',
+            //                 fontSize:10
+            //             }
+            //         },
+            //         barWidth:43,
+            //         itemStyle: {
+            //             normal: {
+            //                 color:'#A920E2'
+            //             }
+            //         },
+            //         data: [50]
+            //     }
+            //     ]
+            // };
+            // breakb2.setOption(option,true)
         },
         concludeHandle(){
             var conclude =this.$echarts.init(document.getElementById("conclude"));
@@ -1137,6 +984,7 @@ export default {
             width:560px;
             height:430px;
             margin-left:19px;
+            position: relative;
             .title{
                 margin-left:30px;
                 font-size:24px;
@@ -1158,6 +1006,31 @@ export default {
                     right:123px;
                     top:7px;
                 }
+            }
+            .lagend{
+                width:310px;
+                font-size:14px;
+                color:rgba(255,255,255,1);
+                display: flex;
+                position: absolute;
+                bottom: 15px;
+                left:130px;
+                justify-content: space-between;
+                p{
+                    display: flex;
+                    align-items: center;
+                }
+                p:nth-of-type(1),p:nth-of-type(3){
+                    margin-bottom:15px;
+                }
+                span{
+                    width:14px;
+                    height:14px;
+                }
+                .span1{background-color:#F7931E;}
+                .span2{background-color:#31DBE8;}
+                .span3{background-color:#A920E2;}
+                .span4{background-color:#2FE0BE}
             }
         }
     }
@@ -1233,14 +1106,11 @@ export default {
                     } 
                     }
                 }
-                li:nth-child(1),li:nth-child(2),li:nth-child(3){
-                    i{
+                .col{
+                    color: #c49760!important;
+                }
+                .baCol{
                     background-color:#c49760;
-                    }
-                    color: #d73b3c;
-                    span:nth-child(2){
-                    color: #c49760;
-                    }
                 }
                 }
                 .next{
@@ -1320,6 +1190,20 @@ export default {
                 border:1px solid #00FFFF;
                 border-radius: 8px;
                 background: rgba(0,178,226, 0.2);
+                position: relative;
+                span{
+                position: absolute;
+                color:#FFFFFF;
+                font-size:20px;
+                z-index:2;
+                }
+                span:nth-child(1){  
+                    bottom:15px;
+                    left:48px;
+                }span:nth-child(2){
+                    bottom:15px;
+                    right:76px;
+                }
                 .trend-label {
                     display: flex;
                     align-items: center;
@@ -1339,65 +1223,5 @@ export default {
                 }
             }
     }
-    .capitPopup{
-                z-index:5;
-                position: fixed;
-                top:0;
-                left:0;
-                width:100%;
-                height:100%;
-                background:rgba(0,0,0,0.7);
-                .box{
-                    display: flex;
-                    width:2508px;
-                    height:559px;
-                    margin:262px 0 0 662px;
-                    background-color: #062355;
-                    border: 1px solid #12e9e9;
-                    position: relative;
-                    .popupClose{
-                        text-align: center;
-                        line-height:38px;
-                        position: absolute;
-                        right:32px;
-                        top:35px;
-                        width:38px;
-                        height:38px;
-                        background:rgba(18,175,171,1);
-                        border-radius:50%;
-                        color:#FFFFFF;
-                    }
-                }
-            }
-            .filePopup{
-                z-index:5;
-                position: fixed;
-                top:0;
-                left:0;
-                width:100%;
-                height:100%;
-                background:rgba(0,0,0,0.7);
-                .box{
-                    display: flex;
-                    width:2508px;
-                    height:559px;
-                    margin:262px 0 0 662px;
-                    background-color: #062355;
-                    border: 1px solid #12e9e9;
-                    position: relative;
-                    .popupClose{
-                        text-align: center;
-                        line-height:38px;
-                        position: absolute;
-                        right:32px;
-                        top:35px;
-                        width:38px;
-                        height:38px;
-                        background:rgba(18,175,171,1);
-                        border-radius:50%;
-                        color:#FFFFFF;
-                    }
-                }
-            }
 }
 </style>

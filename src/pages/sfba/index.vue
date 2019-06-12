@@ -34,6 +34,12 @@ export default {
             shrinkImg:require('@/public/img/judicature/shrink.png')
         }
     },
+    created() {
+        if(!JSON.parse(sessionStorage.getItem('menu'))){
+        sessionStorage.setItem('menu',JSON.stringify(0))
+        }
+        this.now=JSON.parse(sessionStorage.getItem('menu'))
+    },
     methods:{
          // 移入
         mouseOver() {
@@ -49,32 +55,45 @@ export default {
         menuHandle(i){
             switch (i) {
                     case 0:
-                    this.now=0;
+                    this.now=0
+                    sessionStorage.setItem('menu',JSON.stringify(0))
                     this.$router.push('/judicial/criminal')
                     break;
                     case 1:
-                    this.now=1;
+                    this.now=1
+                    sessionStorage.setItem('menu',JSON.stringify(1))
                     this.$router.push('/judicial/civil')
                     break;
                     case 2:
                     this.now=2;
+                    sessionStorage.setItem('menu',JSON.stringify(2))
+                    this.$router.push('/judicial/administrative')
                     break;
                     case 3:
                     this.now=3;
+                    sessionStorage.setItem('menu',JSON.stringify(3))
+                    this.$router.push('/judicial/lawsuit')
                     break;
                     case 4:
                     this.now=4;
+                    sessionStorage.setItem('menu',JSON.stringify(4))
                     break;
                     case 5:
                     this.now=5;
+                    sessionStorage.setItem('menu',JSON.stringify(5))
+                    this.$router.push('/judicial/control')
                     break;
                     case 6:
                     this.now=6;
+                    sessionStorage.setItem('menu',JSON.stringify(6))
                     break;
                 default:
                     break;
             }
         }
+    },
+    beforeDestroy(){
+        sessionStorage.setItem('menu',JSON.stringify(0))
     }
 }
 </script>
