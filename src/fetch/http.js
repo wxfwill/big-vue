@@ -1,46 +1,52 @@
-import Vue from "vue";
+import Vue   from "vue";
 import axios from "axios";
 
-Vue.prototype.$http = axios.create({
-    baseURL: '/mg_api/',
-    timeout: 0,
-    // headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
-    headers: {'content-type': 'application/json'}
+/**
+ * 创建axios实例
+ * */
+const service = axios.create({
+	baseURL: 'http://172.16.119.242:8001/',
+	timeout: 5000,
+	headers: { 'content-type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
 });
 
-export function fetch(url, params) {
-    return new Promise((resolve, reject) => {
-        Vue.prototype.$http.post(url, params).then(response => {
-                resolve(response);
-            },
-            err => {
-                reject(err);
-            }
-        ).catch(error => {
-            reject(error);
-        });
-    });
+async function request(config = {}) {
+	let res = {};
+	try {
+		res = await service.request(config);
+	} catch(e) {
+		let errorText = "";
+		switch(e.response && e.response.status) {
+			case 404 :
+				errorText = "404 Not Found";
+				break;
+			case 403 :
+				errorText = "无权限访问";
+				break;
+			case 408:
+				errorText = "服务器请求超时";
+				break;
+			case undefined:
+				errorText = "请检查请求配置是否正确";
+				break;
+			default :
+				errorText = "服务器请求超时";
+		}
+		res.data = {
+			success: false,
+			data   : errorText,
+		};
+	}
+	return res.data;
 }
 
-export default {
-    // C++盘面行情  列表
-    selectSurfaceQuotes(params) {
-        return fetch("/quot_surface_pull", params);
-    },
-    // 获取国际行情
-    selectInternationalQuote(params) {
-        return fetch("/quot_international_pull", params);
-    },
-    // 买卖五档记录
-    selectUnsettledGear(params) {
-        return fetch("/buy_sell_pull", params);
-    },
-    // 获取k线数据
-    selectKlineData(params) {
-        return fetch("/kline_pull", params);
-    },
-    // 获取交易对
-    getCurrencyList(params) {
-        return fetch("/quot_exrate_pull", params);
-    },
-}
+/**
+ * 统一管理接口
+ * */
+export const getTeamManagement = async (data) => await request({
+	method: 'post',
+	url   : '/api/v1.0/teamManage/getTeamManageData',
+	data
+});
+
+export default request;

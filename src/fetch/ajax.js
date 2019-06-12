@@ -1,7 +1,5 @@
-import Vue from "vue";
+import Vue   from 'Vue';
 import axios from "axios";
-import qs from "qs";
-import store from "../vuex/store.js";
 
 Vue.prototype.$ajax = axios;
 var vm = new Vue();
