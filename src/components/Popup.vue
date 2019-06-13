@@ -1,5 +1,5 @@
 <template>
-    <div class="Popup" v-show="show">
+    <div class="Popup">
             <div class="box">
                 <span class="popupClose" @click="($parent.popupShow=false)">X</span>
             <div id="popup" :style="{width:'2438px',height:'519px'}"></div>
@@ -9,12 +9,6 @@
 <script>
 export default {
     props:{
-        show: {
-            type: Boolean,
-            default: function() {
-                return false
-            }
-        },
         title:{
             type:String,
             default:function () {
@@ -130,7 +124,7 @@ export default {
 </script>
 <style lang="scss" scoped>
      .Popup{
-                z-index:5;
+                z-index:15;
                 position: fixed;
                 top:0;
                 left:0;

@@ -41,7 +41,7 @@
   </div>
    <p>查询</p>
     </div>
-    <router-view></router-view>
+    <router-view ref="sfba"></router-view>
     
   </div>
 </template>
@@ -282,6 +282,8 @@ console.log(max,one-0,(max+'').split('').length,
         case 1:
         this.now=1
         sessionStorage.setItem('module',JSON.stringify(1))
+        sessionStorage.setItem('menu',JSON.stringify(0))
+        this.$refs.sfba.now=0
         this.$router.push('/judicial/criminal')
           break
           case 2:
