@@ -3,7 +3,6 @@
         <div class="menuBox"  @mouseover="mouseOver" @mouseleave="mouseLeave">
         <ul class="menu">
             <div class="shrink">
-            <!-- <p class="bg_img" :class="rotate?'rota':'back'"  :style="{backgroundImage:'url('+shrinkImg+')'}"></p> -->
             </div>
             <li :class="now==index ? 'col':null" v-for="(item,index) in menuList" :key="index" @click="menuHandle(index)">
                 <p class="bg_img"  :style="{backgroundImage:'url('+item.img+')'}"></p>
@@ -87,6 +86,7 @@ export default {
                     case 6:
                     this.now=6;
                     sessionStorage.setItem('menu',JSON.stringify(6))
+                    this.$router.push('/judicial/procuratorial')
                     break;
                 default:
                     break;
@@ -103,7 +103,6 @@ export default {
     position: relative;
     width:100%;
     height:100%;
-    padding:65px 0 0 0;
     .menuBox{
         position: absolute;
         z-index: 11;

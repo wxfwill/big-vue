@@ -77,6 +77,14 @@ export default new Router({
                 title:'司法办案-控申'
               }
             },
+            {
+              path: 'procuratorial',
+              name: 'procuratorial',
+              component: resolve => require(['@/pages/sfba/procuratorial'], resolve),
+              meta: {
+                title:'司法办案-检委办/检察技术'
+              }
+            }
           ]
         },
 		  {

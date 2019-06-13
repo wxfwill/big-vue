@@ -15,6 +15,7 @@ export default {
                 return ''
             }
         },
+        type:{type:String,default:''},
         popupData:{type:Array,default:[]}
     },
     mounted(){
@@ -87,8 +88,8 @@ export default {
                         textStyle: {
                             color: 'rgba(0,255,255,1)',
                             fontSize:21
-
                         },
+                        formatter: this.type==='%'?'{value}%':'{value}'
                     },
                     axisTick: {
                         show: false,
@@ -102,6 +103,7 @@ export default {
                     },
                     label: {//柱状头部出现数值
                         show: true,
+                        formatter: this.type==='%'?'{c}%':'{c}',
                         position: 'top',
                         textStyle: {
                             color: 'rgba(0,255,255,1)',

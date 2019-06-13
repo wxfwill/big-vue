@@ -7,7 +7,6 @@
       </div>
       </div>
     <div class="bg_img bjt">  &nbsp;最高人民检察院大数据决策支持平台</div>
-    <div class="header-time">{{clock}} &nbsp;{{week}}</div>
       <ul class="ul-title">
           <li class="bg_img"  v-for="(item,index) in list" :key="index"
           :style="{backgroundImage:'url('+(index==now?buttonColorImg: buttonImg)+')'}" @click="Handle(item,index)"
@@ -95,50 +94,8 @@ export default {
         sessionStorage.setItem('module',JSON.stringify(0))
     }
     this.now=JSON.parse(sessionStorage.getItem('module'))
-          this.dateHandle()
-    var rr = [22,13,6,5000,30];
-var max = Math.max.apply(null, rr);
-let one =(max+'').split('')[0]//字符串的第一位
-console.log(max,one-0,(max+'').split('').length,
-           (one-0+1)*Math.pow(10,(max+'').split('').length-1))
-        var now = new Date();
-        var year = now.getFullYear();       //年
-        var month = now.getMonth() + 1;     //月
-        var day = now.getDate();            //日
-        var hh = now.getHours();            //时
-        var mm = now.getMinutes();          //分
-        var clock = year + "-";
-        if(month < 10)
-            clock += "0";
-        clock += month + "-";
-        if(day < 10)
-            clock += "0";
-        clock += day + " ";
-        if(hh < 10)
-            clock += "0";   
-        clock += hh + ":";
-        if (mm < 10) clock += '0'; 
-        clock += mm; 
-        this.clock=clock
-        this.week = "周" + "日一二三四五六".charAt(new Date().getDay())
   },
   methods:{
-    dateHandle(){//获取和修改日期格式
-        let now =new Date() 
-      var year = now.getFullYear();       //年
-        var month = now.getMonth() + 1;     //月
-        var day = now.getDate();            //日
-        this.date = year+'-'
-        if(month<10){
-          this.date+='0'
-        }
-        this.date+=month+'-'
-        if(day<10){
-          this.date+='0'
-        }
-        this.date+=day
-        this.startDate=year+'-01'+'-01'
-      },
       startHandle(n){//控件选中的日期
         console.log(this.value1,'start')
       },
@@ -413,14 +370,6 @@ console.log(max,one-0,(max+'').split('').length,
       text-indent: 46px;
       text-align: center;
     }
-    .header-time{
-          position:absolute;
-          left:195px;
-          top:50px;
-          font-size:15px;
-          color:#ffffff;
-          display: inline-block;
-        }
     .ul-title{
         position: absolute;
         top:42px;

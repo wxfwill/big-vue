@@ -1,7 +1,7 @@
 <template>
     <div class="outer-administrative-page">
+        <date-time moduleName="行政"></date-time>
         <div class="administrative-page-left">
-            <p class="tab"><span></span>&nbsp;&nbsp;&nbsp;行政</p>
             <div class="left-top">
                 <div class="condition-box">
                     <p class="title">受理情况</p>
@@ -35,7 +35,8 @@
                 </ul>
             </div>
             <div class="tendency-box">
-                <span @click="retreatHandle">&lt;</span><span @click="advanceHandle">&gt;</span>
+                <span class="bg_img" @click="retreatHandle" :style="{backgroundImage:'url('+topImg+')'}"></span>
+                <span class="bg_img" @click="advanceHandle" :style="{backgroundImage:'url('+bottomImg+')'}"></span>
                 <p class="title">受理案件趋势分析</p>
                 <div id="trendContent" :style="{width: '1230px', height: '220px'}"></div>
             </div>
@@ -116,16 +117,20 @@
 import echarts from 'echarts';
 import mapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
+import DateTime from '@/components/DateTime.vue'
 export default {
     components:{
         mapComponent,
-        Popup
+        Popup,
+        DateTime
     },
     data() {
         return {
             col:true,
             num:1,
             sum:3,
+            topImg: require('@/public/img/judicature/top@2x.png'),
+            bottomImg: require('@/public/img/judicature/bottom@2x.png'),
             conditionList:[
                 {title:'受理件数',num:23456},{title:'受理件数',num:23456},
                 {title:'受理件数',num:23456},{title:'受理件数',num:23456},
@@ -586,25 +591,26 @@ export default {
 <style lang="scss" scoped>
 .outer-administrative-page{
     display: flex;
+    padding-top:65px;
     .administrative-page-left{
         width:1283px;
         position: relative;
-        .tab{
-                position: absolute;
-                top:-88px;
-                left:30px;
-                font-size:22px;
-                font-family:PingFangSC-Regular;
-                font-weight:400;
-                color:rgba(48,226,226,1);
-                span{
-                    display: inline-block;
-                    border-radius: 50%;
-                    width:12px;
-                    height:12px;
-                    background:rgba(48,226,226,1);
-                }
-            }
+        // .tab{
+        //         position: absolute;
+        //         top:-88px;
+        //         left:30px;
+        //         font-size:22px;
+        //         font-family:PingFangSC-Regular;
+        //         font-weight:400;
+        //         color:rgba(48,226,226,1);
+        //         span{
+        //             display: inline-block;
+        //             border-radius: 50%;
+        //             width:12px;
+        //             height:12px;
+        //             background:rgba(48,226,226,1);
+        //         }
+        //     }
         .left-top{
             display: flex;
             width:100%;
@@ -745,12 +751,15 @@ export default {
                 color:#FFFFFF;
                 font-size:20px;
                 z-index:2;
+                display: inline-block;
+                width:14px;
+                height:14px;
             }
             span:nth-child(1){  
-                bottom:28px;
+                bottom:30px;
                 left:124px;
             }span:nth-child(2){
-                bottom:28px;
+                bottom:30px;
                 right:44px;
             }
             .title{

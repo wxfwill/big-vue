@@ -1,7 +1,7 @@
 <template>
     <div class="outer-civil-page">
+        <date-time moduleName="民事"></date-time>
         <div class="civil-page-left">
-            <p class="tab"><span></span>&nbsp;&nbsp;&nbsp;民事</p>
             <div class="businessBox">
                 <p class="title">基本业务情况</p>
                 <ul>
@@ -88,14 +88,12 @@
                 <div id="capita" :style="{width:'490px',height:'235px'}"></div>
                 </div>
             </div>
-            <div class="trendBox">
-                <span @click="retreatHandle">&lt;</span><span @click="advanceHandle">&gt;</span>
-                <div class="trend-label">
-                  <em class="trend"></em>
-                  <i>受理案件趋势统计</i>
+            <div class="bor_col civil-trend">
+                    <p class="title">受理案件趋势分析</p>
+                    <trend-chart :dataIPSxAxis="civilIPSxAxis" :dataIPS="civilIPS" ID='civilTrend'
+                      width='1050px' height='235px' left="30px" right="30px" bottom="12px" 
+                    ></trend-chart>
                 </div>
-                <div id="trendContent" :style="{width: '1070px', height: '220px'}"></div>
-            </div>
         </div>
         <popup v-if="popupShow" :title="popupTitle" :popupData='popupData'></popup>
     </div>
@@ -104,10 +102,14 @@
 import echarts from 'echarts';
 import mapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
+import trendChart from '@/components/sfba/trend-chart.vue'
+import DateTime from '@/components/DateTime.vue'
 export default {
     components:{
         mapComponent,
-        Popup
+        Popup,
+        trendChart,
+        DateTime
     },
     data() {
         return {
@@ -128,8 +130,8 @@ export default {
             lineImg:require('@/public/img/judicature/line.png'),
             leftImg:require('@/public/img/judicature/left.png'),
             rightImg:require('@/public/img/judicature/right.png'),
-            dataIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
-            dataIPS:[20, 60, 50, 80, 120, 100,20,19,60,88],
+            civilIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
+            civilIPS:[20, 60, 50, 80, 120, 100,20,19,60,88],
             sortList:[
                 {title:'受理件数',num: 3434,proportion:'20%'},{title:'办结件数',num: 4545,proportion:'20%'},
                 {title:'1111',num: 7877,proportion:'20%'},{title:'受理件数',num: 3434,proportion:'20%'},
@@ -148,27 +150,10 @@ export default {
         this.concludeHandle()//执行活动监督1
         this.acceptHandle()//执行活动监督2
         this.breakHandle()//违法行为监督
-        this.trendHandle()//受理案件趋势分析
         this.capitaHandle()//人均办结数
         this.fileHandle()//案均办理天数
     },
     methods: {
-        advanceHandle(){//后一年
-            this.dataIPSxAxis.push('2020')
-            this.dataIPSxAxis.splice(0,1);
-            this.dataIPS.push(111)
-            this.dataIPS.splice(0,1)
-            this.trendHandle()
-            console.log('后一年')
-        },
-        retreatHandle(){//前一年
-            this.dataIPSxAxis.unshift('2009')
-            this.dataIPSxAxis.splice(10,1);
-            this.dataIPS.unshift(88)
-            this.dataIPS.splice(10,1)
-            this.trendHandle()
-            console.log('前一年')
-        },
         previousHandle(){//上一页
             if(this.num!=1){
                 this.num--
@@ -368,138 +353,6 @@ export default {
                 }]
             };
             capita.setOption(option,true)
-        },
-        trendHandle(){
-            var trendContent = this.$echarts.init(document.getElementById("trendContent"));
-            var option = {
-                tooltip: {
-                    backgroundColor:'#0C99F7',
-                    trigger: 'axis',
-                    axisPointer: {
-                    type: 'cross',
-                    label: {
-                        backgroundColor: '#6a7985',
-                    },
-                }
-                },
-                color: ["#0080ff", "#4cd5ce"],
-                toolbox: {
-                    // feature: {
-                    //     saveAsImage: {}
-                    // }
-                },
-                grid: {
-                    left: '5px',
-                    top: '25px',
-                    right: '70px',
-                    bottom: '10px',
-                    containLabel: true
-                },
-                xAxis: [{
-                    type: 'category',
-                    boundaryGap: true,
-                    data: this.dataIPSxAxis,
-                    axisLabel: {
-                        show: true,
-                        margin:15,
-                        textStyle: {
-                            show:false,
-                            color: 'rgba(255,255,255,1)',
-                            fontSize: 12,
-                        },
-                    },
-                    axisTick: {
-                            show: false //隐藏X轴刻度
-                        },
-                    axisLine: {
-                        show:true,
-                        lineStyle: {
-                            color: '#2EA7E0',
-                            width: 0.5, //这里是为了突出显示加上的
-                        }
-                    }
-                }],
-                yAxis: [{
-                    type: 'value',
-                    axisLine: {
-                        show:true,
-                        onZero: false,
-                        lineStyle: {
-                            color: '#2EA7E0',
-                            width: 1, //这里是为了突出显示加上的
-                        }
-                    },
-                    axisTick: {
-                        show: false //隐藏X轴刻度
-                    },
-                    axisLabel: {
-                        formatter: function(val) {
-                            return val;
-                        },
-                        show: true,
-                        textStyle: {
-                            color: 'rgba(255,255,255,1)' //字体颜色
-                        }
-                    },
-                    splitLine: { //保留网格线
-                        show: false,
-                        lineStyle: { //y轴网格线设置
-                            color: '#0a2b52',
-                            width: 1,
-                            type: 'solid'
-                        }
-                    },
-                }],
-                series: [
-                    {
-                        name: '',
-                        type: 'line',
-                        smooth: false,
-                        //  symbol: "none", //去掉折线点
-                        stack: 100,
-                        label: {
-                            show:true,
-                            position: 'top',
-                            textStyle: {
-                                color: '#0BE5F1',
-                                fontSize: 18,
-                                fontWeight: 'bold'
-                            }
-                        },
-                        itemStyle: {
-                            normal: { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                    offset: 0,
-                                    color: 'rgba(0,255,255, 1)' // 0% 处的颜色
-                                }, {
-                                    offset: 1,
-                                    color: 'rgba(0,255,255, 0)' // 100% 处的颜色
-                                }]), //背景渐变色
-                                lineStyle: { // 系列级个性化折线样式
-                                    width: 0.5,
-                                    type: 'solid',
-                                    color: "#02675f"
-                                }
-                            },
-                            emphasis: {
-                                color: '#02675f',
-                                lineStyle: { // 系列级个性化折线样式
-                                    width: 0.5,
-                                    type: 'dotted',
-                                    color: "#02675f" //折线的颜色
-                                }
-                            }
-                        }, //线条样式
-                        symbolSize: 5, //折线点的大小
-                        areaStyle: {
-                            normal: {}
-                        },
-                        data: this.dataIPS,
-                    },
-                ]
-            };
-           // 绘制图表
-           trendContent.setOption(option);
         },
         breakHandle(){
             var breakb1 = this.$echarts.init(document.getElementById("break1"));
@@ -857,27 +710,12 @@ export default {
     height:100%;
     display: flex;
     position: relative;
+    padding-top:65px;
     .civil-page-left{
         display: flex;
         flex-wrap: wrap;
         width:1283px;
         position: relative;
-        .tab{
-                position: absolute;
-                top:-88px;
-                left:30px;
-                font-size:22px;
-                font-family:PingFangSC-Regular;
-                font-weight:400;
-                color:rgba(48,226,226,1);
-                span{
-                    display: inline-block;
-                    border-radius: 50%;
-                    width:12px;
-                    height:12px;
-                    background:rgba(48,226,226,1);
-                }
-            }
         .businessBox{
             margin-bottom:20px;
             padding:19px 0 0 30px;
@@ -1182,44 +1020,15 @@ export default {
                         }
                     }
             }
-            .trendBox{
-                margin-top:19px;
-                width: 1100px;
-                height:290px;
-                padding:20px 0 0 20px;
-                border:1px solid #00FFFF;
-                border-radius: 8px;
-                background: rgba(0,178,226, 0.2);
-                position: relative;
-                span{
-                position: absolute;
-                color:#FFFFFF;
-                font-size:20px;
-                z-index:2;
-                }
-                span:nth-child(1){  
-                    bottom:15px;
-                    left:48px;
-                }span:nth-child(2){
-                    bottom:15px;
-                    right:76px;
-                }
-                .trend-label {
-                    display: flex;
-                    align-items: center;
-                    margin-bottom:10px;
-                    i {
-                    margin: 0 0 0 10px;
+            .civil-trend{
+                width:1105px;
+                height:291px;
+                padding:20px 0px 0 20px;
+                margin:20px 0;
+                .title{
                     font-size:24px;
+                    font-family:MicrosoftYaHei;
                     color:rgba(255,255,255,1);
-                    line-height:29px;
-                    }
-                    .trend {
-                    width:13px;
-                    height:13px;
-                    border-radius: 50%;
-                    background:rgba(0,178,226,1);
-                    }
                 }
             }
     }

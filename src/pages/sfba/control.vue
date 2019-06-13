@@ -1,8 +1,8 @@
 <template>
     <div class="outer-control-page">
+        <date-time moduleName="控申"></date-time>
         <div class="control-page-left">
             <div class="left-left">
-                <p class="tab"><span></span>&nbsp;&nbsp;&nbsp;控申</p>
                 <div class="bor_col sue">
                     <p class="title">控告受结案数</p>
                     <ul>
@@ -170,11 +170,13 @@ import echarts from 'echarts';
 import mapComponent from '@/components/map/index.vue'
 import DayBox from '@/components/DayBox.vue'
 import Popup from '@/components/Popup.vue'
+import DateTime from '@/components/DateTime.vue'
 export default {
     components:{
         mapComponent,
         Popup,
-        DayBox
+        DayBox,
+        DateTime
     },
     data() {
         return {
@@ -560,27 +562,12 @@ export default {
     width:100%;
     height:100%;
     display: flex;
+    padding-top:65px;
     .control-page-left{
         display: flex;
         width:1228px;
         .left-left{
           position: relative;
-          .tab{
-                position: absolute;
-                top:-88px;
-                left:30px;
-                font-size:22px;
-                font-family:PingFangSC-Regular;
-                font-weight:400;
-                color:rgba(48,226,226,1);
-                span{
-                    display: inline-block;
-                    border-radius: 50%;
-                    width:12px;
-                    height:12px;
-                    background:rgba(48,226,226,1);
-                }
-            }
             .appeal,.sue{
                 width:610px;
                 height:291px;

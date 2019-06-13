@@ -1,5 +1,6 @@
 <template>
     <div class="outer-home-page">
+        <date-time></date-time>
         <left></left>
         <center-box
             :personnelStatusQuos="teamManagement.personnelStatusQuos || []"
@@ -12,8 +13,8 @@
 	import Left                  from '@/components/teamManagement/Left.vue';
 	import CenterBox             from '@/components/teamManagement/Center.vue';
 	import Right                 from '@/components/teamManagement/Right.vue';
-	import { getTeamManagement } from '@/fetch/http';
-
+    import { getTeamManagement } from '@/fetch/http';
+    import DateTime from '@/components/DateTime.vue'
 	export default {
 		mounted() {
 			getTeamManagement({
@@ -38,7 +39,8 @@
 		components: {
 			Left,
 			CenterBox,
-			Right
+            Right,
+            DateTime
 		}
 	}
 </script>
@@ -47,6 +49,7 @@
     .outer-home-page{
         display: flex;
         padding-top: 50px;
+        position: relative;
         .title {
             padding: 27px 20px 31px;
             font-size: 24px;

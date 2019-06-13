@@ -1,8 +1,9 @@
 <template>
     <div class="outer-criminal-page">
+        <date-time moduleName="刑事"></date-time>
         <div class="criminal-page-left">
             <div class="left-left">
-                <p class="tab"><span></span>&nbsp;&nbsp;&nbsp;刑事</p>
+                <!-- <p class="tab"><span></span>&nbsp;&nbsp;&nbsp;刑事</p> -->
             <div class="bg_img slajBox" :style="{backgroundImage:'url('+slajBorImg+')'}">
                 <p>受理案件数统计</p>
                 <ol>
@@ -13,13 +14,13 @@
             <!-- 起诉top -->
             <div class="bg_img prosecute-box" :style="{backgroundImage:'url('+prosecuteImg+')'}">
                 <p class="title">起诉罪名TOP10</p>
-                <p class="label">占比 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次数</p>
+                <p class="label">占比 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次数</p>
                 <ol>
                     <li v-for="(item,index) in prosecuteList" :key="index">
                     <i>{{index+1}}</i>
                     <p :style="{backgroundImage:'url('+lineImg+')'}">
                         <span>{{item.title}}</span>
-                        <span>{{item.proportion}} &nbsp;&nbsp;&nbsp;{{item.num}}</span>
+                        <span>{{item.proportion}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{item.num}}</span>
                     </p>
                     </li>
                 </ol>
@@ -113,10 +114,12 @@
 import echarts from 'echarts';
 import mapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
+import DateTime from '@/components/DateTime.vue'
 export default {
     components:{
         mapComponent,
-        Popup
+        Popup,
+        DateTime
     },
     data() {
         return {
@@ -922,6 +925,7 @@ for(var i=0;i<data.length;i++){
     height:100%;
     display: flex;
     position: relative;
+    padding-top:65px;
     .criminal-page-left{
         display: flex;
         width:1906px;
@@ -929,22 +933,6 @@ for(var i=0;i<data.length;i++){
         .left-left{
             margin-right:10px;
             position: relative;
-            .tab{
-                position: absolute;
-                top:-88px;
-                left:30px;
-                font-size:22px;
-                font-family:PingFangSC-Regular;
-                font-weight:400;
-                color:rgba(48,226,226,1);
-                span{
-                    display: inline-block;
-                    border-radius: 50%;
-                    width:12px;
-                    height:12px;
-                    background:rgba(48,226,226,1);
-                }
-            }
             .slajBox{
                 padding:36px 0 0 85px;
                 width:733px;

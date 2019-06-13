@@ -1,7 +1,7 @@
 <template>
     <div class="outer-lawsuit-page">
+        <date-time moduleName="公益诉讼"></date-time>
         <div class="lawsuit-page-left">
-            <p class="tab"><span></span>&nbsp;&nbsp;公益诉讼</p>
             <div class="left-top">
                 <div class="bor_col civil">
                     <p class="title">民事公益诉讼基本情况</p>
@@ -83,10 +83,12 @@
 <script>
 import mapComponent from '@/components/map/index.vue'
 import DayBox from '@/components/DayBox.vue'
+import DateTime from '@/components/DateTime.vue'
 export default {
     components:{
         mapComponent,
-        DayBox
+        DayBox,
+        DateTime
     },
     data() {
         return {
@@ -632,27 +634,12 @@ export default {
 <style lang="scss" scoped>
 .outer-lawsuit-page{
     display: flex;
+    padding-top:65px;
     .lawsuit-page-left{
         width:1175px;
         position: relative;
         display: flex;
         flex-wrap:wrap;
-        .tab{
-                position: absolute;
-                top:-88px;
-                left:20px;
-                font-size:22px;
-                font-family:PingFangSC-Regular;
-                font-weight:400;
-                color:rgba(48,226,226,1);
-                span{
-                    display: inline-block;
-                    border-radius: 50%;
-                    width:12px;
-                    height:12px;
-                    background:rgba(48,226,226,1);
-                }
-            }
             .left-top{
                 display: flex;
                 .civil,.administrative{
