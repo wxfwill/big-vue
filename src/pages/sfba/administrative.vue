@@ -109,7 +109,7 @@
                     <div id="file" :style="{width:'470px',height:'225px'}"></div>
             </div>
         </div>
-        <popup :show="popupShow" :title="popupTitle" :popupData='popupData'></popup>
+        <popup v-if="popupShow" :title="popupTitle" :popupData='popupData'></popup>
     </div>
 </template>
 <script>
@@ -159,7 +159,7 @@ export default {
                 {title:'批捕逮捕数',num: 1231,proportion:'20%'},{title:'批捕逮捕数',num: 1231,proportion:'20%'}],
              popupShow:false,
              popupTitle:'全国各省份人均办结数统计表',
-             popupData:[]
+             popupData:[111,222,333,555]
         }
     },
     watch: {

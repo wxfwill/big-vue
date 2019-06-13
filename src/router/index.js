@@ -62,6 +62,14 @@ export default new Router({
               }
             },
             {
+              path: 'inspect',
+              name: 'inspect',
+              component: resolve => require(['@/pages/sfba/inspect'], resolve),
+              meta: {
+                title:'司法办案-未检'
+              }
+            },
+            {
               path: 'control',
               name: 'control',
               component: resolve => require(['@/pages/sfba/control'], resolve),

@@ -97,7 +97,7 @@
                 <div id="trendContent" :style="{width: '1070px', height: '220px'}"></div>
             </div>
         </div>
-        <popup :show="popupShow" :title="popupTitle" :popupData='popupData'></popup>
+        <popup v-if="popupShow" :title="popupTitle" :popupData='popupData'></popup>
     </div>
 </template>
 <script>

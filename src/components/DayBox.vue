@@ -8,7 +8,7 @@
           <p>人均办结数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
           <div id="capita" :style="{width:'490px',height:'235px'}"></div>
         </div>
-        <popup :show="popupShow" :title="popupTitle" :popupData='popupData'></popup>
+        <popup v-if="popupShow" :title="popupTitle" :popupData='popupData'></popup>
     </div>
 </template>
 <script>

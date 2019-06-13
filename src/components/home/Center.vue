@@ -25,7 +25,7 @@
               <span class="qstj"></span>
               <i>受理案件趋势统计</i>
           </div>
-        <div id="qstjContent" :style="{width: '1180px', height: '280px'}"></div>
+        <div id="qstjContent" :style="{width: '1180px', height: '250px'}"></div>
       </div>
   </div>
 </template>
@@ -54,18 +54,9 @@ export default {
   methods:{
     qstj(){
            var qstjContent = this.$echarts.init(document.getElementById("qstjContent"));
-            var dataIPSxAxis = ['1月', '2月', '3月', '4月', '5月', '6月','7月','8月','9月','10月','11月','12月'];
+            var dataIPSxAxis = ['1', '2', '3', '4', '5', '6','7','8','9','10','11','12'];
  var dataIPS = [20, 60, 50, 80, 120, 100,20,19,60,88,11,77];
  var option = {
-     title: {
-         text: '（件）',
-         textStyle: {
-             fontSize: 12,
-             fontWeight: 'normal',
-             color: 'rgba(255,255,255,1)' //标题颜色
-         },
-         left: '2%',
-     },
      tooltip: {
          backgroundColor:'#0C99F7',
          trigger: 'axis',
@@ -84,13 +75,14 @@ export default {
      },
      grid: {
          left: '5px',
-         top: '25px',
-         right: '20px',
+         top: '30px',
+         right: '50px',
          bottom: '10px',
          containLabel: true
      },
      xAxis: [{
          type: 'category',
+         name:'（月）',
          boundaryGap: false,
          data: dataIPSxAxis,
          axisLabel: {
@@ -115,6 +107,7 @@ export default {
      }],
      yAxis: [{
          type: 'value',
+         name:'（件）',
          axisLine: {
              show:false,
              onZero: false,
@@ -209,7 +202,7 @@ export default {
     .qstjBox{
         width:1212px;
         margin-top:10px;
-        // padding-top:30px;
+        padding-top:30px;
         padding-left:30px;
         border:1px solid #00FFFF;
         border-radius: 8px;

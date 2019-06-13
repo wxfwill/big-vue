@@ -106,7 +106,7 @@
             </div>
         </div>
         </div>
-        <popup :show="popupShow" :title="popupTitle" :popupData='popupData'></popup>
+        <popup v-if="popupShow" :title="popupTitle" :popupData='popupData'></popup>
     </div>
 </template>
 <script>
@@ -157,7 +157,7 @@ export default {
             valData:[],
             popupShow:false,
             popupTitle:'全国各省份人均办结数统计表',
-            popupData:[]
+            popupData:[111,222,333,555]
         }
     },
     mounted() {

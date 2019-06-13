@@ -77,6 +77,7 @@ export default {
                     case 4:
                     this.now=4;
                     sessionStorage.setItem('menu',JSON.stringify(4))
+                    this.$router.push('/judicial/inspect')
                     break;
                     case 5:
                     this.now=5;
