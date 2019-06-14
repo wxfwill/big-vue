@@ -2,7 +2,7 @@
     <div class="outer-civil-page">
         <date-time moduleName="民事"></date-time>
         <div class="civil-page-left">
-            <div class="businessBox">
+            <div class="bor_col businessBox">
                 <p class="title">基本业务情况</p>
                 <ul>
                     <li v-for="(item,index) in businessList" :key="index">
@@ -11,7 +11,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="judgmentBox">
+            <div class="bor_col judgmentBox">
                 <p class="title">生效裁判监督</p>
                 <ol>
                     <li v-for="(item,index) in judgmentList" :key="index">
@@ -21,7 +21,7 @@
                     </li>
                 </ol>
             </div>
-            <div class="executeBox">
+            <div class="bor_col executeBox">
                 <p class="title">执行活动监督</p>
                 <div class="canva">
                     <div class="concludeBox">
@@ -36,7 +36,7 @@
                     </div>
                 </div>
             </div>
-            <div class="breakBox">
+            <div class="bor_col breakBox">
                 <p class="title">违法行为监督</p>
                 <div class="breakContent">
                     <p>办结率：78.5%</p>
@@ -60,7 +60,7 @@
             <mapComponent :user="(this.$route.name)"></mapComponent>
         </div>
         <div class="civil-page-right">
-            <div class="sortBox">
+            <div class="bor_col sortBox">
                 <p class="title">民事案件案由发生次数排序</p>
                 <p class="label">占比 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次数</p>
                 <ol>
@@ -79,11 +79,11 @@
                   </div>
             </div>
             <div class="dayBox">
-                <div class="fileBox">
+                <div class="bor_col fileBox">
                     <p>案均办理天数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
                     <div id="file" :style="{width:'490px',height:'205px'}"></div>
                 </div>
-                <div class="capitaBox">
+                <div class="bor_col capitaBox">
                 <p>人均办结数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
                 <div id="capita" :style="{width:'490px',height:'235px'}"></div>
                 </div>
@@ -91,7 +91,7 @@
             <div class="bor_col civil-trend">
                     <p class="title">受理案件趋势分析</p>
                     <trend-chart :dataIPSxAxis="civilIPSxAxis" :dataIPS="civilIPS" ID='civilTrend'
-                      width='1050px' height='235px' left="30px" right="30px" bottom="12px" 
+                      width='1050px' height='235px' left="30px" right="30px" bottom="12px" :splitLine="false" 
                     ></trend-chart>
                 </div>
         </div>
@@ -721,9 +721,6 @@ export default {
             padding:19px 0 0 30px;
             width:698px;
             height:458px;
-            border:1px solid #00FFFF;
-            border-radius: 8px;
-            background: rgba(0,178,226, 0.2);
             .title{
                 font-size:24px;
                 color:rgba(255,255,255,1);
@@ -751,9 +748,6 @@ export default {
         }
         .judgmentBox{
             margin:0 0 20px 19px;
-            border:1px solid #00FFFF;
-            border-radius: 8px;
-            background: rgba(0,178,226, 0.2);
             padding:19px 0 0 30px;
             width:560px;
             height:458px;
@@ -785,9 +779,6 @@ export default {
         }
         .executeBox{
             margin:0 20 0px 0px;
-            border:1px solid #00FFFF;
-            border-radius: 8px;
-            background: rgba(0,178,226, 0.2);
             padding:19px 0 0 30px;
             width:698px;
             height:430px;
@@ -815,9 +806,6 @@ export default {
             }
         }
         .breakBox{
-            border:1px solid #00FFFF;
-            border-radius: 8px;
-            background: rgba(0,178,226, 0.2);
             padding:19px 0 0 0px;
             width:560px;
             height:430px;
@@ -885,9 +873,6 @@ export default {
         flex-wrap: wrap;
         width:1106px;
         .sortBox{
-                border:1px solid #00FFFF;
-                border-radius: 8px;
-                background: rgba(0,178,226, 0.2);
                 padding:60px 33px 0 33px;
                 width:517px;
                 height:600px;
@@ -984,9 +969,6 @@ export default {
                         width:565px;
                         height:298px;
                         padding-top:19px;
-                        border:1px solid #00FFFF;
-                        border-radius: 8px;
-                        background: rgba(0,178,226, 0.2); 
                         p{  
                             display: flex;
                             justify-content:space-between;
@@ -1003,9 +985,6 @@ export default {
                     .fileBox{
                         width:565px;
                         height:276px;
-                        border:1px solid #00FFFF;
-                        border-radius: 8px;
-                        background: rgba(0,178,226, 0.2); 
                         p{  
                             display: flex;
                             justify-content:space-between;

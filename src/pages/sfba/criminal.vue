@@ -30,7 +30,7 @@
               <div class="center-box">
                 <mapComponent></mapComponent>
               </div>
-              <div class="increase-box">
+              <div class="bor_col increase-box">
                   <p class="title">受理案件增长率最快的省市</p>
                   <div id="cityBox" :style="{width:'920px',height:'230px',marginLeft:'100px'}"></div>
                   <div class="next">
@@ -56,26 +56,26 @@
                 </ol>
             </div>
             <div class="right-left-bottom">
-                <div class="age-pie">
+                <div class="bor_col age-pie">
                     <p class="title">犯罪嫌疑人年龄分布</p>
                     <div id="agePie" :style="{width:'400px',height:'180px'}"></div>
                 </div>
-                <div class="education">
+                <div class="bor_col education">
                     <p class="title">受教育状况</p>
                     <div id="education" :style="{width:'410px',height:'150px'}"></div>
                 </div>
-                <div class="age-bar">
+                <div class="bor_col age-bar">
                     <p class="title">犯罪嫌疑人年龄分布<span>232345</span></p>
                     <div id="ageBar" :style="{width:'400px',height:'180px',marginLeft:'10px'}"></div>
                 </div>
-                <div class="judgment">
+                <div class="bor_col judgment">
                     <p class="title">判决生效人数<span>232345</span></p>
                     <div id="judgment" :style="{width:'410px',height:'150px'}"></div>
                 </div>
             </div>
         </div>
         <div class="right-right">
-            <div class="examineBox">
+            <div class="bor_col examineBox">
                 <p class="title">审查逮捕各类犯罪不捕情况</p>
                 <div id="examine" :style="{width:'490px',height:'300px'}"></div>
                 <ol>
@@ -86,7 +86,7 @@
                     </li>
                 </ol>
             </div>
-            <div class="publicBox">
+            <div class="bor_col publicBox">
                 <p class="title">公诉各类业务受理情况</p>
                 <ul>
                     <li v-for="(item,index) in gsList" :key="index">
@@ -95,7 +95,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="right-right-bottom">
+            <div class="bor_col right-right-bottom">
             <div class="capitaBox">
                 <p>人均办结数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
                 <div id="capita" :style="{width:'450px',height:'330px'}"></div>
@@ -937,9 +937,6 @@ for(var i=0;i<data.length;i++){
                 padding:36px 0 0 85px;
                 width:733px;
                 height:367px;
-                // border:1px solid #00FFFF;
-                // border-radius: 8px;
-                // background: rgba(0,178,226, 0.2);
                 p:nth-child(1){
                     font-size:24px;
                     color:rgba(255,255,255,1);
@@ -1053,9 +1050,6 @@ for(var i=0;i<data.length;i++){
     .increase-box{
         width:1169px;
         height:315px;
-        border:1px solid #00FFFF;
-        border-radius: 8px;
-        background: rgba(0,178,226, 0.2);
         margin-top:18px;
         padding-top:17px;
         position: relative;
@@ -1156,9 +1150,6 @@ for(var i=0;i<data.length;i++){
                         .age-pie{
                             width:414px;
                             height:233px;
-                            border:1px solid #00FFFF;
-                            border-radius: 8px;
-                            background: rgba(0,178,226, 0.2);
                             margin-right:19px;
                             .title{
                                 font-size:24px;
@@ -1169,9 +1160,6 @@ for(var i=0;i<data.length;i++){
                         .education{
                             width:412px;
                             height:233px;
-                            border:1px solid #00FFFF;
-                            border-radius: 8px;
-                            background: rgba(0,178,226, 0.2);
                             .title{
                                 margin:17px 0 0 133px;
                                 font-size:24px;
@@ -1183,9 +1171,6 @@ for(var i=0;i<data.length;i++){
                             margin:20px 19px 0 0; 
                             width:414px;
                             height:233px;
-                            border:1px solid #00FFFF;
-                            border-radius: 8px;
-                            background: rgba(0,178,226, 0.2);
                             margin-right:19px;
                             .title{
                                 font-size:24px;
@@ -1207,9 +1192,6 @@ for(var i=0;i<data.length;i++){
                             margin-top:20px;
                             width:412px;
                             height:233px;
-                            border:1px solid #00FFFF;
-                            border-radius: 8px;
-                            background: rgba(0,178,226, 0.2);
                             .title{
                                 margin:17px 0 0 133px;
                                 font-size:24px;
@@ -1235,9 +1217,6 @@ for(var i=0;i<data.length;i++){
                     .examineBox{
                     width:503px;
                     height:503px;
-                    border:1px solid #00FFFF;
-                    border-radius: 8px;
-                    background: rgba(0,178,226, 0.2);
                       .title{
                         margin:20px 0 20px 130px;
                         font-size:24px;
@@ -1266,9 +1245,6 @@ for(var i=0;i<data.length;i++){
                         margin-left:23px;
                         width:441px;
                         height:501px;
-                        border:1px solid #00FFFF;
-                        border-radius: 8px;
-                        background: rgba(0,178,226, 0.2);
                         .title{
                             text-align: center;
                             font-size:24px;
@@ -1290,9 +1266,6 @@ for(var i=0;i<data.length;i++){
                     }
                     .right-right-bottom{
                         display: flex;
-                        border:1px solid #00FFFF;
-                        border-radius: 8px;
-                        background: rgba(0,178,226, 0.2);
                         height:384px;
                     .capitaBox{
                         width:478px;

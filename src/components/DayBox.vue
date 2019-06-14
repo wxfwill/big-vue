@@ -1,10 +1,10 @@
 <template>
     <div class="dayBox-page">
-        <div class="fileBox">
+        <div class="bor_col fileBox">
              <p>案均办理天数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
              <div id="file" :style="{width:'490px',height:'205px'}"></div>
         </div>
-        <div class="capitaBox">
+        <div class="bor_col capitaBox">
           <p>人均办结数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
           <div id="capita" :style="{width:'490px',height:'235px'}"></div>
         </div>
@@ -231,9 +231,6 @@ export default {
                         width:544px;
                         height:290px;
                         padding-top:19px;
-                        border:1px solid #00FFFF;
-                        border-radius: 8px;
-                        background: rgba(0,178,226, 0.2); 
                         p{  
                             display: flex;
                             justify-content:space-between;
@@ -250,9 +247,6 @@ export default {
                     .fileBox{
                         width:544px;
                         height:290px;
-                        border:1px solid #00FFFF;
-                        border-radius: 8px;
-                        background: rgba(0,178,226, 0.2); 
                         p{  
                             display: flex;
                             justify-content:space-between;

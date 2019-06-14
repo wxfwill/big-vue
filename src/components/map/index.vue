@@ -2,8 +2,8 @@
   <div class="map-page">
       <div class="bg_img initial" :style="{backgroundImage:'url('+initialImg+')'}" @click="initialHandle"></div>
       <div class="bg_img superior" :style="{backgroundImage:'url('+superiorImg+')'}" @click="backHandle"></div>
-      <div class="bg_img popupIcon" :style="{backgroundImage:'url('+popupImg+')'}" @click="popupHandle"></div>
-      <div class="year-data" :class="user!=='home'? 'civil':null">
+      <div class="bg_img popupIcon" :style="{backgroundImage:'url('+popupImg+')'}" @click="popupHandle" v-if="dataIf"></div>
+      <div class="year-data" :class="user!=='home'? 'civil':null" v-if="dataIf">
               <p>当年数据</p>
               <ul>
                  <span>受理数：</span><div class="array"><li v-for="(item,index) in slList" :key="index">{{item}}</li></div> 
@@ -17,7 +17,7 @@
        </div>
     <!-- <div id="mapBox" :style="{width: user==='home'? '800px':'1010px', height: user==='home'? '550px':'860px'}"></div> -->
     <div id="mapBox" :style="{width: '100%', height: '100%'}"></div>
-    <div class="area-box">
+    <div class="area-box" v-if="dataIf">
               <p class="bg_img rotation" :style="{backgroundImage:'url('+shengdataImg+')'}"></p>
               <span class="title">青海省</span>
               <ul>
@@ -58,7 +58,8 @@ export default {
             default: function() {
                 return "home"
             }
-        }
+        },
+        dataIf:{type:Boolean,default:true}
     },
     data() {
         return {
@@ -430,7 +431,7 @@ export default {
             right:70px;
             top:220px; 
             padding:20px 20px;
-            background: rgba(0,178,226, 0.2);
+            background: rgba(10,103,209, 0.2);
             @-webkit-keyframes rotation {
                 from {
                 -webkit-transform: rotate(0deg);

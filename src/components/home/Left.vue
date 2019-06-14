@@ -3,7 +3,7 @@
     <div class="left-left">
     <div class="right-box">
       <!-- 未jian -->
-      <div class="notCheck-box">
+      <div class="bor_col notCheck-box">
         <p class="notCheck-label">
           <span class="bg_img weijian"></span>
           <i>未检</i>
@@ -14,7 +14,7 @@
         </div>   
       </div>
       <!-- 控申 -->
-      <div class="control-box">
+      <div class="bor_col control-box">
         <p class="control-label">
           <span class="bg_img kos"></span>
           <i>控申</i>
@@ -276,9 +276,6 @@ export default {
     .notCheck-box {
       width:730px;
       height:376px;
-      border:1px solid #00FFFF;
-      border-radius: 8px;
-       background: rgba(0,178,226, 0.2);
       .notCheck-label {
         display: flex;
         align-items: center;
@@ -303,9 +300,6 @@ export default {
       margin-top:20px;
       width:730px;
       height:506px;
-      border:1px solid #00FFFF;
-      border-radius: 8px;
-       background: rgba(0,178,226, 0.2);
        .control-label {
         display: flex;
         align-items: center;
