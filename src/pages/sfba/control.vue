@@ -247,7 +247,7 @@ export default {
                     splitLine:{
                         show:true,
                         lineStyle: { //y轴网格线设置
-                            color: 'rgba(107,227,249,0.6)',
+                            color: 'rgba(233,233,233,0.4)',
                             width: 1,
                             type: 'solid'
                         }

@@ -19,7 +19,7 @@
     <!-- 行政 -->
     <!-- 公益诉讼 -->
       <div class="administrationBox">
-        <div class="administration">
+        <div class="bor_col administration">
           <div class="admin-label">
               <span class="admin"></span>
               <i>行政</i>
@@ -31,7 +31,7 @@
           </li>
         </ul>
         </div>
-        <div class="lawsuitBox">
+        <div class="bor_col lawsuitBox">
           <div class="lawsuit-label">
               <span class="lawsuit"></span>
               <i>公益诉讼</i>
@@ -42,7 +42,7 @@
     </div>
     <div class="bottomPortion">
       <!-- 人均办结数 -->
-      <div class="perCapita">
+      <div class="bor_col perCapita">
         <div class="perCapita-label">
               <div class="perCap"></div>
               <i>人均办结数</i>
@@ -50,7 +50,7 @@
         <p v-for="(item,index ) in rjList" :key="index"><i>{{item.title}}</i><span></span>{{item.num}}</p>
       </div>
       <!-- 案均办办理天数 -->
-      <div class="fileCapita">
+      <div class="bor_col fileCapita">
         <div class="fileCapita-label">
               <div class="fileCap"></div>
               <i>案均办理天数</i>
@@ -60,7 +60,7 @@
     </div>
     </div>
     <div class="right-view">
-      <div class="team-construction">
+      <div class="bor_col team-construction">
         <div class="team-label">
               <span class="team"></span>
               <i>队伍建设</i>
@@ -70,7 +70,7 @@
           </div>
           <!-- <div class="bg_img bar" :style="{backgroundImage:'url('+barImg+')'}"></div> -->
       </div>
-      <div class="analyze-box">
+      <div class="bor_col analyze-box">
         <div class="block">
           <div class="age-label">
                 <span class="age"></span>
@@ -805,9 +805,6 @@ var option = {
       .administration{
         width:354px;
         height:256px;
-        border:1px solid #00FFFF;
-        border-radius: 8px;
-        background: rgba(0,178,226, 0.2);
         padding:11px 26px 57px 25px; 
         margin-left:9px;
         .admin-label {
@@ -859,9 +856,6 @@ var option = {
         padding: 11px 25px 12px 23px;
         width:354px;
         height:256px;
-        border:1px solid #00FFFF;//背景框和色
-        border-radius: 8px;
-        background: rgba(0,178,226, 0.2);
         margin: 0 0 0 20px;
         .lawsuit-label {
         display: flex;
@@ -890,9 +884,6 @@ var option = {
       padding:15px 0 0 15px;
       width:354px;
       height:205px;
-      border:1px solid #00FFFF;//背景框和色
-        border-radius: 8px;
-        background: rgba(0,178,226, 0.2);
         .perCapita-label {
         display: flex;
         align-items: center;
@@ -959,9 +950,6 @@ var option = {
       margin-left:20px;
       width:354px;
       height:205px;
-      border:1px solid #00FFFF;//背景框和色
-        border-radius: 8px;
-        background: rgba(0,178,226, 0.2);
         .fileCapita-label {
         display: flex;
         align-items: center;
@@ -1011,9 +999,6 @@ var option = {
         width:454px;
         height:399px;
         padding:15px 0 0 15px;
-        border:1px solid #00FFFF;//背景框和色
-        border-radius: 8px;
-        background: rgba(0,178,226, 0.2);
         .team-label {
         display: flex;
         align-items: center;
@@ -1048,9 +1033,6 @@ var option = {
         margin:20px 0 0 20px;
         width:454px;
         height:482px;
-        border:1px solid #00FFFF;//背景框和色
-        border-radius: 8px;
-        background: rgba(0,178,226, 0.2);
         padding:15px 0 0 25px;
         .block{
           .age-label {

@@ -18,7 +18,7 @@
             <div class="left-center">
             <div class="bor_col trendBox">
                 <p class="title">案件受理趋势</p>
-                <trend-chart :dataIPSxAxis="propertyIPSxAxis" :dataIPS="propertyIPS" ID='accept'
+                <trend-chart :dataIPSxAxis="acceptIPSxAxis" :dataIPS="acceptIPS" ID='accept'
                      width='550px' height='235px' left="30px" right="30px" bottom="10px"
                 ></trend-chart>
             </div>
@@ -92,13 +92,13 @@
                 </div>
                 <div class="bor_col sexual-assault">
                     <p class="title">近几年未成年人性侵犯罪趋势</p>
-                    <trend-chart :dataIPSxAxis="assaultIPSxAxis" :dataIPS="assaultIPS" ID='assault'
+                    <trend-chart :dataIPSxAxis="assaultIPSxAxis" :dataIPS="assaultIPS" ID='assault' :splitLine="false"
                       width='550px' height='235px' left="30px" right="30px" bottom="12px" :smooth="true"
                     ></trend-chart>
                 </div>
                 <div class="bor_col against-property">
                     <p class="title">近几年未成年人侵财犯罪趋势</p>
-                    <trend-chart :dataIPSxAxis="propertyIPSxAxis" :dataIPS="propertyIPS" ID='property'
+                    <trend-chart :dataIPSxAxis="propertyIPSxAxis" :dataIPS="propertyIPS" ID='property' :barWidth="16"
                      width='550px' height='299px' type='bar' left="30px" right="30px" bottom="10px"
                     ></trend-chart>
                 </div>
@@ -139,6 +139,8 @@ export default {
             lineImg:require('@/public/img/judicature/line.png'),
             assaultIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015',],
             assaultIPS:[20, 60, 50, 80, 120, 100],
+            acceptIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015',],
+            acceptIPS:[20, 60, 50, 80, 120, 100],
             propertyIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015',],
             propertyIPS:[20, 60, 50, 80, 120, 100],
             dataIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
@@ -650,9 +652,6 @@ export default {
             padding:10px 0 0 20px;
             width:541px;
             height:312px;
-            border:1px solid #00FFFF;
-            border-radius: 8px;
-            background: rgba(0,178,226, 0.2);
             .title{
                 font-size:24px;
                 color:rgba(255,255,255,1);

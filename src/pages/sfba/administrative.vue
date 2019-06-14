@@ -3,7 +3,7 @@
         <date-time moduleName="行政"></date-time>
         <div class="administrative-page-left">
             <div class="left-top">
-                <div class="condition-box">
+                <div class="bor_col condition-box">
                     <p class="title">受理情况</p>
                     <ul>
                         <p class="line"></p>
@@ -14,7 +14,7 @@
                         
                     </ul>
                 </div>
-                <div class="behavior-box">
+                <div class="bor_col behavior-box">
                     <p class="title">违法行为监督</p>
                     <ol>
                         <li v-for="(item,index) in behaviorList" :key="index">
@@ -25,7 +25,7 @@
                     </ol>
                 </div>
               </div>
-            <div class="judgment-box">
+            <div class="bor_col judgment-box">
                 <p class="title">生效裁判监督</p>
                 <ul>
                     <li v-for="(item,index) in judgmentList" :key="index">
@@ -34,7 +34,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="tendency-box">
+            <div class="bor_col tendency-box">
                 <span class="bg_img" @click="retreatHandle" :style="{backgroundImage:'url('+topImg+')'}"></span>
                 <span class="bg_img" @click="advanceHandle" :style="{backgroundImage:'url('+bottomImg+')'}"></span>
                 <p class="title">受理案件趋势分析</p>
@@ -68,7 +68,7 @@
         </div>
         <div class="administrative-page-rihgt">
             <div class="right-left">
-            <div class="execute">
+            <div class="bor_col execute">
                 <p class="title">执行活动监督</p>
                 <ol>
                         <li v-for="(item,index) in executeList" :key="index">
@@ -78,12 +78,12 @@
                         </li>
                 </ol>
             </div>
-            <div class="classify">
+            <div class="bor_col classify">
                 <p class="title">受理数分类情况统计</p>
                 <div id="classifyContent" :style="{width: '500px', height: '225px'}"></div>
             </div>
             </div>
-            <div class="nature">
+            <div class="bor_col nature">
                 <p class="title">案件性质</p>
                 <p class="label">占比 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次数</p>
                 <ol>
@@ -101,11 +101,11 @@
                       <p class="bg_img" :style="{backgroundImage:'url('+rightImg+')'}" @click="downHandle"></p>
                   </div>
             </div>
-            <div class="capitaBox">
+            <div class="bor_col capitaBox">
                 <p>人均办结数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
                 <div id="capita" :style="{width:'470px',height:'255px'}"></div>
             </div>
-            <div class="fileBox">
+            <div class="bor_col fileBox">
                     <p>案均办理天数<span @click="popupShow=true;popupTitle='全国各省份案均办理天数统计表'">更多>></span></p>
                     <div id="file" :style="{width:'470px',height:'225px'}"></div>
             </div>
@@ -595,31 +595,12 @@ export default {
     .administrative-page-left{
         width:1283px;
         position: relative;
-        // .tab{
-        //         position: absolute;
-        //         top:-88px;
-        //         left:30px;
-        //         font-size:22px;
-        //         font-family:PingFangSC-Regular;
-        //         font-weight:400;
-        //         color:rgba(48,226,226,1);
-        //         span{
-        //             display: inline-block;
-        //             border-radius: 50%;
-        //             width:12px;
-        //             height:12px;
-        //             background:rgba(48,226,226,1);
-        //         }
-        //     }
         .left-top{
             display: flex;
             width:100%;
         }
         .condition-box{
             padding: 20px 0 0 20px;
-            border:1px solid #00FFFF;
-            border-radius: 8px;
-            background: rgba(0,178,226, 0.2);
             width:631px;
             height:345px;
             .title{
@@ -656,9 +637,6 @@ export default {
         .behavior-box{
             margin-left:20px;
             padding: 20px 0 0 20px;
-            border:1px solid #00FFFF;
-            border-radius: 8px;
-            background: rgba(0,178,226, 0.2);
             width:631px;
             height:340px;
             .title{
@@ -696,9 +674,6 @@ export default {
         .judgment-box{
             margin:19px 0;
             padding: 20px 0 0 20px;
-            border:1px solid #00FFFF;
-            border-radius: 8px;
-            background: rgba(0,178,226, 0.2);
             width:1281px;
             height:238px;
             .title{
@@ -740,9 +715,6 @@ export default {
         .tendency-box{
             // margin-top:10px;
             padding: 20px 0 0 20px;
-            border:1px solid #00FFFF;
-            border-radius: 8px;
-            background: rgba(0,178,226, 0.2);
             width:1281px;
             height:295px;
             position: relative;
@@ -826,9 +798,6 @@ export default {
         .right-left{
         .execute{
             padding:8px 0 0 20px;
-            border:1px solid #00FFFF;
-            border-radius: 8px;
-            background: rgba(0,178,226, 0.2);
             width:544px;
             height:299px;
             margin:0 20px 20px 0;
@@ -868,9 +837,6 @@ export default {
             width:544px;
             height:278px;
             padding:18px 0 0 20px;
-            border:1px solid #00FFFF;
-            border-radius: 8px;
-            background: rgba(0,178,226, 0.2);
             margin-bottom:20px;
             .title{
             font-size:24px;
@@ -883,9 +849,6 @@ export default {
             width:541px;
             height:597px;
             padding:60px 49px 0 40px;
-            border:1px solid #00FFFF;
-            border-radius: 8px;
-            background: rgba(0,178,226, 0.2);
             margin-bottom:20px;
             position: relative;
             .title{
@@ -978,9 +941,6 @@ export default {
                         width:544px;
                         height:292px;
                         padding-top:19px;
-                        border:1px solid #00FFFF;
-                        border-radius: 8px;
-                        background: rgba(0,178,226, 0.2); 
                         p{  
                             display: flex;
                             justify-content:space-between;
@@ -998,9 +958,6 @@ export default {
                        margin-left:20px;
                         width:541px;
                         height:292px;
-                        border:1px solid #00FFFF;
-                        border-radius: 8px;
-                        background: rgba(0,178,226, 0.2); 
                         p{  
                             display: flex;
                             justify-content:space-between;

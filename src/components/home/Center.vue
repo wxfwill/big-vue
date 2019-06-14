@@ -20,7 +20,7 @@
       <div class="center-box">
         <mapComponent :user="(this.$route.name)"></mapComponent>
       </div>
-      <div class="qstjBox">
+      <div class="bor_col qstjBox">
           <div class="qstj-label">
               <span class="qstj"></span>
               <i>受理案件趋势统计</i>
@@ -204,9 +204,6 @@ export default {
         margin-top:10px;
         padding-top:30px;
         padding-left:30px;
-        border:1px solid #00FFFF;
-        border-radius: 8px;
-        background: rgba(0,178,226, 0.2);
         .qstj-label {
         display: flex;
         align-items: center;

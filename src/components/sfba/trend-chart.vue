@@ -16,25 +16,17 @@ import { getRealType } from '@/utlis/helper';
 import echarts from 'echarts';
 export default {
     props:{
-        dataIPSxAxis:{
-            type:Array
-        },
-        dataIPS:{
-            type:Array
-        },
-        width:{
-            type:String
-        },
-        height:{
-            type:String
-        },
-        ID:{
-            type:String
-        },
+        dataIPSxAxis:{type:Array},
+        dataIPS:{type:Array},
+        width:{type:String},
+        height:{type:String},
+        ID:{type:String},
         type:{
             type:String,
             default:'line'
         },
+        splitLine:{type:Boolean,default:true},
+        barWidth:{type:Number},
         smooth:{type:Boolean,default:false},
         left:{type:String},
         right:{type:String},
@@ -110,7 +102,7 @@ export default {
                         show:true,
                         lineStyle: {
                             color: '#2EA7E0',
-                            width: 0.5, //这里是为了突出显示加上的
+                            width:1, //这里是为了突出显示加上的
                         }
                     }
                 }],
@@ -137,11 +129,11 @@ export default {
                         }
                     },
                     splitLine: { //保留网格线
-                        show: false,
+                        show: this.splitLine,
                         lineStyle: { //y轴网格线设置
-                            color: '#0a2b52',
+                            color: 'rgb(233,233,233,0.4)',
                             width: 1,
-                            type: 'solid'
+                            type: 'dashed'
                         }
                     },
                 }],
@@ -161,10 +153,10 @@ export default {
                                 fontWeight: 'bold'
                             }
                         },
-                        barWidth:16,
+                        barWidth:this.barWidth,
                         itemStyle: {
                             normal: { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
-                                color:this.type==='bar'?'rgba(17,249,255,1)':new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                color:this.type==='bar'?'rgb(19,223,255,0.85)':new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                                     offset: 0,
                                     color: 'rgba(0,255,255, 1)' // 0% 处的颜色
                                 }, {
@@ -195,7 +187,7 @@ export default {
                 ]
             };
            // 绘制图表
-           trendChart.setOption(option);
+           trendChart.setOption(option,true);
         }
     },
     watch  : {
