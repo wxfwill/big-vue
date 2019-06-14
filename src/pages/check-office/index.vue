@@ -1,5 +1,6 @@
 <template>
     <div class="check-office-wrap outer-home-page">
+        <date-time></date-time>
         <left-side></left-side>
         <center-box></center-box>
         <right-side></right-side>
@@ -10,8 +11,8 @@
 	import LeftSide               from '@/components/check-office/Left';
 	import CenterBox              from '@/components/check-office/Center';
 	import RightSide              from '@/components/check-office/Right';
-	import { getCheckOfficeData } from '@/fetch/http';
-
+    import { getCheckOfficeData } from '@/fetch/http';
+    import DateTime              from '@/components/DateTime.vue'
 	export default {
 		mounted() {
 
@@ -25,14 +26,16 @@
         components: {
 			LeftSide,
             CenterBox,
-            RightSide
+            RightSide,
+            DateTime
         }
 	}
 </script>
 
 <style lang="scss">
     .check-office-wrap{
-        margin-top: 65px;
+        padding-top: 65px;
+        position: relative;
         .cursor-img{
             width: 240px;
             height: 26px;
