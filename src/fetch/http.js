@@ -1,4 +1,4 @@
-import Vue   from "vue";
+import Vue from "vue";
 import axios from "axios";
 
 /**
@@ -7,7 +7,10 @@ import axios from "axios";
 const service = axios.create({
 	baseURL: 'http://172.16.119.242:8001/',
 	timeout: 5000,
-	headers: { 'content-type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+	headers: {
+		'content-type'    : 'application/json',
+		'X-Requested-With': 'XMLHttpRequest'
+	}
 });
 
 async function request(config = {}) {
@@ -40,8 +43,10 @@ async function request(config = {}) {
 	return res.data;
 }
 
+/****************   统一管理接口   *************************/
+
 /**
- * 统一管理接口
+ * 队伍管理模块
  * */
 export const getTeamManagement = async (data) => await request({
 	method: 'post',
@@ -49,4 +54,12 @@ export const getTeamManagement = async (data) => await request({
 	data
 });
 
+/**
+ * 检查办公模块
+ * */
+export const getCheckOfficeData = async (data) => await request({
+	method: 'post',
+	url   : '/api/v1.0/procuratorialOffice/getProcuratorialOfficeData',
+	data
+});
 export default request;

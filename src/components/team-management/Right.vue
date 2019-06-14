@@ -14,24 +14,24 @@
             <div class="structure-box" :style="{backgroundImage: `url(${staffEduStrBg})`}">
                 <h1 class="img-title">人员学历结构</h1>
                 <div class="chart-box">
-                    <canvas ref="eduBgStrChart" width="670" height="204px"></canvas>
+                    <div ref="eduBgStrChart" :style='{width:"550px", height:"204px"}'></div>
                 </div>
             </div>
             <div class="age-distribution-box" :style="{backgroundImage: `url(${ageDistributionBg})`}">
                 <h2 class="img-title">年龄分布</h2>
                 <div class="chart-box">
-                    <canvas ref="ageDistributeChart" width="670px" height="245"></canvas>
+                    <canvas ref="ageDistributeChart" width="520" height="245"></canvas>
                 </div>
             </div>
         </div>
         <div class="performance-detail-box white-text">
-            <h1 class="title text-left">人员绩效</h1>
+            <h1 class="performance-detail-title text-left">人员绩效</h1>
             <div class="staff-portrayal">
                 <div class="info-box top-block" :style="{backgroundImage: `url(${topBorderBg})`}">
                     <h3 class="detail-title white-text">检察官</h3>
                     <p>工作年限：2年</p>
-                    <p>职务：偷税漏税打击贪污惩恶扬善等等员额检察官</p>
-                    <p>地区：北京朝阳222222222222222222222222区</p>
+                    <p>职务：监督</p>
+                    <p>地区：北京朝阳区</p>
                 </div>
                 <div class="info-box left-side-1" :style="{backgroundImage: `url(${sideBorderBg})`}">
                     <h3 class="detail-title">司法办案</h3>
@@ -62,41 +62,187 @@
     </div>
 </template>
 <script>
-    import EChart from 'echarts';
-    import CitySelector from './city-selector';
+	import EChart       from 'echarts';
+	import CitySelector from './city-selector';
 
 	export default {
-		mounted(){
-            this.loadEduBgStrChart();
-            this.loadAgeDistributeChart();
-        },
+		mounted() {
+			this.loadEduBgStrChart();
+			this.loadAgeDistributeChart();
+		},
 		data() {
 			return {
-				staffPerformanceBg: require('@/public/img/teamManagement/staffPerformanceBg.png'),
-				staffEduStrBg     : require('@/public/img/teamManagement/staffEduStrBg.png'),
-				ageDistributionBg : require('@/public/img/teamManagement/ageDistributionBg.png'),
-				bottomStageBg     : require('@/public/img/teamManagement/bottomStageBg.png'),
-				shadeBg           : require('@/public/img/teamManagement/shadeBg.png'),
-				staffImg          : require('@/public/img/teamManagement/staff.png'),
-				topBorderBg       : require('@/public/img/teamManagement/topBorderBg.png'),
-				sideBorderBg      : require('@/public/img/teamManagement/sideBorderBg.png'),
+				staffPerformanceBg: require('@/public/img/team-management/staffPerformanceBg.png'),
+				staffEduStrBg     : require('@/public/img/team-management/staffEduStrBg.png'),
+				ageDistributionBg : require('@/public/img/team-management/ageDistributionBg.png'),
+				bottomStageBg     : require('@/public/img/team-management/bottomStageBg.png'),
+				shadeBg           : require('@/public/img/team-management/shadeBg.png'),
+				staffImg          : require('@/public/img/team-management/staff.png'),
+				topBorderBg       : require('@/public/img/team-management/topBorderBg.png'),
+				sideBorderBg      : require('@/public/img/team-management/sideBorderBg.png'),
+				eduStructureList  : [{
+					value: 410,
+					name : '大学专科'
+				}, {
+					value: 380,
+					name : '大学本科'
+				}, {
+					value: 501,
+					name : '硕士研究生'
+				}, {
+					value: 501,
+					name : '博士研究生'
+				}, {
+					value: 501,
+					name : '其他'
+				}],
+				ageDistributeList : ['60岁', '51-55岁', '46-50岁', '41-45岁', '36-40岁', '31-35岁', '30岁以下']
 			}
 		},
-        methods: {
-            loadEduBgStrChart(){
-                const myChart = EChart.init(this.$refs.eduBgStrChart);
-
-            },
-            loadAgeDistributeChart(){
-				const myChart = EChart.init(this.$refs.ageDistributeChart);
-                myChart.setOption({
-
-                })
+		methods   : {
+			loadEduBgStrChart() {
+				const myChart = EChart.init(this.$refs.eduBgStrChart),
+					  color   = ['#FFD54E', '#FF89CD', '#25DEAE', '#FF9C9C', '#27B8FA'];
+				myChart.setOption({
+					color,
+					legend: {
+						data     : this.eduStructureList.map(i => i.name),
+						icon     : 'rect',
+						right    : 100,
+						top      : 10,
+						itemGap  : 15,
+						orient   : 'vertical',
+						textStyle: {
+							color: '#fff'
+						}
+					},
+					grid  : {
+						bottom: 20,
+						width : '50%',
+						height: '50%',
+					},
+					series: [{
+						name          : '学历',
+						type          : 'pie',
+						radius        : [80, 80],
+						center        : ['35%', '50%'],
+						startAngle    : 90,
+						hoverAnimation: false,
+						label         : {
+							normal  : {
+								show: false,
+							},
+							emphasis: {
+								show     : true,
+								formatter: function(params) {
+                                    return `${params.percent}%`;
+								}
+							}
+						},
+						itemStyle     : {
+							normal: {
+								shadowColor: 'rgba(0, 0, 0, 0.8)',
+								shadowBlur : 50,
+							}
+						},
+						data          : this.eduStructureList.map((i, index) => ({
+							value    : i.value,
+							name     : i.name,
+							itemStyle: {
+								normal: {
+									borderWidth: 22,
+									shadowBlur : 20,
+									borderColor: color[index],
+									shadowColor: 'rgba(0, 0, 0,0)'
+								}
+							}
+						}))
+					}]
+				});
+			},
+			loadAgeDistributeChart() {
+				const myChart = EChart.init(this.$refs.ageDistributeChart),
+					  yMax    = 100;
+				myChart.setOption({
+					grid  : {
+						top         : '20%',
+						height      : '100%',
+						width       : '80%',
+						left        : 0,
+						containLabel: true,
+					},
+					xAxis : {
+						show: false,
+						type: 'value',
+						max : yMax,
+					},
+					yAxis : {
+						type    : 'category',
+						data    : this.ageDistributeList.map(age => ({
+							value    : age,
+							textStyle: {
+								color   : '#53D2D3',
+								fontSize: 14
+							}
+						})),
+						axisTick: {
+							show: false
+						},
+						axisLine: {
+							show        : false,
+							symbolOffset: [40, 40],
+							lineStyle   : {
+								color: "rgba(256, 256, 256, .4)",
+							}
+						}
+					},
+					series: [{
+						type          : 'bar',
+						itemStyle     : {
+							normal: {
+								barBorderRadius: 20,
+								color          : 'rgba(142, 142, 142, .5)'
+							}
+						},
+						barWidth      : 7,
+						barGap        : '-100%',
+						barCategoryGap: '40%',
+						label         : {
+							show     : true,
+							position : ['105%', '0%'],
+							color    : '#53D2D3',
+							fontSize : '14px',
+							formatter: (params) => {
+								const speVal = params.name;
+								return `${speVal[0]}人   ${speVal[1]}%`;
+							},
+						},
+						data          : Array.from({ length: this.ageDistributeList.length }).map((i, index) => ({
+							name : [50, 15],
+							value: yMax,
+						})),
+						animation     : false,
+					}, {
+						type     : 'bar',
+						barWidth : 7,
+						itemStyle: {
+							barBorderRadius: 20,
+							color          : new EChart.graphic.LinearGradient(0, 0, 1, 0, [{
+								offset: 0,
+								color : '#22BAF1'
+							}, {
+								offset: 1,
+								color : '#1CF6FD'
+							}]),
+						},
+						data     : [10, 20, 24, 70, 44, 30, 99]
+					}]
+				})
 			}
-        },
-        components : {
+		},
+		components: {
 			CitySelector,
-        }
+		}
 	}
 </script>
 <style lang="scss" scoped>
@@ -106,11 +252,11 @@
 
     .team-right-container {
         display: flex;
-        margin-top: 13px;
+        margin-top: 5px;
         .staff-detail-info {
             margin-right: 35px;
             width: 671px;
-            .img-title{
+            .img-title {
                 padding-top: 6px;
                 color: #fff;
                 text-align: center;
@@ -119,27 +265,27 @@
                 margin: 0 -10px 20px -10px;
                 height: 272px;
                 @include bgSizeFull;
-                .search-form{
+                .search-form {
                     width: 475px;
                     margin: 0 auto;
-                    .search-group{
+                    .search-group {
                         width: 470px;
                         margin: 46px auto 0;
                         display: flex;
-                        .search-input{
+                        .search-input {
                             width: 380px;
                             height: 50px;
                             color: #ffffff;
                             background-color: #0767D1;
-                            border: 1px solid rgba(0,255,255,1);
+                            border: 1px solid rgba(0, 255, 255, 1);
                             outline: none;
                             font-size: 20px;
                         }
-                        .search-btn{
+                        .search-btn {
                             width: 90px;
                             height: 50px;
-                            background:linear-gradient(90deg,rgba(7,103,209,1) 0%,rgba(7,103,209,1) 100%);
-                            border:1px solid rgba(0,255,255,1);
+                            background: linear-gradient(90deg, rgba(7, 103, 209, 1) 0%, rgba(7, 103, 209, 1) 100%);
+                            border: 1px solid rgba(0, 255, 255, 1);
                             color: #ffffff;
                             outline: none;
                         }
@@ -150,10 +296,15 @@
             .structure-box {
                 height: 285px;
                 margin-bottom: 20px;
+                text-align: center;
                 @include bgSizeFull;
+                .chart-box {
+                    padding-top: 30px;
+                }
             }
             .age-distribution-box {
                 height: 315px;
+                text-align: center;
                 @include bgSizeFull;
             }
         }
@@ -165,7 +316,7 @@
             background: rgba(10, 103, 209, 0.2);
             border-radius: 8px;
             border: 1px solid rgba(1, 218, 226, 1);
-            .title {
+            .performance-detail-title {
                 padding-left: 0;
             }
             .staff-portrayal {
@@ -204,20 +355,20 @@
                         height: 152px;
                         text-align: center;
                     }
-                    &.left-side-2{
+                    &.left-side-2 {
                         bottom: 219px;
                         left: 82px;
                         width: 254px;
                         height: 131px;
 
                     }
-                    &.right-side-1{
+                    &.right-side-1 {
                         top: 274px;
                         right: 47px;
                         width: 275px;
                         height: 152px;
                     }
-                    &.right-side-2{
+                    &.right-side-2 {
                         bottom: 219px;
                         right: 58px;
                         width: 254px;

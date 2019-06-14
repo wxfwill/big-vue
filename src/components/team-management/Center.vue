@@ -1,11 +1,9 @@
 <template>
     <div class="team-center-container">
-        <div class="map-box">
-
-        </div>
+        <div class="map-box"></div>
         <div class="status-box">
             <h1 class="title">各级检察机关人员现状</h1>
-            <canvas ref="statusChart" width="1211" height="250"></canvas>
+            <div ref="statusChart" :style="{ width: '1211px', height: '250px' }"></div>
         </div>
     </div>
 </template>
@@ -25,11 +23,11 @@
 			loadPersonnelStatusChart() {
 				const myChart = EChart.init(this.$refs.statusChart);
 				myChart.setOption({
-					color  : ['#01f7f9', '#f598cc', '#2b95fc', '#eac64e'],
+					color  : ['#00FFFF', '#F598CC', '#2b95fc', '#eac64e'],
 					tooltip: {
 						trigger    : 'axis',
-						axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-							type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+						axisPointer: {
+							type: 'shadow'
 						}
 					},
 					legend : {
@@ -44,7 +42,7 @@
 					grid   : {
 						left        : '3%',
 						right       : '4%',
-						bottom         : 14,
+						bottom      : 14,
 						containLabel: true
 					},
 					xAxis  : {
@@ -89,20 +87,34 @@
 					series : [{
 						name     : '在职',
 						type     : 'bar',
-						data     : [320, 332, 301, 334, 390, 330, 320],
+						data     : [1320, 332, 301, 334, 390, 330, 320],
 						barGap   : '30%',
 						barWidth : 10,
 						itemStyle: {
-							barBorderRadius: [20, 20, 0, 0]
+							barBorderRadius: [20, 20, 0, 0],
+							color          : new EChart.graphic.LinearGradient(0, 0, 0, 1, [{
+								offset: 0,
+								color : 'rgba(1, 247,249, 1)'
+							}, {
+								offset: 1,
+								color : 'rgba(1, 247,249, 0.1)'
+							}])
 						}
 					}, {
 						name     : '增员',
 						type     : 'bar',
 						stack    : '广告',
-						data     : [220, 182, 191, 234, 290, 330, 310],
+						data     : [620, 182, 191, 234, 290, 330, 310],
 						barWidth : 10,
 						itemStyle: {
-							barBorderRadius: [20, 20, 0, 0]
+							barBorderRadius: [20, 20, 0, 0],
+							color          : new EChart.graphic.LinearGradient(0, 0, 0, 1, [{
+								offset: 0,
+								color : 'rgba(245, 152, 204, 1)'
+							}, {
+								offset: 1,
+								color : 'rgba(245, 152, 204, .1)'
+							}])
 						}
 					}, {
 						name     : '离退',
@@ -110,15 +122,29 @@
 						data     : [862, 1018, 964, 1026, 1679, 1600, 1570],
 						barWidth : 10,
 						itemStyle: {
-							barBorderRadius: [20, 20, 0, 0]
+							barBorderRadius: [20, 20, 0, 0],
+							color          : new EChart.graphic.LinearGradient(0, 0, 1, 1, [{
+								offset: 0,
+								color : 'rgba(43, 149,252, 1)'
+							}, {
+								offset: 1,
+								color : 'rgba(43, 149,252, 0.1)'
+							}])
 						}
 					}, {
 						name     : '其他减员',
 						type     : 'bar',
-						data     : [62, 82, 91, 84, 109, 110, 120],
+						data     : [162, 222, 91, 84, 109, 110, 1120],
 						barWidth : 10,
 						itemStyle: {
-							barBorderRadius: [20, 20, 0, 0]
+							barBorderRadius: [20, 20, 0, 0],
+							color          : new EChart.graphic.LinearGradient(0, 0, 0, 1, [{
+								offset: 0,
+								color : 'rgba(234, 234,78, 1)'
+							}, {
+								offset: 1,
+								color : 'rgba(234, 234,78, 0.1)'
+							}])
 						}
 					}]
 				})

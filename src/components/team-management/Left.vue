@@ -10,11 +10,11 @@
                 </ul>
                 <div class="to-leave">
                     <div class="to-block">
-                        <p class="white-text">当年入院</p>
+                        <p class="white-text"><img :src="jobToIcon" class="to-leave-icon">当年入院</p>
                         <span class="to-num">8</span>
                     </div>
                     <div class="leave-block">
-                        <p class="white-text">当年离院</p>
+                        <p class="white-text"><img :src="jobOutIcon" class="to-leave-icon">当年离院</p>
                         <span class="leave-num">6</span>
                     </div>
                 </div>
@@ -36,7 +36,8 @@
         <div class="education-situation-box">
             <h1 class="title text-left">教育情况</h1>
             <div class="education-chart-box">
-                <canvas ref="educationChart" width="580" height="200"></canvas>
+                <div ref="educationChart" :style="{width: '580px', height: '200px'}"></div>
+                <canvas  width="580" height="200"></canvas>
             </div>
         </div>
     </div>
@@ -51,34 +52,36 @@
 		},
 		data() {
 			return {
-				inJobBg           : require('@/public/img/teamManagement/inJobBg.png'),
+				inJobBg           : require('@/public/img/team-management/inJobBg.png'),
+				jobToIcon         : require('@/public/img/team-management/to.svg'),
+				jobOutIcon        : require('@/public/img/team-management/out.svg'),
 				inJob             : [0, 1, 2, 3, 0],
 				workLife          : [
 					{
 						text       : '11-15年',
 						percent    : 80,
-						strokeColor: '21d8ba',
-						tintColor  : '0b4468'
+						strokeColor: '#21d8ba',
+						tintColor  : '#0b4468'
 					}, {
 						text       : '5-10年',
 						percent    : 62,
-						strokeColor: '24a5dd',
-						tintColor  : '0b3e74'
+						strokeColor: '#24a5dd',
+						tintColor  : '#0b3e74'
 					}, {
 						text       : '5年以下',
 						percent    : 42,
-						strokeColor: '8b22d6',
-						tintColor  : '1c2474'
+						strokeColor: '#8b22d6',
+						tintColor  : '#1c2474'
 					}, {
 						text       : '30年以上',
 						percent    : 62,
-						strokeColor: 'dda62c',
-						tintColor  : '32374b'
+						strokeColor: '#dda62c',
+						tintColor  : '#32374b'
 					}, {
 						text       : '16-30年',
 						percent    : 12,
-						strokeColor: 'a4dd28',
-						tintColor  : '0b4468'
+						strokeColor: '#a4dd28',
+						tintColor  : '#0b4468'
 					}
 				],
 				educationSituation: [{
@@ -100,10 +103,7 @@
 			loadEducation() {
 				const myChart = EChart.init(this.$refs.educationChart);
 				myChart.setOption({
-					tooltip  : {
-						trigger  : 'item',
-						formatter: "培新情况 <br /> {b} : {c} ({d}%)"
-					},
+					tooltip  : { trigger  : 'item' },
 					visualMap: {
 						show   : false,
 						min    : 500,
@@ -112,18 +112,17 @@
 					},
 					series   : [
 						{
-							name    : '教育情况',
-							type    : 'pie',
-							radius  : '80%',
-							center  : ['50%', '40%'],
-							color   : ['#61e0c1', '#1c98f0', '#33c6f4', '#33d1f8'], //'#FBFE27','rgb(11,228,96)','#FE5050'
-							data    : this.educationSituation.sort((a, b) => a.value - b.value),
-							roseType: 'radius',
+							name     : '教育情况',
+							type     : 'pie',
+							radius   : '80%',
+							center   : ['50%', '45%'],
+							color    : ['#61e0c1', '#1c98f0', '#33c6f4', '#33d1f8'], //'#FBFE27','rgb(11,228,96)','#FE5050'
+							data     : this.educationSituation.sort((a, b) => a.value - b.value),
+							roseType : 'radius',
 							label    : {
 								color : '#fff',
 								normal: {
 									formatter: '{b|{b}}',
-
 									rich: {
 										b: {
 											color   : '#fff',
@@ -141,7 +140,6 @@
 									smooth   : 0.2,
 									length   : 10,
 									length2  : 20,
-
 								}
 							},
 							itemStyle: {
@@ -190,6 +188,11 @@
                     text-align: center;
                     margin-top: -5px;
                     margin-left: 27px;
+                    .to-leave-icon{
+                        width: 15px;
+                        height: 13px;
+                        vertical-align: middle;
+                    }
                     .leave-block {
                         margin-left: 14px;
                     }

@@ -1,5 +1,5 @@
 <template>
-    <div class="outer-home-page">
+    <div class="team-wrap outer-home-page">
         <left></left>
         <center-box
             :personnelStatusQuos="teamManagement.personnelStatusQuos || []"
@@ -9,9 +9,9 @@
 </template>
 
 <script>
-	import Left                  from '@/components/teamManagement/Left.vue';
-	import CenterBox             from '@/components/teamManagement/Center.vue';
-	import Right                 from '@/components/teamManagement/Right.vue';
+	import Left                  from '@/components/team-management/Left.vue';
+	import CenterBox             from '@/components/team-management/Center.vue';
+	import Right                 from '@/components/team-management/Right.vue';
 	import { getTeamManagement } from '@/fetch/http';
 
 	export default {
@@ -44,23 +44,16 @@
 </script>
 
 <style lang="scss">
-    .outer-home-page{
-        display: flex;
-        padding-top: 50px;
-        .title {
-            padding: 27px 20px 31px;
-            font-size: 24px;
-            color: #ffffff;
-            text-align: center;
-        }
-        .white-text {
-            color: #ffffff !important;
-        }
-        .text-center{
-            text-align: center;
-        }
-        .text-left {
-            text-align: left;
-        }
+    .team-wrap{
+       &.outer-home-page{
+           display: flex;
+           padding-top: 65px;
+           .title {
+               padding: 27px 20px 31px;
+               font-size: 24px;
+               color: #ffffff;
+               text-align: center;
+           }
+       }
     }
 </style>

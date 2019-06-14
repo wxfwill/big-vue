@@ -53,7 +53,7 @@
         display: flex;
         .staff-select{
             width: 153px;
-            margin-left: 7px;
+            margin-right: 7px;
             .el-input__inner{
                 background:rgba(255,255,255, .2);
                 color: #00FFFF;
