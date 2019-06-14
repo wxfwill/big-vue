@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import  PieChart from '../team-management/pie-chart';
+    import  PieChart from '../teamManagement/pie-chart';
 
 	export default {
 		data(){
