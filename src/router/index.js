@@ -90,9 +90,17 @@ export default new Router({
 		  {
 			  path: 'teamManagement',
 			  name: 'teamManagement',
-			  component: resolve => require(['@/pages/teamManagement/index'], resolve),
+			  component: resolve => require(['@/pages/team-management/index'], resolve),
 			  meta: {
 				  title:'队伍管理'
+			  }
+		  },
+		  {
+			  path: 'checkOffice',
+			  name: 'checkOffice',
+			  component: resolve => require(['@/pages/check-office/index'], resolve),
+			  meta: {
+				  title:'检查办公'
 			  }
 		  },
       ]

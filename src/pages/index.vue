@@ -244,17 +244,18 @@ export default {
         this.$router.push('/judicial/criminal')
           break
           case 2:
-        this.now=2
-        sessionStorage.setItem('module',JSON.stringify(2))
+        this.now=2;
+        sessionStorage.setItem('module',JSON.stringify(2));
 			  this.$router.push('/teamManagement');
-              break
+              break;
           case 3:
-        this.now=3
-        sessionStorage.setItem('module',JSON.stringify(3))
-          break
+        this.now=3;
+			  this.$router.push('/checkOffice');
+			  sessionStorage.setItem('module',JSON.stringify(3));
+          break;
           case 4:
-        this.now=4
-        sessionStorage.setItem('module',JSON.stringify(4))
+        this.now=4;
+        sessionStorage.setItem('module',JSON.stringify(4));
           break
       }
       }

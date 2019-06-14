@@ -1,5 +1,5 @@
 <template>
-    <div class="outer-home-page">
+    <div class="team-wrap outer-home-page">
         <date-time></date-time>
         <left></left>
         <center-box
@@ -46,6 +46,17 @@
 </script>
 
 <style lang="scss">
+    .team-wrap{
+       &.outer-home-page{
+           display: flex;
+           padding-top: 65px;
+           .title {
+               padding: 27px 20px 31px;
+               font-size: 24px;
+               color: #ffffff;
+               text-align: center;
+           }
+       }
     .outer-home-page{
         display: flex;
         padding-top: 50px;
@@ -65,5 +76,6 @@
         .text-left {
             text-align: left;
         }
+    }
     }
 </style>
