@@ -4,7 +4,7 @@
         <div class="cursor-img">
             <img :src="cursorImg" alt="...">
         </div>
-        <div class="close-chart-box" ref="closeSetChart"></div>
+        <div ref="closeSetChart" :style="{ width: '620px', height: '800px' }"></div>
     </div>
 </template>
 
@@ -25,6 +25,12 @@
 				const myChart = EChart.init(this.$refs.closeSetChart);
 				myChart.setOption({
 					color : ['#25E484', '#FF9D2A', '#17C0FF'],
+                    tooltip: {
+						trigger: 'axis',
+						axisPointer: {
+							type: 'shadow'
+						}
+                    },
 					legend: {
 						data     : ['收文', '发文', '呈批件'],
 						bottom   : '20',
@@ -68,7 +74,6 @@
 								show    : true,
 								color   : '#fff',
 								position: 'right'
-
 							},
 							data    : [35, 18, 21, 22, 33]
 						}, {
@@ -114,10 +119,6 @@
             font-size: 24px;
             color: rgba(255, 255, 255, 1);
             margin-top: 19px;
-        }
-        .close-chart-box {
-            width: 620px;
-            height: 800px;
         }
     }
 </style>

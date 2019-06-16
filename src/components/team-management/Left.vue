@@ -37,7 +37,6 @@
             <h1 class="title text-left">教育情况</h1>
             <div class="education-chart-box">
                 <div ref="educationChart" :style="{width: '580px', height: '200px'}"></div>
-                <canvas  width="580" height="200"></canvas>
             </div>
         </div>
     </div>

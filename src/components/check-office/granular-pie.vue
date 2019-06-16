@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <canvas ref="chartCvs" width="570" height="200"></canvas>
+    <div ref="chartCvs" :style="{width: '570px', height: '200px'}">
+        <canvas width="570" height="200"></canvas>
     </div>
 </template>
 

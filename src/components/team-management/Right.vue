@@ -80,6 +80,7 @@
 				staffImg          : require('@/public/img/team-management/staff.png'),
 				topBorderBg       : require('@/public/img/team-management/topBorderBg.png'),
 				sideBorderBg      : require('@/public/img/team-management/sideBorderBg.png'),
+				structureIcon     : require('@/public/img/team-management/structureIcon.png'),
 				eduStructureList  : [{
 					value: 410,
 					name : '大学专科'
@@ -105,7 +106,19 @@
 					  color   = ['#FFD54E', '#FF89CD', '#25DEAE', '#FF9C9C', '#27B8FA'];
 				myChart.setOption({
 					color,
-					legend: {
+					graphic: {
+						elements: [{
+							type : 'image',
+                            left : 140,
+							style: {
+								image : this.structureIcon,
+								width : 100,
+								height: 100
+							},
+							top  : 'center'
+						}]
+					},
+					legend : {
 						data     : this.eduStructureList.map(i => i.name),
 						icon     : 'rect',
 						right    : 100,
@@ -116,12 +129,12 @@
 							color: '#fff'
 						}
 					},
-					grid  : {
+					grid   : {
 						bottom: 20,
 						width : '50%',
 						height: '50%',
 					},
-					series: [{
+					series : [{
 						name          : '学历',
 						type          : 'pie',
 						radius        : [80, 80],
@@ -135,7 +148,7 @@
 							emphasis: {
 								show     : true,
 								formatter: function(params) {
-                                    return `${params.percent}%`;
+									return `${params.percent}%`;
 								}
 							}
 						},

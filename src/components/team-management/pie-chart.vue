@@ -14,14 +14,14 @@
 			myChart.setOption({
 				color  : [`${this.strokeColor}`, `${this.tintColor}`],
 				tooltip: {
-					trigger  : 'item',
-					formatter: '{c}人'
+					show: false
 				},
 				grid   : {
 					top : '10%',
 					left: '10%'
 				},
 				series : [{
+					name          : this.name,
 					type          : 'pie',
 					radius        : ['80%', '95%'],
 					animationType : 'scale',
@@ -39,7 +39,6 @@
 						},
 						{
 							value   : 100 - this.percent,
-							selected: false,
 							tooltip : {
 								formatter      : ' ',
 								backgroundColor: 'transparent'
