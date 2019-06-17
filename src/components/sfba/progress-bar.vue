@@ -1,6 +1,6 @@
 <template>
     <div class="progress-page">
-       <div :id="`vs${ID}`" :style="{width: '176px', height: '38px',marginRight:'15px'}"></div>
+       <div :id="`vs${ID}`" :style="{width: '176px', height: '48px',marginRight:'15px'}"></div>
        <span>{{people}}人</span>
     </div>
 </template>
@@ -91,6 +91,17 @@ export default {
                             }
                         }
                     },
+                    emphasis:{
+                        label:{
+                            show:true,
+                            backgroundColor:'black',
+                            // borderWidth:300,
+                            verticalAlign:'bottom',
+                            position: ['50%', '50%'],
+                            offset:[0,10],
+                            padding:[5,10,5,10],
+                        }
+                    },
                     barWidth:8,
                     itemStyle: {
                         normal: {
@@ -125,12 +136,12 @@ export default {
 <style lang="scss" scoped>
 .progress-page{
     display: flex;
-    height:38px;
-    align-items:flex-end;
+    height:48px;
     span{
         font-size:14px;
         font-family:MicrosoftYaHei;
         color:rgba(1,224,255,1);
+        line-height: 64px;
     }
 }
 </style>

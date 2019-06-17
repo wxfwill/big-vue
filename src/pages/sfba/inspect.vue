@@ -87,7 +87,7 @@
                 <div class="bor_col no-catch">
                     <p class="title">不捕数</p>
                     <progress-bar v-for="(item,index) in noCatchList" :key="index" :ID='index' 
-                    title="不构成犯罪不捕人数" :sum="[100]" :num="[20]" :people="item"
+                    title="不构成犯罪不捕人数" :sum="[100]" :num="[80]" :people="item"
                     ></progress-bar>
                 </div>
                 <div class="bor_col sexual-assault">
@@ -148,7 +148,7 @@ export default {
             slList:[3,2,4,4,9,8],
             bjList:[2,3,4,5,6,7],
             zbList:[1,2,3,4,5,6,7],
-            noCatchList:[1,2,3,4,5,6,7],
+            noCatchList:[1134,2,3,4,5,6,7],
             popupShow:false,
              popupTitle:'全国各省份人均办结数统计表',
              popupData:[111,222,333,555]
@@ -688,15 +688,16 @@ export default {
                 height:222px;
                 padding:20px 0px 0 20px;
                 display: flex;
-                justify-content: space-around;
                 flex-wrap:wrap;
                 .title{
                     width:215px;
-                    text-indent: -34px;
                     height:27px;
                     font-size:24px;
                     font-family:MicrosoftYaHei;
                     color:rgba(255,255,255,1);
+                }
+                div:nth-of-type(1),div:nth-of-type(3),div:nth-of-type(5),div:nth-of-type(7),{
+                    margin-left:100px;
                 }
             }
             .sexual-assault{
