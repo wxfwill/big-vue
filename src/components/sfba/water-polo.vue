@@ -1,15 +1,17 @@
 <template>
     <div class="water-box">
-    <div :id="ID" :style="{width:'102px', height:'102px'}"></div>
-    <p>{{item.num}}</p>
-    <p>{{item.title}}</p>
+    <div :id="ID" :style="{width:width, height:height}"></div>
+    <p v-if='item.num!==null'>{{item.num}}</p>
+    <p v-if='item.title!==null'>{{item.title}}</p>
     </div>
 </template>
 <script>
 export default {
     props:{
         item:{type:Object},
-        ID:{type:String}
+        ID:{type:String},
+        width:{type:String},
+        height:{type:String}
     },
     mounted() {
         this.poloHandle()
@@ -81,7 +83,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .water-box{
-    width: 115px;
+    // width: 115px;
     display: flex;
     flex-direction: column;
     align-items: center;

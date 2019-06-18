@@ -1,6 +1,6 @@
 import Vue from "vue";
 import axios from "axios";
-
+import qs from 'qs'
 /**
  * 创建axios实例
  * */
@@ -50,7 +50,7 @@ async function request(config = {}) {
  * */
 export const getTeamManagement = async (data) => await request({
 	method: 'post',
-	url   : '/api/v1.0/teamManage/getTeamManageData',
+	url   : 'api/v1.0/teamManage/getTeamManageData',
 	data
 });
 
@@ -59,7 +59,28 @@ export const getTeamManagement = async (data) => await request({
  * */
 export const getCheckOfficeData = async (data) => await request({
 	method: 'post',
-	url   : '/api/v1.0/procuratorialOffice/getProcuratorialOfficeData',
+	url   : 'api/v1.0/procuratorialOffice/getProcuratorialOfficeData',
 	data
+});
+/**
+ * 司法办案-民事模块-获取大屏展示系统民事数据
+ * */
+export const getCivilData = async (data) => await request({
+	method: 'get',
+	url   : `api/v1.0/civil/getCivilData?${qs.stringify(data)}`
+});
+/**
+ * 司法办案-民事模块-获取民事:生效裁判监督
+ * */
+export const getEffectiveSupervision = async (data) => await request({
+	method: 'get',
+	url   : `api/v1.0/civil/getEffectiveSupervision?${qs.stringify(data)}`
+});
+/**
+ * 司法办案-行政模块
+ * */
+export const getAdministrationData = async (data) => await request({
+	method: 'get',
+	url   : `api/v1.0/administration/getAdministrationData?${qs.stringify(data)}`
 });
 export default request;

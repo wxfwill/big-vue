@@ -23,7 +23,7 @@
             <div class="bor_col case-box">
                 <p class="title">案件分类分析</p>
                 <div class="classify-box">
-                <water-polo v-for="(item,index) in poloList" :key="index" :item="item" :ID="`pol${index}`"></water-polo>
+                <water-polo v-for="(item,index) in poloList" :key="index" :item="item" :ID="`pol${index}`" width='102px' height='102px'></water-polo>
                 </div>
             </div>
         </div>
