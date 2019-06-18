@@ -118,7 +118,6 @@ import echarts from 'echarts';
 import mapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
 import DateTime from '@/components/DateTime.vue'
-import { getAdministrationData } from '@/fetch/http';
 export default {
     components:{
         mapComponent,
@@ -177,7 +176,10 @@ export default {
         // }
     },
     mounted(){
-        
+        this.trendHandle()//受理案件趋势分析
+        this.classifyHandle()//受理数分类情况统计
+        this.capitaHandle()//人均办结数
+        this.fileHandle()//案均办理天数
     },
     methods: {
         advanceHandle(){//后一年
