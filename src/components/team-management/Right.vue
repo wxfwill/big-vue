@@ -67,8 +67,8 @@
 
 	export default {
 		mounted() {
-			this.loadEduBgStrChart();
-			this.loadAgeDistributeChart();
+			this.eduBgStrChart      = EChart.init(this.$refs.eduBgStrChart);
+			this.ageDistributeChart = EChart.init(this.$refs.ageDistributeChart);
 		},
 		data() {
 			return {
@@ -80,36 +80,34 @@
 				staffImg          : require('@/public/img/team-management/staff.png'),
 				topBorderBg       : require('@/public/img/team-management/topBorderBg.png'),
 				sideBorderBg      : require('@/public/img/team-management/sideBorderBg.png'),
-				structureIcon     : require('@/public/img/team-management/structureIcon.png'),
-				eduStructureList  : [{
-					value: 410,
-					name : '大学专科'
-				}, {
-					value: 380,
-					name : '大学本科'
-				}, {
-					value: 501,
-					name : '硕士研究生'
-				}, {
-					value: 501,
-					name : '博士研究生'
-				}, {
-					value: 501,
-					name : '其他'
-				}],
-				ageDistributeList : ['60岁', '51-55岁', '46-50岁', '41-45岁', '36-40岁', '31-35岁', '30岁以下']
+				structureIcon     : require('@/public/img/team-management/structureIcon.png')
 			}
 		},
 		methods   : {
-			loadEduBgStrChart() {
-				const myChart = EChart.init(this.$refs.eduBgStrChart),
-					  color   = ['#FFD54E', '#FF89CD', '#25DEAE', '#FF9C9C', '#27B8FA'];
-				myChart.setOption({
+			loadEduBgStrChart(personnelEducation) {
+				const color            = ['#FFD54E', '#FF89CD', '#25DEAE', '#FF9C9C', '#27B8FA'],
+					  eduStructureList = [{
+						  key : 'dxzk',
+						  name: '大学专科'
+					  }, {
+						  key : 'bk',
+						  name: '大学本科'
+					  }, {
+						  key : 'ssyjs',
+						  name: '硕士研究生'
+					  }, {
+						  key : 'bsyjs',
+						  name: '博士研究生'
+					  }, {
+						  key : 'qt',
+						  name: '其他'
+					  }];
+				this.eduBgStrChart.setOption({
 					color,
 					graphic: {
 						elements: [{
 							type : 'image',
-                            left : 140,
+							left : 140,
 							style: {
 								image : this.structureIcon,
 								width : 100,
@@ -119,7 +117,7 @@
 						}]
 					},
 					legend : {
-						data     : this.eduStructureList.map(i => i.name),
+						data     : eduStructureList.map(i => i.name),
 						icon     : 'rect',
 						right    : 100,
 						top      : 10,
@@ -158,8 +156,8 @@
 								shadowBlur : 50,
 							}
 						},
-						data          : this.eduStructureList.map((i, index) => ({
-							value    : i.value,
+						data          : eduStructureList.map((i, index) => ({
+							value    : personnelEducation[i.key],
 							name     : i.name,
 							itemStyle: {
 								normal: {
@@ -173,10 +171,32 @@
 					}]
 				});
 			},
-			loadAgeDistributeChart() {
-				const myChart = EChart.init(this.$refs.ageDistributeChart),
-					  yMax    = 100;
-				myChart.setOption({
+			loadAgeDistributeChart(ageDistribution) {
+				const yMax                = 100,
+					  ageDistributionData = [
+						  {
+							  value: ageDistribution.nl7,
+							  name : '60岁'
+						  }, {
+							  value: ageDistribution.nl6,
+							  name : '51-55岁',
+						  }, {
+							  value: ageDistribution.nl5,
+							  name : '46-50岁'
+						  }, {
+							  value: ageDistribution.nl4,
+							  name : '41-45岁'
+						  }, {
+							  value: ageDistribution.nl3,
+							  name : '36-40岁'
+						  }, {
+							  value: ageDistribution.nl2,
+							  name : '31-35岁'
+						  }, {
+							  value: ageDistribution.nl1,
+							  name : '30岁以下'
+						  }];
+				this.ageDistributeChart.setOption({
 					grid  : {
 						top         : '20%',
 						height      : '100%',
@@ -191,12 +211,13 @@
 					},
 					yAxis : {
 						type    : 'category',
-						data    : this.ageDistributeList.map(age => ({
-							value    : age,
-							textStyle: {
-								color   : '#53D2D3',
-								fontSize: 14
-							}
+						textStyle: {
+							color   : '#53D2D3',
+							fontSize: 14
+						},
+						data    : ageDistributionData.map(item => ({
+							value    : item.name,
+
 						})),
 						axisTick: {
 							show: false
@@ -230,8 +251,8 @@
 								return `${speVal[0]}人   ${speVal[1]}%`;
 							},
 						},
-						data          : Array.from({ length: this.ageDistributeList.length }).map((i, index) => ({
-							name : [50, 15],
+						data          : ageDistributionData.map((i) => ({
+							name : [i.value, 0],
 							value: yMax,
 						})),
 						animation     : false,
@@ -248,11 +269,12 @@
 								color : '#1CF6FD'
 							}]),
 						},
-						data     : [10, 20, 24, 70, 44, 30, 99]
+						data     : ageDistributionData
 					}]
 				})
 			}
 		},
+		props     : [],
 		components: {
 			CitySelector,
 		}
@@ -330,6 +352,7 @@
             border-radius: 8px;
             border: 1px solid rgba(1, 218, 226, 1);
             .performance-detail-title {
+                parring-top: 21px;
                 padding-left: 0;
             }
             .staff-portrayal {

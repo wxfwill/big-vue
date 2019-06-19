@@ -4,18 +4,18 @@
             <h1 class="title">全国在职人数</h1>
             <div class="in-job-detail">
                 <ul class="digital-block">
-                    <li class="white-text" v-for="item in inJob">
+                    <li class="white-text" v-for="item in incumbency.qgzzrs">
                         {{ item }}
                     </li>
                 </ul>
                 <div class="to-leave">
                     <div class="to-block">
                         <p class="white-text"><img :src="jobToIcon" class="to-leave-icon">当年入院</p>
-                        <span class="to-num">8</span>
+                        <span class="to-num">{{ incumbency.dnry }}</span>
                     </div>
                     <div class="leave-block">
                         <p class="white-text"><img :src="jobOutIcon" class="to-leave-icon">当年离院</p>
-                        <span class="leave-num">6</span>
+                        <span class="leave-num">{{ incumbency.dnly }}</span>
                     </div>
                 </div>
             </div>
@@ -25,11 +25,11 @@
             <div class="work-life-charts">
                 <pie-chart
                         :text="item.text"
-                        :percent="item.percent"
+                        :percent="workingLife[item.key]"
                         :strokeColor="item.strokeColor"
                         :tintColor="item.tintColor"
-                        v-for="(item, index) in workLife"
-                        :key="index"
+                        v-for="item in workLife"
+                        :key="item.key"
                 ></pie-chart>
             </div>
         </div>
@@ -46,63 +46,66 @@
 	import PieChart from './pie-chart';
 
 	export default {
-		mounted() {
-			this.loadEducation();
-		},
 		data() {
 			return {
-				inJobBg           : require('@/public/img/team-management/inJobBg.png'),
-				jobToIcon         : require('@/public/img/team-management/to.svg'),
-				jobOutIcon        : require('@/public/img/team-management/out.svg'),
-				inJob             : [0, 1, 2, 3, 0],
-				workLife          : [
+				inJobBg               : require('@/public/img/team-management/inJobBg.png'),
+				jobToIcon             : require('@/public/img/team-management/to.svg'),
+				jobOutIcon            : require('@/public/img/team-management/out.svg'),
+				workLife              : [
 					{
 						text       : '11-15年',
-						percent    : 80,
+						key        : 'nx3',
 						strokeColor: '#21d8ba',
 						tintColor  : '#0b4468'
 					}, {
 						text       : '5-10年',
-						percent    : 62,
+						key        : 'nx4',
 						strokeColor: '#24a5dd',
 						tintColor  : '#0b3e74'
 					}, {
 						text       : '5年以下',
-						percent    : 42,
+						key        : 'nx5',
 						strokeColor: '#8b22d6',
 						tintColor  : '#1c2474'
 					}, {
 						text       : '30年以上',
-						percent    : 62,
+						key        : 'nx1',
 						strokeColor: '#dda62c',
 						tintColor  : '#32374b'
 					}, {
 						text       : '16-30年',
-						percent    : 12,
+						key        : 'nx2',
 						strokeColor: '#a4dd28',
 						tintColor  : '#0b4468'
 					}
 				],
-				educationSituation: [{
-					value: 285,
-					name : '培训班'
-				}, {
-					value: 410,
-					name : '其他'
-				}, {
-					value: 274,
-					name : '专题研讨（研究）班'
-				}, {
-					value: 235,
-					name : '理论班'
-				}],
+				educationSituationAxis: [
+					{
+						key : 'pxb',
+						name: '培训班',
+					}, {
+						key : 'qt',
+						name: '其他'
+					}, {
+						key : 'zttlb',
+						name: '专题研讨（研究）班'
+					}, {
+						key : 'llb',
+						name: '理论班'
+					}],
 			}
 		},
+		mounted() {
+			this.myChart = EChart.init(this.$refs.educationChart);
+		},
 		methods   : {
-			loadEducation() {
-				const myChart = EChart.init(this.$refs.educationChart);
-				myChart.setOption({
-					tooltip  : { trigger  : 'item' },
+			loadEducationChart(educationSituation) {
+				const seriesData         = this.educationSituationAxis.map(i => ({
+						  name : i.name,
+						  value: educationSituation[i.key]
+					  }));
+				this.myChart.setOption({
+					tooltip  : { trigger: 'item' },
 					visualMap: {
 						show   : false,
 						min    : 500,
@@ -115,14 +118,14 @@
 							type     : 'pie',
 							radius   : '80%',
 							center   : ['50%', '45%'],
-							color    : ['#61e0c1', '#1c98f0', '#33c6f4', '#33d1f8'], //'#FBFE27','rgb(11,228,96)','#FE5050'
-							data     : this.educationSituation.sort((a, b) => a.value - b.value),
+							color    : ['#61e0c1', '#1c98f0', '#33c6f4', '#33d1f8'],
+							data     : seriesData.sort((a, b) => a.value - b.value),
 							roseType : 'radius',
 							label    : {
 								color : '#fff',
 								normal: {
 									formatter: '{b|{b}}',
-									rich: {
+									rich     : {
 										b: {
 											color   : '#fff',
 											fontSize: 15,
@@ -154,7 +157,8 @@
 		},
 		components: {
 			PieChart
-		}
+		},
+		props     : ['incumbency', 'workingLife'],
 	}
 </script>
 <style lang="scss" scoped>
@@ -187,7 +191,7 @@
                     text-align: center;
                     margin-top: -5px;
                     margin-left: 27px;
-                    .to-leave-icon{
+                    .to-leave-icon {
                         width: 15px;
                         height: 13px;
                         vertical-align: middle;

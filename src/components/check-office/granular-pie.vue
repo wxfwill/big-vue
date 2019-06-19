@@ -1,5 +1,5 @@
 <template>
-    <div ref="chartCvs" :style="{width: '570px', height: '200px'}">
+    <div ref="chartCvs" :style="{width: '570px', height: '200px', margin: '0 auto'}">
         <canvas width="570" height="200"></canvas>
     </div>
 </template>
@@ -124,12 +124,11 @@
 			}
 		},
 		props  : ['chartData'],
-		watch  :
-			{
-				chartData() {
-					this.loadPieChart();
-				}
+		watch  : {
+			chartData() {
+				this.loadPieChart();
 			}
+		}
 	}
 </script>
 

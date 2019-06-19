@@ -1,6 +1,10 @@
 <template>
     <div class="team-center-container">
-        <div class="map-box"></div>
+        <div class="map-box">
+            <bj-map
+                :teamManageMaps="teamManageMaps"
+            ></bj-map>
+        </div>
         <div class="status-box">
             <h1 class="title">各级检察机关人员现状</h1>
             <div ref="statusChart" :style="{ width: '1211px', height: '250px' }"></div>
@@ -11,18 +15,21 @@
 <script>
 	import EChart          from 'echarts';
 	import { getRealType } from '@/utlis/helper';
+	import BjMap           from './map';
 
 	export default {
-		mounted() {
-
-		},
 		data() {
-			return {}
+			return {
+				change:false
+            }
 		},
-		methods: {
-			loadPersonnelStatusChart() {
-				const myChart = EChart.init(this.$refs.statusChart);
-				myChart.setOption({
+		mounted() {
+			this.myChart = EChart.init(this.$refs.statusChart);
+		},
+		methods   : {
+			loadPersonnelStatusChart(personnelStatusQuos) {
+				const { cityAxis, seriesData } = this.datConversionChart(personnelStatusQuos);
+				this.myChart.setOption({
 					color  : ['#00FFFF', '#F598CC', '#2b95fc', '#eac64e'],
 					tooltip: {
 						trigger    : 'axis',
@@ -47,7 +54,7 @@
 					},
 					xAxis  : {
 						type     : 'category',
-						data     : ['最高检', '北京', '天津', '上海', '深圳', '河南', '河北'],
+						data     : cityAxis,
 						axisLabel: {
 							color: "#fff"
 						},
@@ -87,7 +94,7 @@
 					series : [{
 						name     : '在职',
 						type     : 'bar',
-						data     : [1320, 332, 301, 334, 390, 330, 320],
+						data     : seriesData.zz,
 						barGap   : '30%',
 						barWidth : 10,
 						itemStyle: {
@@ -104,7 +111,7 @@
 						name     : '增员',
 						type     : 'bar',
 						stack    : '广告',
-						data     : [620, 182, 191, 234, 290, 330, 310],
+						data     : seriesData.zy,
 						barWidth : 10,
 						itemStyle: {
 							barBorderRadius: [20, 20, 0, 0],
@@ -119,7 +126,7 @@
 					}, {
 						name     : '离退',
 						type     : 'bar',
-						data     : [862, 1018, 964, 1026, 1679, 1600, 1570],
+						data     : seriesData.lt,
 						barWidth : 10,
 						itemStyle: {
 							barBorderRadius: [20, 20, 0, 0],
@@ -134,7 +141,7 @@
 					}, {
 						name     : '其他减员',
 						type     : 'bar',
-						data     : [162, 222, 91, 84, 109, 110, 1120],
+						data     : seriesData.qtjy,
 						barWidth : 10,
 						itemStyle: {
 							barBorderRadius: [20, 20, 0, 0],
@@ -148,15 +155,31 @@
 						}
 					}]
 				})
-			}
-		},
-		props  : ['personnelStatusQuos'],
-		watch  : {
-			personnelStatusQuos(newVal, oldVal) {
-				if(getRealType(newVal) === 'array') {
-					this.loadPersonnelStatusChart();
+			},
+			datConversionChart(data) {
+				const seriesData = {
+						  zz  : [],
+						  zy  : [],
+						  lt  : [],
+						  qtjy: [],
+					  },
+					  cityAxis   = [];
+				data.map(i => {
+					cityAxis.push(i.city_name || '未知');
+					seriesData.zz.push(i.zz);
+					seriesData.zy.push(i.zy);
+					seriesData.lt.push(i.lt);
+					seriesData.qtjy.push(i.qtjy);
+				});
+				return {
+					cityAxis,
+					seriesData
 				}
 			}
+		},
+		props     : ['teamManageMaps'],
+		components: {
+			BjMap
 		}
 	}
 </script>

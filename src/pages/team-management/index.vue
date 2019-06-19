@@ -1,11 +1,21 @@
 <template>
     <div class="team-wrap outer-home-page">
         <date-time></date-time>
-        <left></left>
+        <left
+                ref="leftBox"
+                :incumbency="incumbency"
+                :workingLife="workingLife"
+        ></left>
         <center-box
-                :personnelStatusQuos="teamManagement.personnelStatusQuos || []"
+                ref="centerBox"
+                :teamManageMaps="teamManageMaps"
+                :personnelStatusQuos="personnelStatusQuos"
         ></center-box>
-        <right></right>
+        <right
+                ref="rightBox"
+                :personnelEducation="personnelEducation"
+                :ageDistribution="ageDistribution"
+        ></right>
     </div>
 </template>
 
@@ -14,29 +24,61 @@
 	import CenterBox             from '@/components/team-management/Center.vue';
 	import Right                 from '@/components/team-management/Right.vue';
 	import { getTeamManagement } from '@/fetch/http';
+	import { fillZero }          from '@/utlis/helper';
 	import DateTime              from '@/components/DateTime.vue'
 
 	export default {
-		mounted() {
-			getTeamManagement({
-				code     : 100000,
-				lev      : 1,
-				enddate  : "2019-04-26",
-				startdate: "2019-01-01"
-			}).then((resolve, reject) => {
-				if(resolve.code === 200) {
-					this.teamManagement = resolve.data;
-				} else {
-					this.$message.error('队伍信息加载失败');
-				}
-			});
-		},
 		data() {
 			return {
-				teamManagement: {}
+				loading            : false,
+				incumbency         : {
+					dnly  : '-',
+					dnry  : '-',
+					qgzzrs: [0, 0, 0, 0, 0],
+				},
+				workingLife        : {},
+				educationSituation : {},
+				personnelStatusQuos: [],
+				personnelEducation : {},
+				ageDistribution    : {},
+				teamManageMaps     : [],
 			}
 		},
-		method    : {},
+		mounted() {
+			this.requestTeamData();
+		},
+		methods   : {
+			requestTeamData() {
+				this.loading = true;
+				getTeamManagement({
+					code     : 100000,
+					lev      : 1,
+					enddate  : "2019-06-18",
+					startdate: "2019-01-01"
+				}).then((resolve) => {
+					if(resolve.code === 200) {
+						const data                             = resolve.data;
+						const qgzzrs                           = fillZero(data.incumbency.qgzzrs, 5).split(''),
+							  { leftBox, centerBox, rightBox } = this.$refs;
+
+						this.incumbency  = {
+							...data.incumbency,
+							qgzzrs,
+						};
+						this.workingLife = data.workingLife;
+						leftBox.loadEducationChart(data.educationSituation);
+
+						this.teamManageMaps = data.teamManageMaps;
+						centerBox.loadPersonnelStatusChart(data.personnelStatusQuos);
+
+						rightBox.loadEduBgStrChart(data.personnelEducation);
+						rightBox.loadAgeDistributeChart(data.ageDistribution);
+					} else {
+						this.$message.error(`code:${resolve.code}`);
+					}
+				});
+			}
+		},
 		components: {
 			Left,
 			CenterBox,

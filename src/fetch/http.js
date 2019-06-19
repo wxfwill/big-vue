@@ -1,11 +1,12 @@
 import Vue from "vue";
 import axios from "axios";
 
+
 /**
  * 创建axios实例
  * */
 const service = axios.create({
-	baseURL: 'http://172.16.119.242:8001/',
+	baseURL: process.env.NODE_ENV === 'production' ? 'http://141.3.119.210:8001/' : 'http://172.16.119.242:8001/',
 	timeout: 5000,
 	headers: {
 		'content-type'    : 'application/json',
@@ -49,17 +50,18 @@ async function request(config = {}) {
  * 队伍管理模块
  * */
 export const getTeamManagement = async (data) => await request({
-	method: 'post',
+	method: 'get',
 	url   : '/api/v1.0/teamManage/getTeamManageData',
 	data
 });
 
 /**
- * 检查办公模块
- * */
-export const getCheckOfficeData = async (data) => await request({
-	method: 'post',
+ * 检查办公模块接口
+ * **/
+export const getProcuratorialOfficeData = async (data) => await request({
+	method: 'get',
 	url   : '/api/v1.0/procuratorialOffice/getProcuratorialOfficeData',
 	data
 });
+
 export default request;

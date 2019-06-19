@@ -50,9 +50,7 @@
 	import PieGroup    from './pie-group';
 
 	export default {
-		mounted() {
-
-		},
+		mounted() {},
 		data() {
 			return {
 				cursorImg      : require('@/public/img/check-office/cursor.png'),
@@ -77,6 +75,7 @@
 			}
 		},
 		methods   : {},
+		props     : ['publishingStatistics', 'postPriorities', 'receivingStatistics', 'jeremyLevinUnitList', 'submitApprovalStatistics', 'submitApprovalPriorities'],
 		components: {
 			GranularPie,
 			PieGroup

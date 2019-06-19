@@ -1,5 +1,5 @@
 <template>
-  <div class="bg_img home-page">
+  <div class="bg_img home-page" :style="{ backgroundImage: `url(${bjBg})` }">
     <div class="popupBox" v-show="popupShow">
       <div class="backColor">
         <span class="popupClose" @click="closeHandle">X</span>
@@ -55,6 +55,7 @@ export default {
           now:0,
           list:['首页','司法办案','队伍管理','检察办公','检务保障'],
           buttonImg: require('@/public/img/home/home_08.png'),
+          bjBg : require('@/public/img/home/bj.png'),
           buttonColorImg: require('@/public/img/home/home_07.png'),
           clock:null,
           week:null,
@@ -273,7 +274,6 @@ export default {
     width:100%;
     // height: 1080px;
     // width:3840px;
-    background-image: url('../public/img/home/bj.png');
     position: relative;
     background-size:100% 100%;
    .popupBox{
