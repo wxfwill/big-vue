@@ -10,67 +10,86 @@
 
 	export default {
 		mounted() {
-			const myChart = ECharts.init(this.$refs.chartCvs);
-			myChart.setOption({
-				color  : [`${this.strokeColor}`, `${this.tintColor}`],
-				tooltip: {
-					show: false
-				},
-				grid   : {
-					top : '10%',
-					left: '10%'
-				},
-				series : [{
-					name          : this.name,
-					type          : 'pie',
-					radius        : ['80%', '95%'],
-					animationType : 'scale',
-					hoverAnimation: false,
-					label         : {
-						show     : true,
-						position : 'center',
-						formatter: `${this.percent}%`,
-						color    : "#fff"
-					},
-					data          : [
-						{
-							name : '',
-							value: this.percent,
-						},
-						{
-							value   : 100 - this.percent,
-							tooltip : {
-								formatter      : ' ',
-								backgroundColor: 'transparent'
-							}
-						}
-					],
-				}]
-			})
+			this.myChart = ECharts.init(this.$refs.chartCvs);
+			this.loadPieChart();
 		},
-		props: {
-			text       : {
+		methods: {
+			loadPieChart() {
+				let labelText = '';
+				if(this.type === 'number') {
+					labelText = `${this.percent}`;
+				} else {
+					labelText = `${this.percent}%`;
+				}
+				this.myChart.setOption({
+					color  : [`${this.strokeColor}`, `${this.tintColor}`],
+					tooltip: {
+						show: false
+					},
+					grid   : {
+						top : '10%',
+						left: '10%'
+					},
+					series : [{
+						name          : this.name,
+						type          : 'pie',
+						radius        : ['80%', '95%'],
+						animationType : 'scale',
+						hoverAnimation: false,
+						label         : {
+							show     : true,
+							position : 'center',
+							formatter: labelText,
+							color    : "#fff"
+						},
+						data          : [
+							{
+								name : '',
+								value: this.percent,
+							},
+							{
+								value  : this.circleMaxNumber - this.percent,
+								tooltip: {
+									formatter      : ' ',
+									backgroundColor: 'transparent'
+								}
+							}
+						],
+					}]
+				})
+			}
+		},
+		props  : {
+			type           : {
+				default: 'ratio'
+			},
+			text           : {
 				default: ''
 			},
-			percent    : {
-				default  : 0,
-				validator: (value) => {
-					return value <= 100
-				}
+			circleMaxNumber: {
+				default: 100
 			},
-			strokeColor: {
+			percent        : {
+				default: 0,
+			},
+			strokeColor    : {
 				default: '#18D9E3',
 			},
-			tintColor  : {
+			tintColor      : {
 				default: 'rgba(0, 0, 0, .1)'
 			},
-			width      : {
+			width          : {
 				default: 80
 			},
-			height     : {
+			height         : {
 				default: 80
 			}
 		},
+		watch  : {
+			percent(){
+				this.loadPieChart();
+            }
+        },
 	}
 </script>
 

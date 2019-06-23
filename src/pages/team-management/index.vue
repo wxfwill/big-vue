@@ -1,6 +1,8 @@
 <template>
     <div class="team-wrap outer-home-page">
-        <date-time></date-time>
+        <date-picker
+                :dateChange="requestTeamData"
+        ></date-picker>
         <left
                 ref="leftBox"
                 :incumbency="incumbency"
@@ -10,9 +12,12 @@
                 ref="centerBox"
                 :teamManageMaps="teamManageMaps"
                 :personnelStatusQuos="personnelStatusQuos"
+                :changeRegion="changeRegion"
         ></center-box>
         <right
                 ref="rightBox"
+                :startDate="startDate"
+                :endDate="endDate"
                 :personnelEducation="personnelEducation"
                 :ageDistribution="ageDistribution"
         ></right>
@@ -25,7 +30,7 @@
 	import Right                 from '@/components/team-management/Right.vue';
 	import { getTeamManagement } from '@/fetch/http';
 	import { fillZero }          from '@/utlis/helper';
-	import DateTime              from '@/components/DateTime.vue'
+	import DatePicker            from '@/components/common/date-picker';
 
 	export default {
 		data() {
@@ -42,24 +47,29 @@
 				personnelEducation : {},
 				ageDistribution    : {},
 				teamManageMaps     : [],
+				startDate          : '',
+				endDate            : '',
+				code               : 100000,
+				lev                : 1,
 			}
 		},
-		mounted() {
-			this.requestTeamData();
-		},
 		methods   : {
-			requestTeamData() {
-				this.loading = true;
+			requestTeamData(startDate, endDate) {
+				this.startDate = startDate;
+				this.endDate   = endDate;
+				this.loading   = true;
+
 				getTeamManagement({
-					code     : 100000,
-					lev      : 1,
-					enddate  : "2019-06-18",
-					startdate: "2019-01-01"
+					code     : this.code,
+					lev      : this.lev,
+					enddate  : startDate,
+					startdate: endDate
 				}).then((resolve) => {
 					if(resolve.code === 200) {
 						const data                             = resolve.data;
 						const qgzzrs                           = fillZero(data.incumbency.qgzzrs, 5).split(''),
 							  { leftBox, centerBox, rightBox } = this.$refs;
+
 
 						this.incumbency  = {
 							...data.incumbency,
@@ -77,13 +87,18 @@
 						this.$message.error(`code:${resolve.code}`);
 					}
 				});
+			},
+			changeRegion(code, lev) {
+				this.requestTeamData(this.startDate, this.endDate);
+				this.code = code;
+				this.lev  = lev;
 			}
 		},
 		components: {
 			Left,
 			CenterBox,
 			Right,
-			DateTime
+			DatePicker,
 		}
 	}
 </script>

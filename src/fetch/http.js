@@ -1,6 +1,6 @@
-import Vue from "vue";
+import Vue   from "vue";
 import axios from "axios";
-import qs from 'qs'
+
 /**
  * 创建axios实例
  * */
@@ -48,10 +48,33 @@ async function request(config = {}) {
 /**
  * 队伍管理模块
  * */
+
+// 获取省和市区接口
+export const getAreas = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/teamManage/getAreas',
+	params: data
+});
+
+// 通过姓名查询人员信息
+export const getPersonInfo = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/teamManage/getPersonInfo',
+	params: data
+});
+
+// 通过姓名查询人员信息
+export const getPersonnelPerformance = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/teamManage/getPersonnelPerformance',
+	params: data
+});
+
+// 获取队伍建建设数据
 export const getTeamManagement = async (data) => await request({
 	method: 'get',
 	url   : '/api/v1.0/teamManage/getTeamManageData',
-	data
+	//params: data
 });
 
 /**
@@ -60,28 +83,32 @@ export const getTeamManagement = async (data) => await request({
 export const getProcuratorialOfficeData = async (data) => await request({
 	method: 'get',
 	url   : '/api/v1.0/procuratorialOffice/getProcuratorialOfficeData',
-	data
+	params: data
 });
 
 /**
  * 司法办案-民事模块-获取大屏展示系统民事数据
  * */
-export const getCivilData = async (data) => await request({
+export const getCivilData            = async (data) => await request({
 	method: 'get',
-	url   : `api/v1.0/civil/getCivilData?${qs.stringify(data)}`
+	url   : `api/v1.0/civil/getCivilData`,
+	params: data
 });
 /**
  * 司法办案-民事模块-获取民事:生效裁判监督
  * */
 export const getEffectiveSupervision = async (data) => await request({
 	method: 'get',
-	url   : `api/v1.0/civil/getEffectiveSupervision?${qs.stringify(data)}`
+	url   : `api/v1.0/civil/getEffectiveSupervision`,
+	params: data
 });
 /**
  * 司法办案-行政模块
  * */
-export const getAdministrationData = async (data) => await request({
+export const getAdministrationData   = async (data) => await request({
 	method: 'get',
-	url   : `api/v1.0/administration/getAdministrationData?${qs.stringify(data)}`
+	url   : `api/v1.0/administration/getAdministrationData`,
+	params: data
 });
+
 export default request;

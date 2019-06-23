@@ -8,77 +8,67 @@
         </div>
         <div class="chart-box">
             <h2 class="chart-title white-text">发文分析</h2>
-            <granular-pie :chartData="sendArticleList"></granular-pie>
+            <granular-bar
+                    name="发文分析"
+                    :chartData="publishingStatistics"></granular-bar>
         </div>
         <div class="chart-box">
             <h2 class="chart-title white-text">发文缓急分布</h2>
             <pie-group
-                    :pieConfigList="postDistribute"
+                    name="发文缓急分布"
+                    :pieConfigList="postPriorities"
             ></pie-group>
         </div>
         <div class="chart-box">
             <h2 class="chart-title white-text">收文分析</h2>
-            <granular-pie :chartData="sendArticleList"></granular-pie>
+            <granular-bar
+                    name="收文分析"
+                    :chartData="receivingStatistics"></granular-bar>
         </div>
-        <div class="chart-box">
-            <div class="unit-title">
-                <h2 class="chart-title white-text">来文单位</h2>
-                <div class="unit-pagination">
-                    <i class="paging-btn el-icon-arrow-left"></i>
-                    <p class="page-num">1/3</p>
-                    <i class="paging-btn el-icon-arrow-right"></i>
-                </div>
-            </div>
-            <pie-group
-                    :pieConfigList="postDistribute"
-            ></pie-group>
-        </div>
+        <jeremy-levin-unit
+            :jeremyLevinUnitList="jeremyLevinUnitList"
+        ></jeremy-levin-unit>
         <div class="chart-box">
             <h2 class="chart-title white-text">呈批文件分析</h2>
-            <granular-pie :chartData="sendArticleList"></granular-pie>
+            <granular-bar
+                    name="呈批文件分析"
+                    :chartData="submitApprovalStatistics"></granular-bar>
         </div>
         <div class="chart-box">
             <h2 class="chart-title white-text">呈批文件缓急分布</h2>
             <pie-group
-                    :pieConfigList="postDistribute"
+                    name="呈批文件缓急分布"
+                    :pieConfigList="submitApprovalPriorities"
             ></pie-group>
         </div>
     </div>
 </template>
 <script>
-	import GranularPie from './granular-pie';
-	import PieGroup    from './pie-group';
+	import GranularBar     from './granular-bar';
+	import PieGroup        from './pie-group';
+	import JeremyLevinUnit from './jeremy-levin-unit';
 
 	export default {
-		mounted() {},
+		mounted() {
+		},
 		data() {
 			return {
-				cursorImg      : require('@/public/img/check-office/cursor.png'),
-				sendArticleList: [100, 302, 138, 100],
-				postDistribute : [{
-					name       : '特急',
-					value      : '37',
-					strokeColor: '#18D9E3',
-				}, {
-					name       : '加急',
-					value      : '56',
-					strokeColor: '#CDE318',
-				}, {
-					name       : '其他',
-					value      : '43',
-					strokeColor: '#18E332',
-				}, {
-					name       : '无',
-					value      : '22',
-					strokeColor: '#A818E3',
-				}]
+				cursorImg: require('@/public/img/check-office/cursor.png'),
 			}
 		},
 		methods   : {},
-		props     : ['publishingStatistics', 'postPriorities', 'receivingStatistics', 'jeremyLevinUnitList', 'submitApprovalStatistics', 'submitApprovalPriorities'],
+		props     : [
+			'publishingStatistics',
+			'postPriorities',
+			'receivingStatistics',
+			'jeremyLevinUnitList',
+			'submitApprovalStatistics',
+			'submitApprovalPriorities'
+		],
 		components: {
-			GranularPie,
-			PieGroup
+			GranularBar,
+			PieGroup,
+			JeremyLevinUnit,
 		}
 	}
 </script>
@@ -114,32 +104,6 @@
                 text-align: left;
                 font-size: 18px;
                 margin-bottom: 20px;
-            }
-        }
-        .unit-title {
-            display: flex;
-            justify-content: space-between;
-        }
-        .unit-pagination {
-            display: flex;
-            justify-content: space-between;
-            width: 120px;
-            .paging-btn {
-                width: 26px;
-                height: 26px;
-                line-height: 26px;
-                font-size: 16px;
-                border-radius: 4px;
-                background-color: #2bd2fa;
-                color: #ffffff;
-            }
-            .page-num {
-                width: 55px;
-                height: 26px;
-                line-height: 26px;
-                background: rgba(43, 210, 250, 1);
-                border-radius: 4px;
-                color: #ffffff;
             }
         }
     }

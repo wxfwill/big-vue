@@ -3,13 +3,7 @@
         <div class="staff-detail-info">
             <div class="staff-search-box" :style="{backgroundImage: `url(${staffPerformanceBg})`}">
                 <h1 class="title">人员绩效</h1>
-                <div class="search-form">
-                    <city-selector></city-selector>
-                    <div class="search-group">
-                        <input type="text" class="search-input">
-                        <button type="button" class="search-btn">搜索</button>
-                    </div>
-                </div>
+                <city-selector :search="searchStaffInfo"></city-selector>
             </div>
             <div class="structure-box" :style="{backgroundImage: `url(${staffEduStrBg})`}">
                 <h1 class="img-title">人员学历结构</h1>
@@ -20,7 +14,7 @@
             <div class="age-distribution-box" :style="{backgroundImage: `url(${ageDistributionBg})`}">
                 <h2 class="img-title">年龄分布</h2>
                 <div class="chart-box">
-                    <canvas ref="ageDistributeChart" width="520" height="245"></canvas>
+                    <div ref="ageDistributeChart" :style="{ width: '520px', height: '245px', margin: '0 auto' }"></div>
                 </div>
             </div>
         </div>
@@ -29,26 +23,26 @@
             <div class="staff-portrayal">
                 <div class="info-box top-block" :style="{backgroundImage: `url(${topBorderBg})`}">
                     <h3 class="detail-title white-text">检察官</h3>
-                    <p>工作年限：2年</p>
-                    <p>职务：监督</p>
-                    <p>地区：北京朝阳区</p>
+                    <p>工作年限：{{ performanceInfo.gznx }}年</p>
+                    <p>职务：{{ performanceInfo.zw }}</p>
+                    <p>地区：{{ performanceInfo.dq }}</p>
                 </div>
                 <div class="info-box left-side-1" :style="{backgroundImage: `url(${sideBorderBg})`}">
                     <h3 class="detail-title">司法办案</h3>
-                    <p>办结案件：232件</p>
-                    <p>在办案件：23件</p>
+                    <p>办结案件：{{ performanceInfo.bjaj }}件</p>
+                    <p>在办案件：{{ performanceInfo.zbaj }}件</p>
                 </div>
                 <div class="info-box left-side-2" :style="{backgroundImage: `url(${sideBorderBg})`}">
                     <h3 class="detail-title">队伍管理</h3>
-                    <p>年度考核：A</p>
+                    <p>年度考核：{{ performanceInfo.ndkh }}</p>
                 </div>
                 <div class="info-box right-side-1" :style="{backgroundImage: `url(${sideBorderBg})`}">
                     <h3 class="detail-title">检查办公</h3>
-                    <p>办文数量：23</p>
+                    <p>办文数量：{{ performanceInfo.bwsl }}</p>
                 </div>
                 <div class="info-box right-side-2" :style="{backgroundImage: `url(${sideBorderBg})`}">
                     <h3 class="detail-title">检务保障</h3>
-                    <p>使用经费：125.6元</p>
+                    <p>使用经费：{{ performanceInfo.syjf }}元</p>
                 </div>
                 <div class="staff-img">
                     <img :src="staffImg" alt="...">
@@ -62,8 +56,9 @@
     </div>
 </template>
 <script>
-	import EChart       from 'echarts';
-	import CitySelector from './city-selector';
+	import EChart                      from 'echarts';
+	import CitySelector                from './city-selector';
+	import { getPersonnelPerformance } from '@/fetch/http';
 
 	export default {
 		mounted() {
@@ -80,7 +75,8 @@
 				staffImg          : require('@/public/img/team-management/staff.png'),
 				topBorderBg       : require('@/public/img/team-management/topBorderBg.png'),
 				sideBorderBg      : require('@/public/img/team-management/sideBorderBg.png'),
-				structureIcon     : require('@/public/img/team-management/structureIcon.png')
+				structureIcon     : require('@/public/img/team-management/structureIcon.png'),
+				performanceInfo   : {},
 			}
 		},
 		methods   : {
@@ -119,7 +115,7 @@
 					legend : {
 						data     : eduStructureList.map(i => i.name),
 						icon     : 'rect',
-						right    : 100,
+						right    : 80,
 						top      : 10,
 						itemGap  : 15,
 						orient   : 'vertical',
@@ -146,7 +142,7 @@
 							emphasis: {
 								show     : true,
 								formatter: function(params) {
-									return `${params.percent}%`;
+									return `${params.value}人 ${params.percent}%`;
 								}
 							}
 						},
@@ -172,28 +168,36 @@
 				});
 			},
 			loadAgeDistributeChart(ageDistribution) {
-				const yMax                = 100,
+				const dataArr             = Object.values(ageDistribution),
+					  dataTotal           = dataArr.reduce((accumulator, currentValue) => accumulator + currentValue),
 					  ageDistributionData = [
 						  {
-							  value: ageDistribution.nl7,
+						  	  num : ageDistribution.nl7,
+							  value: this.putOneDecimal(ageDistribution.nl7/dataTotal),
 							  name : '60岁'
 						  }, {
-							  value: ageDistribution.nl6,
+							  num : ageDistribution.nl6,
+							  value: this.putOneDecimal(ageDistribution.nl6/dataTotal),
 							  name : '51-55岁',
 						  }, {
-							  value: ageDistribution.nl5,
+							  num : ageDistribution.nl5,
+							  value: this.putOneDecimal(ageDistribution.nl5/dataTotal),
 							  name : '46-50岁'
 						  }, {
-							  value: ageDistribution.nl4,
+							  num : ageDistribution.nl4,
+							  value: this.putOneDecimal(ageDistribution.nl4/dataTotal),
 							  name : '41-45岁'
 						  }, {
-							  value: ageDistribution.nl3,
+							  num : ageDistribution.nl3,
+							  value: this.putOneDecimal(ageDistribution.nl3/dataTotal),
 							  name : '36-40岁'
 						  }, {
-							  value: ageDistribution.nl2,
+							  num : ageDistribution.nl2,
+							  value: this.putOneDecimal(ageDistribution.nl2/dataTotal),
 							  name : '31-35岁'
 						  }, {
-							  value: ageDistribution.nl1,
+							  num : ageDistribution.nl1,
+							  value: this.putOneDecimal(ageDistribution.nl1/dataTotal),
 							  name : '30岁以下'
 						  }];
 				this.ageDistributeChart.setOption({
@@ -207,22 +211,22 @@
 					xAxis : {
 						show: false,
 						type: 'value',
-						max : yMax,
+						max : 100,
 					},
 					yAxis : {
-						type    : 'category',
+						type     : 'category',
 						textStyle: {
 							color   : '#53D2D3',
 							fontSize: 14
 						},
-						data    : ageDistributionData.map(item => ({
-							value    : item.name,
+						data     : ageDistributionData.map(item => ({
+							value: item.name,
 
 						})),
-						axisTick: {
+						axisTick : {
 							show: false
 						},
-						axisLine: {
+						axisLine : {
 							show        : false,
 							symbolOffset: [40, 40],
 							lineStyle   : {
@@ -243,7 +247,7 @@
 						barCategoryGap: '40%',
 						label         : {
 							show     : true,
-							position : ['105%', '0%'],
+							position : ['102%', '0%'],
 							color    : '#53D2D3',
 							fontSize : '14px',
 							formatter: (params) => {
@@ -252,8 +256,8 @@
 							},
 						},
 						data          : ageDistributionData.map((i) => ({
-							name : [i.value, 0],
-							value: yMax,
+							name : [i.num, i.value],
+							value: 100,
 						})),
 						animation     : false,
 					}, {
@@ -272,9 +276,24 @@
 						data     : ageDistributionData
 					}]
 				})
-			}
+			},
+			async searchStaffInfo(params) {
+				const data = await getPersonnelPerformance({
+					...params,
+					startdate: this.startDate,
+					enddate  : this.endDate,
+				});
+				if(data.code === 200) {
+					this.performanceInfo = data.data;
+				} else {
+					this.$message.error(`code : ${data.code}`);
+				}
+			},
+            putOneDecimal(num){
+				return (num * 100).toFixed(1);
+            }
 		},
-		props     : [],
+		props     : ['startDate', 'endDate'],
 		components: {
 			CitySelector,
 		}
@@ -300,33 +319,6 @@
                 margin: 0 -10px 20px -10px;
                 height: 272px;
                 @include bgSizeFull;
-                .search-form {
-                    width: 475px;
-                    margin: 0 auto;
-                    .search-group {
-                        width: 470px;
-                        margin: 46px auto 0;
-                        display: flex;
-                        .search-input {
-                            width: 380px;
-                            height: 50px;
-                            color: #ffffff;
-                            background-color: #0767D1;
-                            border: 1px solid rgba(0, 255, 255, 1);
-                            outline: none;
-                            font-size: 20px;
-                        }
-                        .search-btn {
-                            width: 90px;
-                            height: 50px;
-                            background: linear-gradient(90deg, rgba(7, 103, 209, 1) 0%, rgba(7, 103, 209, 1) 100%);
-                            border: 1px solid rgba(0, 255, 255, 1);
-                            color: #ffffff;
-                            outline: none;
-                        }
-                    }
-
-                }
             }
             .structure-box {
                 height: 285px;

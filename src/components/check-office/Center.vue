@@ -9,11 +9,12 @@
 </template>
 
 <script>
-	import EChart from 'echarts';
+	import EChart                           from 'echarts';
+	import { securityClassificationConfig } from '@/pages/check-office/chart-config';
 
 	export default {
 		mounted() {
-			this.loadCloseSetChart();
+			this.myChart = EChart.init(this.$refs.closeSetChart);
 		},
 		data() {
 			return {
@@ -22,16 +23,24 @@
 		},
 		methods: {
 			loadCloseSetChart() {
-				const myChart = EChart.init(this.$refs.closeSetChart);
-				myChart.setOption({
-					color : ['#25E484', '#FF9D2A', '#17C0FF'],
-                    tooltip: {
-						trigger: 'axis',
+				const securityClassificationFw  = [],
+					  securityClassificationSw  = [],
+					  securityClassificationCpj = [];
+				securityClassificationConfig.forEach(i => {
+					securityClassificationFw.push(this.securityClassificationFw[i.id]);
+					securityClassificationSw.push(this.securityClassificationSw[i.id]);
+					securityClassificationCpj.push(this.securityClassificationCpj[i.id]);
+
+				});
+				this.myChart.setOption({
+					color  : ['#25E484', '#FF9D2A', '#17C0FF'],
+					tooltip: {
+						trigger    : 'axis',
 						axisPointer: {
 							type: 'shadow'
 						}
-                    },
-					legend: {
+					},
+					legend : {
 						data     : ['收文', '发文', '呈批件'],
 						bottom   : '20',
 						itemGap  : 38,
@@ -40,17 +49,17 @@
 							fontSize: 14
 						}
 					},
-					grid  : {
+					grid   : {
 						width : '80%',
 						height: '80%',
 						left  : '25%'
 					},
-					xAxis : {
+					xAxis  : {
 						show: false
 					},
-					yAxis : {
+					yAxis  : {
 						type     : 'category',
-						data     : ['其他', '内部', '无', '机密', '秘密'],
+						data     : securityClassificationConfig.map(i => i.name),
 						axisLine : {
 							show: false
 						},
@@ -64,7 +73,7 @@
 							fontSize: 18
 						},
 					},
-					series: [
+					series : [
 						{
 							name    : '收文',
 							type    : 'bar',
@@ -75,7 +84,7 @@
 								color   : '#fff',
 								position: 'right'
 							},
-							data    : [35, 18, 21, 22, 33]
+							data    : securityClassificationFw
 						}, {
 							name    : '发文',
 							type    : 'bar',
@@ -87,7 +96,7 @@
 								position: 'right'
 
 							},
-							data    : [56, 72, 31, 31, 33]
+							data    : securityClassificationSw
 						}, {
 							name    : '呈批件',
 							type    : 'bar',
@@ -99,10 +108,16 @@
 								position: 'right'
 
 							},
-							data    : [35, 41, 22, 22, 33]
+							data    : securityClassificationCpj
 						}
 					]
 				})
+			}
+		},
+		props  : ['securityClassificationFw', 'securityClassificationSw', 'securityClassificationCpj'],
+		watch  : {
+			securityClassificationFw() {
+				this.loadCloseSetChart();
 			}
 		}
 	}

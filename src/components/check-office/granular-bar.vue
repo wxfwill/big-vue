@@ -151,8 +151,7 @@
 		},
 		props  : ['chartData', 'name'],
 		watch  : {
-			chartData(newVal) {
-				console.log(newVal);
+			chartData() {
 				this.loadPieChart();
 			}
 		}

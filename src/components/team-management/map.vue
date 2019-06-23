@@ -10,13 +10,13 @@
             <span class="title">{{ tooltipData.name }}</span>
             <ul>
                 <li>
-                    <span>员额内检察官：</span> <i>2154</i>
+                    <span>员额内检察官：</span> <i>{{ tooltipData.yenjcg	 }}</i>
                 </li>
                 <li>
-                    <span>检察官助理：</span><i>2154</i>
+                    <span>检察官助理：</span><i>{{ tooltipData.jcgzl	}}</i>
                 </li>
                 <li>
-                    <span>司法行政人员：</span><i>2154</i>
+                    <span>司法行政人员：</span><i>{{ tooltipData.sfxzry }}</i>
                 </li>
             </ul>
         </div>
@@ -33,7 +33,8 @@
 				backIcon         : require('@/public/img/team-management/back-icon.png'),
 				mapTooltipTitleBg: require('@/public/img/home/shengdata.png'),
 				showTooltip      : false,
-				tooltipData      : {}
+				tooltipData      : {},
+                code             : 100000,
 			}
 		},
 		mounted() {
@@ -48,6 +49,7 @@
 						  selectCity     = this.dataMap.find((place) => {
 							  return place.name === selectCityName;
 						  });
+					this.code = params.data && params.data.code;
 					if(selectCity.id.length === 6) {
 						this.notRunHoldWarn();
 						return false;
@@ -56,6 +58,7 @@
 					if(this.mapLevel === 2) {
 						this.secondLvMap = selectCity;
 					}
+					this.getNewRegionInfo(params.data && params.data.code, this.mapLevel);
 					this.loadMapData(selectCity.id, selectCity.name);
 				} else {
 					this.notRunHoldWarn();
@@ -88,6 +91,10 @@
 				}
 				const data = await require(`../../${url}.json`);
 				this.loadMap(name, data);
+				this.mapSvgJson = {
+					name,
+                    data
+                };
 				this.dataMap = data.features.map((place) => ({
 					id  : place.properties.id,
 					name: place.properties.name
@@ -110,6 +117,9 @@
 						type     : 'map',
 						mapType  : name,
 						geoIndex : 0,
+						left     : 30,
+						top      : 30,
+						bottom   : 30,
 						label    : {
 							normal  : {
 								show     : true,
@@ -145,15 +155,7 @@
 								shadowColor  : 'rgba(0, 0, 0, 0.5)'
 							}
 						},
-						data     : [{
-							name : '青海省',
-							value: 10
-						}, {
-							name : '四川省',
-							value: 100,
-                            a : 1,
-                            b: 2
-						}]
+						data     : this.mapData,
 					}]
 				})
 			},
@@ -161,6 +163,7 @@
 			showChinaMap() {
 				this.mapLevel = 1;
 				this.loadMapData(0, 'china');
+				this.getNewRegionInfo(100000, 1);
 			},
 			// 返回上一级
 			backSuperiorMap() {
@@ -176,6 +179,7 @@
 					}
 						break;
 				}
+				this.getNewRegionInfo(this.code, this.mapLevel);
 			},
 			// 无法下钻提示
 			notRunHoldWarn() {
@@ -183,9 +187,15 @@
 					message: '无法继续下钻',
 					type   : 'warning'
 				});
-			}
-		},
+			},
 
+		},
+		props  : ['mapData', 'getNewRegionInfo'],
+        watch : {
+			mapData(){
+				this.loadMap(this.mapSvgJson.name, this.mapSvgJson.data);
+            }
+        }
 	}
 </script>
 

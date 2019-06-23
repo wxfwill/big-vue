@@ -24,12 +24,12 @@
             <h1 class="title">工作年限统计</h1>
             <div class="work-life-charts">
                 <pie-chart
+                        v-for="item in workLife"
+                        :key="item.key"
                         :text="item.text"
                         :percent="workingLife[item.key]"
                         :strokeColor="item.strokeColor"
                         :tintColor="item.tintColor"
-                        v-for="item in workLife"
-                        :key="item.key"
                 ></pie-chart>
             </div>
         </div>
@@ -100,23 +100,30 @@
 		},
 		methods   : {
 			loadEducationChart(educationSituation) {
-				const seriesData         = this.educationSituationAxis.map(i => ({
-						  name : i.name,
-						  value: educationSituation[i.key]
-					  }));
+				let maxNum = 0;
+				const seriesData         = this.educationSituationAxis.map(i => {
+					const value =  educationSituation[i.key];
+					if(maxNum <  value){
+						maxNum = value;
+                    }
+					return {
+						name : i.name,
+						value
+					};
+                });
 				this.myChart.setOption({
 					tooltip  : { trigger: 'item' },
 					visualMap: {
 						show   : false,
-						min    : 500,
-						max    : 600,
+						min    : 0,
+						max    : maxNum,
 						inRange: {}
 					},
 					series   : [
 						{
 							name     : '教育情况',
 							type     : 'pie',
-							radius   : '80%',
+							radius   : '70%',
 							center   : ['50%', '45%'],
 							color    : ['#61e0c1', '#1c98f0', '#33c6f4', '#33d1f8'],
 							data     : seriesData.sort((a, b) => a.value - b.value),
@@ -171,19 +178,23 @@
             background-size: 100% 100%;
             .in-job-detail {
                 display: flex;
-                justify-content: center;
+                justify-content: space-around;
                 .digital-block {
                     max-width: 340px;
+                    margin-left: 16px;
                     li {
                         width: 28px;
                         height: 44px;
                         line-height: 44px;
                         text-align: center;
                         float: left;
-                        margin: 0 24px 10px 0;
+                        margin: 0 16px 10px 0;
                         font-size: 24px;
                         background-color: #1C6EB7;
                         box-shadow: 1px 1px 0 #cde8f9;
+                        &:last-of-type{
+                            margin-right: 0;
+                        }
                     }
                 }
                 .to-leave {

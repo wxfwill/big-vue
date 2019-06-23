@@ -6,19 +6,7 @@
                 <img :src="cursorImg" alt="...">
             </div>
             <div class="table-group">
-                <div class="table-item">
-                    <info-table
-                            :columns="infoPublishColumns"
-                            :list="infoPublishList"
-                    ></info-table>
-                </div>
-                <div class="table-item">
-                    <info-table
-                            :columns="infoPublishColumns"
-                            :list="infoPublishList"
-                    ></info-table>
-                </div>
-                <div class="table-item">
+                <div class="table-item" v-for="infoPublish in infoPublishTableGroup">
                     <info-table
                             :columns="infoPublishColumns"
                             :list="infoPublishList"
@@ -41,7 +29,7 @@
 
 	export default {
 		mounted() {
-			this.loadFileAnalyzeChart();
+			this.myEchart = EChart.init(this.$refs.fileAnalyzeChart);
 		},
 		data() {
 			return {
@@ -49,52 +37,41 @@
 				infoPublishColumns: [{
 					id   : 'name',
 					label: '部门',
-                    color : 'rgba(255,255,255,1)'
+					color: 'rgba(255,255,255,1)'
 				}, {
 					id   : 'num',
 					label: '数量',
-					color : 'rgba(48,234,255,1)'
+					color: 'rgba(48,234,255,1)'
 				}, {
 					id   : 'ratio',
 					label: '占比',
-					color : 'rgba(247,147,30,1)'
+					color: 'rgba(247,147,30,1)'
 				}],
-				infoPublishList   : [{
-					name : '办公厅',
-					num  : '243',
-					ratio: '112.3%'
-				}, {
-					name : '第一检察厅',
-					num  : '1234',
-					ratio: '11.2%'
-				}, {
-					name : '第二检察厅',
-					num  : '22',
-					ratio: '1.3%'
-				}, {
-					name : '第三检察厅',
-					num  : '243',
-					ratio: '2.3%'
-				}, {
-					name : '第四检察厅',
-					num  : '2222',
-					ratio: '42.3%'
-				}, {
-					name : '第五检察厅',
-					num  : '243',
-					ratio: '15.3%'
-				}]
+			}
+		},
+		computed  : {
+			infoPublishTableGroup() {
+				const arr = [],
+					  len = this.infoPublishList.length;
+				for(let i = 0; i < len; i += 5) {
+					const groupList = this.infoPublishList.slice(i, i + 5);
+					arr.push(groupList);
+				}
+				if(arr.length > 3) {
+					arr.length = 3;
+				}
+				return arr;
 			}
 		},
 		methods   : {
 			loadFileAnalyzeChart() {
-				const echart = EChart.init(this.$refs.fileAnalyzeChart);
-				echart.setOption({
+				const { xAxisData, seriesData } = this.getChartConfigData(this.theArchiveAnalysisList);
+				this.myEchart.setOption({
 					color  : ['#3398DB'],
 					tooltip: {
 						trigger    : 'axis',
-						axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-							type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+						axisPointer: {
+							type: 'shadow'
 						}
 					},
 					grid   : {
@@ -105,7 +82,7 @@
 					},
 					xAxis  : {
 						type     : 'category',
-						data     : ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+						data     : xAxisData,
 						axisLabel: {
 							color   : '#fff',
 							fontSize: 16,
@@ -149,7 +126,7 @@
 							name     : '归档文件',
 							type     : 'bar',
 							barWidth : 48,
-							data     : [10, 52, 200, 334, 390, 330, 220, 22, 1, 21, 203, 4,],
+							data     : seriesData,
 							itemStyle: {
 								color: '#1BECFD'
 							},
@@ -161,10 +138,28 @@
 						}
 					]
 				})
+			},
+			getChartConfigData(chartData) {
+				const xAxisData  = [],
+					  seriesData = [];
+				chartData.forEach(i => {
+					xAxisData.push(i.sj);
+					seriesData.push(i.gdjs);
+				});
+				return {
+					xAxisData,
+					seriesData
+				};
 			}
 		},
+		props     : ['theArchiveAnalysisList', 'infoPublishList'],
 		components: {
 			InfoTable
+		},
+		watch     : {
+			theArchiveAnalysisList() {
+				this.loadFileAnalyzeChart();
+			}
 		}
 	}
 </script>
@@ -183,17 +178,17 @@
                     position: relative;
                     flex: 1;
                     margin-right: 60px;
-                    &:after{
+                    &:after {
                         position: absolute;
                         top: 30px;
                         right: 0;
                         content: '';
                         width: 1px;
-                        height:330px;
-                        background:rgba(1,218,226,1);
+                        height: 330px;
+                        background: rgba(1, 218, 226, 1);
                     }
-                    &:last-child{
-                        &:after{
+                    &:last-child {
+                        &:after {
                             display: none;
                         }
                     }

@@ -2,7 +2,8 @@
     <div class="team-center-container">
         <div class="map-box">
             <bj-map
-                :teamManageMaps="teamManageMaps"
+                :mapData="teamManageMaps"
+                :getNewRegionInfo="getNewRegionInfo"
             ></bj-map>
         </div>
         <div class="status-box">
@@ -175,9 +176,12 @@
 					cityAxis,
 					seriesData
 				}
-			}
+			},
+            getNewRegionInfo(code, lev) {
+                this.changeRegion(code, lev)
+            }
 		},
-		props     : ['teamManageMaps'],
+		props     : ['teamManageMaps', 'changeRegion'],
 		components: {
 			BjMap
 		}

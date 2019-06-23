@@ -18,15 +18,20 @@ import router from "./router/index.js";
 
 import echarts from 'echarts' //引入echarts
 import "echarts-gl";
+import { DatePicker,Carousel,CarouselItem, Select, Option, 	Message, Dialog, Button, Table, TableColumn } from 'element-ui';
+
 Vue.prototype.$echarts = echarts //引入组件
-import china from 'echarts/map/js/china'
-import { DatePicker,Carousel,CarouselItem, Select, Option, 	Message } from 'element-ui';
+
 const elementComponents = [
 	DatePicker,
 	Carousel,
 	CarouselItem,
 	Select,
-	Option
+	Option,
+	Dialog,
+	Button,
+	Table,
+	TableColumn,
 ];
 elementComponents.forEach(i => Vue.use(i));
 Vue.prototype.$message = Message;
