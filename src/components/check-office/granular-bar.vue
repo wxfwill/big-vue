@@ -1,7 +1,5 @@
 <template>
-    <div ref="chartCvs" :style="{width: '570px', height: '200px', margin: '0 auto'}">
-        <canvas width="570" height="200"></canvas>
-    </div>
+    <div ref="chartCvs" :style="{width: '570px', height: '200px', margin: '0 auto'}"></div>
 </template>
 
 <script>
@@ -9,13 +7,27 @@
 
 	export default {
 		mounted() {
-			this.loadPieChart();
+			this.myChart = EChart.init(this.$refs.chartCvs);
 		},
 		methods: {
 			loadPieChart() {
-				const myChart = EChart.init(this.$refs.chartCvs),
-					  yMax    = Math.max(...this.chartData) + 100;
-				myChart.setOption({
+				const chartDataMaxValue         = Math.max(...(Object.values(this.chartData))),
+					  yMax                      = chartDataMaxValue + Number(`1E${`${chartDataMaxValue}`.length - 1}`),
+					  config                    = [{
+						  id  : 'xj',
+						  name: '新建',
+					  }, {
+						  id  : 'db',
+						  name: '待办'
+					  }, {
+						  id  : 'bj',
+						  name: '办结'
+					  }, {
+						  id  : 'qt',
+						  name: '其他'
+					  }],
+					  { xAxisData, seriesData } = this.getChartAttr(config, this.chartData);
+				this.myChart.setOption({
 						color  : ['#26CAFC', 'rgba(38,202,252,0.3)', '#F7931E'],
 						tooltip: {
 							show       : true,
@@ -23,7 +35,7 @@
 							axisPointer: {
 								type: 'shadow'
 							},
-							formatter  : '{b}:{c}'
+							formatter  : '{b}:{c1}'
 						},
 						grid   : {
 							top         : '10%',
@@ -32,7 +44,7 @@
 							bottom      : '3%',
 							containLabel: true,
 						},
-						xAxis  : [{
+						xAxis  : {
 							type       : 'category',
 							boundaryGap: true,
 							axisLine   : {
@@ -52,9 +64,9 @@
 							axisTick   : {
 								show: false,
 							},
-							data       : ['新建', '代办', '办结', '其他'],
-						}],
-						yAxis  : [{
+							data       : xAxisData,
+						},
+						yAxis  : {
 							name     : '',
 							type     : 'value',
 							max      : yMax,
@@ -83,7 +95,7 @@
 							axisTick : {
 								show: false,
 							},
-						}],
+						},
 						series : [{
 							name        : '',
 							type        : 'pictorialBar',
@@ -97,15 +109,15 @@
 							symbolSize  : [32, 6],
 							symbolMargin: 1,
 							z           : -10,
-							data        : Array.from({ length: this.chartData.length }, () => yMax),
+							data        : Array.from({ length: seriesData.length }, () => yMax),
 						}, {
-							name        : '发文分析',
+							name        : this.name,
 							type        : 'pictorialBar',
 							symbol      : '',
 							symbolRepeat: true,
 							symbolSize  : [32, 6],
 							symbolMargin: 1,
-							data        : this.chartData
+							data        : seriesData,
 						}, {
 							type          : 'pictorialBar',
 							name          : 'pictorial element',
@@ -114,18 +126,33 @@
 							symbolPosition: 'end',
 							symbolOffset  : [0, '-120%'],
 							symbolSize    : [32, 6],
-							data          : this.chartData,
+							data          : seriesData,
 							itemStyle     : {
 								color: '#F7931E'
 							}
 						}]
 					}
 				)
+			},
+			getChartAttr(chartConfig, charData) {
+				const xAxisData  = [],
+					  seriesData = chartConfig.map(i => {
+						  xAxisData.push(i.name);
+						  return {
+							  name : i.name,
+							  value: charData[i.id]
+						  }
+					  });
+				return {
+					xAxisData,
+					seriesData
+				};
 			}
 		},
-		props  : ['chartData'],
+		props  : ['chartData', 'name'],
 		watch  : {
-			chartData() {
+			chartData(newVal) {
+				console.log(newVal);
 				this.loadPieChart();
 			}
 		}

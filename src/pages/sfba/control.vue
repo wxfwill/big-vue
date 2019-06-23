@@ -242,7 +242,7 @@ export default {
                     name:'',
                     type: 'value',
                     // min: 0,
-                    // max: 140,
+                    max:800,
                     // splitNumber: 1,//刻度条数决定距离
                     splitLine:{
                         show:true,
@@ -283,7 +283,7 @@ export default {
                     symbolSize: [32, 6],
                     symbolMargin: 1,
                     z: -10,
-                    data: [500,500,500,500]
+                    data:Array.from({length:4},()=>800)
                 },
                 {
                     name: 'dotted',
@@ -299,7 +299,21 @@ export default {
                     symbolMargin: 1,
                     z: 10,
                     data: [200,300,400,700]
-                }]
+                },
+                {
+							type          : 'pictorialBar',
+							name          : 'pictorial element',
+							symbol        : '',
+							z             : 10,
+							symbolPosition: 'end',
+							symbolOffset  : [0, '-120%'],
+							symbolSize    : [32, 6],
+							data          : [200,300,400,700],
+							itemStyle     : {
+								color: '#F7931E'
+							}
+						}
+                ]
             };
             clueBox.setOption(option,true)
         },

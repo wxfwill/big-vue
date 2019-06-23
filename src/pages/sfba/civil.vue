@@ -26,22 +26,22 @@
                 <div class="canva">
                     <div class="concludeBox">
                         <div id="conclude" :style="{width: '315px', height: '195px'}"></div>
-                        <p>受理数：234,443,24</p>
-                        <p>办结率：99.78%</p>
+                        <p>受理数：{{reviewCase.sljs}}</p>
+                        <p>办结率：{{reviewCase.bjl}}</p>
                     </div>
                     <div class="acceptBox">
                         <div id="accept" :style="{width: '315px', height: '195px'}"></div>
-                        <p>提出检察建议数：223,24</p>
-                        <p>办结率：99.78%</p>
+                        <p>提出检察建议数：{{reviewCase.tcjcjys}}</p>
+                        <p>采纳检察建议率：{{reviewCase.cnjcjyl}}</p>
                     </div>
                 </div>
             </div>
             <div class="bor_col breakBox">
                 <p class="title">违法行为监督</p>
                 <div class="breakContent">
-                    <p>办结率：78.5%</p>
+                    <p>办结率：{{illegalBehavior.bjl}}</p>
                 <div id="break1" :style="{width: '465px', height: '377px'}"></div>
-                    <p>建议采纳率：98.5%</p>
+                    <p>建议采纳率：{{(illegalBehavior.fycnjcjys/illegalBehavior.tcjcjys)}}%</p>
                 <!-- <div id="break2" :style="{width: '265px', height: '377px'}"></div> -->
                 </div>
                 <div class="lagend">
@@ -64,11 +64,12 @@
                 <p class="title">民事案件案由发生次数排序</p>
                 <p class="label">占比 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次数</p>
                 <ol>
-                    <li v-for="(item,index) in sortList" :key="index">
+                    <li v-for="(item,index) in causesOfCivilCasesList" :key="index">
                     <i :class="col===true&&index<3?'baCol':null">{{index+1}}</i>
                     <p :style="{backgroundImage:'url('+lineImg+')'}">
-                        <span>{{item.title}}</span>
-                        <span :class="col===true&&index<3?'col':null">{{item.proportion}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{item.num}}</span>
+                        <span>{{item.ay_name}}</span>
+                        <span :class="col===true&&index<3?'col':null">{{item.zb}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            &nbsp;&nbsp;&nbsp;&nbsp;{{item.cs}}&nbsp;&nbsp;&nbsp;</span>
                     </p>
                     </li>
                 </ol>
@@ -80,11 +81,11 @@
             </div>
             <div class="dayBox">
                 <div class="bor_col fileBox">
-                    <p>案均办理天数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
+                    <p>案均办理天数<span @click="popupShow=true;popupTitle='全国各省份案均办理天数统计表';nameList=aj_nameList;numList=ajbltsList">更多>></span></p>
                     <div id="file" :style="{width:'490px',height:'205px'}"></div>
                 </div>
                 <div class="bor_col capitaBox">
-                <p>人均办结数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
+                <p>人均办结数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表';nameList=rj_nameList;numList=rjbjsList">更多>></span></p>
                 <div id="capita" :style="{width:'490px',height:'235px'}"></div>
                 </div>
             </div>
@@ -95,7 +96,7 @@
                     ></trend-chart>
                 </div>
         </div>
-        <popup v-if="popupShow" :title="popupTitle" :popupData='popupData'></popup>
+        <popup v-if="popupShow" :title="popupTitle" :popupData='popupData' :nameList='nameList' :numList='numList'></popup>
     </div>
 </template>
 <script>
@@ -104,6 +105,7 @@ import mapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
 import trendChart from '@/components/sfba/trend-chart.vue'
 import DateTime from '@/components/DateTime.vue'
+import { getCivilData,getEffectiveSupervision } from '@/fetch/http';
 export default {
     components:{
         mapComponent,
@@ -113,25 +115,38 @@ export default {
     },
     data() {
         return {
+            civilData:{},//获取大屏展示系统民事数据
+            reviewCase:{},//执行活动监督
+            illegalBehavior:{},//违法行为监督
+            causesOfCivilCasesList:{},//民事案件案由发生次数排序
+            casesAreHandledList:[],//案均办理天数
+            aj_nameList:[],//案均办理天数城市
+            ajbltsList:[],//案均办理天数
+            numList:[],
+            nameList:[],
+            perCapitaHandlingList:[],//人均办结数
+            rj_nameList:[],//人均办理天数城市
+            rjbjsList:[],//人均办理天数
+            acceptingCasesTrendAnalysisList:[],//受理案件趋势分析
             col:true,
             num:1,
             sum:3,
             capitPopup:false,
             filePopup:false,
             businessList:[
-                {img: require('@/public/img/civil/demurrer.png'),title:'提出抗诉数',num: 3434},{img: require('@/public/img/civil/put.png'),title:'提出抗诉数',num: 3434},
-                {img: require('@/public/img/civil/accept.png'),title:'提出抗诉数',num: 3434},{img: require('@/public/img/civil/accept.png'),title:'提出抗诉数',num: 3434},
-                {img: require('@/public/img/civil/put.png'),title:'提出抗诉数',num: 3434},{img: require('@/public/img/civil/demurrer.png'),title:'提出抗诉数',num: 35345}
+                {img: require('@/public/img/civil/demurrer.png'),title:'采纳再审检察建议数',num: 3434},{img: require('@/public/img/civil/put.png'),title:'抗诉案件改变原裁判数',num: 3434},
+                {img: require('@/public/img/civil/accept.png'),title:'审判监督采纳检察建议数',num: 3434},{img: require('@/public/img/civil/accept.png'),title:'提出抗诉数',num: 3434},
+                {img: require('@/public/img/civil/put.png'),title:'提出再审检察建议数',num: 3434},{img: require('@/public/img/civil/demurrer.png'),title:'执行监督采纳检察建议数',num: 35345}
             ],
             judgmentList:[
-                {title:'提出抗诉数',num: 3434},{title:'提出抗诉数',num: 3434},{title:'提出抗诉数',num: 3434},
-                {title:'提出抗诉数',num: 3434},{title:'提出抗诉数',num: 3434},{title:'提出抗诉数',num: 3434}
+                {title:'法院采纳数',num:''},{title:'改变原裁判数',num:''},{title:'受理(件)',num: ''},
+                {title:'提出抗诉数',num:''},{title:'提出再审检察建议',num:''},{title:'中止审查数',num: ''}
             ],
             lineImg:require('@/public/img/judicature/line.png'),
             leftImg:require('@/public/img/judicature/left.png'),
             rightImg:require('@/public/img/judicature/right.png'),
-            civilIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
-            civilIPS:[20, 60, 50, 80, 120, 100,20,19,60,88],
+            civilIPSxAxis:[],
+            civilIPS:[],
             sortList:[
                 {title:'受理件数',num: 3434,proportion:'20%'},{title:'办结件数',num: 4545,proportion:'20%'},
                 {title:'1111',num: 7877,proportion:'20%'},{title:'受理件数',num: 3434,proportion:'20%'},
@@ -147,27 +162,94 @@ export default {
        
     },
     mounted(){
-        this.concludeHandle()//执行活动监督1
-        this.acceptHandle()//执行活动监督2
-        this.breakHandle()//违法行为监督
-        this.capitaHandle()//人均办结数
-        this.fileHandle()//案均办理天数
+        this.Supervision()//获取民事:生效裁判监督
+        this.CivilData()//获取大屏展示系统民事数据
+        
+           
     },
     methods: {
+        CivilData(){
+            getCivilData({
+                code     : 100000,
+				lev      : 1,
+				enddate  : "2019-06-01",
+				startdate: "2019-01-01"
+        }).then((resolve,reject)=>{
+            if(resolve.code === 200) {
+                    this.civilData=resolve.data
+                    this.businessList[0].num= this.civilData.basicBusiness.cnzsjcjys;
+                    this.businessList[1].num= this.civilData.basicBusiness.ksajgbycps;
+                    this.businessList[2].num= this.civilData.basicBusiness.spjdcnjcjys;
+                    this.businessList[3].num= this.civilData.basicBusiness.tckss;
+                    this.businessList[4].num= this.civilData.basicBusiness.tczsjcjys;
+                    this.businessList[5].num= this.civilData.basicBusiness.zxjdcnjcjys;
+
+                    this.reviewCase=this.civilData.reviewCase
+                    this.illegalBehavior=this.civilData.illegalBehavior
+                    this.causesOfCivilCasesList=this.civilData.causesOfCivilCasesList.slice(0,10)
+                    this.casesAreHandledList=this.civilData.casesAreHandledList
+                    this.casesAreHandledList.forEach(el => {
+                        this.aj_nameList.push(el.city_name)
+                        this.ajbltsList.push(el.ajblts)
+                    });
+                    this.perCapitaHandlingList=this.civilData.perCapitaHandlingList
+                    this.perCapitaHandlingList.forEach(el => {
+                        this.rj_nameList.push(el.city_name)
+                        this.rjbjsList.push(el.rjbjs)
+                    });
+                    this.acceptingCasesTrendAnalysisList=this.civilData.acceptingCasesTrendAnalysisList
+                    this.acceptingCasesTrendAnalysisList.forEach(el=>{
+                        this.civilIPSxAxis.push(el.year)
+                        this.civilIPS.push(el.sls)
+                    })
+				} else {
+                    console.log('民事加载失败')
+					// this.$message.error('民事加载失败');
+				}
+                }).then(()=>{
+                    this.concludeHandle()//执行活动监督1
+                    this.acceptHandle()//执行活动监督2
+                    this.breakHandle()//违法行为监督
+                    this.capitaHandle()//人均办结数
+                    this.fileHandle()//案均办理天数
+                })
+        },
+        Supervision(){
+            getEffectiveSupervision({
+                code     : 100000,
+				lev      : 1,
+				enddate  : "2019-06-01",
+				startdate: "2019-01-01"
+        }).then((resolve,reject)=>{
+            if(resolve.code === 200) {
+                            this.judgmentList[0].num=resolve.data.fycns
+                            this.judgmentList[1].num=resolve.data.gbycps
+                            this.judgmentList[2].num=resolve.data.sljs
+                            this.judgmentList[3].num=resolve.data.tckss
+                            this.judgmentList[4].num=resolve.data.tczsjcjys
+                            this.judgmentList[5].num=resolve.data.zzscs
+            }
+        });
+        },
         previousHandle(){//上一页
             if(this.num!=1){
                 this.num--
-                if(this.num==1){this.col=true}
+                if(this.num==1){this.col=true;this.causesOfCivilCasesList=this.civilData.causesOfCivilCasesList.slice(0,10)}
+                if(this.num==2){this.causesOfCivilCasesList=this.civilData.causesOfCivilCasesList.slice(10,20)}
+                if(this.num==3){this.causesOfCivilCasesList=this.civilData.causesOfCivilCasesList.slice(20,30)}
             }
         },
         downHandle(){//下一页
             if(this.num!=3){
                 this.num++
                 this.col=false
+                if(this.num==2){this.causesOfCivilCasesList=this.civilData.causesOfCivilCasesList.slice(10,20)}
+                if(this.num==3){this.causesOfCivilCasesList=this.civilData.causesOfCivilCasesList.slice(20,30)}
             }
         },
         fileHandle(){
             var file =this.$echarts.init(document.getElementById("file"));
+            var _this= this
            var option = {
                 tooltip: {
                     // trigger: 'axis',
@@ -193,7 +275,7 @@ export default {
                     // boundaryGap: [0, 0.01],
                     // min: 0,
                     // max: 100,
-                    interval: 20,
+                    // interval: 20,
                     axisLine:{
                         lineStyle:{
                             color:'#00FFFF'
@@ -215,7 +297,8 @@ export default {
                 },
                 yAxis: {
                     type: 'category',
-                    data: ['湖北', '湖南', '河南', '安徽', '浙江'],
+                    data: [this.casesAreHandledList[0].city_name,this.casesAreHandledList[1].city_name,
+                           this.casesAreHandledList[2].city_name,this.casesAreHandledList[3].city_name,this.casesAreHandledList[4].city_name],
                     axisTick:{
                         show:false
                     },
@@ -264,7 +347,8 @@ export default {
                             color: '#fff'
                         }
                     },
-                    data: [22, 33, 44, 55, 66]
+                    data: [this.casesAreHandledList[0].ajblts,this.casesAreHandledList[1].ajblts,this.casesAreHandledList[2].ajblts,
+                           this.casesAreHandledList[3].ajblts,this.casesAreHandledList[4].ajblts]
                 }]
             };
             file.setOption(option,true)
@@ -390,7 +474,7 @@ export default {
                     axisLabel: { //坐标轴刻度标签的相关设置
                         margin: 20,
                         textStyle: {
-                            color: 'rab(255,255,255,1)',
+                            color: '#FFFFFF',
                             fontSize:16,
                         },
                     },
@@ -454,7 +538,7 @@ export default {
                             }
                         }
                     },
-                    data: [2000,300]//办结数/采纳检察建议数
+                    data: [this.illegalBehavior.bjs,this.illegalBehavior.fycnjcjys]//办结数/采纳检察建议数
                 },
                 {
                     name: '办结数',
@@ -480,7 +564,7 @@ export default {
                 }
                         }
                     },
-                    data: [400,1000]//受理数/提出检察建议数
+                    data: [this.illegalBehavior.sls,this.illegalBehavior.tcjcjys]//受理数/提出检察建议数
                 }
                 ]
             };
@@ -641,8 +725,8 @@ export default {
             radius : ['0%','80%'],//数组时内，外
             center: ['51%', '51%'],//x，y
             data:[
-                {value:335, name:'在办数'},
-                {value:310, name:'办结数'},
+                {value:(this.reviewCase.sljs-this.reviewCase.bjjs), name:'在办数'},
+                {value:this.reviewCase.bjjs, name:'办结数'},
             ],
             itemStyle: {
                 emphasis: {
@@ -686,8 +770,8 @@ export default {
             radius : ['0%','80%'],//数组时内，外
             center: ['51%', '51%'],//x，y
             data:[
-                {value:335, name:'未采纳建议数'},
-                {value:310, name:'采纳建设数'},
+                {value:this.reviewCase.tcjcjys-this.reviewCase.cnjcjys, name:'未采纳建议数'},
+                {value:this.reviewCase.cnjcjys, name:'采纳建设数'},
             ],
             itemStyle: {
                 emphasis: {
@@ -728,9 +812,13 @@ export default {
             ul{  
                 display: flex;
                 flex-wrap: wrap;
+                justify-content: space-around;
                 li{ 
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    margin:25px 20px 0 20px;
                     text-align: center;
-                    margin:25px 50px 0 50px;
                     p:nth-child(1){
                         width:118px;
                         height:118px;
@@ -765,6 +853,9 @@ export default {
                         font-family:PingFangSC-Regular;
                         font-weight:400;
                         color:rgba(0,255,255,1);
+                        display:inline-block;
+                        width:150px;
+                        text-align: right;
                     }
                     span:nth-child(2){
                         display: inline-block;

@@ -24,12 +24,9 @@
               <span class="admin"></span>
               <i>行政</i>
           </div>
-          <ul>
-          <li v-for="(item,index) in xzList" :key="index">
-            <p class="bg_img" :style="{backgroundImage:'url('+item.img+')'}">{{item.num}}</p>
-            <p>{{item.title}}</p>
-          </li>
-        </ul>
+          <div class="admin-box">
+          <water-polo v-for="(item,index) in xzList" :key="index" :item="item" :ID="`pol${index}`" width='86px' height='86px'></water-polo>
+          </div>
         </div>
         <div class="bor_col lawsuitBox">
           <div class="lawsuit-label">
@@ -96,8 +93,13 @@
 
 <script>
 import Echarts from 'echarts';
+import 'echarts-liquidfill/src/liquidFill.js'; //在这里引入
+import waterPolo from '@/components/sfba/water-polo.vue'
 export default {
   name: 'homeRight',
+  components:{
+    waterPolo
+  },
   data() {
       return {
         swiperTitle:'',
@@ -111,9 +113,11 @@ export default {
              {img: require('@/public/img/home/mscn.png'),title:'申诉案件在办数',num: 1231},
              {img: require('@/public/img/home/msls.png'),title:'申诉案件办结数',num: 6767},
              {img: require('@/public/img/home/mszxjd.png'),title:'申诉案件办结数',num: 6767}],
-        xzList:[{img: require('@/public/img/home/xzsl.png'),title:'受理控告件数',num: 3434},
-              {img: require('@/public/img/home/xzbj.png'),title:'受理申诉数',num: 4545},
-              {img: require('@/public/img/home/xzzb.png'),title:'初查移送立案件数',num: 7877},],
+        xzList:[
+          {title:'检验鉴定',num:10000,col1:'#22A95F',col2:'#4FDC99'},
+          {title:'检验鉴定',num:10000,col1:'#005EFF',col2:'#4FB8FF'},
+          {title:'检验鉴定',num:10000,col1:'#FFA11E',col2:'#F3C85D'}
+          ],
         date:'2019-05-29',//现在的日期
         startDate:'2019-01-01',
         rjList:[
@@ -531,7 +535,7 @@ export default {
       for (let i = 0; i < rjget.length; i++) {
         const el = rjget[i];
         const num = this.rjList[i].num 
-        el.style.width=(num/sum*1000)+'px'
+        el.style.width=(num/sum*200)+'px'
       }
       },
       ajHandle(){
@@ -544,7 +548,7 @@ export default {
       for (let i = 0; i < ajget.length; i++) {
         const el = ajget[i];
         const num = this.ajList[i].num 
-        el.style.width=(num/sum*1000)+'px'
+        el.style.width=(num/sum*200)+'px'
       }
       },
       gyssHandle(){
@@ -824,32 +828,10 @@ var option = {
           background:rgba(0,178,226,1);
         }
       }
-        ul{ 
+      .admin-box{
         display: flex;
-        flex-wrap: wrap;
-        height:100%;
-        align-items: center;
-        justify-content: space-between;
-        li{
-          text-align: center;
-          p:nth-child(1){
-            display: inline-block;
-            text-align: center;
-            width:87px;
-          height:87px;
-          border-radius:50%;
-         font-size:21px;
-          color:rgba(255,255,255,1);
-          line-height:87px;
-          }
-          P:nth-child(2){
-            width:87px;
-            font-size:18px;
-            text-align: center;
-            color:rgba(255,255,255,1);
-            margin-top:8px;
-          }
-        }
+        justify-content: space-around;
+        margin-top: 40px;
       }
       }
       .lawsuitBox{
