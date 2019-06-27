@@ -29,7 +29,10 @@
 <script>
 	export default {
 		created() {
-			this.dateChange(`${this.getNowYear()}-01-01`, this.getNowDate());
+			this.dateChange({
+				startDate: this.startDate,
+				endDate  : this.endDate,
+			});
 		},
 		data() {
 			return {
@@ -63,7 +66,10 @@
 		},
 		methods : {
 			handleSearch() {
-				this.dateChange(this.startDate, this.endDate);
+				this.dateChange({
+					startDate: this.startDate,
+					endDate  : this.endDate,
+				});
 			},
 			getNowYear() {
 				return new Date().getFullYear();
@@ -71,7 +77,7 @@
 			getNowDate() {
 				const date = new Date();
 				return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-			}
+			},
 		},
 		props   : ['dateChange'],
 	}

@@ -111,7 +111,7 @@
     </div>
 </template>
 <script>
-import echarts from 'echarts';
+import ECharts from 'echarts';
 import mapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
 import DateTime from '@/components/DateTime.vue'
@@ -176,7 +176,7 @@ export default {
     },
     methods: {
         fileHandle(){
-            var file =this.$echarts.init(document.getElementById("file"));
+            var file =ECharts.init(document.getElementById("file"));
            var option = {
                 tooltip: {
                     // trigger: 'axis',
@@ -248,7 +248,7 @@ export default {
                     barWidth:20,
                     itemStyle: {
                             normal: { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
-                                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                color: new ECharts.graphic.LinearGradient(0, 0, 1, 0, [{
                                     offset: 0,
                                     color: '#1783E5' // 0% 处的颜色
                                 }, {
@@ -277,7 +277,7 @@ export default {
             file.setOption(option,true)
         },
         capitaHandle(){
-            var capita =this.$echarts.init(document.getElementById("capita"));
+            var capita =ECharts.init(document.getElementById("capita"));
             var option = {
                 tooltip: {},
                 grid: {//柱状图偏移
@@ -361,7 +361,7 @@ export default {
             capita.setOption(option,true)
         },
         examineHandle(){
-            var examine =this.$echarts.init(document.getElementById("examine"));
+            var examine =ECharts.init(document.getElementById("examine"));
             var option = {
                color: ['#1989DD', '#37DDA1', '#5025D8', '#31DBE8'],
     tooltip : {
@@ -413,7 +413,7 @@ export default {
             examine.setOption(option,true)
         },
         ageBar(){
-            var ageBar =this.$echarts.init(document.getElementById("ageBar"));
+            var ageBar =ECharts.init(document.getElementById("ageBar"));
             var option = {
                 tooltip: {},
                 grid: {//柱状图偏移
@@ -497,7 +497,7 @@ export default {
             ageBar.setOption(option,true)
         },
         judgmentHandle(){
-            var judgment =this.$echarts.init(document.getElementById("judgment"));
+            var judgment =ECharts.init(document.getElementById("judgment"));
             var option = {
     grid: {
         top: "5%",
@@ -613,7 +613,7 @@ export default {
             barWidth:22,
             itemStyle: {
                 normal: {
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    color: new ECharts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 0,
                             color: "#63E8D7"
                         },
@@ -631,7 +631,7 @@ export default {
             judgment.setOption(option,true)
         },
         educationHandle(){
-            var education =this.$echarts.init(document.getElementById("education"));
+            var education =ECharts.init(document.getElementById("education"));
             var option = {
                color: ['#81D32A', '#31B1DD', '#DBA62E', '#942BD8','#2F9DE0','#2FE0BE'],
     tooltip : {
@@ -683,7 +683,7 @@ export default {
             education.setOption(option,true)
         },
         agePie(){
-            var agePie =this.$echarts.init(document.getElementById("agePie"));
+            var agePie =ECharts.init(document.getElementById("agePie"));
             var option = {
                color: ['#81D32A', '#31B1DD', '#DBA62E', '#942BD8','#2F9DE0','#2FE0BE'],
     tooltip : {
@@ -745,7 +745,7 @@ export default {
 
         },
         slajHandle(){
-            var slajBox =this.$echarts.init(document.getElementById("slajBox"));
+            var slajBox =ECharts.init(document.getElementById("slajBox"));
            var option = {
                color: ['#2EA7DB', '#2082ED', '#2CDDC0', '#E5B52C'],
     tooltip : {
@@ -792,7 +792,7 @@ export default {
             slajBox.setOption(option);
         },
         cityHandle(){
-            var cityBox =this.$echarts.init(document.getElementById("cityBox"));
+            var cityBox =ECharts.init(document.getElementById("cityBox"));
             var ItemStyle = {
     normal: {
         color: function(params) {

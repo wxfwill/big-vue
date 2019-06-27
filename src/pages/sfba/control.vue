@@ -166,7 +166,7 @@
     </div>
 </template>
 <script>
-import echarts from 'echarts';
+import ECharts from 'echarts';
 import mapComponent from '@/components/map/index.vue'
 import DayBox from '@/components/DayBox.vue'
 import Popup from '@/components/Popup.vue'
@@ -206,7 +206,7 @@ export default {
     },
     methods: {
         clueBoxHandle(){
-            var clueBox =this.$echarts.init(document.getElementById("clueBox"));
+            var clueBox =ECharts.init(document.getElementById("clueBox"));
          var option = {
                 tooltip: {},
                 grid: {//柱状图偏移
@@ -318,7 +318,7 @@ export default {
             clueBox.setOption(option,true)
         },
         scheduleHandle(ID,sum,num,color){
-            var box = this.$echarts.init(document.getElementById(ID));
+            var box = ECharts.init(document.getElementById(ID));
 	    var option = {
             color:color,
         	title:{
@@ -388,7 +388,7 @@ export default {
             }
         },
         officeHandle(){
-            var officeBox =this.$echarts.init(document.getElementById("officeBox"));
+            var officeBox =ECharts.init(document.getElementById("officeBox"));
            var option = {
                 grid: {
                     left: '4%',
@@ -476,7 +476,7 @@ export default {
             officeBox.setOption(option,true)
         },
         courtHandle(){
-            var courtBox =this.$echarts.init(document.getElementById("courtBox"));
+            var courtBox =ECharts.init(document.getElementById("courtBox"));
              var option = {
                 tooltip: {},
                 grid: {//柱状图偏移

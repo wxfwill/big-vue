@@ -50,7 +50,7 @@
 			}
 		},
 		methods   : {
-			requestCheckOfficeData(startDate, endDate) {
+			requestCheckOfficeData({startDate, endDate}) {
 				getProcuratorialOfficeData({
 					startdate: startDate,
 					enddate  : endDate

@@ -54,7 +54,7 @@
 			}
 		},
 		methods   : {
-			requestTeamData(startDate, endDate) {
+			requestTeamData({ startDate, endDate }) {
 				this.startDate = startDate;
 				this.endDate   = endDate;
 				this.loading   = true;

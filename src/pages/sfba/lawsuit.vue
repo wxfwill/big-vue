@@ -108,7 +108,7 @@ export default {
     },
     methods: {
         statisticsHandle(){
-            var statisticsBox =this.$echarts.init(document.getElementById("statisticsBox"));
+            var statisticsBox =ECharts.init(document.getElementById("statisticsBox"));
              var option = {
                 tooltip: {},
                 legend: {
@@ -234,7 +234,7 @@ export default {
              statisticsBox.setOption(option,true);
         },
         investigateHandle(){
-            var investigateBox =this.$echarts.init(document.getElementById("investigateBox"));
+            var investigateBox =ECharts.init(document.getElementById("investigateBox"));
           var option = {
                color: ['#18E3EF', '#F0F61D','#ABE71F','#19B1E3'],
     tooltip : {
@@ -313,7 +313,7 @@ export default {
           investigateBox.setOption(option,true)
         },
         natureHandle(){
-          var natureBox =this.$echarts.init(document.getElementById("natureBox"));
+          var natureBox =ECharts.init(document.getElementById("natureBox"));
           var option = {
                color: ['#31DBE8', '#EAD61F','#6EB21F'],
     tooltip : {
@@ -368,7 +368,7 @@ export default {
           natureBox.setOption(option,true)
         },
         tendencyHandle(){
-            var tendencyBox =this.$echarts.init(document.getElementById("tendencyBox"));
+            var tendencyBox =ECharts.init(document.getElementById("tendencyBox"));
              var option = {
                 tooltip: {},
                 legend: {
@@ -493,7 +493,7 @@ export default {
              tendencyBox.setOption(option,true);
         },
         civilHandle(){
-            var civilBox =this.$echarts.init(document.getElementById("civilBox"));
+            var civilBox =ECharts.init(document.getElementById("civilBox"));
             var option = {
                color: ['#31DBE8', '#EAD61F', '#2CE2A7', '#26A3EF','#6EB21F'],
                title:{
@@ -561,7 +561,7 @@ export default {
             civilBox.setOption(option,true);
         },
         administrativeHandle(){
-            var administrativeBox =this.$echarts.init(document.getElementById("administrativeBox"));
+            var administrativeBox =ECharts.init(document.getElementById("administrativeBox"));
             var option = {
                color:['#31DBE8', '#EAD61F', '#2CE2A7', '#26A3EF','#6EB21F'],
                title:{

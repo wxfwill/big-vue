@@ -1,498 +1,680 @@
 <template>
-  <div class="home-page-left">
-    <div class="left-left">
-    <div class="right-box">
-      <!-- 未jian -->
-      <div class="bor_col notCheck-box">
-        <p class="notCheck-label">
-          <span class="bg_img weijian"></span>
-          <i>未检</i>
-        </p>
-        <div id="wjBox" :style="{width: '700px', height: '320px'}"></div>
-        <div class="notCheck-content">
-          <div id="ksBox"></div>
-        </div>   
-      </div>
-      <!-- 控申 -->
-      <div class="bor_col control-box">
-        <p class="control-label">
-          <span class="bg_img kos"></span>
-          <i>控申</i>
-        </p>
-        <ul>
-          <li v-for="(item,index) in ksList" :key="index">
-            <p class="bg_img" :style="{backgroundImage:'url('+item.img+')'}">{{item.num}}</p>
-            <p :style="{color:item.col}">{{item.title}}</p>
-          </li>
-        </ul>
-      </div>
+    <div class="home-page-left">
+        <span v-show="false">{{ getSelectDateSection }}</span>
+        <span v-show="false">{{ getMapCode }}</span>
+        <div class="left-left">
+            <div class="right-box">
+                <!-- 未检 -->
+                <div class="notCheck-box">
+                    <div class="chart-box-title">
+                        <span class="chart-label-dot"></span>
+                        <i>未检</i>
+                    </div>
+                    <div id="wjBox" :style="{width: '700px', height: '220px', margin: '0 auto'}"></div>
+                </div>
+                <!-- 控申 -->
+                <div class="control-box">
+                    <div class="chart-box-title">
+                        <span class="chart-label-dot"></span>
+                        <i>控申</i>
+                    </div>
+                    <ul>
+                        <li v-for="item in ksList" :key="item.id">
+                            <p class="control-title">{{item.title}}</p>
+                            <p class="control-number">{{item.num}}</p>
+                        </li>
+                    </ul>
+                </div>
+                <!--受理案件趋势分析-->
+                <div class="accept-box">
+                    <div class="chart-box-title">
+                        <span class="chart-label-dot"></span>
+                        <i>受理案件趋势分析</i>
+                    </div>
+                    <div class="accept-chart" ref="qstjContent"></div>
+                </div>
+            </div>
+        </div>
+        <div class="left-right">
+            <!-- 刑事 -->
+            <div class="criminal-box">
+                <div class="chart-box-title">
+                    <span class="chart-label-dot"></span>
+                    <i>刑事案件概览</i>
+                </div>
+                <div class="overview-box">
+                    <penal-gauge v-for="(item, index) in xsList" :key="index" :chartConfig="item"></penal-gauge>
+                </div>
+            </div>
+            <!-- 起诉top -->
+            <div class="top-box">
+                <div class="chart-box-title">
+                    <span class="chart-label-dot"></span>
+                    <i>起诉罪名TOP10</i>
+                </div>
+                <ol class="list-group">
+                    <li v-for="(item,index) in topList" :key="index">
+                        <i>{{index+1}}</i>
+                        <div class="list-content">
+                            <p class="list-label">{{item.ay_name}}</p>
+                            <div class="top-line" :style="{width: `${item.width}px`}"></div>
+                            <span>{{item.qsajsls}}</span>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
     </div>
-    </div>
-    <div class="left-right">
-      <!-- 刑事 -->
-      <div class="criminal-box" :style="{backgroundImage:'url('+xsImg+')'}">
-      <p class="criminal-label">
-        刑事概览
-      </p>
-      <div class="overview-box">
-        <div class="line"></div>
-        <p v-for="(item,index) in xsList" :key="index">
-          <i>{{item.title}}</i>
-          <span></span>
-          {{item.num}}
-        </p>
-      </div>
-    </div>
-    <!-- 起诉top -->
-    <div class="bg_img top-box" :style="{backgroundImage:'url('+qszmImg+')'}">
-      <p class="title">起诉罪名TOP10</p>
-      <ol>
-        <li v-for="(item,index) in topList" :key="index">
-          <i>{{index+1}}</i>
-          <p :style="{backgroundImage:'url('+lineImg+')'}">
-            <span>{{item.title}}</span>
-            <span>{{item.num}}</span>
-          </p>
-        </li>
-      </ol>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script>
-import echarts from 'echarts';
-export default {
-  name: "homeLeft",
-  data() {
-    return {
-      lineImg:require('@/public/img/home/line.png'),
-      xsImg:require('@/public/img/home/box1.png'),
-      qszmImg:require('@/public/img/home/qszm.png'),
-     xsList:[{title:'受理件数',num: 13434},{title:'办结件数',num: 4545},{title:'在办件数',num: 7877},
-             {title:'起诉案件数',num: 9090},{title:'批捕逮捕数',num: 1231}],
-     ksList:[{img: require('@/public/img/home/slkg.png'),title:'受理控告件数',num: 3434,col:'rgba(47,224,190,1)'},
-              {img: require('@/public/img/home/slss.png'),title:'受理申诉数',num: 4545,col:'rgba(221,166,44,1)'},
-              {img: require('@/public/img/home/ccysla.png'),title:'初查移送立案件数',num: 7877,col:'rgba(49,219,232,1)'},
-              {img: require('@/public/img/home/kgajzb.png'),title:'控告案件在办数',num: 3434,col:'rgba(0,255,255,1)'},
-             {img: require('@/public/img/home/kgajzb.png'),title:'控告案件办结数',num: 9090,col:'rgba(0,255,255,1)'},
-             {img: require('@/public/img/home/ssaj.png'),title:'申诉案件在办数',num: 1231,col:'rgba(17,151,242,1)'},
-             {img: require('@/public/img/home/ssaj.png'),title:'申诉案件办结数',num: 6767,col:'rgba(17,151,242,1)'}]
-     ,topList:[{title:'受理件数',num: 3434},{title:'办结件数',num: 4545},{title:'1111',num: 7877},{title:'受理件数',num: 3434},
-             {title:'起诉案件数',num: 9090},{title:'批捕逮捕数',num: 1231},{title:'犯罪又犯罪审查逮捕案件',num: 6767}
-             ,{title:'批捕逮捕数',num: 1231},{title:'批捕逮捕数',num: 1231},{title:'批捕逮捕数',num: 1231}]
-    }
-  },
-  mounted() {
-    this.wjHandle()//未检
-    this.xsHandle()//刑事
-  },
-  methods: {
-    xsHandle(){
-      let rjget = document.querySelectorAll('.overview-box span')
-      let sum=0;
-      for (let i = 0; i < this.xsList.length; i++) {
-        const element = this.xsList[i].num;
-        sum = sum+element
-      }
-      for (let i = 0; i < rjget.length; i++) {
-        const el = rjget[i];
-        const num = this.xsList[i].num 
-        el.style.width=(num/sum*600)+'px'
-      }
-    },
-      wjHandle(){
-          var wjBox = this.$echarts.init(document.getElementById("wjBox"));
- var option = {
-    // backgroundColor: '#0f375f',
-    grid: {
-        top: "25%",
-        bottom: "10%"
-    },
-    tooltip: {},
-    legend: {
-        data: ["同比", "投资额"],
-        top: "15%",
-        textStyle: {
-            color: "#ffffff"
-        },
-        show:false
-    },
-    xAxis: {
-        data: [
-            "1月",
-            "2月",
-            "3月",
-            "4月",
-            "5月",
-            "6月",
-            "7月",
-            "8月",
-            "9月",
-            "10月",
-            "11月",
-            "12月"
-        ],
-        axisLine: {
-            show: false //隐藏X轴轴线
-        },
-        axisTick: {
-            show: false //隐藏X轴刻度
-        },
-        axisLabel: {
-            show: true,
-            textStyle: {
-                color: "#ffffff" //X轴文字颜色
-            }
-        }
-    },
-    yAxis: [{
-            type: "value",
-            name: "",
-            nameTextStyle: {
-                color: "#ebf8ac"
-            },
-            splitLine: {
-                show: false
-            },
-            splitLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            },
-            axisLine: {
-                show: false
-            },
-            axisLabel: {
-                show: true,
-                textStyle: {
-                    color: "#ffffff"
-                }
-            }
-        },
-        {
-            type: "value",
-            name: "",
-            nameTextStyle: {
-                color: "#ebf8ac"
-            },
-            position: "right",
-            splitLine: {
-                show: false
-            },
-            splitLine: {
-                show: false
-            },
-            axisTick: {
-                show: false
-            },
-            axisLine: {
-                show: false
-            },
-            axisLabel: {
-                show: false,
-                formatter: "{value} %", //右侧Y轴文字显示
-                textStyle: {
-                    color: "#ebf8ac"
-                }
-            }
-        }
-    ],
-    series: [{
-            name: "同比",
-            type: "line",
-            yAxisIndex: 1, //使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用
-            smooth: false, //平滑曲线显示
-            showAllSymbol: false, //显示所有图形。
-            symbol: "none", //标记的图形为实心圆
-            symbolSize: 10, //标记的大小
-            itemStyle: {
-                //折线拐点标志的样式
-                color: "#058cff"
-            },
-            lineStyle: {
-                color: "yellow"
-            },
-            areaStyle:{//分隔区域设置
-                color: "none"
-            },
-            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-        },
-        {
-            name: "",
-            type: "bar",
-            barWidth: 35,
-            itemStyle: {
-                normal: {
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                            offset: 0,
-                            color: "#63E8D7"
-                        },
-                        {
-                            offset: 1,
-                            color: "#0664BE"
-                        }
-                    ])
-                }
-            },
-            data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-        }
-    ]
-};
-          // 绘制图表
-          wjBox.setOption(option);
-      },
-  }
-};
+	import ECharts                                       from 'echarts';
+	import { mapGetters }                                from 'vuex';
+	import * as services                                 from '@/fetch/http';
+	import { undetectedChartConfig, criminalCaseConfig } from '@/pages/home/chartConfig';
+	import { verifyTriggerState, numberInteger }         from '@/utlis/helper';
+	import PenalGauge                                    from './penal-gauge';
+
+	export default {
+		name      : "homeLeft",
+		data() {
+			return {
+				lineImg: require('@/public/img/home/line.png'),
+				xsImg  : require('@/public/img/home/box1.png'),
+				qszmImg: require('@/public/img/home/qszm.png'),
+				xsList : [],
+				ksList : [
+					{
+						id   : 'ks_slkgjs',
+						title: '受理控告件数',
+						num  : 0,
+					}, {
+						id   : 'ks_slsss',
+						title: '受理申诉数',
+						num  : 0,
+					}, {
+						id   : 'ks_ccyslajs',
+						title: '初查移送立案件数',
+						num  : 0,
+					}, {
+						id   : 'ks_kgajzbs',
+						title: '控告案件在办数',
+						num  : 0,
+					}, {
+						id   : 'ks_kgajbjs',
+						title: '控告案件办结数',
+						num  : 0,
+					}, {
+						id   : 'ks_ssajzbs',
+						title: '申诉案件在办数',
+						num  : 0,
+					}, {
+						id   : 'ks_ssajbjs',
+						title: '申诉案件办结数',
+						num  : 0,
+					}],
+				topList: [],
+			}
+		},
+		computed  : {
+			...mapGetters('homePage', ['getSelectDateSection', 'getMapCode'])
+		},
+		beforeCreate() {
+			this.trigger         = ['startDate', 'endDate', 'code', 'lev'];
+			this.oldTriggerState = {};
+		},
+		mounted() {
+			const params              = { ...this.getSelectDateSection, ...this.getMapCode };
+			this.oldTriggerState      = params;
+			this.undetectedChart      = ECharts.init(document.getElementById("wjBox"));
+			this.trendStatisticsChart = ECharts.init(this.$refs.qstjContent);
+			this.loadXSData(params);
+			this.loadWJData(params);
+			this.loadProsecution(params);
+			this.loadProsecutionChargeList(params);
+			this.requestTrendStatisticsList(params);
+		},
+		updated() {
+			const params = { ...this.getSelectDateSection, ...this.getMapCode };
+			if(verifyTriggerState(this.trigger, this.oldTriggerState, params)) {
+				this.oldTriggerState = params;
+				this.loadWJData(params);
+				this.loadXSData(params);
+				this.loadProsecution(params);
+				this.loadProsecutionChargeList(params);
+				this.requestTrendStatisticsList(params);
+			}
+		},
+		methods   : {
+			async loadWJData(params) {
+				const res = await services.getUndetected(params);
+				if(res.code === 200) {
+					this.wjHandle(res.data);
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			async loadXSData(params) {
+				const res = await services.getCriminalCase(params);
+				if(res.code === 200) {
+					this.xsList = criminalCaseConfig.map(i => {
+						return {
+							...i,
+							value: Number(res.data[i.id]),
+						};
+					});
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			async loadProsecution(params) {
+				const res = await services.getProsecution(params);
+				if(res.code === 200) {
+					this.ksList = this.ksList.map(i => ({
+						...i,
+						num: res.data[i.id]
+					}))
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			async loadProsecutionChargeList(params) {
+				const res = await services.getProsecutionChargeList(params);
+				if(res.code === 200) {
+					const maxNum = res.data[0] ? res.data[0].qsajsls : 1;
+					this.topList = res.data.map(i => ({
+						...i,
+						width: (i.qsajsls / maxNum * 280).toFixed(2)
+					}));
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			async requestTrendStatisticsList(params) {
+				const res = await services.getTrendStatisticsList(params);
+				if(res.code === 200) {
+					this.loadTrendStatisticsChart(res.data);
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			wjHandle(chartData = {}) {
+				chartData       = {
+					wj_bbs  : 222,
+					wj_bjs  : 1122,
+					wj_bqss : 333,
+					wj_kss  : 110,
+					wj_pzdbs: 1444,
+					wj_sls  : 555,
+					wj_sxpjs: 666,
+					wj_tqgss: 777,
+				};
+				let valMax      = 0;
+				const xAxisData = [],
+					seriesData  = undetectedChartConfig.map(i => {
+						const value = chartData[i.id];
+						if(valMax < value) {
+							valMax = value;
+						}
+						xAxisData.push(i.name);
+						return value;
+					});
+				valMax          = numberInteger(valMax);
+				this.undetectedChart.setOption({
+					grid   : {
+						width : '90%',
+						top   : 38,
+						bottom: 20,
+					},
+					tooltip: {},
+					legend : { show: false },
+					xAxis  : {
+						data     : xAxisData,
+						axisLine : {
+							show: false //隐藏X轴轴线
+						},
+						axisTick : {
+							show: false //隐藏X轴刻度
+						},
+						axisLabel: {
+							show     : true,
+							textStyle: {
+								color: "#ffffff" //X轴文字颜色
+							}
+						}
+					},
+					yAxis  : [{
+						type         : "value",
+						name         : "",
+						nameTextStyle: {
+							color: "#ebf8ac"
+						},
+						splitLine    : {
+							show: false
+						},
+						axisTick     : {
+							show: false
+						},
+						axisLine     : {
+							show: false
+						},
+						axisLabel    : {
+							show     : true,
+							textStyle: {
+								color: "#ffffff"
+							}
+						}
+					}, {
+						type         : "value",
+						name         : "",
+						nameTextStyle: {
+							color: "#ebf8ac"
+						},
+						position     : "right",
+						splitLine    : {
+							show: false
+						},
+						axisTick     : {
+							show: false
+						},
+						axisLine     : {
+							show: false
+						},
+						axisLabel    : {
+							show     : false,
+							formatter: "{value} %", //右侧Y轴文字显示
+							textStyle: {
+								color: "#ebf8ac"
+							}
+						}
+					}, {
+						show: true,
+					}],
+					series : [{
+						name         : "",
+						type         : "line",
+						yAxisIndex   : 1, //使用的 y 轴的 index，在单个图表实例中存在多个 y轴的时候有用
+						smooth       : false, //平滑曲线显示
+						showAllSymbol: false, //显示所有图形。
+						symbol       : "none", //标记的图形为实心圆
+						itemStyle    : {
+							//折线拐点标志的样式
+							color: "#058cff"
+						},
+						lineStyle    : {
+							color: "#00fff8"
+						},
+						areaStyle    : {//分隔区域设置
+							color: "none"
+						},
+						data         : seriesData
+					}, {
+						tooltip  : {
+							show: false
+						},
+						name     : "背景",
+						type     : "bar",
+						barWidth : 36,
+						barGap   : '-100%',
+						itemStyle: {
+							normal: {
+								color: 'rgba(0, 159, 232, .1)'
+							}
+						},
+						data     : Array.from({ length: seriesData.length }).map(() => valMax)
+					}, {
+						name     : "",
+						type     : "bar",
+						barWidth : 36,
+						itemStyle: {
+							normal: {
+								color: new ECharts.graphic.LinearGradient(0, 0, 0, 1, [{
+									offset: 0,
+									color : "#63E8D7"
+								}, {
+									offset: 1,
+									color : "#0664BE"
+								}])
+							}
+						},
+						data     : seriesData
+					}]
+				});
+			},
+			loadTrendStatisticsChart(data) {
+				this.trendStatisticsChart.setOption({
+					tooltip: {
+						trigger    : 'axis',
+						axisPointer: {
+							type : 'cross',
+							label: {
+								backgroundColor: '#6a7985',
+							},
+						},
+						formatter  : '<div class="accept-tooltip">{b}月 <br />{c}件</div>'
+					},
+					color  : ["#0080ff", "#4cd5ce"],
+					grid   : {
+						left        : '5px',
+						top         : '30px',
+						right       : '50px',
+						bottom      : '10px',
+						containLabel: true
+					},
+					xAxis  : [{
+						type       : 'category',
+						name       : '（月）',
+						boundaryGap: false,
+						data       : data.map(i => i.rq),
+						axisLabel  : {
+							show     : true,
+							margin   : 15,
+							textStyle: {
+								show    : false,
+								color   : 'rgba(255,255,255,1)',
+								fontSize: 12,
+							},
+						},
+						axisTick   : {
+							show: false,
+						},
+						axisLine   : {
+							show     : false,
+							lineStyle: {
+								color: 'rgba(255,255,255,1)',
+								width: 0.5, //这里是为了突出显示加上的
+							}
+						}
+					}],
+					yAxis  : [{
+						type     : 'value',
+						name     : '（件）',
+						axisLine : {
+							show     : false,
+							onZero   : false,
+							lineStyle: {
+								color: 'rgba(255,255,255,1)',
+								width: 1, //这里是为了突出显示加上的
+							}
+						},
+						axisTick : {
+							show: false,
+						},
+						axisLabel: {
+							formatter: function(val) {
+								return val;
+							},
+							show     : true,
+							textStyle: {
+								color: 'rgba(255,255,255,1)' //字体颜色
+							}
+						},
+						splitLine: { //保留网格线
+							show     : false,
+							lineStyle: { //y轴网格线设置
+								color: '#0a2b52',
+								width: 1,
+								type : 'solid'
+							}
+						},
+					}],
+					series : [
+						{
+							name      : '件数',
+							type      : 'line',
+							smooth    : false,
+							itemStyle : {
+								normal  : { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
+									color    : new ECharts.graphic.LinearGradient(0, 0, 0, 1, [{
+										offset: 0,
+										color : 'rgba(0,255,255, 1)' // 0% 处的颜色
+									}, {
+										offset: 1,
+										color : 'rgba(0,255,255, 0)' // 100% 处的颜色
+									}]), //背景渐变色
+									lineStyle: { // 系列级个性化折线样式
+										width: 2,
+										type : 'solid',
+										color: "#2db9f6"
+									}
+								},
+								emphasis: {
+									color    : '#02675f',
+									lineStyle: { // 系列级个性化折线样式
+										width: 0.5,
+										type : 'dotted',
+										color: "#02675f" //折线的颜色
+									}
+								}
+							},
+							symbolSize: 5,
+							areaStyle : {
+								normal: {}
+							},
+							data      : data.map(i => i.sljs),
+						},
+					]
+				});
+			},
+		},
+		components: {
+			PenalGauge
+		}
+	};
 </script>
 
 <style lang="scss" scoped>
-.home-page-left {
-  display: flex;
-  // flex: 0 0 1242px;
-  // min-width: 1242px;
-  // height: 1000px;
-  width: 1318px;
-  padding: 50px 0 0 0px;
-  // position: relative;
-  .left-left{
-    display: flex;
-    flex-wrap: wrap;
-    width:727px;
-  .right-box {
-    .animation {
-      //动画盒子
-      display: flex;
-      text-align: center;
-      align-items: center;
-      width: 113px;
-      height: 113px;
-      font-size: 14px;
-      font-family: Helvetica;
-      color: rgba(255, 255, 255, 1);
-      padding: 0 28.5px;
-    }
-    .notCheck-box {
-      width:730px;
-      height:376px;
-      .notCheck-label {
+    .home-page-left {
         display: flex;
-        align-items: center;
-        margin-bottom: 25px;
-        margin:16px 0 0 31px;
-        i {
-          margin: 0 0 0 10px;
-          font-size:24px;
-          color:rgba(255,255,255,1);
-          line-height:29px;
+        width: 1318px;
+        padding: 50px 0 0 0;
+        .accept-tooltip {
+            background: linear-gradient(left, #0BE5F1, #0C99F7);
+            width: 100px;
+            height: 100px;
         }
-        .weijian {
-          width:13px;
-          height:13px;
-          border-radius: 50%;
-          background:rgba(0,178,226,1);
+        .left-left {
+            display: flex;
+            flex-wrap: wrap;
+            width: 727px;
+            .right-box {
+                .animation {
+                    //动画盒子
+                    display: flex;
+                    text-align: center;
+                    align-items: center;
+                    width: 113px;
+                    height: 113px;
+                    font-size: 14px;
+                    font-family: Helvetica;
+                    color: rgba(255, 255, 255, 1);
+                    padding: 0 28.5px;
+                }
+                .notCheck-box {
+                    width: 730px;
+                    height: 270px;
+                }
+                .control-box {
+                    margin-top: 30px;
+                    width: 730px;
+                    height: 230px;
+                    margin-bottom: 20px;
+                    ul {
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: space-around;
+                        width: 650px;
+                        height: 170px;
+                        margin: 33px auto 0;
+                        li {
+                            width: 130px;
+                            text-align: center;
+                            margin-right: 20px;
+                            .control-title {
+                                font-size: 16px;
+                                color: rgba(255, 255, 255, 1);
+                                line-height: 21px;
+                                margin-bottom: 10px;
+                            }
+                            .control-number {
+                                display: inline;
+                                padding: 0 15px;
+                                border-radius: 20px;
+                                color: #009fe8;
+                                border: 1px solid #009fe8;
+                            }
+                        }
+                    }
+                }
+                .accept-box {
+                    .accept-chart {
+                        width: 700px;
+                        height: 260px;
+                        margin: 40px auto 0 auto;
+                    }
+                }
+            }
+            .label {
+                display: inline-block;
+                width: 4px;
+                height: 20px;
+                background-color: #33d1f8;
+                border-radius: 20px;
+            }
         }
-      }
+        .left-right {
+            display: flex;
+            flex-wrap: wrap;
+            margin-left: 20px;
+            .criminal-box {
+                width: 545px;
+                .overview-box {
+                    width: 100%;
+                    position: relative;
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    padding: 54px 0 40px;
+                    .line {
+                        position: absolute;
+                        width: 1px;
+                        height: 100%;
+                        left: 145px;
+                        top: 0;
+                        background: linear-gradient(360deg, rgba(5, 142, 226, 0.5) 0%, rgba(5, 142, 226, 1) 53%, rgba(5, 142, 226, 0.5) 100%);
+                        opacity: 0.71;
+                    }
+                    p {
+                        margin-bottom: 20px;
+                        display: flex;
+                        align-items: center;
+                        text-align: center;
+                        font-size: 12px;
+                        color: rgba(255, 255, 255, 1);
+                        line-height: 14px;
+                        i {
+                            display: inline-block;
+                            font-size: 18px;
+                            color: rgba(0, 255, 255, 1);
+                            line-height: 22px;
+                            width: 122px;
+                            text-align: right;
+                        }
+                    }
+                    span {
+                        display: inline-block;
+                        border-radius: 20px;
+                        width: 180px;
+                        height: 8px;
+                        margin: 0 11px 0 51px;
+                        background: linear-gradient(
+                                        to right,
+                                        #1ABCE2,
+                                        #2EE8B3
+                        );
+                    }
+                    font-size: 12px;
+                    font-family: Helvetica;
+                    color: rgba(255, 255, 255, 1);
+                }
+                .criminal-label {
+                    position: absolute;
+                    left: 235px;
+                    top: 9px;
+                    font-size: 18px;
+                    color: rgba(255, 255, 255, 1);
+                    line-height: 22px;
+                }
+            }
+            .top-box {
+                width: 550px;
+                height: 530px;
+                position: relative;
+                .title {
+                    position: absolute;
+                    left: 204px;
+                    top: 5px;
+                    font-size: 18px;
+                    color: rgba(255, 255, 255, 1);
+                    line-height: 22px;
+                }
+                .list-group {
+                    padding: 28px 13px 0;
+                    li {
+                        display: flex;
+                        align-items: center;
+                        .list-content {
+                            display: flex;
+                            align-items: center;
+                            width: 100%;
+                            height: 40px;
+                            padding-bottom: 13px;
+                            margin-bottom: 10px;
+                            background-repeat: no-repeat;
+                            background-position-y: bottom;
+                            .list-label {
+                                width: 130px;
+                                font-size: 18px;
+                                color: rgba(255, 255, 255, 1);
+                                line-height: 22px;
+                            }
+                            .top-line {
+                                max-width: 280px;
+                                height: 10px;
+                                background: linear-gradient(270deg, rgba(23, 208, 244, 1) 0%, rgba(10, 142, 231, 1) 100%);
+                                border-radius: 7px;
+                                margin: 0 12px;
+                            }
+                            span {
+                                font-size: 15px;
+                                color: #00BEDD;
+                            }
+                        }
+                        i {
+                            display: inline-block;
+                            width: 21px;
+                            height: 21px;
+                            text-align: center;
+                            line-height: 20px;
+                            border-radius: 50%;
+                            margin-right: 10px;
+                            background-color: #33d1f8;
+                            margin-top: -21px;
+                            font-size: 11px;
+                            color: rgba(255, 255, 255, 1);
+                        }
+                    }
+                    li:nth-child(1), li:nth-child(2), li:nth-child(3) {
+                        i {
+                            background-color: rgba(255, 108, 64, 1);
+                        }
+                        color: #FF6C40;
+                        span {
+                            color: #c49760;
+                        }
+                    }
+                }
+            }
+        }
     }
-    .control-box{
-      padding:40px 20px;
-      margin-top:20px;
-      width:730px;
-      height:506px;
-       .control-label {
-        display: flex;
-        align-items: center;
-        margin-bottom: 35px;
-        i {
-          margin: 0 0 0 10px;
-          font-size:24px;
-          color:rgba(255,255,255,1);
-          line-height:29px;
-        }
-        .kos {
-          width:13px;
-          height:13px;
-          border-radius: 50%;
-          background:rgba(0,178,226,1);
-        }
-      }
-      ul{
-        display: flex;
-        flex-wrap: wrap;
-        height:100%;
-        justify-content: space-around;
-        li{
-          text-align: center;
-          p:nth-child(1){
-            display: inline-block;
-            text-align: center;
-          padding-top:40px;
-            width:98px;
-          height:98px;
-          border-radius:50%;
-          font-size:16px;
-          line-height:19px;
-          color:rgba(255,255,255,1);
-          margin-bottom: 20px;
-          }
-          P:nth-child(2){
-            width:145px;
-            font-size: 15px;
-            text-align: center;
-          }
-        }
-      }
-    }
-  }
-  .label {
-    display: inline-block;
-    width: 4px;
-    height: 20px;
-    background-color: #33d1f8;
-    border-radius: 20px;
-  }
-  }
-  .left-right{
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: 20px;
-      .criminal-box {
-    //刑事区
-    width: 545px;
-    height:320px;
-    padding: 80px;
-    position: relative;
-    .overview-box {
-      width:100%;
-      position: relative;
-      .line{
-        position: absolute;
-        width:1px;
-        height:100%;
-        left:116px;
-        top: 0;
-        background:linear-gradient(360deg,rgba(5,142,226,0.5) 0%,rgba(5,142,226,1) 53%,rgba(5,142,226,0.5) 100%);
-        opacity:0.71;
-      }
-      p {
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        text-align: center;
-        font-size:12px;
-        color:rgba(255,255,255,1);
-        line-height:14px;
-        i {
-          display: inline-block;
-          font-size:18px;
-          color:rgba(0,255,255,1);
-          line-height:22px;
-          width:92px;
-        }
-      }
-      span {
-        display: inline-block;
-        border-radius: 20px;
-        width: 146px;
-        height: 8px;
-        margin: 0 11px 0 51px;
-        background: -webkit-linear-gradient(
-          left,
-          #1ABCE2,
-          #2EE8B3
-        ); /* Safari 5.1 - 6.0 */
-        background: -o-linear-gradient(
-          right,
-          #1ABCE2,
-          #2EE8B3
-        ); /* Opera 11.1 - 12.0 */
-        background: -moz-linear-gradient(
-          right,
-          #1ABCE2,
-          #2EE8B3
-        ); /* Firefox 3.6 - 15 */
-        background: linear-gradient(
-          to right,
-          #1ABCE2,
-          #2EE8B3
-        ); /* 标准的语法（必须放在最后） */
-      }
-      font-size: 12px;
-      font-family: Helvetica;
-      color: rgba(255, 255, 255, 1);
-    }
-    .criminal-label {
-      position: absolute;
-      left:235px;
-      top:9px;
-      font-size:18px;
-      color:rgba(255,255,255,1);
-      line-height:22px;
-    }
-  }
-  .top-box{
-    width:550px;
-    height:575px;
-    padding:60px 40px 50px 40px;
-    position: relative;
-    .title{
-      position: absolute;
-      left:204px;
-      top:5px;
-      font-size:18px;
-      color:rgba(255,255,255,1);
-      line-height:22px;
-    }
-    ol{
-      li{
-        display: flex;
-        align-items: center;
-        i{
-          display: inline-block;
-          width:21px;
-          height:21px;
-          text-align: center;
-          line-height:20px;
-          border-radius:50%;
-          margin-right:10px;
-          background-color: #33d1f8;
-          margin-top:-21px;
-          font-size:11px;
-          color:rgba(255,255,255,1);
-        }
-        p{
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width:100%;
-          height:40px;
-          padding-bottom:13px;
-          margin-bottom:10px;
-          background-repeat: no-repeat;
-          background-position-y: bottom;
-          span:nth-child(1){
-            font-size:18px;
-            color:rgba(255,255,255,1);
-            line-height:22px;
-          }
-          span:nth-child(2){
-            font-size: 15px;
-           color:rgba(0,190,221,1);
-          } 
-        }
-      }
-      li:nth-child(1),li:nth-child(2),li:nth-child(3){
-        i{
-          background-color:#c49760;
-        }
-        color: #d73b3c;
-        span:nth-child(2){
-          color: #c49760;
-        }
-      }
-    }
-  }
-  }
-}
 </style>

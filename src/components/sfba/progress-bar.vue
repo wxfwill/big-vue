@@ -23,7 +23,7 @@ export default {
     },
     methods: {
         progressHandle(){
-            const myProgress = this.$echarts.init(document.getElementById(`vs${this.ID}`));
+            const myProgress = ECharts.init(document.getElementById(`vs${this.ID}`));
             
             var option = {
                 grid: [

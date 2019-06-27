@@ -108,7 +108,7 @@
     </div>
 </template>
 <script>
-import echarts from 'echarts';
+import ECharts from 'echarts';
 import mapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
 import trendChart from '@/components/sfba/trend-chart.vue'
@@ -164,7 +164,7 @@ export default {
     },
     methods: {
         percentChart(){
-          var percent =this.$echarts.init(document.getElementById("percent"));
+          var percent =ECharts.init(document.getElementById("percent"));
              var option = {
                 tooltip: {},
                 grid: {//柱状图偏移
@@ -258,7 +258,7 @@ export default {
              percent.setOption(option,true);  
         },
         educationChart(){
-            var educationContent =this.$echarts.init(document.getElementById("educationContent"));
+            var educationContent =ECharts.init(document.getElementById("educationContent"));
             var option = {
                color: ['#F78350', '#26A3EF', '#31DBE8', '#2CE2A7','#EAD61F','#F7931E'],
     tooltip : {
@@ -311,7 +311,7 @@ export default {
             educationContent.setOption(option,true);
         },
         investigateHandle(ID,num1,num2,legend,col1,col2){
-            var ID = this.$echarts.init(document.getElementById(ID));
+            var ID = ECharts.init(document.getElementById(ID));
              var option = {
                 tooltip: {},
                 legend: {

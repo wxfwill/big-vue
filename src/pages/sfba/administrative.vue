@@ -114,7 +114,7 @@
     </div>
 </template>
 <script>
-import echarts from 'echarts';
+import ECharts  from 'echarts';
 import mapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
 import DateTime from '@/components/DateTime.vue'
@@ -214,7 +214,7 @@ export default {
             }
         },//下一页
         fileHandle(){
-            var file =this.$echarts.init(document.getElementById("file"));
+            var file =ECharts.init(document.getElementById("file"));
            var option = {
                 tooltip: {
                     // trigger: 'axis',
@@ -288,7 +288,7 @@ export default {
                     barWidth:20,
                     itemStyle: {
                             normal: { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
-                                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                color: new ECharts.graphic.LinearGradient(0, 0, 1, 0, [{
                                     offset: 0,
                                     color: '#1783E5' // 0% 处的颜色
                                 }, {
@@ -317,7 +317,7 @@ export default {
             file.setOption(option,true)
         },
         capitaHandle(){
-            var capita =this.$echarts.init(document.getElementById("capita"));
+            var capita =ECharts.init(document.getElementById("capita"));
             var option = {
                 tooltip: {},
                 grid: {//柱状图偏移
@@ -402,7 +402,7 @@ export default {
             capita.setOption(option,true)
         },
         classifyHandle(){
-            var classifyContent =this.$echarts.init(document.getElementById("classifyContent"));
+            var classifyContent =ECharts.init(document.getElementById("classifyContent"));
             var option = {
                color: ['#6EB21F', '#31DBE8', '#EAD61F'],
                bottom:'10%',
@@ -453,7 +453,7 @@ export default {
             classifyContent.setOption(option,true)
         },
         trendHandle(){
-            var trendContent = this.$echarts.init(document.getElementById("trendContent"));
+            var trendContent = ECharts.init(document.getElementById("trendContent"));
             var option = {
                 tooltip: {
                     backgroundColor:'#0C99F7',
@@ -552,7 +552,7 @@ export default {
                         },
                         itemStyle: {
                             normal: { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                color: new ECharts.graphic.LinearGradient(0, 0, 0, 1, [{
                                     offset: 0,
                                     color: 'rgba(0,255,255, 1)' // 0% 处的颜色
                                 }, {

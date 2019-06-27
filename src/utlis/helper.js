@@ -9,7 +9,7 @@ export const getRealType = (constant) => {
 	}
 };
 /**
- *  位数不够补零
+ *  向前补零
  * */
 export const fillZero    = (num, len) => {
 	if(`${num}`.length < len) {
@@ -28,4 +28,20 @@ export function uuid() {
 			v = c === 'x' ? r : (r & 0x3 | 0x8);
 		return v.toString(16);
 	});
+}
+
+/**
+ *  验证是否需要更新
+ * */
+export function verifyTriggerState(trigger = [], oldState, newState) {
+	return trigger.some(i => oldState[i] !== newState[i]);
+}
+
+/**
+ * 取整
+ * */
+export function numberInteger(num = 0) {
+	const len = String(num).length,
+		  carryBit = Number(`10E${len - 2}`);
+	return (~~(num/carryBit + 1)) * carryBit;
 }

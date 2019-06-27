@@ -1,6 +1,6 @@
 <template>
     <div class="map-chart-box">
-        <div ref="mapRef" :style="{ width:'850px', height: '580px' }"></div>
+        <div ref="mapRef" class="map-chart"></div>
         <div class="map-option">
             <i class="map-btn map-icon el-icon-s-home" @click="showChinaMap"></i>
             <img class="map-btn" :src="backIcon" alt="..." @click="backSuperiorMap">
@@ -9,14 +9,9 @@
             <p class="bg_img rotation" :style="{backgroundImage:`url(${this.mapTooltipTitleBg})`}"></p>
             <span class="title">{{ tooltipData.name }}</span>
             <ul>
-                <li>
-                    <span>员额内检察官：</span> <i>{{ tooltipData.yenjcg	 }}</i>
-                </li>
-                <li>
-                    <span>检察官助理：</span><i>{{ tooltipData.jcgzl	}}</i>
-                </li>
-                <li>
-                    <span>司法行政人员：</span><i>{{ tooltipData.sfxzry }}</i>
+                <li v-for="item in tooltipConfig" :key="item.id">
+                    <span>{{ item.name }}：</span>
+                    <i>{{ tooltipData[item.id] || '-' }}</i>
                 </li>
             </ul>
         </div>
@@ -34,7 +29,7 @@
 				mapTooltipTitleBg: require('@/public/img/home/shengdata.png'),
 				showTooltip      : false,
 				tooltipData      : {},
-                code             : 100000,
+				code             : 100000,
 			}
 		},
 		mounted() {
@@ -45,11 +40,14 @@
 
 			myChart.on('click', (params) => {
 				if(this.mapLevel < 3) {
+					if(!params.data){
+                        return false;
+					}
 					const selectCityName = params.name,
 						  selectCity     = this.dataMap.find((place) => {
 							  return place.name === selectCityName;
 						  });
-					this.code = params.data && params.data.code;
+					this.code            = params.data && params.data.code;
 					if(selectCity.id.length === 6) {
 						this.notRunHoldWarn();
 						return false;
@@ -58,10 +56,11 @@
 					if(this.mapLevel === 2) {
 						this.secondLvMap = selectCity;
 					}
-					this.getNewRegionInfo(params.data && params.data.code, this.mapLevel);
+					this.getNewRegionInfo && this.getNewRegionInfo({
+                        code : params.data.code,
+                        lev : this.mapLevel,
+                    });
 					this.loadMapData(selectCity.id, selectCity.name);
-				} else {
-					this.notRunHoldWarn();
 				}
 			});
 			myChart.on('mouseover', (params) => {
@@ -93,9 +92,9 @@
 				this.loadMap(name, data);
 				this.mapSvgJson = {
 					name,
-                    data
-                };
-				this.dataMap = data.features.map((place) => ({
+					data
+				};
+				this.dataMap    = data.features.map((place) => ({
 					id  : place.properties.id,
 					name: place.properties.name
 				}));
@@ -116,10 +115,9 @@
 						name     : '人数',
 						type     : 'map',
 						mapType  : name,
-						geoIndex : 0,
-						left     : 30,
-						top      : 30,
-						bottom   : 30,
+                        geoIndex : 0,
+						layoutCenter: ['50%', '47%'],
+						layoutSize : 850,
 						label    : {
 							normal  : {
 								show     : true,
@@ -163,7 +161,10 @@
 			showChinaMap() {
 				this.mapLevel = 1;
 				this.loadMapData(0, 'china');
-				this.getNewRegionInfo(100000, 1);
+				this.getNewRegionInfo({
+                    code: 100000,
+                    lev: 1,
+                });
 			},
 			// 返回上一级
 			backSuperiorMap() {
@@ -179,7 +180,10 @@
 					}
 						break;
 				}
-				this.getNewRegionInfo(this.code, this.mapLevel);
+				this.getNewRegionInfo({
+                    code : this.code,
+                    lev: this.mapLevel
+                });
 			},
 			// 无法下钻提示
 			notRunHoldWarn() {
@@ -190,24 +194,30 @@
 			},
 
 		},
-		props  : ['mapData', 'getNewRegionInfo'],
-        watch : {
-			mapData(){
+		props  : ['mapData', 'getNewRegionInfo', 'tooltipConfig'],
+		watch  : {
+			mapData() {
 				this.loadMap(this.mapSvgJson.name, this.mapSvgJson.data);
-            }
-        }
+			}
+		}
 	}
 </script>
 
 <style lang="scss">
     .map-chart-box {
         position: relative;
-        width: 950px;
+        width: 100%;
+        height: 100%;
         float: right;
         display: flex;
+        .map-chart {
+            flex: 1;
+            height: 100%;
+        }
         .map-option {
             margin: 20px;
             display: flex;
+            width: 100px;
             .map-btn {
                 width: 30px;
                 height: 30px;
@@ -226,12 +236,12 @@
         }
         .area-box {
             position: absolute;
-            top: 207px;
+            top: 277px;
             right: 47px;
-            bottom: 100px;
             width: 200px;
-            height: 230px;
-            background: rgba(10, 103, 209, 0.2);
+            min-height: 230px;
+            padding-bottom: 10px;
+            background:linear-gradient(90deg,rgba(19,210,220,.3) 0%,rgba(5,138,227,.5) 100%);
             box-shadow: 0 0 1px rgba(1, 1, 1, 1);
             border-radius: 5px;
             @keyframes rotation {
@@ -273,7 +283,7 @@
                     padding: 10px;
                     span {
                         display: inline-block;
-                        width: 120px;
+                        width: 100px;
                         text-align: right;
                         margin-right: 5px;
                     }

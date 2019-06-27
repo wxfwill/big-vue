@@ -1,12 +1,8 @@
-// token
-export const TOKEN = 'TOKEN'
-// 法币交易买入
-export const FRENCH_BUY_IN = 'FRENCH_BUY_IN'
-// 登陆用户名
-export const USER_NAME = 'USER_NAME'
-// 登陆状态
-export const LOGIN = 'LOGIN'
-// 登陆后的信息
-export const ALL_LOGIN = 'ALL_LOGIN'
-//地图弹窗
-export const POPUPSHOW = 'POPUPSHOW'
+/**************** 首页  ***************/
+// 修改时间
+export const SET_HOME_TIME  = 'SET_HOME_TIME';
+
+// 切换地图
+export const SET_HOME_MAP_STATE = 'SET_MAP_STATE';
+
+export const POPUP_SHOW = 'POPUP_SHOW';

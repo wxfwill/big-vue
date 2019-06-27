@@ -73,7 +73,6 @@ export default {
             popupImg:require('@/public/img/home/popup.png'),
             levelNum:0,
             current: 0,
-            show: false,
             myChart:null,
             geoJsonData:null,
             beforeName:null,//之前的名称
@@ -87,10 +86,7 @@ export default {
             map:null
         }
     },
-    computed:{
-        ...mapGetters(['popupShow'])
-    },
-    mounted(){//-----------1  
+	mounted(){//-----------1
         this.myChart = Echarts.init(document.getElementById("mapBox"));
         let current = 0;
         this.myChart.on('mapselectchanged', params =>{//鼠标点击时触发mapselectchanged：地图区域切换/点击选中状态的事件。下钻事件
@@ -123,7 +119,7 @@ export default {
     },
     methods:{
         popupHandle(){//弹窗事件
-        this.$store.commit(types.POPUPSHOW,true)
+        this.$store.commit(types.POPUP_SHOW,false)
         },
         initialHandle(){
             this.district.search('中国', (status, result) => {
@@ -249,7 +245,6 @@ export default {
 		})
     },
     getData(data, level, adcode) { //中国的数据，省市区，区编号----------2
-    console.log(data,'search搜索')
         let subList = data.districtList || [];//省市区数组数据
             let curlevel = subList[0].level;
             this.curlevel = curlevel;//初始化时将省赋值

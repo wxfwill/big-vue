@@ -100,7 +100,7 @@
     </div>
 </template>
 <script>
-import echarts from 'echarts';
+import ECharts from 'echarts';
 import mapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
 import trendChart from '@/components/sfba/trend-chart.vue'
@@ -248,7 +248,7 @@ export default {
             }
         },
         fileHandle(){
-            var file =this.$echarts.init(document.getElementById("file"));
+            var file =ECharts.init(document.getElementById("file"));
             var _this= this
            var option = {
                 tooltip: {
@@ -324,7 +324,7 @@ export default {
                     barWidth:20,
                     itemStyle: {
                             normal: { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
-                                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                color: new ECharts.graphic.LinearGradient(0, 0, 1, 0, [{
                                     offset: 0,
                                     color: '#1783E5' // 0% 处的颜色
                                 }, {
@@ -354,7 +354,7 @@ export default {
             file.setOption(option,true)
         },
         capitaHandle(){
-            var capita =this.$echarts.init(document.getElementById("capita"));
+            var capita =ECharts.init(document.getElementById("capita"));
             var option = {
                 tooltip: {},
                 grid: {//柱状图偏移
@@ -439,7 +439,7 @@ export default {
             capita.setOption(option,true)
         },
         breakHandle(){
-            var breakb1 = this.$echarts.init(document.getElementById("break1"));
+            var breakb1 = ECharts.init(document.getElementById("break1"));
             var option = {
                 tooltip: {},
                 legend: {
@@ -570,7 +570,7 @@ export default {
             };
             breakb1.setOption(option,true)
             // 
-            // var breakb2 = this.$echarts.init(document.getElementById("break2"));
+            // var breakb2 = ECharts.init(document.getElementById("break2"));
             // var option = {
             //     tooltip: {},
             //     legend: {
@@ -696,7 +696,7 @@ export default {
             // breakb2.setOption(option,true)
         },
         concludeHandle(){
-            var conclude =this.$echarts.init(document.getElementById("conclude"));
+            var conclude =ECharts.init(document.getElementById("conclude"));
             var option = {
                color: ['#FCE830', '#1ED3CA'],
     tooltip : {
@@ -741,7 +741,7 @@ export default {
             conclude.setOption(option,true)
         },
         acceptHandle(){
-             var accept =this.$echarts.init(document.getElementById("accept"));
+             var accept =ECharts.init(document.getElementById("accept"));
             var option = {
                color: ['#A321E8', '#15D5FD'],
     tooltip : {

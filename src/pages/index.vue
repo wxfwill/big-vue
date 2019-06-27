@@ -40,7 +40,9 @@
 			}
 		},
 		computed  : {
-			...mapGetters(['popupShow'])
+			...mapGetters('homePage', {
+				popupShow: 'popupShow'
+            })
 		},
 		watch     : {
 			popupShow(val) {
@@ -55,10 +57,10 @@
 		},
 		methods   : {
 			closeHandle() {
-				this.$store.commit(types.POPUPSHOW, false)
+				this.$store.commit(types.POPUP_SHOW, false)
 			},
 			dataBoxHandle() {
-				var dataBox = this.$echarts.init(document.getElementById("dataBox"));
+				var dataBox = ECharts.init(document.getElementById("dataBox"));
 				var option  = {
 					title  : {
 						text     : '全国各省份数据统计表',
@@ -223,7 +225,7 @@
     .home-page {
         display: flex;
         justify-content: flex-start;
-        padding: 69px 20px 20px 39px;
+        padding: 69px 20px 20px 32px;
         background: #143881;
         height: 100%;
         width: 100%;

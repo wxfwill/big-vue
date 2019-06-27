@@ -12,7 +12,7 @@
     </div>
 </template>
 <script>
-import echarts from 'echarts';
+import ECharts  from 'echarts';
 import Popup from '@/components/Popup.vue'
 export default {
     components:{
@@ -33,7 +33,7 @@ export default {
     },
     methods: {
         fileHandle(){
-            var file =this.$echarts.init(document.getElementById("file"));
+            var file =ECharts.init(document.getElementById("file"));
            var option = {
                 tooltip: {
                     // trigger: 'axis',
@@ -136,7 +136,7 @@ export default {
             file.setOption(option,true)
         },
         capitaHandle(){
-            var capita =this.$echarts.init(document.getElementById("capita"));
+            var capita =ECharts.init(document.getElementById("capita"));
             var option = {
                 tooltip: {},
                 grid: {//柱状图偏移

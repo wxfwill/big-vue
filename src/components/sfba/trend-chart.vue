@@ -13,7 +13,7 @@
 </template>
 <script>
 import { getRealType } from '@/utlis/helper';
-import echarts from 'echarts';
+import ECharts from 'echarts';
 export default {
     props:{
         dataIPSxAxis:{type:Array},
@@ -57,7 +57,7 @@ export default {
             console.log('前一年')
         },
         trendHandle(){
-            var trendChart = this.$echarts.init(document.getElementById(this.ID));
+            var trendChart = ECharts.init(document.getElementById(this.ID));
             var option = {
                 tooltip: {
                     backgroundColor:'#0C99F7',
@@ -156,7 +156,7 @@ export default {
                         barWidth:this.barWidth,
                         itemStyle: {
                             normal: { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
-                                color:this.type==='bar'?'rgb(19,223,255,0.85)':new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                color:this.type==='bar'?'rgb(19,223,255,0.85)':new ECharts.graphic.LinearGradient(0, 0, 0, 1, [{
                                     offset: 0,
                                     color: 'rgba(0,255,255, 1)' // 0% 处的颜色
                                 }, {

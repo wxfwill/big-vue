@@ -125,7 +125,7 @@ export default {
         }
         },
         acceptChart(id,IPSxAxis,IPS){
-            var trendChart = this.$echarts.init(document.getElementById(id));
+            var trendChart = ECharts.init(document.getElementById(id));
             var option = {
                 tooltip: {
                     backgroundColor:'#0C99F7',
