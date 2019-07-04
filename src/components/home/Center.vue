@@ -4,28 +4,29 @@
             <div class="num-block">
                 受理总数：
                 <ol>
-                    <li v-for="(item,index) in `${sls}`.split('')" :key="index">{{item}}</li>
+                    <li v-for="(item,index) in totalSls" :key="index">{{item}}</li>
                 </ol>
             </div>
             <div class="num-block">
                 办结总数：
                 <ol>
-                    <li v-for="(item,index) in `${bjs}`.split('')" :key="index">{{item}}</li>
+                    <li v-for="(item,index) in totalBjs" :key="index">{{item}}</li>
                 </ol>
             </div>
             <div class="num-block">
-                待办总数：
+                在办总数：
                 <ol>
-                    <li v-for="(item, index) in `${zbs}`.split('')" :key="index">{{item}}</li>
+                    <li v-for="(item, index) in totalZbs" :key="index">{{item}}</li>
                 </ol>
             </div>
         </div>
         <div class="center-box">
             <div class="now-data">
-                <h4 class="now-data-title">当年数据</h4>
-                <p class="nd-accept-text">受理数：{{ sls }}</p>
-                <p class="nd-conclude-text">办结数：{{ bjs }}</p>
-                <p class="nd-office-text">在办数：{{ zbs }}</p>
+                <h4 class="now-data-title">当年数据 <i class="now-data-icon el-icon-coin" @click="showMapData = true"></i>
+                </h4>
+                <p class="nd-accept-text">受理数：{{ ~~sls }}</p>
+                <p class="nd-conclude-text">办结数：{{ ~~bjs }}</p>
+                <p class="nd-office-text">在办数：{{ ~~zbs }}</p>
             </div>
             <bj-map
                     :tooltipConfig="mapTooltipConfig"
@@ -35,43 +36,52 @@
         </div>
         <span v-show="false">{{ getSelectDateSection }}</span>
         <span v-show="false">{{ getMapCode }}</span>
+        <popup v-if="showMapData" :title="dialogTitle" :popupData='mapList'></popup>
     </div>
 </template>
 
 <script>
-	import { mapGetters, mapActions } from 'vuex';
-	import * as services              from '@/fetch/http';
-	import { verifyTriggerState }     from '@/utlis/helper';
-	import { mapTooltipConfig }       from '@/pages/home/chartConfig';
-	import BjMap                      from '../common/map';
+	import ECharts                          from 'echarts';
+	import { mapGetters, mapActions }       from 'vuex';
+	import * as services                    from '@/fetch/http';
+	import { verifyTriggerState, fillZero } from '@/utlis/helper';
+	import { mapTooltipConfig }             from '@/pages/home/chartConfig';
+	import BjMap                            from '../common/map';
+	import Popup                            from '@/components/Popup';
 
 	export default {
-		name      : 'homeCenter',
 		data() {
 			return {
-				sls    : 0,
-				bjs    : 0,
-				zbs    : 0,
-				mapList: [],
+				totalSls   : [0, 0, 0, 0],
+                totalBjs   : [0, 0, 0, 0],
+                totalZbs   : [0, 0, 0, 0],
+				sls        : 0,
+				bjs        : 0,
+				zbs        : 0,
+				mapList    : [],
 				mapTooltipConfig,
+				dialogTitle: '全国数据统计表',
+				showMapData: false,
 			}
 		},
 		computed  : {
 			...mapGetters('homePage', ['getSelectDateSection', 'getMapCode'])
 		},
 		beforeCreate() {
-			this.trigger         = ['startDate', 'endDate', 'code', 'lev'];
+			this.trigger         = ['startdate', 'enddate', 'code', 'lev'];
 			this.oldTriggerState = {};
 		},
 		mounted() {
 			const params         = { ...this.getSelectDateSection, ...this.getMapCode };
 			this.oldTriggerState = params;
+			this.loadHeadTotalData(params);
 			this.loadMapData(params);
 		},
 		updated() {
 			const params = { ...this.getSelectDateSection, ...this.getMapCode };
 			if(verifyTriggerState(this.trigger, this.oldTriggerState, params)) {
 				this.oldTriggerState = params;
+				this.loadHeadTotalData(params);
 				this.loadMapData(params);
 			}
 		},
@@ -88,15 +98,26 @@
 					this.$message.error(res.msg);
 				}
 			},
+            async loadHeadTotalData(params) {
+				const res = await services.getTopSlBjZb(params);
+				if(res.code === 200) {
+                    this.totalSls = `${fillZero(res.data.slzs, 4)}`.split('');
+                    this.totalBjs = `${fillZero(res.data.bjzs, 4)}`.split('');
+					this.totalZbs = `${fillZero(res.data.zbzs, 4)}`.split('');
+                } else {
+					this.$message.error(res.msg);
+                }
+            },
 			...mapActions('homePage', ['setMapData']),
 		},
 		components: {
-			BjMap
+			BjMap,
+			Popup,
 		},
 	}
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .home-page-center {
         // display:inline-block;
         // flex:0 0 1300px;
@@ -110,14 +131,27 @@
             height: 850px;
             .now-data {
                 position: absolute;
-                top: 0;
+                top: 20px;
                 left: 50px;
                 font-weight: bold;
+                z-index: 2;
                 .now-data-title {
-                    margin-bottom: 24px;
+                    margin-bottom: 18px;
                     color: rgba(11, 193, 244, 1);
                     font-size: 18px;
                     font-family: MicrosoftYaHei;
+                    .now-data-icon {
+                        display: inline-block;
+                        width: 29px;
+                        height: 29px;
+                        text-align: center;
+                        line-height: 29px;
+                        margin-left: 42px;
+                        background-color: #03a2b8;
+                        color: #FFFFFF;
+                        border-radius: 4px;
+                        cursor: pointer;
+                    }
                 }
                 .nd-accept-text {
                     margin-bottom: 21px;
@@ -162,14 +196,14 @@
             line-height: 43px;
             color: rgba(11, 193, 244, 1);
             align-items: center;
+            margin: 20px 0 0 -10px;
             justify-content: center;
-            margin-bottom: 15px;
-            margin-left: -10px;
             .num-block {
-                display: flex;
-                margin-right: 10px;
-                align-items: center;
+                margin-right: 20px;
+                text-align: center;
                 ol {
+                    display: inline-block;
+                    vertical-align: middle;
                     li {
                         width: 32px;
                         height: 43px;

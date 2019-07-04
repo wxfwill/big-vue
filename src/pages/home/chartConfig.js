@@ -54,14 +54,17 @@ export const criminalCaseConfig = [{
 
 // 地图tooltip内容
 export const mapTooltipConfig = [{
-	id  : 'sls',
-	name: '受理数',
+	id    : 'sls',
+	name  : '受理数',
+	regExp: '{sls}  {sls_zb}',
 }, {
-	id  : 'bjs',
-	name: '办结数',
+	id    : 'bjs',
+	name  : '办结数',
+	regExp: '{bjs}  {bjs_zb}',
 }, {
-	id  : 'zbs',
-	name: '在办数',
+	id    : 'zbs',
+	name  : '在办数',
+	regExp: '{zbs} {zbs_zb}',
 }, {
 	id  : 'yejcg',
 	name: '原额检察官',
@@ -72,20 +75,23 @@ export const mapTooltipConfig = [{
 
 // 行政
 export const administrativeConfig = [{
-	id   : 'xz_sljs',
-	title: '受理件数',
-	col1 : '#22A95F',
-	col2 : '#4FDC99'
+	id    : 'xz_sljs',
+	rateId: 'xz_sljs_zb',
+	title : '受理件数',
+	col1  : '#22A95F',
+	col2  : '#4FDC99'
 }, {
-	id   : 'xz_bjjs',
-	title: '办结件数',
-	col1 : '#005EFF',
-	col2 : '#4FB8FF'
+	id    : 'xz_bjjs',
+	rateId: 'xz_bjjs_zb',
+	title : '办结件数',
+	col1  : '#005EFF',
+	col2  : '#4FB8FF'
 }, {
-	id   : 'xz_zbjs',
-	title: '在办件数',
-	col1 : '#FFA11E',
-	col2 : '#F3C85D'
+	id    : 'xz_zbjs',
+	rateId: 'xz_zbjs_zb',
+	title : '在办件数',
+	col1  : '#FFA11E',
+	col2  : '#F3C85D'
 }];
 
 // 公益诉讼

@@ -130,6 +130,7 @@
             text-align: center;
             line-height: 34px;
             background: rgba(51, 209, 248, 1);
+            cursor: pointer;
         }
     }
 </style>

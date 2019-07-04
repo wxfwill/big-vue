@@ -46,7 +46,7 @@ const actions = {
 		commit(SET_HOME_TIME, {
 			startDate,
 			endDate,
-		})
+		});
 	},
 	setMapData({ state, commit }, { code, lev }) {
 		commit(SET_HOME_MAP_STATE, {

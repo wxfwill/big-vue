@@ -10,7 +10,7 @@
                         <span class="chart-label-dot"></span>
                         <i>未检</i>
                     </div>
-                    <div id="wjBox" :style="{width: '700px', height: '220px', margin: '0 auto'}"></div>
+                    <div ref="wjBox" :style="{width: '700px', height: '220px', margin: '0 auto'}"></div>
                 </div>
                 <!-- 控申 -->
                 <div class="control-box">
@@ -36,7 +36,6 @@
             </div>
         </div>
         <div class="left-right">
-            <!-- 刑事 -->
             <div class="criminal-box">
                 <div class="chart-box-title">
                     <span class="chart-label-dot"></span>
@@ -46,22 +45,21 @@
                     <penal-gauge v-for="(item, index) in xsList" :key="index" :chartConfig="item"></penal-gauge>
                 </div>
             </div>
-            <!-- 起诉top -->
             <div class="top-box">
                 <div class="chart-box-title">
                     <span class="chart-label-dot"></span>
                     <i>起诉罪名TOP10</i>
                 </div>
-                <ol class="list-group">
+                <ul class="list-group">
                     <li v-for="(item,index) in topList" :key="index">
-                        <i>{{index+1}}</i>
+                        <i>{{index + 1}}</i>
                         <div class="list-content">
                             <p class="list-label">{{item.ay_name}}</p>
                             <div class="top-line" :style="{width: `${item.width}px`}"></div>
                             <span>{{item.qsajsls}}</span>
                         </div>
                     </li>
-                </ol>
+                </ul>
             </div>
         </div>
     </div>
@@ -120,13 +118,13 @@
 			...mapGetters('homePage', ['getSelectDateSection', 'getMapCode'])
 		},
 		beforeCreate() {
-			this.trigger         = ['startDate', 'endDate', 'code', 'lev'];
+			this.trigger         = ['startdate', 'enddate', 'code', 'lev'];
 			this.oldTriggerState = {};
 		},
 		mounted() {
 			const params              = { ...this.getSelectDateSection, ...this.getMapCode };
 			this.oldTriggerState      = params;
-			this.undetectedChart      = ECharts.init(document.getElementById("wjBox"));
+			this.undetectedChart      = ECharts.init(this.$refs.wjBox);
 			this.trendStatisticsChart = ECharts.init(this.$refs.qstjContent);
 			this.loadXSData(params);
 			this.loadWJData(params);
@@ -173,7 +171,7 @@
 					this.ksList = this.ksList.map(i => ({
 						...i,
 						num: res.data[i.id]
-					}))
+					}));
 				} else {
 					this.$message.error(res.msg);
 				}
@@ -184,7 +182,7 @@
 					const maxNum = res.data[0] ? res.data[0].qsajsls : 1;
 					this.topList = res.data.map(i => ({
 						...i,
-						width: (i.qsajsls / maxNum * 280).toFixed(2)
+						width: (i.qsajsls / maxNum * 240).toFixed(2)
 					}));
 				} else {
 					this.$message.error(res.msg);
@@ -199,16 +197,6 @@
 				}
 			},
 			wjHandle(chartData = {}) {
-				chartData       = {
-					wj_bbs  : 222,
-					wj_bjs  : 1122,
-					wj_bqss : 333,
-					wj_kss  : 110,
-					wj_pzdbs: 1444,
-					wj_sls  : 555,
-					wj_sxpjs: 666,
-					wj_tqgss: 777,
-				};
 				let valMax      = 0;
 				const xAxisData = [],
 					seriesData  = undetectedChartConfig.map(i => {
@@ -362,23 +350,26 @@
 						containLabel: true
 					},
 					xAxis  : [{
-						type       : 'category',
-						name       : '（月）',
-						boundaryGap: false,
-						data       : data.map(i => i.rq),
-						axisLabel  : {
+						type         : 'category',
+						name         : '（月）',
+						nameTextStyle: {
+							padding: [10, 0, 0]
+						},
+						boundaryGap  : false,
+						data         : data.map(i => i.rq),
+						axisLabel    : {
 							show     : true,
-							margin   : 15,
+							margin   : 0,
 							textStyle: {
 								show    : false,
 								color   : 'rgba(255,255,255,1)',
 								fontSize: 12,
 							},
 						},
-						axisTick   : {
+						axisTick     : {
 							show: false,
 						},
-						axisLine   : {
+						axisLine     : {
 							show     : false,
 							lineStyle: {
 								color: 'rgba(255,255,255,1)',
@@ -422,7 +413,7 @@
 						{
 							name      : '件数',
 							type      : 'line',
-							smooth    : false,
+							smooth   : true,
 							itemStyle : {
 								normal  : { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
 									color    : new ECharts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -519,9 +510,9 @@
                             .control-number {
                                 display: inline;
                                 padding: 0 15px;
-                                border-radius: 20px;
-                                color: #009fe8;
-                                border: 1px solid #009fe8;
+                                color: rgba(0, 159, 232, 1);
+                                border: 1px solid rgba(0, 159, 232, 1);
+                                border-radius: 12px;
                             }
                         }
                     }
@@ -543,18 +534,17 @@
             }
         }
         .left-right {
-            display: flex;
-            flex-wrap: wrap;
             margin-left: 20px;
             .criminal-box {
                 width: 545px;
+                height: 360px;
                 .overview-box {
                     width: 100%;
                     position: relative;
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: center;
-                    padding: 54px 0 40px;
+                    padding: 30px 0 0;
                     .line {
                         position: absolute;
                         width: 1px;
@@ -608,7 +598,6 @@
             }
             .top-box {
                 width: 550px;
-                height: 530px;
                 position: relative;
                 .title {
                     position: absolute;
@@ -619,19 +608,19 @@
                     line-height: 22px;
                 }
                 .list-group {
-                    padding: 28px 13px 0;
+                    padding: 13px 28px;
                     li {
                         display: flex;
                         align-items: center;
                         .list-content {
                             display: flex;
                             align-items: center;
-                            width: 100%;
                             height: 40px;
                             padding-bottom: 13px;
                             margin-bottom: 10px;
                             background-repeat: no-repeat;
                             background-position-y: bottom;
+                            flex: 1;
                             .list-label {
                                 width: 130px;
                                 font-size: 18px;
@@ -662,6 +651,9 @@
                             margin-top: -21px;
                             font-size: 11px;
                             color: rgba(255, 255, 255, 1);
+                        }
+                        &:last-of-type {
+                            margin-bottom: 0;
                         }
                     }
                     li:nth-child(1), li:nth-child(2), li:nth-child(3) {

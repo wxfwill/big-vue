@@ -11,7 +11,7 @@
             <ul>
                 <li v-for="item in tooltipConfig" :key="item.id">
                     <span>{{ item.name }}：</span>
-                    <i>{{ tooltipData[item.id] || '-' }}</i>
+                    <i>{{ item.regExp ? getTooltipText(item.regExp, tooltipData) : tooltipData[item.id] || '-' }}</i>
                 </li>
             </ul>
         </div>
@@ -20,13 +20,13 @@
 
 <script>
 	import ECharts from 'echarts';
-	import path    from 'path';
 
 	export default {
 		data() {
 			return {
 				backIcon         : require('@/public/img/team-management/back-icon.png'),
 				mapTooltipTitleBg: require('@/public/img/home/shengdata.png'),
+				mapPositionImg   : require('@/public/img/home/position.png'),
 				showTooltip      : false,
 				tooltipData      : {},
 				code             : 100000,
@@ -40,26 +40,28 @@
 
 			myChart.on('click', (params) => {
 				if(this.mapLevel < 3) {
-					if(!params.data){
-                        return false;
+					if(!params.data) {
+						return false;
 					}
 					const selectCityName = params.name,
 						  selectCity     = this.dataMap.find((place) => {
 							  return place.name === selectCityName;
 						  });
-					this.code            = params.data && params.data.code;
-					if(selectCity.id.length === 6) {
-						this.notRunHoldWarn();
-						return false;
+					if(this.lev) {
+						if(selectCity.id.length === 6) {
+							this.notRunHoldWarn();
+							return false;
+						}
 					}
 					this.mapLevel++;
 					if(this.mapLevel === 2) {
 						this.secondLvMap = selectCity;
+						this.code        = params.data && params.data.code;
 					}
 					this.getNewRegionInfo && this.getNewRegionInfo({
-                        code : params.data.code,
-                        lev : this.mapLevel,
-                    });
+						code: params.data.code,
+						lev : this.mapLevel,
+					});
 					this.loadMapData(selectCity.id, selectCity.name);
 				}
 			});
@@ -100,25 +102,16 @@
 				}));
 			},
 			loadMap(name, data) {
+				this.myChart.clear();
 				ECharts.registerMap(name, data);
 				this.myChart.setOption({
 					tooltip  : {
 						show: false,
 					},
-					visualMap: {
-						show : false,
-						min  : 0,
-						max  : 0,
-						color: ['rgba(51,209,248,0.2)', 'rgba(51,209,248,0.2)'],
-					},
-					series   : [{
-						name     : '人数',
-						type     : 'map',
-						mapType  : name,
-                        geoIndex : 0,
-						layoutCenter: ['50%', '47%'],
-						layoutSize : 850,
-						label    : {
+					geo      : {
+						map         : name,
+						roam        : false,
+						label       : {
 							normal  : {
 								show     : true,
 								textStyle: {
@@ -131,7 +124,7 @@
 								}
 							}
 						},
-						itemStyle: {
+						itemStyle   : {
 							normal  : {
 								borderColor: 'rgba(39, 297, 209, 1)',
 								color      : 'rgba(51,209,248,0.2)',
@@ -153,18 +146,34 @@
 								shadowColor  : 'rgba(0, 0, 0, 0.5)'
 							}
 						},
-						data     : this.mapData,
-					}]
-				})
+						layoutCenter: name === 'china' ? ['50%', '50%'] : undefined,
+						layoutSize  : name === 'china' ? 950: undefined,
+					},
+					series   : [{
+						name    : '人数',
+						type    : 'map',
+						mapType : name,
+						geoIndex: 0,
+
+						data: this.mapData,
+					}],
+				});
+			},
+
+			getTooltipText(reg, data) {
+				return reg.replace(/\{([a-z|_])+\}/g, function(word) {
+					const key = word.replace(/\{|\}/g, "");
+					return data[key] || 0;
+				});
 			},
 			// 返回顶级
 			showChinaMap() {
 				this.mapLevel = 1;
 				this.loadMapData(0, 'china');
 				this.getNewRegionInfo({
-                    code: 100000,
-                    lev: 1,
-                });
+					code: 100000,
+					lev : 1,
+				});
 			},
 			// 返回上一级
 			backSuperiorMap() {
@@ -176,14 +185,15 @@
 						break;
 					case 2 : {
 						this.mapLevel--;
+						this.code = 100000;
 						this.loadMapData(0, 'china');
 					}
 						break;
 				}
 				this.getNewRegionInfo({
-                    code : this.code,
-                    lev: this.mapLevel
-                });
+					code: this.code,
+					lev : this.mapLevel
+				});
 			},
 			// 无法下钻提示
 			notRunHoldWarn() {
@@ -192,7 +202,6 @@
 					type   : 'warning'
 				});
 			},
-
 		},
 		props  : ['mapData', 'getNewRegionInfo', 'tooltipConfig'],
 		watch  : {
@@ -209,20 +218,23 @@
         width: 100%;
         height: 100%;
         float: right;
-        display: flex;
         .map-chart {
-            flex: 1;
+            width: 1150px;
             height: 100%;
         }
         .map-option {
-            margin: 20px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
             display: flex;
-            width: 100px;
+            width: 140px;
+            z-index: 2;
             .map-btn {
                 width: 30px;
                 height: 30px;
                 margin-right: 11px;
                 cursor: pointer;
+                background-color: #06a7ba;
                 &.map-icon {
                     display: block;
                     width: 30px;
@@ -232,16 +244,17 @@
                     color: #FFFFFF;
                     background-color: #06a7ba;
                 }
+
             }
         }
         .area-box {
             position: absolute;
-            top: 277px;
+            top: 360px;
             right: 47px;
             width: 200px;
             min-height: 230px;
             padding-bottom: 10px;
-            background:linear-gradient(90deg,rgba(19,210,220,.3) 0%,rgba(5,138,227,.5) 100%);
+            background: linear-gradient(90deg, rgba(19, 210, 220, .3) 0%, rgba(5, 138, 227, .5) 100%);
             box-shadow: 0 0 1px rgba(1, 1, 1, 1);
             border-radius: 5px;
             @keyframes rotation {

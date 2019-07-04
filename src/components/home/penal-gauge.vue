@@ -23,7 +23,7 @@
 						"startAngle": 180,
 						"endAngle"  : 0,
 						"center"    : ["50%", "85%"],
-						"radius"    : 60,
+						"radius"    : 50,
 						"axisLine"  : {
 							"lineStyle": {
 								"width": 20, //柱子的宽度
@@ -74,13 +74,12 @@
         text-align: center;
         .gauge-chart {
             width: 100%;
-            height: 80px;
+            height: 60px;
         }
         .chart-num{
             display: inline-block;
-            padding: 7px 7px 5px;
-            border-radius: 4px;
-            background-color: rgba(233, 233, 233, .2);
+            padding: 4px 4px 2px;
+            background:rgba(20,26,62,1);
             margin: 7px 0 5px;
         }
         .chart-label {

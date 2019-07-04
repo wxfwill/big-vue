@@ -2,45 +2,44 @@
     <div class="home-page-right">
         <div class="content-box">
             <div class="left-view">
-                <!-- 民事 -->
-                <div class="civil-box">
+                <div class="middle-portion">
+                    <!-- 民事 -->
+                    <!-- 行政 -->
+                    <div class="civil-box">
+                        <div class="chart-box-title">
+                            <span class="chart-label-dot"></span>
+                            <i>民事</i>
+                        </div>
+                        <ul class="civil-content">
+                            <li v-for="(item,index) in civilList" :key="index">
+                                <p class="civil-num">
+                                    {{ item.value }}
+                                </p>
+                                <p class="civil-text">{{item.title}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="administration">
+                        <div class="chart-box-title">
+                            <span class="chart-label-dot"></span>
+                            <i>行政</i>
+                        </div>
+                        <div class="admin-box">
+                            <water-polo
+                                    v-for="item in xzList"
+                                    :key="item.id"
+                                    :chartConfig="item"
+                            ></water-polo>
+                        </div>
+                    </div>
+                </div>
+                <!-- 公益诉讼 -->
+                <div class="lawsuitBox">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>民事</i>
+                        <i>公益诉讼</i>
                     </div>
-                    <ul class="civil-content">
-                        <li v-for="(item,index) in civilList" :key="index">
-                            <p class="bg_img" :style="{backgroundImage:'url('+item.img+')'}">{{item.value}}</p>
-                            <p class="civil-text">{{item.title}}</p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="middlePortion">
-                    <!-- 行政 -->
-                    <!-- 公益诉讼 -->
-                    <div class="administrationBox">
-                        <div class="administration">
-                            <div class="chart-box-title">
-                                <span class="chart-label-dot"></span>
-                                <i>行政</i>
-                            </div>
-                            <div class="admin-box">
-                                <water-polo
-                                        v-for="item in xzList"
-                                        :key="item.id"
-                                        :chartConfig="item"
-                                ></water-polo>
-                            </div>
-                        </div>
-                        <div class="lawsuitBox">
-                            <div class="chart-box-title">
-                                <span class="chart-label-dot"></span>
-                                <i>公益诉讼</i>
-                            </div>
-                            <div ref="lawsuitContent"
-                                 :style="{width: '340px', height: '240px', padding: '20px 18px'}"></div>
-                        </div>
-                    </div>
+                    <div ref="lawsuitContent" class="law-chart"></div>
                 </div>
                 <div class="bottomPortion">
                     <!-- 人均办结数 -->
@@ -49,11 +48,14 @@
                             <span class="chart-label-dot"></span>
                             <i>人均办结数</i>
                         </div>
-                        <p v-for="item in rjList" :key="item.id">
-                            <i>{{item.title}}</i>
-                            <span :style="{ width:`${item.lineLen || 0}px` }"></span>
-                            {{item.value}}
-                        </p>
+                        <ul class="dom-line-chart">
+                            <li v-for="item in rjList" :key="item.id">
+                                <i>{{item.title}}</i>
+                                <span :style="{ width:`${item.lineLen || 0}px` }"></span>
+                                {{item.value}}
+                            </li>
+                        </ul>
+
                     </div>
                     <!-- 案均办办理天数 -->
                     <div class="fileCapita">
@@ -61,11 +63,13 @@
                             <span class="chart-label-dot"></span>
                             <i>案均办理天数</i>
                         </div>
-                        <p v-for="item in ajList" :key="item.id">
-                            <i>{{item.title}}</i>
-                            <span :style="{width:`${item.lineLen || 0}px`}"></span>
-                            {{item.value}}
-                        </p>
+                        <ul class="dom-line-chart">
+                            <li v-for="item in ajList" :key="item.id">
+                                <i>{{item.title}}</i>
+                                <span :style="{width:`${item.lineLen || 0}px`}"></span>
+                                {{item.value}}
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -75,30 +79,56 @@
                         <span class="chart-label-dot"></span>
                         <i>队伍建设</i>
                     </div>
-                    <P>总数：{{ teamPeopleTotal }}</P>
-                    <div ref="dougBox" :style="{width: '436px', height: '300px'}"></div>
+                    <p>总数：{{ teamPeopleTotal }}</p>
+                    <div ref="dougBox" :style="{width: '436px', height: '340px'}"></div>
                 </div>
                 <div class="analyze-box">
-                    <div class="block">
-                        <div class="chart-box-title">
-                            <span class="chart-label-dot"></span>
-                            <i>实证分析</i>
-                        </div>
+                    <div class="chart-box-title">
+                        <span class="chart-label-dot"></span>
+                        <i>实证分析</i>
+                    </div>
+                    <div class="analyze-content">
                         <el-carousel indicator-position="outside" :interval='0' arrow='never' @change="cutHandle">
                             <el-carousel-item>
-                                <div ref="agePie" :style="{width: '360px', height: '400px'}"></div>
+                                <div class="empirical-analysis-box" @click="skipLawWorks">
+                                    <div class="empirical-analysis-content">
+                                        <h3 class="em-title">数据说明</h3>
+                                        <ul>
+                                            <li>
+                                                <label class="em-label">数据来源：</label>
+                                                <p class="em-text">检查机关</p>
+                                            </li>
+                                            <li>
+                                                <label class="em-label">数据内容：</label>
+                                                <p class="em-text">起诉书/不起诉书</p>
+                                            </li>
+                                            <li>
+                                                <label class="em-label">涉及案由：</label>
+                                                <p class="em-text">危险驾驶罪</p>
+                                                <p class="em-text">交通肇事罪</p>
+                                                <p class="em-text">以及危险方法危害公共安全罪</p>
+                                            </li>
+                                            <li>
+                                                <label class="em-label">时间范围：</label>
+                                                <p class="em-text">2010-2018</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </el-carousel-item>
                             <el-carousel-item>
-                                <div ref="education" :style="{width: '400px', height: '360px'}"></div>
+                                <p class="soon-text">敬请期待</p>
                             </el-carousel-item>
                             <el-carousel-item>
-                                <div ref="tendency" :style="{width: '400px', height: '400px'}"></div>
+                                <p class="soon-text">敬请期待</p>
                             </el-carousel-item>
                         </el-carousel>
                     </div>
                 </div>
             </div>
         </div>
+        <span v-show="false">{{ getSelectDateSection }}</span>
+        <span v-show="false">{{ getMapCode }}</span>
     </div>
 </template>
 
@@ -125,44 +155,36 @@
 				civilList       : [
 					{
 						id   : 'ms_sljs',
-						img  : require('@/public/img/home/mssljs.png'),
 						title: '受理件数',
 						value: 0
 					}, {
 						id   : 'ms_bjjs',
-						img  : require('@/public/img/home/msbj.png'),
 						title: '办结件数',
-						num  : 0
+						value: 0
 					}, {
 						id   : 'ms_tckss',
-						img  : require('@/public/img/home/mstc.png'),
 						title: '提出抗诉数',
-						num  : 0
+						value: 0
 					}, {
 						id   : 'ms_ksajgbyps',
-						img  : require('@/public/img/home/msks.png'),
 						title: '抗诉案件改变原判数',
-						num  : 0
+						value: 0
 					}, {
 						id   : 'ms_tczsjcjys',
-						img  : require('@/public/img/home/mssp.png'),
 						title: '提出再审检察建议数',
 						num  : 0
 					}, {
 						id   : 'ms_cnzsjcjys',
-						img  : require('@/public/img/home/mscn.png'),
 						title: '采纳再审检察建议数',
-						num  : 0
+						value: 0
 					}, {
 						id   : 'ms_spjdcnjcjys',
-						img  : require('@/public/img/home/msls.png'),
 						title: '审判监督采纳检察建议数',
-						num  : 0
+						value: 0
 					}, {
 						id   : 'ms_zxjdcnjcjys',
-						img  : require('@/public/img/home/mszxjd.png'),
 						title: '执行监督采纳检察建议数',
-						num  : 0
+						value: 0
 					}],
 				xzList          : [],
 				date            : '2019-05-29',//现在的日期
@@ -220,7 +242,7 @@
 			...mapGetters('homePage', ['getSelectDateSection', 'getMapCode'])
 		},
 		beforeCreate() {
-			this.trigger         = ['startDate', 'endDate', 'code', 'lev'];
+			this.trigger         = ['startdate', 'enddate', 'code', 'lev'];
 			this.oldTriggerState = {};
 		},
 		mounted() {
@@ -228,17 +250,20 @@
 			this.oldTriggerState               = params;
 			this.publicInterestLitigationChart = ECharts.init(this.$refs.lawsuitContent);
 			this.dougBoxChart                  = ECharts.init(this.$refs.dougBox);
-			this.agePieChart                   = ECharts.init(this.$refs.agePie);
+			/*this.agePieChart                   = ECharts.init(this.$refs.agePie);
 			this.educationChart                = ECharts.init(this.$refs.education);
-			this.tendencyChart                 = ECharts.init(this.$refs.tendency);
+			this.tendencyChart                 = ECharts.init(this.$refs.tendency);*/
 
 			this.requestCivilData(params);
 			this.requestAdministration(params);
 			this.requestPublicInterestLitigation(params);
 			this.requestTroopAdministration(params);
-			this.requestAgeStructure(params);
+			/*this.requestAgeStructure(params);
 			this.requestEducationLevel(params);
-			this.requestDangerousDrivingList(params);
+			this.requestDangerousDrivingList(params);*/
+			this.lawWorksWin = {
+				closed : true
+            };
 		},
 		updated() {
 			const params = { ...this.getSelectDateSection, ...this.getMapCode };
@@ -248,9 +273,9 @@
 				this.requestAdministration(params);
 				this.requestPublicInterestLitigation(params);
 				this.requestTroopAdministration(params);
-				this.requestAgeStructure(params);
+				/*this.requestAgeStructure(params);
 				this.requestEducationLevel(params);
-				this.requestDangerousDrivingList(params);
+				this.requestDangerousDrivingList(params);*/
 			}
 		},
 		methods   : {
@@ -268,15 +293,11 @@
 			async requestAdministration(params) {
 				const res = await services.getAdministration(params);
 				if(res.code === 200) {
-					const total = Object.values(res.data).reduce(function(a, b) {
-						return a + b;
-					});
-					console.log(total);
 					this.xzList = administrativeConfig.map(i => ({
 						...i,
 						value: res.data[i.id],
-						rate : (res.data[i.id] / total).toFixed(2),
-					}))
+						rate : res.data[i.rateId] || 0,
+					}));
 				} else {
 					this.$message.error(res.msg);
 				}
@@ -313,12 +334,6 @@
 				const res = await services.getTroopAdministration(params);
 				if(res.code === 200) {
 					this.teamPeopleTotal = res.data.dwgl_zs;
-					res.data             = {
-						dwgl_zs    : 88,
-						dwgl_jcg   : 18,
-						dwgl_jcgzl : 99,
-						dwgl_sfxzry: 85
-					};
 					this.dougHandle(res.data);
 				} else {
 					this.$message.error(res.msg);
@@ -430,11 +445,11 @@
 							type    : 'bar',
 							color   : 'rgba(11,229,241,1)',
 							stack   : 'pubLit',
-							barWidth: '23px',
+							barWidth: 40,
 							label   : {
 								normal: {
 									show     : true,
-									position : ["20%", '50%'],
+									position : 'inside',
 									textStyle: {
 										color   : "#ffffff",
 										fontSize: 10
@@ -448,11 +463,11 @@
 							type    : 'bar',
 							color   : 'rgba(12,153,247,1)',
 							stack   : 'pubLit',
-							barWidth: '23px',
+							barWidth: 40,
 							label   : {
 								normal: {
 									show     : true,
-									position : ["20%", '50%'],
+									position : 'inside',
 									textStyle: {
 										color   : "#ffffff",
 										fontSize: 10
@@ -468,56 +483,108 @@
 			dougHandle(chartData) {
 				const { rAxisData, seriesData } = this.convertTeamChartData(chartData);
 				this.dougBoxChart.setOption({
-					color     : ['#E85558', '#4BB0E4', '#e7be40'],
-					legend    : {
-						x        : 'center',
-						y        : "88%",//图例移动
-						left     : '15%',
-						icon     : 'circle',
+					legend: {
+						left     : 'center',
+						bottom   : '20',
+						itemGap  : 20,
+						data     : rAxisData,
 						textStyle: {
-							color: 'rgba(255,255,255,1)'
-						},
+							color: '#fff'
+						}
 					},
-					emphasis  : {
-						barBorderRadius: 2,
-					},
-					textColor : 'red',
-					tooltip   : {
-						show     : true,
-						trigger  : 'item',
-						formatter: "{a} : <br />{c}%",
-					},
-					polar     : {//圆环位置移动
-						center: ['50%', '44%'],
-						radius: '270%' //图形大小
-					},
-					angleAxis : {
-						show      : false,
-						startAngle: 90,
-						min       : 0,
-						max       : 100
-					},
-					radiusAxis: {
-						type: 'category',
-						show: false,
-						data: rAxisData
-					},
-					series    : seriesData.map(i => ({
-						type            : "bar",
-						name            : i.name,
-						coordinateSystem: "polar",
-						barWidth        : 25,
-						barCategoryGap  : "100%",
-						data            : [i.value],
-					}))
-				})
+					series: seriesData.map((item, index) => {
+						let radius = [],
+							color  = [];
+						switch(index) {
+							case 0: {
+								radius = [90, 110];
+								color  = ['#E85558', 'rgba(232, 85, 88, .1)'];
+							}
+								break;
+							case 1 : {
+								radius = [68, 88];
+								color  = ['#4BB0E4', 'rgba(75, 176, 228, .1)']
+							}
+								break;
+							case 2 : {
+								radius = [46, 66];
+								color  = ['#e7be40', 'rgba(231, 190, 64, .1)']
+							}
+						}
+						return {
+							name          : `Line ${index + 1}`,
+							type          : 'pie',
+							barWidth      : 25,
+							radius,
+							center        : ['50%', '40%'],
+							hoverAnimation: false,
+							startAngle    : 90,
+							label         : {
+								normal  : {
+									show: false
+								}
+							},
+							data          : [{
+								value    : item.value,
+								name     : item.name,
+								number   : item.number,
+								itemStyle: {
+									normal: {
+										color: color[0]
+									}
+								},
+								label         : {
+									normal  : {
+										show: false
+									},
+									emphasis: {
+										show: true,
+										formatter: function(params) {
+											const data = params.data || {};
+											return `${data.number}人 ${data.value}%`
+										}
+									}
+								},
+								lableLine     : {
+									normal  : {
+										show: false
+									},
+									emphasis: {
+										show: true
+									}
+								},
+							}, {
+								value    : 100 - item.value,
+								name     : '',
+								tooltip  : {
+									show: false
+								},
+								itemStyle: {
+									normal  : {
+										color    : color[1],
+										label    : {
+											show: false
+										},
+										labelLine: {
+											show: false
+										}
+									},
+									emphasis: {
+										color: color[1]
+									}
+								}
+							}]
+						}
+					})
+				});
 			},
 			convertTeamChartData(chartData) {
 				const rAxisData  = [],
 					  seriesData = troopAdministrationConfig.map(i => ({
-						  name : i.name,
-						  value: chartData[i.id]
-					  })).sort((a, b) => b - a);
+						  name  : i.name,
+						  value : (chartData[i.id] / chartData.dwgl_zs * 100).toFixed(0),
+						  number: chartData[i.id]
+					  })).sort((a, b) => b.value - a.value);
 				seriesData.forEach(i => rAxisData.push(i.name));
 				return {
 					rAxisData,
@@ -542,6 +609,7 @@
 			},
 			// 年龄分布
 			ageHandle(chartData) {
+
 				const option = {
 					tooltip   : {
 						trigger  : 'item',
@@ -731,7 +799,7 @@
 			tendencyHandle(chartData) {
 				const allNum = chartData.map(i => [i.bqss, i.slqss]);
 				let maxValue = Math.max(...(allNum.toString().split()));
-				maxValue = numberInteger(maxValue);
+				maxValue     = numberInteger(maxValue);
 				this.tendencyChart.setOption({
 					color  : ['#61E6D6', '#9961E6', '#0000FF', '#FFFF00'],
 					tooltip: {
@@ -837,6 +905,14 @@
 					]
 				});
 			},
+            // 打开外部链接
+			skipLawWorks(){
+				if(!this.lawWorksWin.closed) {
+					this.lawWorksWin.close();
+                }
+				this.lawWorksWin = window.open('http://141.3.119.86:8888/display/form/displayHome/insert', '_blank', 'fullscreen=yes, height=1080, width=1280, left=1280, location=no, menubar=no, status=no, titlebar=no, toolbar=no, top=0');
+			}
+
 		},
 		components: {
 			waterPolo
@@ -846,58 +922,47 @@
 
 <style lang="scss" scoped>
     .home-page-right {
-        // flex:0 0 1242px;
-        // min-width:1242px;
         height: 900px;
         width: 1228px;
         margin-top: 65px;
         .content-box {
             display: flex;
             .left-view {
-                .civil-box {
-                    width: 730px;
-                    .civil-content {
-                        padding: 29px 50px;
-                        li {
-                            margin-right: 40px;
-
-                            .civil-text {
-                                width: 109px;
-                                font-size: 18px;
-                            }
-                        }
-                    }
-                    ul {
-                        display: flex;
-                        flex-wrap: wrap;
-                        height: 100%;
-                        justify-content: space-around;
-                        li {
-                            text-align: center;
-                            p:nth-child(1) {
-                                display: inline-block;
-                                text-align: center;
-                                width: 95px;
-                                height: 95px;
-                                border-radius: 50%;
-                                font-size: 14px;
-                                color: rgba(255, 255, 255, 1);
-                                line-height: 95px;
-                            }
-                            P:nth-child(2) {
-                                width: 145px;
-                                font-size: 18px;
-                                text-align: center;
-                                color: rgba(255, 255, 255, 1);
-                                margin-top: 8px;
-                            }
-                        }
-                    }
-                }
-                .administrationBox {
+                .middle-portion {
                     display: flex;
                     flex-wrap: wrap;
-                    margin-top: 20px;
+                    .civil-box {
+                        width: 354px;
+                        .civil-content {
+                            padding: 10px;
+                            display: flex;
+                            flex-wrap: wrap;
+                            justify-content: space-around;
+                            color: #FFFFFF;
+                            li {
+                                text-align: center;
+                                margin-bottom: 20px;
+                                .civil-num {
+                                    height: 27px;
+                                    display: inline-block;
+                                    border: 1px solid #009FE8;
+                                    background-size: 100% 100%;
+                                    font-size: 14px;
+                                    border-radius: 10px;
+                                    padding: 4px 10px 2px;
+                                }
+                                .civil-text {
+                                    width: 130px;
+                                    margin-top: 11px;
+                                    font-size: 18px;
+                                    text-align: center;
+                                }
+                                &:nth-of-type(7), &:nth-of-type(8) {
+                                    margin-bottom: 0;
+                                }
+                            }
+                        }
+                    }
                     .administration {
                         width: 354px;
                         height: 256px;
@@ -908,36 +973,66 @@
                             margin-top: 40px;
                         }
                     }
-                    .lawsuitBox {
-                        width: 354px;
-                        height: 256px;
-                        margin: 0 0 0 20px;
-                        .lawsuit-label {
-                            display: flex;
-                            align-items: center;
-                            i {
-                                margin: 0 0 0 10px;
-                                font-size: 24px;
-                                color: rgba(255, 255, 255, 1);
-                                line-height: 29px;
-                            }
-                            .lawsuit {
-                                width: 13px;
-                                height: 13px;
-                                border-radius: 50%;
-                                background: rgba(0, 178, 226, 1);
-                            }
+                }
+                .lawsuitBox {
+                    width: 739px;
+                    .lawsuit-label {
+                        display: flex;
+                        align-items: center;
+                        i {
+                            margin: 0 0 0 10px;
+                            font-size: 24px;
+                            color: rgba(255, 255, 255, 1);
+                            line-height: 29px;
                         }
+                        .lawsuit {
+                            width: 13px;
+                            height: 13px;
+                            border-radius: 50%;
+                            background: rgba(0, 178, 226, 1);
+                        }
+                    }
+                    .law-chart {
+                        width: 650px;
+                        height: 180px;
+                        margin: 20px auto;
                     }
                 }
                 .bottomPortion {
                     margin-top: 25px;
                     display: flex;
+                    .dom-line-chart {
+                        margin-top: 20px;
+                        li {
+                            display: flex;
+                            align-items: center;
+                            margin: 12px 0 0 10px;
+                            font-size: 16px;
+                            font-family: MicrosoftYaHei;
+                            color: rgba(43, 191, 226, 1);
+                            line-height: 21px;
+                            i {
+                                display: inline-block;
+                                text-align: center;
+                                flex: 0 37;
+                                min-width: 37px;
+                                width: 37px;
+                                font-size: 18px;
+                                color: rgba(255, 255, 255, 1);
+                                line-height: 22px;
+                            }
+                            span {
+                                margin: 0 15px;
+                                height: 15px;
+                                display: inline-block;
+                                background: rgba(43, 191, 226, 1)
+                            }
+                        }
+                    }
                     .perCapita {
                         margin-left: 12px;
                         display: inline-block;
                         width: 354px;
-                        height: 205px;
                         p {
                             display: flex;
                             align-items: center;
@@ -971,43 +1066,15 @@
                         display: inline-block;
                         margin-left: 20px;
                         width: 354px;
-                        height: 205px;
-                        p {
-                            display: flex;
-                            align-items: center;
-                            margin: 12px 0 0 10px;
-                            font-size: 16px;
-                            font-family: MicrosoftYaHei;
-                            color: rgba(43, 191, 226, 1);
-                            line-height: 21px;
-                            i {
-                                display: inline-block;
-                                text-align: center;
-                                flex: 0 37;
-                                min-width: 37px;
-                                width: 37px;
-                                font-size: 18px;
-                                color: rgba(255, 255, 255, 1);
-                                line-height: 22px;
-                            }
-                            span {
-                                margin: 0 15px;
-                                height: 15px;
-                                display: inline-block;
-                                background: rgba(43, 191, 226, 1)
-                            }
-                        }
                     }
                 }
             }
             .right-view {
-                // width:465px;
-                // height:452px;
                 .team-construction {
                     position: relative;
                     margin-left: 22px;
                     width: 454px;
-                    height: 399px;
+                    height: 405px;
                     .team-label {
                         display: flex;
                         align-items: center;
@@ -1025,7 +1092,7 @@
                         }
                     }
                     p {
-                        margin: 20px 0 0 120px;
+                        margin: 20px 0 0 160px;
                         font-size: 22px;
                         font-family: Helvetica;
                         color: rgba(0, 255, 255, 1);
@@ -1039,50 +1106,46 @@
                     }
                 }
                 .analyze-box {
-                    margin: 20px 0 0 20px;
                     width: 454px;
-                    height: 482px;
-                    padding: 15px 0 0 25px;
-                    .block {
-                        .age-label {
-                            display: flex;
-                            align-items: center;
-                            i {
-                                margin: 0 0 0 10px;
-                                font-size: 24px;
-                                color: rgba(255, 255, 255, 1);
-                                line-height: 29px;
-                            }
-                            h6 {
-                                display: inline-block;
-                                width: 52px;
-                                height: 1px;
-                                background-color: rgba(255, 255, 255, 1);
-                                margin: 0 5px 0 5px;
-                            }
-                            h5 {
-                                font-size: 18px;
-                                color: rgba(47, 224, 190, 1);
-                                line-height: 22px;
-                            }
-                            .age {
-                                width: 13px;
-                                height: 13px;
-                                border-radius: 50%;
-                                background: rgba(0, 178, 226, 1);
-                            }
+                    height: 390px;
+                    margin-top: 40px;
+                    .analyze-content {
+                        position: relative;
+                        padding: 10px 10px 0;
+                        /deep/ .el-carousel__container{
+                            height: 390px;
                         }
-                        /deep/ .el-carousel--horizontal {
+                        .empirical-analysis-box{
+                            position: absolute;
+                            top  : 10px;
+                            left: 20px;
                             width: 400px;
-                            height: 440px;
-                            /deep/ .el-carousel__container {
-                                height: 378px;
+                            height: 380px;
+                            border: 1px solid #00ccff;
+                            margin: 0 auto;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            .empirical-analysis-content{
+                                margin: 10px 60px;
                             }
-                        }
-                        /deep/ .el-carousel__button {
-                            width: 30px;
-                            height: 30px;
-                            border-radius: 50%;
+                            .em-title{
+                                margin-top: 10px;
+                                color: #2FE0BE;
+                                font-size: 28px;
+                                text-align: center;
+                                font-weight: bolder;
+                            }
+                            .em-label{
+                                display: block;
+                                margin: 10px 0 5px;
+                                font-size: 18px;
+                                color: #FFFFFF;
+                            }
+                            .em-text{
+                                font-size: 18px;
+                                color: #2FE0BE;
+                                margin-left: 20px;
+                            }
                         }
                     }
                 }
