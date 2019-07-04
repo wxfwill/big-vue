@@ -13,7 +13,7 @@ export const getRealType = (constant) => {
  * */
 export const fillZero    = (num, len) => {
 	if(`${num}`.length < len) {
-		return (Array(len).join('0') + num).slice(-len)
+		return (Array(len).join('0') + num).slice(-len);
 	} else {
 		return num;
 	}

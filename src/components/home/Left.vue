@@ -124,6 +124,7 @@
 		mounted() {
 			const params              = { ...this.getSelectDateSection, ...this.getMapCode };
 			this.oldTriggerState      = params;
+			console.log(this.oldTriggerState);
 			this.undetectedChart      = ECharts.init(this.$refs.wjBox);
 			this.trendStatisticsChart = ECharts.init(this.$refs.qstjContent);
 			this.loadXSData(params);

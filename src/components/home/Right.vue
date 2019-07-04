@@ -2,35 +2,33 @@
     <div class="home-page-right">
         <div class="content-box">
             <div class="left-view">
-                <div class="middle-portion">
-                    <!-- 民事 -->
-                    <!-- 行政 -->
-                    <div class="civil-box">
-                        <div class="chart-box-title">
-                            <span class="chart-label-dot"></span>
-                            <i>民事</i>
-                        </div>
-                        <ul class="civil-content">
-                            <li v-for="(item,index) in civilList" :key="index">
-                                <p class="civil-num">
-                                    {{ item.value }}
-                                </p>
-                                <p class="civil-text">{{item.title}}</p>
-                            </li>
-                        </ul>
+                <!-- 民事 -->
+                <!-- 行政 -->
+                <div class="civil-box">
+                    <div class="chart-box-title">
+                        <span class="chart-label-dot"></span>
+                        <i>民事</i>
                     </div>
-                    <div class="administration">
-                        <div class="chart-box-title">
-                            <span class="chart-label-dot"></span>
-                            <i>行政</i>
-                        </div>
-                        <div class="admin-box">
-                            <water-polo
-                                    v-for="item in xzList"
-                                    :key="item.id"
-                                    :chartConfig="item"
-                            ></water-polo>
-                        </div>
+                    <ul class="civil-content">
+                        <li v-for="(item,index) in civilList" :key="index">
+                            <p class="civil-num">
+                                {{ item.value }}
+                            </p>
+                            <p class="civil-text">{{item.title}}</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="administration">
+                    <div class="chart-box-title">
+                        <span class="chart-label-dot"></span>
+                        <i>行政</i>
+                    </div>
+                    <div class="admin-box">
+                        <water-polo
+                                v-for="item in xzList"
+                                :key="item.id"
+                                :chartConfig="item"
+                        ></water-polo>
                     </div>
                 </div>
                 <!-- 公益诉讼 -->
@@ -117,10 +115,10 @@
                                 </div>
                             </el-carousel-item>
                             <el-carousel-item>
-                                <p class="soon-text">敬请期待</p>
+                                <p v-if="swiperColumn === 1" class="soon-text">敬请期待</p>
                             </el-carousel-item>
                             <el-carousel-item>
-                                <p class="soon-text">敬请期待</p>
+                                <p v-if="swiperColumn === 2"  class="soon-text">敬请期待</p>
                             </el-carousel-item>
                         </el-carousel>
                     </div>
@@ -172,7 +170,7 @@
 					}, {
 						id   : 'ms_tczsjcjys',
 						title: '提出再审检察建议数',
-						num  : 0
+						value  : 0
 					}, {
 						id   : 'ms_cnzsjcjys',
 						title: '采纳再审检察建议数',
@@ -236,6 +234,7 @@
 					}
 				},
 				teamPeopleTotal : 0,
+				swiperColumn    : 0,
 			};
 		},
 		computed  : {
@@ -250,20 +249,20 @@
 			this.oldTriggerState               = params;
 			this.publicInterestLitigationChart = ECharts.init(this.$refs.lawsuitContent);
 			this.dougBoxChart                  = ECharts.init(this.$refs.dougBox);
-			/*this.agePieChart                   = ECharts.init(this.$refs.agePie);
-			this.educationChart                = ECharts.init(this.$refs.education);
-			this.tendencyChart                 = ECharts.init(this.$refs.tendency);*/
+            /*this.agePieChart                   = ECharts.init(this.$refs.agePie);
+             this.educationChart                = ECharts.init(this.$refs.education);
+             this.tendencyChart                 = ECharts.init(this.$refs.tendency);*/
 
 			this.requestCivilData(params);
 			this.requestAdministration(params);
 			this.requestPublicInterestLitigation(params);
 			this.requestTroopAdministration(params);
-			/*this.requestAgeStructure(params);
-			this.requestEducationLevel(params);
-			this.requestDangerousDrivingList(params);*/
+            /*this.requestAgeStructure(params);
+             this.requestEducationLevel(params);
+             this.requestDangerousDrivingList(params);*/
 			this.lawWorksWin = {
-				closed : true
-            };
+				closed: true
+			};
 		},
 		updated() {
 			const params = { ...this.getSelectDateSection, ...this.getMapCode };
@@ -273,9 +272,9 @@
 				this.requestAdministration(params);
 				this.requestPublicInterestLitigation(params);
 				this.requestTroopAdministration(params);
-				/*this.requestAgeStructure(params);
-				this.requestEducationLevel(params);
-				this.requestDangerousDrivingList(params);*/
+                /*this.requestAgeStructure(params);
+                 this.requestEducationLevel(params);
+                 this.requestDangerousDrivingList(params);*/
 			}
 		},
 		methods   : {
@@ -377,8 +376,9 @@
 					tooltip: {
 						trigger    : 'axis',
 						axisPointer: {
-							type: 'shadow'
-						}
+							type: 'line'
+						},
+						padding: [0, 0, 0, 0],
 					},
 					legend : {
 						textStyle : {
@@ -414,7 +414,6 @@
 
 								type: 'dashed'
 							},
-
 						},
 						show      : true
 
@@ -436,6 +435,7 @@
 								fontSize: 10,
 								color   : '#ffffff',
 							},
+                            width : 50,
 						},
 						data     : publicInterestLitigationConfig[0].data.map(i => i.name),
 					},
@@ -498,17 +498,17 @@
 						switch(index) {
 							case 0: {
 								radius = [90, 110];
-								color  = ['#E85558', 'rgba(232, 85, 88, .1)'];
+								color  = ['#E85558', 'rgba(232, 85, 88, .3)'];
 							}
 								break;
 							case 1 : {
 								radius = [68, 88];
-								color  = ['#4BB0E4', 'rgba(75, 176, 228, .1)']
+								color  = ['#4BB0E4', 'rgba(75, 176, 228, .3)']
 							}
 								break;
 							case 2 : {
 								radius = [46, 66];
-								color  = ['#e7be40', 'rgba(231, 190, 64, .1)']
+								color  = ['#e7be40', 'rgba(231, 190, 64, .3)']
 							}
 						}
 						return {
@@ -520,7 +520,7 @@
 							hoverAnimation: false,
 							startAngle    : 90,
 							label         : {
-								normal  : {
+								normal: {
 									show: false
 								}
 							},
@@ -533,19 +533,19 @@
 										color: color[0]
 									}
 								},
-								label         : {
+								label    : {
 									normal  : {
 										show: false
 									},
 									emphasis: {
-										show: true,
+										show     : true,
 										formatter: function(params) {
 											const data = params.data || {};
 											return `${data.number}人 ${data.value}%`
 										}
 									}
 								},
-								lableLine     : {
+								lableLine: {
 									normal  : {
 										show: false
 									},
@@ -593,19 +593,7 @@
 			},
 			//  实证分析
 			cutHandle(n) {//切换轮播事件
-				switch(n) {
-					case 0:
-						this.swiperTitle = '年龄结构';
-						break;
-					case 1:
-						this.swiperTitle = '危险驾驶罪受教育程度分析';
-						break;
-					case 2:
-						this.swiperTitle = '危险驾驶罪年度趋势分析';
-						break;
-					default:
-						break;
-				}
+				this.swiperColumn = n;
 			},
 			// 年龄分布
 			ageHandle(chartData) {
@@ -905,11 +893,11 @@
 					]
 				});
 			},
-            // 打开外部链接
-			skipLawWorks(){
+			// 打开外部链接
+			skipLawWorks() {
 				if(!this.lawWorksWin.closed) {
 					this.lawWorksWin.close();
-                }
+				}
 				this.lawWorksWin = window.open('http://141.3.119.86:8888/display/form/displayHome/insert', '_blank', 'fullscreen=yes, height=1080, width=1280, left=1280, location=no, menubar=no, status=no, titlebar=no, toolbar=no, top=0');
 			}
 
@@ -928,50 +916,45 @@
         .content-box {
             display: flex;
             .left-view {
-                .middle-portion {
-                    display: flex;
-                    flex-wrap: wrap;
-                    .civil-box {
-                        width: 354px;
-                        .civil-content {
-                            padding: 10px;
-                            display: flex;
-                            flex-wrap: wrap;
-                            justify-content: space-around;
-                            color: #FFFFFF;
-                            li {
+                .civil-box {
+                    width: 739px;
+                    .civil-content {
+                        padding: 20px 0 10px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: space-around;
+                        color: #FFFFFF;
+                        li {
+                            text-align: center;
+                            margin-bottom: 10px;
+                            margin-right: 20px;
+                            .civil-num {
+                                height: 27px;
+                                display: inline-block;
+                                border: 1px solid #009FE8;
+                                background-size: 100% 100%;
+                                font-size: 14px;
+                                border-radius: 10px;
+                                padding: 4px 10px 2px;
+                            }
+                            .civil-text {
+                                width: 130px;
+                                margin-top: 11px;
+                                font-size: 18px;
                                 text-align: center;
-                                margin-bottom: 20px;
-                                .civil-num {
-                                    height: 27px;
-                                    display: inline-block;
-                                    border: 1px solid #009FE8;
-                                    background-size: 100% 100%;
-                                    font-size: 14px;
-                                    border-radius: 10px;
-                                    padding: 4px 10px 2px;
-                                }
-                                .civil-text {
-                                    width: 130px;
-                                    margin-top: 11px;
-                                    font-size: 18px;
-                                    text-align: center;
-                                }
-                                &:nth-of-type(7), &:nth-of-type(8) {
-                                    margin-bottom: 0;
-                                }
+                            }
+                            &:nth-of-type(7), &:nth-of-type(8) {
+                                margin-bottom: 0;
                             }
                         }
                     }
-                    .administration {
-                        width: 354px;
-                        height: 256px;
-                        margin-left: 9px;
-                        .admin-box {
-                            display: flex;
-                            justify-content: space-around;
-                            margin-top: 40px;
-                        }
+                }
+                .administration {
+                    width: 739px;
+                    .admin-box {
+                        display: flex;
+                        justify-content: space-around;
+                        margin: 20px auto;
                     }
                 }
                 .lawsuitBox {
@@ -994,8 +977,8 @@
                     }
                     .law-chart {
                         width: 650px;
-                        height: 180px;
-                        margin: 20px auto;
+                        height: 170px;
+                        margin: 20px auto 10px;
                     }
                 }
                 .bottomPortion {
@@ -1030,7 +1013,6 @@
                         }
                     }
                     .perCapita {
-                        margin-left: 12px;
                         display: inline-block;
                         width: 354px;
                         p {
@@ -1112,39 +1094,61 @@
                     .analyze-content {
                         position: relative;
                         padding: 10px 10px 0;
-                        /deep/ .el-carousel__container{
+                        /deep/ .el-carousel__container {
                             height: 390px;
                         }
-                        .empirical-analysis-box{
+                        .empirical-analysis-box {
                             position: absolute;
-                            top  : 10px;
+                            top: 10px;
                             left: 20px;
                             width: 400px;
-                            height: 380px;
+                            height: 370px;
                             border: 1px solid #00ccff;
                             margin: 0 auto;
                             border-radius: 5px;
                             cursor: pointer;
-                            .empirical-analysis-content{
+                            &:hover {
+                                box-shadow: 0 0 15px rgba(31, 162, 244, .6);
+                            }
+                            .empirical-analysis-content {
                                 margin: 10px 60px;
                             }
-                            .em-title{
+                            .em-title {
                                 margin-top: 10px;
                                 color: #2FE0BE;
                                 font-size: 28px;
                                 text-align: center;
                                 font-weight: bolder;
                             }
-                            .em-label{
+                            .em-label {
                                 display: block;
                                 margin: 10px 0 5px;
                                 font-size: 18px;
                                 color: #FFFFFF;
                             }
-                            .em-text{
+                            .em-text {
                                 font-size: 18px;
                                 color: #2FE0BE;
                                 margin-left: 20px;
+                            }
+                        }
+                        .soon-text{
+                            position: absolute;
+                            top : 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            font-size: 40px;
+                            font-weight: bolder;
+                            color: #ccc;
+                            text-shadow: 0 0 10px rgba(0, 255, 248, 1);
+                            animation: textRotate 10s linear infinite;
+                        }
+                        @keyframes textRotate {
+                            0%{
+                                transform: translate(-50%, -50%) rotateY(0deg);
+                            }
+                            100%{
+                                transform: translate(-50%, -50%) rotateY(360deg);
                             }
                         }
                     }

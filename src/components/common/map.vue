@@ -157,6 +157,9 @@
 
 						data: this.mapData,
 					}],
+					/*animation: true,
+					animationDurationUpdate: 1000,
+					animationEasingUpdate: 'cubicInOut'*/
 				});
 			},
 

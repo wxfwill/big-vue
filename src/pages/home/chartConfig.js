@@ -56,15 +56,15 @@ export const criminalCaseConfig = [{
 export const mapTooltipConfig = [{
 	id    : 'sls',
 	name  : '受理数',
-	regExp: '{sls}  {sls_zb}',
+	regExp: '{sls}  {sls_zb}%',
 }, {
 	id    : 'bjs',
 	name  : '办结数',
-	regExp: '{bjs}  {bjs_zb}',
+	regExp: '{bjs}  {bjs_zb}%',
 }, {
 	id    : 'zbs',
 	name  : '在办数',
-	regExp: '{zbs} {zbs_zb}',
+	regExp: '{zbs} {zbs_zb}%',
 }, {
 	id  : 'yejcg',
 	name: '原额检察官',

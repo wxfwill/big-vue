@@ -1,6 +1,6 @@
 <template>
     <div class="water-box">
-        <div ref='chartBox' :style="{width:'86px', height:'86px'}"></div>
+        <div ref='chartBox' :style="{width:'70px', height:'70px'}"></div>
         <p>{{chartConfig.value}}</p>
         <p>{{chartConfig.title}}</p>
     </div>
@@ -38,7 +38,7 @@
 								}
 							}
 						}],
-						radius         : '95%',
+						radius         : '98%',
 						backgroundStyle: {
 							borderWidth: 1,//内边框粗细
 							borderColor: this.chartConfig.col2,//内边框颜色
@@ -75,7 +75,7 @@
         flex-direction: column;
         align-items: center;
         p:nth-of-type(1) {
-            line-height:26px;
+            line-height:22px;
             font-size:22px;
             font-family:ArialMT;
             color: rgba(255, 255, 255, 1);

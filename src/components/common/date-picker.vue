@@ -27,6 +27,8 @@
 </template>
 
 <script>
+    import { fillZero } from "@/utlis/helper";
+
 	export default {
 		created() {
 			this.dateChange({
@@ -76,7 +78,7 @@
 			},
 			getNowDate() {
 				const date = new Date();
-				return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+				return `${date.getFullYear()}-${fillZero(date.getMonth() + 1, 2)}-${fillZero(date.getDate(), 2)}`;
 			},
 		},
 		props   : ['dateChange'],

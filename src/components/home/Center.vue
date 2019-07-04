@@ -3,21 +3,21 @@
         <div class="sumBox">
             <div class="num-block">
                 受理总数：
-                <ol>
+                <ul>
                     <li v-for="(item,index) in totalSls" :key="index">{{item}}</li>
-                </ol>
+                </ul>
             </div>
             <div class="num-block">
                 办结总数：
-                <ol>
+                <ul>
                     <li v-for="(item,index) in totalBjs" :key="index">{{item}}</li>
-                </ol>
+                </ul>
             </div>
             <div class="num-block">
                 在办总数：
-                <ol>
+                <ul>
                     <li v-for="(item, index) in totalZbs" :key="index">{{item}}</li>
-                </ol>
+                </ul>
             </div>
         </div>
         <div class="center-box">
@@ -53,8 +53,8 @@
 		data() {
 			return {
 				totalSls   : [0, 0, 0, 0],
-                totalBjs   : [0, 0, 0, 0],
-                totalZbs   : [0, 0, 0, 0],
+				totalBjs   : [0, 0, 0, 0],
+				totalZbs   : [0, 0, 0, 0],
 				sls        : 0,
 				bjs        : 0,
 				zbs        : 0,
@@ -98,16 +98,16 @@
 					this.$message.error(res.msg);
 				}
 			},
-            async loadHeadTotalData(params) {
+			async loadHeadTotalData(params) {
 				const res = await services.getTopSlBjZb(params);
 				if(res.code === 200) {
-                    this.totalSls = `${fillZero(res.data.slzs, 4)}`.split('');
-                    this.totalBjs = `${fillZero(res.data.bjzs, 4)}`.split('');
+					this.totalSls = `${fillZero(res.data.slzs, 4)}`.split('');
+					this.totalBjs = `${fillZero(res.data.bjzs, 4)}`.split('');
 					this.totalZbs = `${fillZero(res.data.zbzs, 4)}`.split('');
-                } else {
+				} else {
 					this.$message.error(res.msg);
-                }
-            },
+				}
+			},
 			...mapActions('homePage', ['setMapData']),
 		},
 		components: {
@@ -201,10 +201,13 @@
             .num-block {
                 margin-right: 20px;
                 text-align: center;
-                ol {
-                    display: inline-block;
+                ul {
+                    position: relative;
                     vertical-align: middle;
+                    display: inline-flex;
                     li {
+                        position: relative;
+                        top: 0;
                         width: 32px;
                         height: 43px;
                         line-height: 43px;
@@ -215,9 +218,24 @@
                         text-align: center;
                         margin-right: 5px;
                         background: linear-gradient(bottom, #0BE5F1, #0C99F7);
+                        cursor: pointer;
+                        /*animation: blockShake 1s linear 0s 1 normal forwards;*/
+                        transition: top .3s linear;
                         &:last-of-type {
                             margin-left: 0;
                         }
+                        &:hover {
+                            top : -3px;
+                        }
+
+                    }
+                }
+                @keyframes blockShake {
+                    50% {
+                        transform: rotateY(-180deg);
+                    }
+                    100% {
+                        transform: rotateY(-360deg);
                     }
                 }
             }

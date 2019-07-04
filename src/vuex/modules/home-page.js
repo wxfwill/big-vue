@@ -1,13 +1,13 @@
 import { SET_HOME_MAP_STATE, SET_HOME_TIME, POPUP_SHOW } from '../types';
+import { fillZero }                                      from "@/utlis/helper";
 
 const nowDate   = new Date();
 const state     = {
-	startDate: `${nowDate.getFullYear()}-01-01`,
-	endDate  : `${nowDate.getFullYear()}-${nowDate.getMonth() + 1}-${nowDate.getDate()}`,
+	startDate: '',
+	endDate  : '',
 	code     : 100000,
 	lev      : 1,
 	popupShow: false,
-	
 };
 const mutations = {
 	[SET_HOME_TIME](state, data) {
