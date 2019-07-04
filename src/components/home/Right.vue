@@ -295,7 +295,7 @@
 					this.xzList = administrativeConfig.map(i => ({
 						...i,
 						value: res.data[i.id],
-						rate : res.data[i.rateId] || 0,
+						rate : (res.data[i.rateId] || 0) / 100,
 					}));
 				} else {
 					this.$message.error(res.msg);
@@ -982,7 +982,7 @@
                     }
                 }
                 .bottomPortion {
-                    margin-top: 25px;
+                    margin-top: 10px;
                     display: flex;
                     .dom-line-chart {
                         margin-top: 20px;

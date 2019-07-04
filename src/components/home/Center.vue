@@ -217,6 +217,7 @@
                         color: rgba(255, 255, 255, 1);
                         text-align: center;
                         margin-right: 5px;
+                        background: -webkit-gradient(bottom, #0BE5F1, #0C99F7);
                         background: linear-gradient(bottom, #0BE5F1, #0C99F7);
                         cursor: pointer;
                         /*animation: blockShake 1s linear 0s 1 normal forwards;*/

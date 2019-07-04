@@ -11,7 +11,7 @@
             <ul>
                 <li v-for="item in tooltipConfig" :key="item.id">
                     <span>{{ item.name }}：</span>
-                    <i>{{ item.regExp ? getTooltipText(item.regExp, tooltipData) : tooltipData[item.id] || '-' }}</i>
+                    <i>{{ item.regExp ? getTooltipText(item.regExp, tooltipData) : tooltipData[item.id] || '0' }}</i>
                 </li>
             </ul>
         </div>
