@@ -90,6 +90,7 @@
                             <el-carousel-item>
                                 <div class="empirical-analysis-box" @click="skipLawWorks">
                                     <div class="empirical-analysis-content">
+                                        <img :src="empiricaIcon" alt="..." class="eman-img">
                                         <h3 class="em-title">数据说明</h3>
                                         <ul>
                                             <li>
@@ -150,6 +151,7 @@
 			return {
 				swiperTitle     : '',
 				civilBoxImg     : require('@/public/img/home/civilBox.png'),
+				empiricaIcon    : require('@/public/img/home/empirica-icon.png'),
 				civilList       : [
 					{
 						id   : 'ms_sljs',
@@ -1111,7 +1113,13 @@
                                 box-shadow: 0 0 15px rgba(31, 162, 244, .6);
                             }
                             .empirical-analysis-content {
+                                position: relative;
                                 margin: 10px 60px;
+                                .eman-img{
+                                    position: absolute;
+                                    top: 60px;
+                                    right: -30px;
+                                }
                             }
                             .em-title {
                                 margin-top: 10px;

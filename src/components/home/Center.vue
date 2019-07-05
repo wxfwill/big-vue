@@ -221,7 +221,7 @@
                         background: linear-gradient(bottom, #0BE5F1, #0C99F7);
                         cursor: pointer;
                         /*animation: blockShake 1s linear 0s 1 normal forwards;*/
-                        transition: top .3s linear;
+                        transition: top .1s linear;
                         &:last-of-type {
                             margin-left: 0;
                         }

@@ -45,9 +45,7 @@ async function request(config = {}) {
 
 /****************   统一管理接口   *************************/
 
-/**
- * 首页接口
- * */
+/***************** 首页接口 start ***************************/
 
 // 行政
 export const getAdministration = async (data) => await request({
@@ -147,10 +145,10 @@ export const getUndetected = async (data) => await request({
 	params: data
 });
 
+/***************** 首页接口 end ***************************/
 
-/**
- * 队伍管理模块
- * */
+
+/**************** 队伍管理模块 start********************/
 
 // 获取省和市区接口
 export const getAreas = async (data) => await request({
@@ -188,10 +186,9 @@ export const getProcuratorialOfficeData = async (data) => await request({
 	url   : '/api/v1.0/procuratorialOffice/getProcuratorialOfficeData',
 	params: data
 });
+/**************** 队伍管理模块 end********************/
 
-/**
- * 司法办案-民事模块-获取大屏展示系统民事数据
- * */
+/*********** 司法办案-民事模块-获取大屏展示系统民事数据 start ************/
 export const getCivilData            = async (data) => await request({
 	method: 'get',
 	url   : `api/v1.0/civil/getCivilData`,

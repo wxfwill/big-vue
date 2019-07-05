@@ -1,6 +1,5 @@
 <template>
     <div class="outer-criminal-page">
-        <date-time moduleName="刑事"></date-time>
         <div class="criminal-page-left">
             <div class="left-left">
                 <!-- <p class="tab"><span></span>&nbsp;&nbsp;&nbsp;刑事</p> -->

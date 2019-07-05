@@ -195,3 +195,35 @@ export const eduDegreeConfig = [{
 	id  : 'dxjysrs',
 	name: '大学及以上'
 }];
+
+export const acceptCaseYearList = [{
+	id: '2010',
+	text: '2010年'
+}, {
+	id: '2011',
+	text: '2011年'
+}, {
+	id: '2012',
+	text: '2012年'
+}, {
+	id: '2013',
+	text: '2013年'
+}, {
+	id: '2014',
+	text: '2014年'
+}, {
+	id: '2015',
+	text: '2015年'
+}, {
+	id: '2016',
+	text: '2016年'
+}, {
+	id: '2017',
+	text: '2017年'
+}, {
+	id: '2018',
+	text: '2018年'
+}, {
+	id: '2019',
+	text: '2019年'
+}];

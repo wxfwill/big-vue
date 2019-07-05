@@ -31,6 +31,19 @@
                         <span class="chart-label-dot"></span>
                         <i>受理案件趋势分析</i>
                     </div>
+                    <el-select
+                            v-model="acceptCaseSelectYear"
+                            class="accept-case-select"
+                            placeholder="请选择"
+                            @change="changeAcceptCaseYear"
+                    >
+                        <el-option
+                                v-for="item in yearList"
+                                :key="item.id"
+                                :label="item.text"
+                                :value="item.id">
+                        </el-option>
+                    </el-select>
                     <div class="accept-chart" ref="qstjContent"></div>
                 </div>
             </div>
@@ -66,22 +79,21 @@
 </template>
 
 <script>
-	import ECharts                                       from 'echarts';
-	import { mapGetters }                                from 'vuex';
-	import * as services                                 from '@/fetch/http';
-	import { undetectedChartConfig, criminalCaseConfig } from '@/pages/home/chartConfig';
-	import { verifyTriggerState, numberInteger }         from '@/utlis/helper';
-	import PenalGauge                                    from './penal-gauge';
+	import ECharts                                                           from 'echarts';
+	import { mapGetters }                                                    from 'vuex';
+	import * as services                                                     from '@/fetch/http';
+	import { verifyTriggerState, numberInteger }                             from '@/utlis/helper';
+	import PenalGauge                                                        from './penal-gauge';
+	import { undetectedChartConfig, criminalCaseConfig, acceptCaseYearList } from '@/pages/home/chartConfig';
 
 	export default {
-		name      : "homeLeft",
 		data() {
 			return {
-				lineImg: require('@/public/img/home/line.png'),
-				xsImg  : require('@/public/img/home/box1.png'),
-				qszmImg: require('@/public/img/home/qszm.png'),
-				xsList : [],
-				ksList : [
+				lineImg             : require('@/public/img/home/line.png'),
+				xsImg               : require('@/public/img/home/box1.png'),
+				qszmImg             : require('@/public/img/home/qszm.png'),
+				xsList              : [],
+				ksList              : [
 					{
 						id   : 'ks_slkgjs',
 						title: '受理控告件数',
@@ -111,7 +123,9 @@
 						title: '申诉案件办结数',
 						num  : 0,
 					}],
-				topList: [],
+				topList             : [],
+				yearList            : acceptCaseYearList,
+				acceptCaseSelectYear: '2019'
 			}
 		},
 		computed  : {
@@ -124,7 +138,6 @@
 		mounted() {
 			const params              = { ...this.getSelectDateSection, ...this.getMapCode };
 			this.oldTriggerState      = params;
-			console.log(this.oldTriggerState);
 			this.undetectedChart      = ECharts.init(this.$refs.wjBox);
 			this.trendStatisticsChart = ECharts.init(this.$refs.qstjContent);
 			this.loadXSData(params);
@@ -141,7 +154,6 @@
 				this.loadXSData(params);
 				this.loadProsecution(params);
 				this.loadProsecutionChargeList(params);
-				this.requestTrendStatisticsList(params);
 			}
 		},
 		methods   : {
@@ -189,6 +201,10 @@
 					this.$message.error(res.msg);
 				}
 			},
+			changeAcceptCaseYear(value){
+				//this.requestTrendStatisticsList()
+			},
+            // 请求受理案件趋势
 			async requestTrendStatisticsList(params) {
 				const res = await services.getTrendStatisticsList(params);
 				if(res.code === 200) {
@@ -414,7 +430,7 @@
 						{
 							name      : '件数',
 							type      : 'line',
-							smooth   : true,
+							smooth    : true,
 							itemStyle : {
 								normal  : { //颜色渐变函数 前四个参数分别表示四个位置依次为左、下、右、上
 									color    : new ECharts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -519,10 +535,23 @@
                     }
                 }
                 .accept-box {
+                    .accept-case-select {
+                        margin: 20px 0;
+                        float: right;
+                        z-index: 2;
+                        /deep/ .el-input__inner {
+                            height: 30px;
+                            background-color: transparent;
+                            color: #fff;
+                        }
+                        /deep/ .el-select__caret {
+                            line-height: 30px;
+                        }
+                    }
                     .accept-chart {
                         width: 700px;
                         height: 260px;
-                        margin: 40px auto 0 auto;
+                        margin: 0 auto;
                     }
                 }
             }
