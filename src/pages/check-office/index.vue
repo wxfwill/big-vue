@@ -27,7 +27,7 @@
 	import LeftSide                                                 from '@/components/check-office/Left';
 	import CenterBox                                                from '@/components/check-office/Center';
 	import RightSide                                                from '@/components/check-office/Right';
-	import { getProcuratorialOfficeData }                           from '@/fetch/http';
+	import { getProcuratorialOfficeData }                           from '@/utlis/request';
 	import { postDistributeConfig, submitApprovalPrioritiesConfig } from './chart-config';
 	import DatePicker                                               from '@/components/common/date-picker';
 

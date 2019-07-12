@@ -111,8 +111,8 @@
 import ECharts from 'echarts';
 import mapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
-import trendChart from '@/components/sfba/trend-chart.vue'
-import progressBar from '@/components/sfba/progress-bar.vue'
+import trendChart from '@/components/judicial-case/trend-chart.vue'
+import progressBar from '@/components/judicial-case/progress-bar.vue'
 import DateTime from '@/components/DateTime.vue'
 export default {
      components:{

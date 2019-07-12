@@ -31,10 +31,7 @@
 
 	export default {
 		created() {
-			this.dateChange({
-				startDate: this.startDate,
-				endDate  : this.endDate,
-			});
+			this.handleSearch();
 		},
 		data() {
 			return {
@@ -68,6 +65,10 @@
 		},
 		methods : {
 			handleSearch() {
+				if(!this.startDate || !this.endDate) {
+					this.$message.warning('时间不能为空');
+					return false;
+                }
 				this.dateChange({
 					startDate: this.startDate,
 					endDate  : this.endDate,
@@ -89,7 +90,7 @@
     .dateBox {
         position: absolute;
         right: 0;
-        top: 0;
+        top: -70px;
         z-index: 1;
         .block {
             display: inline-block;

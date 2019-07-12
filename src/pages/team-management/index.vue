@@ -28,7 +28,7 @@
 	import Left                  from '@/components/team-management/Left.vue';
 	import CenterBox             from '@/components/team-management/Center.vue';
 	import Right                 from '@/components/team-management/Right.vue';
-	import { getTeamManagement } from '@/fetch/http';
+	import { getTeamManagement } from '@/utlis/request';
 	import { fillZero }          from '@/utlis/helper';
 	import DatePicker            from '@/components/common/date-picker';
 

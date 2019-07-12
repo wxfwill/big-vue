@@ -10,9 +10,9 @@
 </template>
 <script>
 	import { mapActions } from 'vuex';
-	import Left           from '@/components/home/Left.vue'
-	import Center         from '@/components/home/Center.vue'
-	import Right          from '@/components/home/Right.vue'
+	import Left           from './components/Left.vue'
+	import Center         from './components/Center.vue'
+	import Right          from './components/Right.vue'
 	import DatePicker     from '@/components/common/date-picker';
 
 	export default {

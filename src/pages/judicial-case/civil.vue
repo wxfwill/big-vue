@@ -103,9 +103,9 @@
 import ECharts from 'echarts';
 import mapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
-import trendChart from '@/components/sfba/trend-chart.vue'
+import trendChart from '@/components/judicial-case/trend-chart.vue'
 import DateTime from '@/components/DateTime.vue'
-import { getCivilData,getEffectiveSupervision } from '@/fetch/http';
+import { getCivilData,getEffectiveSupervision } from '@/utlis/request';
 export default {
     components:{
         mapComponent,

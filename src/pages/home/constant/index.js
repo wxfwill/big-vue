@@ -25,11 +25,43 @@ export const undetectedChartConfig = [{
 	name: '提起公诉数'
 }];
 
+// 控申
+export const prosecutionConfig = [{
+	id   : 'ks_slkgjs',
+	title: '受理控告件数',
+}, {
+	id   : 'ks_slsss',
+	title: '受理申诉数',
+}, {
+	id   : 'ks_ccyslajs',
+	title: '初查移送立案件数',
+}, {
+	id   : 'ks_kgajzbs',
+	title: '控告案件在办数',
+}, {
+	id   : 'ks_kgajbjs',
+	title: '控告案件办结数',
+}, {
+	id   : 'ks_ssajzbs',
+	title: '申诉案件在办数',
+}, {
+	id   : 'ks_ssajbjs',
+	title: '申诉案件办结数',
+}];
+
 // 刑事概览
 export const criminalCaseConfig = [{
 	id   : 'xs_bjjs',
 	name : '办结件数',
 	color: '#1BC85D',
+}, {
+	id   : 'xs_sljs',
+	name : '受理件数',
+	color: '#1BC85D',
+}, {
+	id   : 'xs_zbjs',
+	name : '在办件数',
+	color: '#009FE8',
 }, {
 	id   : 'xs_jzlbrs',
 	name : '纠正漏捕人数',
@@ -42,29 +74,21 @@ export const criminalCaseConfig = [{
 	id   : 'xs_qsajs',
 	name : '起诉案件数',
 	color: '#FBBA18',
-}, {
-	id   : 'xs_sljs',
-	name : '受理件数',
-	color: '#1BC85D',
-}, {
-	id   : 'xs_zbjs',
-	name : '在办件数',
-	color: '#009FE8',
 }];
 
 // 地图tooltip内容
 export const mapTooltipConfig = [{
 	id    : 'sls',
 	name  : '受理数',
-	regExp: '{sls}  {sls_zb}%',
+	regExp: '{sls}&nbsp;&nbsp;&nbsp; {sls_zb}%',
 }, {
 	id    : 'bjs',
 	name  : '办结数',
-	regExp: '{bjs}  {bjs_zb}%',
+	regExp: '{bjs}&nbsp;&nbsp;&nbsp; {bjs_zb}%',
 }, {
 	id    : 'zbs',
 	name  : '在办数',
-	regExp: '{zbs} {zbs_zb}%',
+	regExp: '{zbs}&nbsp;&nbsp;&nbsp; {zbs_zb}%',
 }, {
 	id  : 'yejcg',
 	name: '原额检察官',
@@ -194,36 +218,4 @@ export const eduDegreeConfig = [{
 }, {
 	id  : 'dxjysrs',
 	name: '大学及以上'
-}];
-
-export const acceptCaseYearList = [{
-	id: '2010',
-	text: '2010年'
-}, {
-	id: '2011',
-	text: '2011年'
-}, {
-	id: '2012',
-	text: '2012年'
-}, {
-	id: '2013',
-	text: '2013年'
-}, {
-	id: '2014',
-	text: '2014年'
-}, {
-	id: '2015',
-	text: '2015年'
-}, {
-	id: '2016',
-	text: '2016年'
-}, {
-	id: '2017',
-	text: '2017年'
-}, {
-	id: '2018',
-	text: '2018年'
-}, {
-	id: '2019',
-	text: '2019年'
 }];

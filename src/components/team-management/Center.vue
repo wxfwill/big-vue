@@ -16,7 +16,7 @@
 <script>
 	import EChart          from 'echarts';
 	import { getRealType } from '@/utlis/helper';
-	import BjMap           from '../common/map';
+	import BjMap           from '../common/map/index';
 
 	export default {
 		data() {

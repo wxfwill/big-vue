@@ -57,8 +57,8 @@ import echarts from 'echarts';
 import 'echarts-liquidfill/src/liquidFill.js'; //在这里引入
 import mapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
-import trendChart from '@/components/sfba/trend-chart.vue'
-import waterPolo from '@/components/sfba/water-polo.vue'
+import trendChart from '@/components/judicial-case/trend-chart.vue'
+import waterPolo from '@/components/judicial-case/water-polo.vue'
 import DateTime from '@/components/DateTime.vue'
 export default {
     components:{

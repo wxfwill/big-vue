@@ -86,40 +86,18 @@
                         <i>实证分析</i>
                     </div>
                     <div class="analyze-content">
-                        <el-carousel indicator-position="outside" :interval='0' arrow='never' @change="cutHandle">
-                            <el-carousel-item>
-                                <div class="empirical-analysis-box" @click="skipLawWorks">
-                                    <div class="empirical-analysis-content">
-                                        <img :src="empiricaIcon" alt="..." class="eman-img">
-                                        <h3 class="em-title">数据说明</h3>
-                                        <ul>
-                                            <li>
-                                                <label class="em-label">数据来源：</label>
-                                                <p class="em-text">检查机关</p>
-                                            </li>
-                                            <li>
-                                                <label class="em-label">数据内容：</label>
-                                                <p class="em-text">起诉书/不起诉书</p>
-                                            </li>
-                                            <li>
-                                                <label class="em-label">涉及案由：</label>
-                                                <p class="em-text">危险驾驶罪</p>
-                                                <p class="em-text">交通肇事罪</p>
-                                                <p class="em-text">以及危险方法危害公共安全罪</p>
-                                            </li>
-                                            <li>
-                                                <label class="em-label">时间范围：</label>
-                                                <p class="em-text">2010-2018</p>
-                                            </li>
-                                        </ul>
-                                    </div>
+                        <el-carousel
+                                :autoplay=true
+                                indicator-position="outside"
+                                :interval=5000
+                                arrow='hover'
+                                :loop=true
+                                @change="cutHandle"
+                        >
+                            <el-carousel-item v-for="caseItem in analyzeList" :key="caseItem.id">
+                                <div class="analyze-media" @click="skipLawWorks(caseItem.url)">
+                                    <p class="analyze-item-name">{{ caseItem.name }}</p>
                                 </div>
-                            </el-carousel-item>
-                            <el-carousel-item>
-                                <p v-if="swiperColumn === 1" class="soon-text">敬请期待</p>
-                            </el-carousel-item>
-                            <el-carousel-item>
-                                <p v-if="swiperColumn === 2"  class="soon-text">敬请期待</p>
                             </el-carousel-item>
                         </el-carousel>
                     </div>
@@ -136,15 +114,15 @@
 	import { mapGetters }                        from 'vuex';
 	import { verifyTriggerState, numberInteger } from '@/utlis/helper';
 	import 'echarts-liquidfill/src/liquidFill.js';
-	import waterPolo                             from '@/components/sfba/water-polo.vue'
-	import * as services                         from '@/fetch/http';
+	import waterPolo                             from '@/components/judicial-case/water-polo.vue'
+	import * as services                         from '../service';
 	import {
 		administrativeConfig,
 		publicInterestLitigationConfig,
 		troopAdministrationConfig,
 		ageStructureConfig,
 		eduDegreeConfig,
-	}                                            from '@/pages/home/chartConfig';
+	}                                            from '../constant';
 
 	export default {
 		data() {
@@ -237,6 +215,15 @@
 				},
 				teamPeopleTotal : 0,
 				swiperColumn    : 0,
+                analyzeList     : [{
+					id   : 'dangerDriving',
+					name : '危险驾驶罪分析报告',
+					url  : 'http://141.3.119.86:8888/display/form/displayHome/insert'
+                }, {
+					id   : 'vaccineCase',
+					name : '涉疫苗案件分析报告',
+                    url  : 'jczc.gj.pro:10080'
+                }]
 			};
 		},
 		computed  : {
@@ -251,17 +238,13 @@
 			this.oldTriggerState               = params;
 			this.publicInterestLitigationChart = ECharts.init(this.$refs.lawsuitContent);
 			this.dougBoxChart                  = ECharts.init(this.$refs.dougBox);
-            /*this.agePieChart                   = ECharts.init(this.$refs.agePie);
-             this.educationChart                = ECharts.init(this.$refs.education);
-             this.tendencyChart                 = ECharts.init(this.$refs.tendency);*/
 
 			this.requestCivilData(params);
 			this.requestAdministration(params);
 			this.requestPublicInterestLitigation(params);
 			this.requestTroopAdministration(params);
-            /*this.requestAgeStructure(params);
-             this.requestEducationLevel(params);
-             this.requestDangerousDrivingList(params);*/
+
+			// 实证分析监听窗口
 			this.lawWorksWin = {
 				closed: true
 			};
@@ -274,9 +257,6 @@
 				this.requestAdministration(params);
 				this.requestPublicInterestLitigation(params);
 				this.requestTroopAdministration(params);
-                /*this.requestAgeStructure(params);
-                 this.requestEducationLevel(params);
-                 this.requestDangerousDrivingList(params);*/
 			}
 		},
 		methods   : {
@@ -896,11 +876,11 @@
 				});
 			},
 			// 打开外部链接
-			skipLawWorks() {
+			skipLawWorks(url) {
 				if(!this.lawWorksWin.closed) {
 					this.lawWorksWin.close();
 				}
-				this.lawWorksWin = window.open('http://141.3.119.86:8888/display/form/displayHome/insert', '_blank', 'fullscreen=yes, height=1080, width=1280, left=1280, location=no, menubar=no, status=no, titlebar=no, toolbar=no, top=0');
+				this.lawWorksWin = window.open(url, '_blank', 'fullscreen=yes, height=1080, width=1280, left=1280, location=no, menubar=no, status=no, titlebar=no, toolbar=no, top=0');
 			}
 
 		},
@@ -914,7 +894,6 @@
     .home-page-right {
         height: 900px;
         width: 1228px;
-        margin-top: 65px;
         .content-box {
             display: flex;
             .left-view {
@@ -1095,51 +1074,27 @@
                     margin-top: 40px;
                     .analyze-content {
                         position: relative;
-                        padding: 10px 10px 0;
                         /deep/ .el-carousel__container {
                             height: 390px;
-                        }
-                        .empirical-analysis-box {
-                            position: absolute;
-                            top: 10px;
-                            left: 20px;
-                            width: 400px;
-                            height: 370px;
-                            border: 1px solid #00ccff;
-                            margin: 0 auto;
-                            border-radius: 5px;
-                            cursor: pointer;
-                            &:hover {
-                                box-shadow: 0 0 15px rgba(31, 162, 244, .6);
-                            }
-                            .empirical-analysis-content {
-                                position: relative;
-                                margin: 10px 60px;
-                                .eman-img{
-                                    position: absolute;
-                                    top: 60px;
-                                    right: -30px;
+                            .analyze-media {
+                                width: 300px;
+                                height: 330px;
+                                margin: 30px auto;
+                                background-color: #fff;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                &:hover{
+                                    box-shadow: 0 0 15px rgba(31, 162, 244, .6);
+                                }
+                                .analyze-item-name{
+                                    padding-top: 120px;
+                                    font-size: 18px;
+                                    text-align: center;
+                                    color: #0b91e8;
                                 }
                             }
-                            .em-title {
-                                margin-top: 10px;
-                                color: #2FE0BE;
-                                font-size: 28px;
-                                text-align: center;
-                                font-weight: bolder;
-                            }
-                            .em-label {
-                                display: block;
-                                margin: 10px 0 5px;
-                                font-size: 18px;
-                                color: #FFFFFF;
-                            }
-                            .em-text {
-                                font-size: 18px;
-                                color: #2FE0BE;
-                                margin-left: 20px;
-                            }
                         }
+
                         .soon-text{
                             position: absolute;
                             top : 50%;

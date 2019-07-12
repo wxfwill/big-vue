@@ -21,7 +21,7 @@
                     <ul>
                         <li v-for="item in ksList" :key="item.id">
                             <p class="control-title">{{item.title}}</p>
-                            <p class="control-number">{{item.num}}</p>
+                            <p class="control-number">{{ item.num || 0 }}</p>
                         </li>
                     </ul>
                 </div>
@@ -39,9 +39,9 @@
                     >
                         <el-option
                                 v-for="item in yearList"
-                                :key="item.id"
-                                :label="item.text"
-                                :value="item.id">
+                                :key="item.value"
+                                :label="item.name"
+                                :value="item.value">
                         </el-option>
                     </el-select>
                     <div class="accept-chart" ref="qstjContent"></div>
@@ -79,12 +79,12 @@
 </template>
 
 <script>
-	import ECharts                                                           from 'echarts';
-	import { mapGetters }                                                    from 'vuex';
-	import * as services                                                     from '@/fetch/http';
-	import { verifyTriggerState, numberInteger }                             from '@/utlis/helper';
-	import PenalGauge                                                        from './penal-gauge';
-	import { undetectedChartConfig, criminalCaseConfig, acceptCaseYearList } from '@/pages/home/chartConfig';
+	import ECharts                                                          from 'echarts';
+	import { mapGetters }                                                   from 'vuex';
+	import * as services                                                    from '../service/index';
+	import { verifyTriggerState, numberInteger }                            from '@/utlis/helper';
+	import PenalGauge                                                       from './penal-gauge';
+	import { undetectedChartConfig, criminalCaseConfig, prosecutionConfig } from '../constant/index';
 
 	export default {
 		data() {
@@ -93,42 +93,20 @@
 				xsImg               : require('@/public/img/home/box1.png'),
 				qszmImg             : require('@/public/img/home/qszm.png'),
 				xsList              : [],
-				ksList              : [
-					{
-						id   : 'ks_slkgjs',
-						title: '受理控告件数',
-						num  : 0,
-					}, {
-						id   : 'ks_slsss',
-						title: '受理申诉数',
-						num  : 0,
-					}, {
-						id   : 'ks_ccyslajs',
-						title: '初查移送立案件数',
-						num  : 0,
-					}, {
-						id   : 'ks_kgajzbs',
-						title: '控告案件在办数',
-						num  : 0,
-					}, {
-						id   : 'ks_kgajbjs',
-						title: '控告案件办结数',
-						num  : 0,
-					}, {
-						id   : 'ks_ssajzbs',
-						title: '申诉案件在办数',
-						num  : 0,
-					}, {
-						id   : 'ks_ssajbjs',
-						title: '申诉案件办结数',
-						num  : 0,
-					}],
+				ksList              : prosecutionConfig,
 				topList             : [],
-				yearList            : acceptCaseYearList,
-				acceptCaseSelectYear: '2019'
+				acceptCaseSelectYear: new Date().getFullYear()
 			}
 		},
 		computed  : {
+			yearList() {
+				const nowYear      = new Date().getFullYear(),
+					  timeInterval = nowYear - 2010;
+				return Array.from({ length: timeInterval }).map((i, index) => ({
+					name : `${nowYear - index}年`,
+					value: nowYear - index,
+				}));
+			},
 			...mapGetters('homePage', ['getSelectDateSection', 'getMapCode'])
 		},
 		beforeCreate() {
@@ -144,11 +122,22 @@
 			this.loadWJData(params);
 			this.loadProsecution(params);
 			this.loadProsecutionChargeList(params);
-			this.requestTrendStatisticsList(params);
+			this.requestTrendStatisticsList({
+				code: params.code,
+				lev : params.lev,
+				year: this.acceptCaseSelectYear
+			});
 		},
 		updated() {
 			const params = { ...this.getSelectDateSection, ...this.getMapCode };
 			if(verifyTriggerState(this.trigger, this.oldTriggerState, params)) {
+				if(verifyTriggerState(['code', 'lev'], this.oldTriggerState, params)) {
+					this.requestTrendStatisticsList({
+						code: params.code,
+						lev : params.lev,
+						year: this.acceptCaseSelectYear
+					});
+				}
 				this.oldTriggerState = params;
 				this.loadWJData(params);
 				this.loadXSData(params);
@@ -201,10 +190,15 @@
 					this.$message.error(res.msg);
 				}
 			},
-			changeAcceptCaseYear(value){
-				//this.requestTrendStatisticsList()
+			changeAcceptCaseYear(value) {
+				console.log(value);
+				this.requestTrendStatisticsList({
+					...this.getMapCode,
+					year: value
+				});
+
 			},
-            // 请求受理案件趋势
+			// 请求受理案件趋势
 			async requestTrendStatisticsList(params) {
 				const res = await services.getTrendStatisticsList(params);
 				if(res.code === 200) {
@@ -323,7 +317,7 @@
 						barGap   : '-100%',
 						itemStyle: {
 							normal: {
-								color: 'rgba(0, 159, 232, .1)'
+								color: 'rgba(0, 159, 232, .3)'
 							}
 						},
 						data     : Array.from({ length: seriesData.length }).map(() => valMax)
@@ -475,7 +469,6 @@
     .home-page-left {
         display: flex;
         width: 1318px;
-        padding: 50px 0 0 0;
         .accept-tooltip {
             background: linear-gradient(left, #0BE5F1, #0C99F7);
             width: 100px;
@@ -567,14 +560,13 @@
             margin-left: 20px;
             .criminal-box {
                 width: 545px;
-                height: 360px;
                 .overview-box {
                     width: 100%;
                     position: relative;
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: center;
-                    padding: 30px 0 0;
+                    padding: 40px 0 20px;
                     .line {
                         position: absolute;
                         width: 1px;

@@ -58,7 +58,7 @@
 <script>
 	import EChart                      from 'echarts';
 	import CitySelector                from './city-selector';
-	import { getPersonnelPerformance } from '@/fetch/http';
+	import { getPersonnelPerformance } from '@/utlis/request';
 
 	export default {
 		mounted() {

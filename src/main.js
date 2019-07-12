@@ -12,8 +12,10 @@ import {
 	Dialog,
 	Button,
 	Table,
-	TableColumn
+	TableColumn,
+	Popover,
 }              from 'element-ui';
+import './public/mock';
 
 const elementComponents = [
 		  DatePicker,
@@ -25,6 +27,7 @@ const elementComponents = [
 		  Button,
 		  Table,
 		  TableColumn,
+		  Popover,
 	  ],
 	  vt                = new Vue();
 elementComponents.forEach(i => Vue.use(i));
