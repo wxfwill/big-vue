@@ -157,15 +157,19 @@
 				if(!(notEndLev && lastIsEndLev)) {
 					this.mapLevel++;
 				}
+
 				this.cityCrumbsList[this.mapLevel] = {
 					id,
 					code,
 					name,
-					extendMap
+					extendMap,
+					publicName: params.data.publicName
 				};
 				// 第四级不加载地图
 				if(!notEndLev) {
 					this.loadMapGraphJson();
+				} else {
+					this.highlightCountyArea();
 				}
 				this.getNewRegionInfo && this.getNewRegionInfo({
 					code,
@@ -183,7 +187,6 @@
 			async loadMapGraphJson() {
 				const { id, name, extendMap } = this.cityCrumbsList[this.mapLevel];
 				let url                       = 'public/map-json';
-
 				if(extendMap) {
 					url += `/extendProvince/${id}`;
 				} else {
@@ -204,25 +207,34 @@
 					name,
 					data: mapGeoJson
 				});
+				this.loadMapChart(name, mapGeoJson, false);
 			},
 
 			/**
 			 * 加载地图
 			 * */
-			loadMapChart(name, data) {
+			loadMapChart(name, data, isMatchExtra = true) {
 				this.myChart.clear();
 				ECharts.registerMap(name, data);
-				const { mapData, extendData } = this.mapDataClassify();
-				if(name === '中国') {
-					extendData.some((i) => {
-						if(i.code === "100000") {
-							this.highProcuratorInfo = i;
-							return true;
-						}
-						return false;
-					})
-				} else {
-					this.extendData = extendData;
+				let mapData    = [],
+					extendData = [];
+				// mapDataClassify方法复杂度On2,减少调用次数
+				if(isMatchExtra) {
+					const classify = this.mapDataClassify(this.cityCrumbsList[this.mapLevel].publicName);
+					extendData     = classify.extendData;
+					mapData        = classify.mapData;
+
+					if(name === '中国') {
+						extendData.some((i) => {
+							if(i.code === "100000") {
+								this.highProcuratorInfo = i;
+								return true;
+							}
+							return false;
+						});
+					} else {
+						this.extendData = extendData;
+					}
 				}
 				this.myChart.setOption({
 					tooltip: {
@@ -300,13 +312,33 @@
 				});
 			},
 
+			highlightCountyArea() {
+				const { name }               = this.cityCrumbsList[this.mapLevel],
+					  { data: upMapGeoJson } = this.mapJsonData[this.mapLevel - 1];
+				const nowSelectedMap         = {
+					"type"  : "FeatureCollection",
+					"cp"    : [116.4551, 40.2539],
+					"size"  : "5000",
+					features: [upMapGeoJson.features.find(i => i.properties.name === name)],
+				};
+				this.mapJsonData.push({
+					name,
+					data: nowSelectedMap
+				});
+				this.loadMapChart(name, nowSelectedMap, false);
+			},
+
 			/**
 			 * 地图数据分类，对匹配不到的地图区域做特殊处理
 			 * */
-			mapDataClassify() {
+			mapDataClassify(publicName) {
+				let cityData = this.mapData;
 				const mapData                = [],
 					  { data: { features } } = this.mapJsonData[this.mapLevel],
-					  extendData             = this.mapData.filter((i) => {
+					  extendData             = cityData.filter((i) => {
+					  	  if(publicName){
+							  i.name = i.name.replace(publicName, '');
+						  }
 						  const isExist = features.some(j => {
 							  if(j.properties.name === i.name) {
 								  i.id = j.properties.id;
@@ -328,6 +360,7 @@
 			getExtraPosition(name) {
 				return geoCoordMap[name] || {};
 			},
+
 			convertMapData(areaName, extendData) {
 				const scatterData   = [],
 					  extraPosition = this.getExtraPosition(areaName);
@@ -367,7 +400,7 @@
 					nowMapHoleType: true,
 				}];
 				const { name, data }    = this.mapJsonData[0];
-				this.loadMapChart(name, data);
+				this.loadMapChart(name, data, false);
 				this.getNewRegionInfo && this.getNewRegionInfo({
 					code: 100000,
 					lev : 1,
@@ -381,16 +414,12 @@
 				if(this.mapLevel === 0) {
 					return false;
 				}
-				const { id } = this.cityCrumbsList[this.mapLevel];
 				let code;
 				this.cityCrumbsList.pop();
 				this.mapLevel--;
 				code = this.cityCrumbsList[this.mapLevel].code;
-				if(!this.verifyMapIsEnd(id)) {
-					this.mapJsonData.pop();
-				}
-
-				this.getNewRegionInfo({
+				this.mapJsonData.pop();
+				this.getNewRegionInfo && this.getNewRegionInfo({
 					code,
 					lev: this.mapLevel + 1
 				});
@@ -534,12 +563,9 @@
 		],
 		watch  : {
 			mapData() {
-				const index  = this.mapLevel,
-					  { id } = this.cityCrumbsList[index];
-				if(!this.verifyMapIsEnd(id)) {
-					const mapJsonData = this.mapJsonData;
-					this.loadMapChart(mapJsonData[index].name, mapJsonData[index].data);
-				}
+				const index       = this.mapLevel;
+				const mapJsonData = this.mapJsonData;
+				this.loadMapChart(mapJsonData[index].name, mapJsonData[index].data);
 			}
 		}
 	}
@@ -553,6 +579,10 @@
     .map-extra-table {
         &.el-popover {
             background-color: rgba(6, 35, 85, 1);
+            border: 0;
+            /*.popper__arrow{
+
+            }*/
             .el-table {
                 background-color: transparent;
                 &:before {
@@ -567,6 +597,11 @@
                     }
                     td {
                         border: 0;
+                    }
+                    &:hover{
+                        td {
+                            background-color: rgba(233, 233, 233, .1);
+                        }
                     }
                 }
             }

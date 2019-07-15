@@ -191,7 +191,6 @@
 				}
 			},
 			changeAcceptCaseYear(value) {
-				console.log(value);
 				this.requestTrendStatisticsList({
 					...this.getMapCode,
 					year: value

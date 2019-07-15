@@ -22,6 +22,7 @@
 					series: [{
 						type           : 'liquidFill',
 						data           : [{
+							number   : this.chartConfig.value,
 							value    : this.chartConfig.rate,
 							direction: 'right',
 							itemStyle: {
@@ -30,6 +31,7 @@
 								}
 							}
 						}, {
+							number   : this.chartConfig.value,
 							value    : this.chartConfig.rate,
 							direction: 'right',
 							itemStyle: {
@@ -48,10 +50,17 @@
 							show  : false,
 							normal: {
 								formatter: (params) => {
-									return `${params.value * 100}%`;
+									const val = params.value * 100;
+									let text;
+									if(params.data.number > 0 && val === 0) {
+										text = '>0.01%';
+                                    } else {
+										text = `${val}%`;
+                                    }
+									return text;
 								},
 								textStyle: {
-									fontSize  : 18,
+									fontSize  : 14,
 									color     : '#fff',
 									fontFamily: 'PingFang-SC-Bold',
 									fontWeight: 'bold'

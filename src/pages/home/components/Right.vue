@@ -1076,6 +1076,7 @@
                         position: relative;
                         /deep/ .el-carousel__container {
                             height: 390px;
+                            margin: 0 auto;
                             .analyze-media {
                                 width: 300px;
                                 height: 330px;
@@ -1093,8 +1094,22 @@
                                     color: #0b91e8;
                                 }
                             }
+                            .el-carousel__arrow{
+                                background-color: rgba(29,206,235,.4);
+                                color: #fff;
+                            }
                         }
-
+                        /deep/ .el-carousel__indicator{
+                            &.is-active{
+                                .el-carousel__button{
+                                    background-color: #fff;
+                                }
+                            }
+                            .el-carousel__button{
+                                background-color: #17E4F1;
+                                opacity: 1;
+                            }
+                        }
                         .soon-text{
                             position: absolute;
                             top : 50%;

@@ -1,6 +1,6 @@
 import Mock from 'mockjs';
 
-Mock.mock('http://172.16.119.242:8001/api/v1.0/homePage/getMapTopData?startdate=2019-01-01&enddate=2019-07-12&code=100000&lev=1', {
+Mock.mock('http://172.16.119.242:8001/api/v1.0/homePage/getMapTopData?startdate=2019-01-01&enddate=2019-07-15&code=100000&lev=1', {
 	"code": 200,
 	"msg": "成功",
 	"data": {
@@ -408,7 +408,7 @@ Mock.mock('http://172.16.119.242:8001/api/v1.0/homePage/getMapTopData?startdate=
 	}
 });
 
-Mock.mock('http://172.16.119.242:8001/api/v1.0/homePage/getMapTopData?startdate=2019-01-01&enddate=2019-07-12&code=130000&lev=2', {
+Mock.mock('http://172.16.119.242:8001/api/v1.0/homePage/getMapTopData?startdate=2019-01-01&enddate=2019-07-15&code=130000&lev=2', {
 	"code": 200,
 	"msg": "成功",
 	"data": {
@@ -564,7 +564,7 @@ Mock.mock('http://172.16.119.242:8001/api/v1.0/homePage/getMapTopData?startdate=
 	}
 });
 
-Mock.mock('http://172.16.119.242:8001/api/v1.0/homePage/getMapTopData?startdate=2019-01-01&enddate=2019-07-12&code=130100&lev=3', {
+Mock.mock('http://172.16.119.242:8001/api/v1.0/homePage/getMapTopData?startdate=2019-01-01&enddate=2019-07-15&code=130100&lev=3', {
 	"code": 200,
 	"msg": "成功",
 	"data": {
@@ -888,7 +888,31 @@ Mock.mock('http://172.16.119.242:8001/api/v1.0/homePage/getMapTopData?startdate=
 	}
 });
 
-Mock.mock('http://172.16.119.242:8001/api/v1.0/homePage/getMapTopData?startdate=2019-01-01&enddate=2019-07-12&code=code=130100&lev=2', {
+Mock.mock('http://172.16.119.242:8001/api/v1.0/homePage/getMapTopData?startdate=2019-01-01&enddate=2019-07-15&code=130131&lev=4', {
+	"code": 200,
+	"msg": "成功",
+	"data": {
+		"sls": 12272,
+		"bjs": 10666,
+		"zbs": 3920,
+		"homePageMapDataList": [
+			{
+				"code": "130131",
+				"name": "平山县",
+				"sls": 405,
+				"sls_zb": "3",
+				"bjs": 377,
+				"bjs_zb": "4",
+				"zbs": 91,
+				"zbs_zb": "2",
+				"yejcg": 15,
+				"syjf": 0
+			}
+		]
+	}
+});
+
+Mock.mock('http://172.16.119.242:8001/api/v1.0/homePage/getMapTopData?startdate=2019-01-01&enddate=2019-07-15&code=660000&lev=2', {
 	"code": 200,
 	"msg": "成功",
 	"data": {
