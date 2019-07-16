@@ -194,7 +194,7 @@
         .map-box {
             margin-top: 5px;
             width: 1211px;
-            height: 580px;
+            height: 480px;
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(1, 218, 226, 1)
         }

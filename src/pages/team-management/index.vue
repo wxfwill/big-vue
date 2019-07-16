@@ -7,6 +7,7 @@
                 ref="leftBox"
                 :incumbency="incumbency"
                 :workingLife="workingLife"
+				:personnelStatusQuos='personnelStatusQuos'
         ></left>
         <center-box
                 ref="centerBox"
@@ -67,6 +68,7 @@
 				}).then((resolve) => {
 					if(resolve.code === 200) {
 						const data                             = resolve.data;
+						console.log(data)
 						const qgzzrs                           = fillZero(data.incumbency.qgzzrs, 5).split(''),
 							  { leftBox, centerBox, rightBox } = this.$refs;
 
@@ -78,10 +80,16 @@
 						this.workingLife = data.workingLife;
 						leftBox.loadEducationChart(data.educationSituation);
 
-						this.teamManageMaps = data.teamManageMaps;
-						centerBox.loadPersonnelStatusChart(data.personnelStatusQuos);
+						this.personnelStatusQuos = data.personnelStatusQuos;
+						leftBox.loadpersonnelStatusQuosChart(data.personnelStatusQuos);
 
+						// this.teamManageMaps = data.teamManageMaps;
+						// centerBox.loadteamManageMapsChart(data.teamManageMaps);
+
+						this.personnelEducation=data.personnelEducation
 						rightBox.loadEduBgStrChart(data.personnelEducation);
+
+						this.ageDistribution=data.ageDistribution
 						rightBox.loadAgeDistributeChart(data.ageDistribution);
 					} else {
 						this.$message.error(`code:${resolve.code}`);
@@ -137,4 +145,10 @@
             }
         }
     }
+	// .dateBox{
+	// 	position: fixed!important;
+	// 	right: 33px!important;
+	// 	top: 103px!important;
+	// 	z-index: 1;
+	// }
 </style>

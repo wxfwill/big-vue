@@ -1,11 +1,24 @@
 <template>
     <div class="team-right-container">
         <div class="staff-detail-info">
-            <div class="staff-search-box" :style="{backgroundImage: `url(${staffPerformanceBg})`}">
-                <h1 class="title">人员绩效</h1>
-                <city-selector :search="searchStaffInfo"></city-selector>
-            </div>
-            <div class="structure-box" :style="{backgroundImage: `url(${staffEduStrBg})`}">
+			<div class="right-left">
+				<div class='right-left-top'>
+					<div class="chart-box-title">
+						<span class="chart-label-dot"></span>
+						<i>人员学历结构</i>
+					</div>
+					<div ref="personnelEducation" :style='{width:"400px", height:"375px"}'></div>
+				</div>
+				<div class="right-left-bottom">
+					<div class="chart-box-title">
+						<span class="chart-label-dot"></span>
+						<i>年龄分布</i>
+					</div>
+					 <div ref="ageDistributeChart" :style="{ width: '400px', height: '356px', margin: '0 auto' }"></div>
+				</div>
+			</div>
+            
+            <!-- <div class="structure-box" :style="{backgroundImage: `url(${staffEduStrBg})`}">
                 <h1 class="img-title">人员学历结构</h1>
                 <div class="chart-box">
                     <div ref="eduBgStrChart" :style='{width:"550px", height:"204px"}'></div>
@@ -16,43 +29,64 @@
                 <div class="chart-box">
                     <div ref="ageDistributeChart" :style="{ width: '520px', height: '245px', margin: '0 auto' }"></div>
                 </div>
-            </div>
+            </div> -->
         </div>
-        <div class="performance-detail-box white-text">
-            <h1 class="performance-detail-title text-left">人员绩效</h1>
-            <div class="staff-portrayal">
-                <div class="info-box top-block" :style="{backgroundImage: `url(${topBorderBg})`}">
-                    <h3 class="detail-title white-text">检察官</h3>
-                    <p>工作年限：{{ performanceInfo.gznx }}年</p>
-                    <p>职务：{{ performanceInfo.zw }}</p>
-                    <p>地区：{{ performanceInfo.dq }}</p>
-                </div>
-                <div class="info-box left-side-1" :style="{backgroundImage: `url(${sideBorderBg})`}">
-                    <h3 class="detail-title">司法办案</h3>
-                    <p>办结案件：{{ performanceInfo.bjaj }}件</p>
-                    <p>在办案件：{{ performanceInfo.zbaj }}件</p>
-                </div>
-                <div class="info-box left-side-2" :style="{backgroundImage: `url(${sideBorderBg})`}">
-                    <h3 class="detail-title">队伍管理</h3>
-                    <p>年度考核：{{ performanceInfo.ndkh }}</p>
-                </div>
-                <div class="info-box right-side-1" :style="{backgroundImage: `url(${sideBorderBg})`}">
-                    <h3 class="detail-title">检查办公</h3>
-                    <p>办文数量：{{ performanceInfo.bwsl }}</p>
-                </div>
-                <div class="info-box right-side-2" :style="{backgroundImage: `url(${sideBorderBg})`}">
-                    <h3 class="detail-title">检务保障</h3>
-                    <p>使用经费：{{ performanceInfo.syjf }}元</p>
-                </div>
-                <div class="staff-img">
-                    <img :src="staffImg" alt="...">
-                </div>
-                <div class="shade-img">
-                    <img :src="shadeBg" alt="...">
-                </div>
-            </div>
-            <div class="bottom-stage" :style="{backgroundImage: `url(${bottomStageBg})`}"></div>
-        </div>
+		<div class="performance-detail-box white-text">
+			<div class="right-right">
+				<div class="chart-box-title">
+					<span class="chart-label-dot"></span>
+					<i>人员绩效</i>
+				</div>
+				<div class="right-right-select">
+					<el-select v-model="value" placeholder="请选择省">
+						<el-option
+						v-for="item in options"
+						:key="item.value"
+						:label="item.label"
+						:value="item.value">
+						</el-option>
+					</el-select>
+				</div>
+				<div class="right-right-bottom">
+					<div class="performance-detail-box white-text">
+						<div class="staff-portrayal">
+							<div class="info-box top-block" :style="{backgroundImage: `url(${topBorderBg})`}">
+								<h3 class="detail-title white-text">检察官</h3>
+								<p>工作年限：{{ performanceInfo.gznx }}年</p>
+								<p>职务：{{ performanceInfo.zw }}</p>
+								<p>地区：{{ performanceInfo.dq }}</p>
+							</div>
+							<div class="info-box left-side-1" :style="{backgroundImage: `url(${sideBorderBg})`}">
+								<h3 class="detail-title">司法办案</h3>
+								<p>办结案件：{{ performanceInfo.bjaj }}件</p>
+								<p>在办案件：{{ performanceInfo.zbaj }}件</p>
+							</div>
+							<div class="info-box left-side-2" :style="{backgroundImage: `url(${sideBorderBg})`}">
+								<h3 class="detail-title">队伍管理</h3>
+								<p>年度考核：{{ performanceInfo.ndkh }}</p>
+							</div>
+							<div class="info-box right-side-1" :style="{backgroundImage: `url(${sideBorderBg})`}">
+								<h3 class="detail-title">检查办公</h3>
+								<p>办文数量：{{ performanceInfo.bwsl }}</p>
+							</div>
+							<div class="info-box right-side-2" :style="{backgroundImage: `url(${sideBorderBg})`}">
+								<h3 class="detail-title">检务保障</h3>
+								<p>使用经费：{{ performanceInfo.syjf }}元</p>
+							</div>
+							<div class="staff-img">
+								<img :src="staffImg" alt="...">
+							</div>
+							<div class="shade-img">
+								<img :src="shadeBg" alt="...">
+							</div>
+						</div>
+						<div class="bottom-stage" :style="{backgroundImage: `url(${bottomStageBg})`}"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+        
     </div>
 </template>
 <script>
@@ -62,7 +96,7 @@
 
 	export default {
 		mounted() {
-			this.eduBgStrChart      = EChart.init(this.$refs.eduBgStrChart);
+			this.personnelEducationdata      = EChart.init(this.$refs.personnelEducation);
 			this.ageDistributeChart = EChart.init(this.$refs.ageDistributeChart);
 		},
 		data() {
@@ -77,6 +111,23 @@
 				sideBorderBg      : require('@/public/img/team-management/sideBorderBg.png'),
 				structureIcon     : require('@/public/img/team-management/structureIcon.png'),
 				performanceInfo   : {},
+				options: [{
+					value: '选项1',
+					label: '黄金糕'
+					}, {
+					value: '选项2',
+					label: '双皮奶'
+					}, {
+					value: '选项3',
+					label: '蚵仔煎'
+					}, {
+					value: '选项4',
+					label: '龙须面'
+					}, {
+					value: '选项5',
+					label: '北京烤鸭'
+					}],
+				value: ''
 			}
 		},
 		methods   : {
@@ -98,12 +149,12 @@
 						  key : 'qt',
 						  name: '其他'
 					  }];
-				this.eduBgStrChart.setOption({
-					color,
+				this.personnelEducationdata.setOption({
+					color:color,
 					graphic: {
 						elements: [{
 							type : 'image',
-							left : 140,
+							left : 130,
 							style: {
 								image : this.structureIcon,
 								width : 100,
@@ -115,16 +166,15 @@
 					legend : {
 						data     : eduStructureList.map(i => i.name),
 						icon     : 'rect',
-						right    : 80,
-						top      : 10,
 						itemGap  : 15,
-						orient   : 'vertical',
+						bottom:10,
 						textStyle: {
 							color: '#fff'
 						}
 					},
 					grid   : {
 						bottom: 20,
+						left:100,
 						width : '50%',
 						height: '50%',
 					},
@@ -132,7 +182,7 @@
 						name          : '学历',
 						type          : 'pie',
 						radius        : [80, 80],
-						center        : ['35%', '50%'],
+						center        : ['45%', '50%'],
 						startAngle    : 90,
 						hoverAnimation: false,
 						label         : {
@@ -202,7 +252,7 @@
 						  }];
 				this.ageDistributeChart.setOption({
 					grid  : {
-						top         : '20%',
+						top         : '10%',
 						height      : '100%',
 						width       : '80%',
 						left        : 0,
@@ -309,7 +359,10 @@
         margin-top: 5px;
         .staff-detail-info {
             margin-right: 35px;
-            width: 671px;
+            width: 400px;
+			.right-left{
+				height:420px;
+			}
             .img-title {
                 padding-top: 6px;
                 color: #fff;
@@ -337,14 +390,10 @@
         }
         .performance-detail-box {
             position: relative;
-            width: 1216px;
-            height: 907px;
-            padding: 0 48px 21px;
-            background: rgba(10, 103, 209, 0.2);
-            border-radius: 8px;
-            border: 1px solid rgba(1, 218, 226, 1);
+            width: 803px;
+            height: 838px;
             .performance-detail-title {
-                parring-top: 21px;
+                padding-top: 21px;
                 padding-left: 0;
             }
             .staff-portrayal {
@@ -371,45 +420,45 @@
                     }
                     &.top-block {
                         top: 10px;
-                        left: 440px;
-                        width: 320px;
-                        height: 320px;
+                        left: 240px;
+                        width: 319px;
+                        height: 311px;
                     }
                     &.left-side-1 {
                         position: absolute;
                         top: 274px;
                         left: 71px;
-                        width: 275px;
-                        height: 152px;
+                        width: 217px;
+                        height: 120px;
                         text-align: center;
                     }
                     &.left-side-2 {
-                        bottom: 219px;
-                        left: 82px;
-                        width: 254px;
-                        height: 131px;
+                        bottom: 192px;
+                        left: 30px;
+                        width: 217px;
+                        height: 120px;
 
                     }
                     &.right-side-1 {
                         top: 274px;
                         right: 47px;
-                        width: 275px;
-                        height: 152px;
+                        width: 217px;
+                        height: 120px;
                     }
                     &.right-side-2 {
-                        bottom: 219px;
-                        right: 58px;
-                        width: 254px;
-                        height: 131px;
+                        bottom: 202px;
+                        right: 20px;
+                        width: 217px;
+                        height: 120px;
                     }
 
                 }
                 .staff-img {
                     position: absolute;
-                    top: 345px;
-                    left: 520px;
-                    width: 330px;
-                    height: 466px;
+                    top: 307px;
+                    left: 308px;
+                    width: 187px;
+                    height: 449px;
                     z-index: 2;
                     img {
                         width: 100%;
@@ -417,10 +466,10 @@
                 }
                 .shade-img {
                     position: absolute;
-                    bottom: 35px;
+                    bottom: 30px;
                     left: 47%;
-                    width: 895px;
-                    height: 440px;
+                    width: 834px;
+                    height: 370px;
                     transform: translate(-50%, 0);
                     img {
                         width: 100%;
