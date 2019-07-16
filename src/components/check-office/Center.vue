@@ -1,9 +1,9 @@
 <template>
     <div class="co-center-container">
-        <h1 class="title white-text text-center">发文收文密集分布</h1>
-        <div class="cursor-img">
-            <img :src="cursorImg" alt="...">
-        </div>
+		<div class="chart-box-title">
+			<span class="chart-label-dot"></span>
+			<i>发文收文密集分布</i>
+		</div>
         <div ref="closeSetChart" :style="{ width: '620px', height: '800px' }"></div>
     </div>
 </template>
@@ -128,8 +128,6 @@
         width: 753px;
         height: 909px;
         margin: 0 20px;
-        background: rgba(10, 103, 209, 0.2);
-        border: 1px solid rgba(1, 218, 226, 1);
         .title {
             font-size: 24px;
             color: rgba(255, 255, 255, 1);

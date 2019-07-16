@@ -76,7 +76,7 @@
 				default: '#18D9E3',
 			},
 			tintColor      : {
-				default: 'rgba(0, 0, 0, .1)'
+				default: 'rgba(24,217,227,0.2)'
 			},
 			width          : {
 				default: 80

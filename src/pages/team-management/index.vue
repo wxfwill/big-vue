@@ -115,7 +115,7 @@
     .team-wrap {
         &.outer-home-page {
             display: flex;
-            padding-top: 65px;
+            padding-top: 40px;
             position: relative;
             .title {
                 padding: 27px 20px 31px;

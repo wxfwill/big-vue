@@ -1,26 +1,29 @@
 <template>
     <div class="co-left-container">
-        <div class="title-panel white-text">
-            <h1 class="text">收文发文</h1>
-            <div class="cursor-img">
-                <img :src="cursorImg" alt="...">
-            </div>
-        </div>
         <div class="chart-box">
-            <h2 class="chart-title white-text">发文分析</h2>
+            <div class="chart-box-title">
+              <span class="chart-label-dot"></span>
+              <i>发文分析</i>
+            </div>
             <granular-bar
                     name="发文分析"
                     :chartData="publishingStatistics"></granular-bar>
         </div>
         <div class="chart-box">
-            <h2 class="chart-title white-text">发文缓急分布</h2>
+            <div class="chart-box-title">
+              <span class="chart-label-dot"></span>
+              <i>发文缓急分布</i>
+            </div>
             <pie-group
                     name="发文缓急分布"
                     :pieConfigList="postPriorities"
             ></pie-group>
         </div>
         <div class="chart-box">
-            <h2 class="chart-title white-text">收文分析</h2>
+            <div class="chart-box-title">
+              <span class="chart-label-dot"></span>
+              <i>收文分析</i>
+            </div>
             <granular-bar
                     name="收文分析"
                     :chartData="receivingStatistics"></granular-bar>
@@ -29,13 +32,19 @@
             :jeremyLevinUnitList="jeremyLevinUnitList"
         ></jeremy-levin-unit>
         <div class="chart-box">
-            <h2 class="chart-title white-text">呈批文件分析</h2>
+            <div class="chart-box-title">
+              <span class="chart-label-dot"></span>
+              <i>呈批文件分析</i>
+            </div>
             <granular-bar
                     name="呈批文件分析"
                     :chartData="submitApprovalStatistics"></granular-bar>
         </div>
         <div class="chart-box">
-            <h2 class="chart-title white-text">呈批文件缓急分布</h2>
+            <div class="chart-box-title">
+              <span class="chart-label-dot"></span>
+              <i>呈批文件缓急分布</i>
+            </div>
             <pie-group
                     name="呈批文件缓急分布"
                     :pieConfigList="submitApprovalPriorities"
@@ -91,10 +100,8 @@
             }
         }
         .chart-box {
-            width: 663px;
-            height: 263px;
-            background: rgba(10, 103, 209, 0.2);
-            border: 1px solid rgba(1, 218, 226, 1);
+            width: 660px;
+            height: 305px;
             text-align: center;
             padding: 10px;
             &:nth-of-type(2n) {

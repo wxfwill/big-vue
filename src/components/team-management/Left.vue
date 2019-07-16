@@ -260,58 +260,204 @@ export default {
       });
     },
     loadpersonnelStatusQuosChart(personnelStatusQuos) {
+    //   this.personStatus.setOption({
+    //     legend: {
+    //             textStyle:{
+    //             fontSize: 18,//字体大小
+    //             color: '#ffffff'//字体颜色
+    //         }
+    //     },
+    //     tooltip: {},
+    //     dataset: {
+    //       dimensions: ["product", "2015", "2016", "2017"],
+    //       source: [
+    //         {
+    //           product: "Matcha Latte",
+    //           "2015": 43.3,
+    //           "2016": 85.8,
+    //           "2017": 93.7
+    //         },
+    //         { product: "Milk Tea", "2015": 83.1, "2016": 73.4, "2017": 55.1 },
+    //         {
+    //           product: "Cheese Cocoa",
+    //           "2015": 86.4,
+    //           "2016": 65.2,
+    //           "2017": 82.5
+    //         },
+    //         {
+    //           product: "Walnut Brownie",
+    //           "2015": 72.4,
+    //           "2016": 53.9,
+    //           "2017": 39.1
+    //         }
+    //       ]
+    //     },
+    //     xAxis: { type: "category" ,
+    //                 axisLabel: {
+    //                     show: true,
+    //                     textStyle: {
+    //                         color: '#ffffff'
+    //                     }
+    //                 }
+    //             },
+    //     yAxis: {
+    //          axisLabel: {
+    //                 show: true,
+    //                 textStyle: {
+    //                     color: '#ffffff'
+    //                 }
+    //             }
+    //     },
+    //     // Declare several bar series, each will be mapped
+    //     // to a column of dataset.source by default.
+    //     series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }]
+    //   });
       this.personStatus.setOption({
-        legend: {
-                textStyle:{
-                fontSize: 18,//字体大小
-                color: '#ffffff'//字体颜色
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow'
+        }
+    },
+    legend: {
+        data: ['在职', '增员', '离退','其他减员'],
+        align: 'left',
+        right: 10,
+        textStyle: {
+            color: "#fff"
+        },
+        itemWidth: 10,
+        itemHeight: 10,
+        itemGap: 35.,
+        x: 'center',  
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: [{
+        type: 'category',
+        data: ['最高检',
+            '北京',
+            '天津',
+            '河北',
+            '山西',
+            '内蒙古',
+            '辽宁',
+            '吉林',
+            '黑龙江',
+            '上海 ',
+        ],
+        axisLine: {
+            show: true,
+            lineStyle: {
+                color: "#063374",
+                width: 1,
+                type: "solid"
             }
         },
-        tooltip: {},
-        dataset: {
-          dimensions: ["product", "2015", "2016", "2017"],
-          source: [
-            {
-              product: "Matcha Latte",
-              "2015": 43.3,
-              "2016": 85.8,
-              "2017": 93.7
-            },
-            { product: "Milk Tea", "2015": 83.1, "2016": 73.4, "2017": 55.1 },
-            {
-              product: "Cheese Cocoa",
-              "2015": 86.4,
-              "2016": 65.2,
-              "2017": 82.5
-            },
-            {
-              product: "Walnut Brownie",
-              "2015": 72.4,
-              "2016": 53.9,
-              "2017": 39.1
+        axisTick: {
+            show: false,
+        },
+        axisLabel: {
+            show: true,
+            textStyle: {
+                color: "#00c7ff",
             }
-          ]
         },
-        xAxis: { type: "category" ,
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#ffffff'
-                        }
-                    }
-                },
-        yAxis: {
-             axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#ffffff'
-                    }
-                }
+    }],
+    yAxis: [{
+        type: 'value',
+        axisLabel: {
+            formatter: '{value} '
         },
-        // Declare several bar series, each will be mapped
-        // to a column of dataset.source by default.
-        series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }]
-      });
+        axisTick: {
+            show: false,
+        },
+        axisLine: {
+            show: false,
+            lineStyle: {
+                color: "#00c7ff",
+                width: 1,
+                type: "solid"
+            },
+        },
+        splitLine: {
+            lineStyle: {
+                color: "#063374",
+            }
+        }
+    }],
+    series: [{
+        name: '在职',
+        type: 'bar',
+        data: [20, 50, 30, 50, 43, 38, 27, 50, 42, 46],
+        barWidth: 10, //柱子宽度
+        barGap: 1, //柱子之间间距
+        itemStyle: {
+            normal: {
+                color:['rgba(17,231,170,1)', 'rgba(1,194,110,0)'],
+                barBorderRadius: [30, 30, 0, 0],
+            }
+        }
+    }, {
+        name: '增员',
+        type: 'bar',
+        data: [50, 30, 40, 41, 35, 47, 30, 22, 46, 26],
+        barWidth: 10,
+        barGap: 1,
+        // itemStyle: {
+        //     normal: {
+        //         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+        //             offset: 0,
+        //             color: '#00da9c'
+        //         }, {
+        //             offset: 1,
+        //             color: '#007a55'
+        //         }]),
+        //         opacity: 1,
+        //     }
+        // }
+    }, {
+        name: '离退',
+        type: 'bar',
+        data: [30, 48, 33, 48, 23, 47, 50, 32, 26, 46],
+        barWidth: 10,
+        barGap: 1,
+        // itemStyle: {
+        //     normal: {
+        //         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+        //             offset: 0,
+        //             color: '#c4e300'
+        //         }, {
+        //             offset: 1,
+        //             color: '#728400'
+        //         }]),
+        //         opacity: 1,
+        //     }
+        // }
+    }, {
+        name: '其他减员',
+        type: 'bar',
+        data: [20, 48, 43, 28, 43, 47, 50, 42, 36, 26],
+        barWidth: 10,
+        barGap: 1,
+        // itemStyle: {
+        //     normal: {
+        //         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+        //             offset: 0,
+        //             color: '#c4e300'
+        //         }, {
+        //             offset: 1,
+        //             color: '#728400'
+        //         }]),
+        //         opacity: 1,
+        //     }
+        // }
+    }]
+})
     }
   },
   components: {
