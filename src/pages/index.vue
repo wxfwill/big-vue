@@ -86,11 +86,13 @@
         background: #143881;
         height: 100%;
         width: 100%;
+        overflow: hidden;
         // height: 1080px;
         // width:3840px;
         position: relative;
         background-size: 100% 100%;
         .container {
+            width: 100%;
             margin-top: 49px;
         }
         .popupBox {

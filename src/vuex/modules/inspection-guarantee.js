@@ -1,4 +1,5 @@
-import { SET_JUDICIAL_TIME, SET_JUDICIAL_MAP_STATE } from '../types';
+import { SET_DATE, SET_MAP_STATE } from '../types';
+import { fillZero }                from "@/utlis/helper";
 
 const state     = {
 	startDate: '',
@@ -7,24 +8,24 @@ const state     = {
 	lev      : 1,
 };
 const mutations = {
-	[SET_JUDICIAL_TIME](state, data) {
+	[SET_DATE](state, data) {
 		state.startDate = data.startDate;
 		state.endDate   = data.endDate;
 	},
-	[SET_JUDICIAL_MAP_STATE](state, data) {
+	[SET_MAP_STATE](state, data) {
 		state.code = data.code;
 		state.lev  = data.lev;
 	}
 };
 
 const getters = {
-	dateSection(state) {
+	selectDateSection(state) {
 		return {
 			startdate: state.startDate,
 			enddate  : state.endDate
 		}
 	},
-	mapData(state) {
+	selectedMapCode(state) {
 		return {
 			code: state.code,
 			lev : state.lev
@@ -34,13 +35,13 @@ const getters = {
 
 const actions = {
 	setSelectTime({ state, commit }, { startDate, endDate }) {
-		commit(SET_HOME_TIME, {
+		commit(SET_DATE, {
 			startDate,
 			endDate,
 		});
 	},
 	setMapData({ state, commit }, { code, lev }) {
-		commit(SET_HOME_MAP_STATE, {
+		commit(SET_MAP_STATE, {
 			code,
 			lev
 		});
@@ -54,4 +55,4 @@ export default {
 	mutations,
 	actions,
 	getters,
-};
+}

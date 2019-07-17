@@ -15,7 +15,7 @@ import {
 	TableColumn,
 	Popover,
 }              from 'element-ui';
-import './public/mock';
+//import './public/mock';
 
 const elementComponents = [
 		  DatePicker,

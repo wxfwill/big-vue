@@ -103,6 +103,14 @@ export default new Router({
 						title: '检查办公'
 					}
 				},
+				{
+					path     : 'inspectionGuarantee',
+					name     : 'inspectionGuarantee',
+					component: resolve => require(['@/pages/inspection-guarantee/index'], resolve),
+					meta     : {
+						title: '检务保障'
+					}
+				}
 			]
 		}
 	]

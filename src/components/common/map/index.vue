@@ -6,7 +6,9 @@
             <ul class="high-content">
                 <li v-for="item in tooltipConfig" :key="item.id">
                     <span>{{ item.name }}：</span>
-                    <i v-html="item.regExp ? getTooltipText(item.regExp, highProcuratorInfo) : highProcuratorInfo[item.id] || '0'"></i>
+                    <p class="high-number">
+                        <i v-html="item.regExp ? getTooltipText(item.regExp, highProcuratorInfo) : highProcuratorInfo[item.id] || '0'"></i>
+                    </p>
                 </li>
             </ul>
         </div>
@@ -60,6 +62,7 @@
         <div class="map-chart-box">
             <div ref="mapRef" class="map-chart"></div>
             <div class="map-option">
+                <i class="map-btn map-icon el-icon-aim" @click="normotopiaMapCvs"></i>
                 <i class="map-btn map-icon el-icon-s-home" @click="showChinaMap"></i>
                 <img class="map-btn" :src="backIcon" alt="..." @click="backSuperiorMap">
             </div>
@@ -157,15 +160,20 @@
 				if(!(notEndLev && lastIsEndLev)) {
 					this.mapLevel++;
 				}
+
 				this.cityCrumbsList[this.mapLevel] = {
 					id,
 					code,
 					name,
-					extendMap
+					extendMap,
+					publicName: params.data.publicName
 				};
+				this.extendData = [];
 				// 第四级不加载地图
 				if(!notEndLev) {
 					this.loadMapGraphJson();
+				} else {
+					this.highlightCountyArea();
 				}
 				this.getNewRegionInfo && this.getNewRegionInfo({
 					code,
@@ -183,7 +191,6 @@
 			async loadMapGraphJson() {
 				const { id, name, extendMap } = this.cityCrumbsList[this.mapLevel];
 				let url                       = 'public/map-json';
-
 				if(extendMap) {
 					url += `/extendProvince/${id}`;
 				} else {
@@ -204,25 +211,34 @@
 					name,
 					data: mapGeoJson
 				});
+				this.loadMapChart(name, mapGeoJson, false);
 			},
 
 			/**
 			 * 加载地图
 			 * */
-			loadMapChart(name, data) {
+			loadMapChart(name, data, isMatchExtra = true) {
 				this.myChart.clear();
 				ECharts.registerMap(name, data);
-				const { mapData, extendData } = this.mapDataClassify();
-				if(name === '中国') {
-					extendData.some((i) => {
-						if(i.code === "100000") {
-							this.highProcuratorInfo = i;
-							return true;
-						}
-						return false;
-					})
-				} else {
-					this.extendData = extendData;
+				let mapData    = [],
+					extendData = [];
+				// mapDataClassify方法复杂度On2,减少调用次数
+				if(isMatchExtra) {
+					const classify = this.mapDataClassify(this.cityCrumbsList[this.mapLevel].publicName);
+					extendData     = classify.extendData;
+					mapData        = classify.mapData;
+
+					if(name === '中国') {
+						extendData.some((i) => {
+							if(i.code === "100000") {
+								this.highProcuratorInfo = i;
+								return true;
+							}
+							return false;
+						});
+					} else {
+						this.extendData = extendData;
+					}
 				}
 				this.myChart.setOption({
 					tooltip: {
@@ -230,7 +246,7 @@
 					},
 					geo    : {
 						map         : name,
-						roam        : 'scale',
+						roam        : true,
 						scaleLimit  : {
 							min: .5,
 							max: 10
@@ -300,13 +316,41 @@
 				});
 			},
 
+			highlightCountyArea() {
+				const { name }               = this.cityCrumbsList[this.mapLevel],
+					  { data: upMapGeoJson } = this.mapJsonData[this.mapLevel - 1];
+				const nowSelectedMap         = {
+					"type"  : "FeatureCollection",
+					"cp"    : [116.4551, 40.2539],
+					"size"  : "5000",
+					features: [upMapGeoJson.features.find(i => i.properties.name === name)],
+				};
+				this.mapJsonData.push({
+					name,
+					data: nowSelectedMap
+				});
+				this.loadMapChart(name, nowSelectedMap, false);
+			},
+
+            /**
+             * 地图正位
+             * */
+			normotopiaMapCvs(){
+				const { name, data } = this.mapJsonData[this.mapLevel];
+				this.loadMapChart(name, data);
+            },
+
 			/**
 			 * 地图数据分类，对匹配不到的地图区域做特殊处理
 			 * */
-			mapDataClassify() {
+			mapDataClassify(publicName) {
+				let cityData = this.mapData;
 				const mapData                = [],
 					  { data: { features } } = this.mapJsonData[this.mapLevel],
-					  extendData             = this.mapData.filter((i) => {
+					  extendData             = cityData.filter((i) => {
+					  	  if(publicName){
+							  i.name = i.name.replace(publicName, '');
+						  }
 						  const isExist = features.some(j => {
 							  if(j.properties.name === i.name) {
 								  i.id = j.properties.id;
@@ -328,6 +372,7 @@
 			getExtraPosition(name) {
 				return geoCoordMap[name] || {};
 			},
+
 			convertMapData(areaName, extendData) {
 				const scatterData   = [],
 					  extraPosition = this.getExtraPosition(areaName);
@@ -367,7 +412,8 @@
 					nowMapHoleType: true,
 				}];
 				const { name, data }    = this.mapJsonData[0];
-				this.loadMapChart(name, data);
+				this.extendData = [];
+				this.loadMapChart(name, data, false);
 				this.getNewRegionInfo && this.getNewRegionInfo({
 					code: 100000,
 					lev : 1,
@@ -381,16 +427,13 @@
 				if(this.mapLevel === 0) {
 					return false;
 				}
-				const { id } = this.cityCrumbsList[this.mapLevel];
 				let code;
+				this.extendData = [];
 				this.cityCrumbsList.pop();
 				this.mapLevel--;
 				code = this.cityCrumbsList[this.mapLevel].code;
-				if(!this.verifyMapIsEnd(id)) {
-					this.mapJsonData.pop();
-				}
-
-				this.getNewRegionInfo({
+				this.mapJsonData.pop();
+				this.getNewRegionInfo && this.getNewRegionInfo({
 					code,
 					lev: this.mapLevel + 1
 				});
@@ -534,12 +577,9 @@
 		],
 		watch  : {
 			mapData() {
-				const index  = this.mapLevel,
-					  { id } = this.cityCrumbsList[index];
-				if(!this.verifyMapIsEnd(id)) {
-					const mapJsonData = this.mapJsonData;
-					this.loadMapChart(mapJsonData[index].name, mapJsonData[index].data);
-				}
+				const index       = this.mapLevel;
+				const mapJsonData = this.mapJsonData;
+				this.loadMapChart(mapJsonData[index].name, mapJsonData[index].data);
 			}
 		}
 	}
@@ -553,8 +593,15 @@
     .map-extra-table {
         &.el-popover {
             background-color: rgba(6, 35, 85, 1);
+            border: 0;
+            /*.popper__arrow{
+
+            }*/
             .el-table {
                 background-color: transparent;
+                max-height: 400px;
+                overflow: auto;
+                overflow-x: hidden;
                 &:before {
                     display: none;
                 }
@@ -567,6 +614,11 @@
                     }
                     td {
                         border: 0;
+                    }
+                    &:hover{
+                        td {
+                            background-color: rgba(233, 233, 233, .1);
+                        }
                     }
                 }
             }
@@ -686,7 +738,7 @@
                 position: absolute;
                 top: 400px;
                 right: 47px;
-                width: 200px;
+                min-width: 200px;
                 min-height: 230px;
                 padding-bottom: 10px;
                 box-shadow: 0 0 1px rgba(1, 1, 1, 1);
@@ -825,7 +877,7 @@
             left: 50%;
             top: 65px;
             transform: translate(-50%, 0);
-            width: 400px;
+            width: 300px;
             padding: 0 15px;
             border-radius: 10px;
             color: #fff;
@@ -840,8 +892,14 @@
                 display: flex;
                 flex-wrap: wrap;
                 li {
-                    width: 180px;
+                    width: 100%;
                     margin-bottom: 10px;
+                    display: flex;
+                    color: #dfdfdf;
+                    span{
+                        width: 100px;
+                        text-align: right;
+                    }
                 }
             }
         }

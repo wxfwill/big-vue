@@ -119,7 +119,6 @@ export default {
     },
     methods:{
         popupHandle(){//弹窗事件
-        this.$store.commit(types.POPUP_SHOW,false)
         },
         initialHandle(){
             this.district.search('中国', (status, result) => {

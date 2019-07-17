@@ -95,7 +95,7 @@
                                 @change="cutHandle"
                         >
                             <el-carousel-item v-for="caseItem in analyzeList" :key="caseItem.id">
-                                <div class="analyze-media" :style="{ backgroundImage: `url(${analyzeItemBg})` }" @click="skipLawWorks(caseItem.url)">
+                                <div class="analyze-media" @click="skipLawWorks(caseItem.url)">
                                     <p class="analyze-item-name">{{ caseItem.name }}</p>
                                 </div>
                             </el-carousel-item>
@@ -130,7 +130,6 @@
 				swiperTitle     : '',
 				civilBoxImg     : require('@/public/img/home/civilBox.png'),
 				empiricaIcon    : require('@/public/img/home/empirica-icon.png'),
-                analyzeItemBg   : require('@/public/img/home/analyze-item-bg.png'),
 				civilList       : [
 					{
 						id   : 'ms_sljs',
@@ -223,7 +222,7 @@
                 }, {
 					id   : 'vaccineCase',
 					name : '涉疫苗案件分析报告',
-                    url  : 'http://jczc.gj.pro:10080'
+                    url  : 'jczc.gj.pro:10080'
                 }]
 			};
 		},
@@ -1071,27 +1070,28 @@
                 }
                 .analyze-box {
                     width: 454px;
-                    height: 410px;
+                    height: 390px;
                     margin-top: 40px;
                     .analyze-content {
                         position: relative;
                         /deep/ .el-carousel__container {
-                            height: 410px;
+                            height: 390px;
                             margin: 0 auto;
                             .analyze-media {
-                                width: 315px;
-                                height: 380px;
+                                width: 300px;
+                                height: 330px;
                                 margin: 30px auto;
+                                background-color: #fff;
                                 border-radius: 5px;
                                 cursor: pointer;
                                 &:hover{
                                     box-shadow: 0 0 15px rgba(31, 162, 244, .6);
                                 }
                                 .analyze-item-name{
-                                    padding-top: 212px;
+                                    padding-top: 120px;
                                     font-size: 18px;
                                     text-align: center;
-                                    color: #ddd;
+                                    color: #0b91e8;
                                 }
                             }
                             .el-carousel__arrow{
