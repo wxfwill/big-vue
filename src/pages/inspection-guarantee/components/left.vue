@@ -9,6 +9,34 @@
             </div>
             <div class="income-content" ref="incomeChart"></div>
         </div>
+		<div class="pay-box">
+            <div class="chart-box-title">
+                <span class="chart-label-dot"></span>
+                <i>支出</i>
+            </div>
+            <div class="pay-content" ref="payChart"></div>
+        </div>
+		<div class="caizheng-box">
+            <div class="chart-box-title">
+                <span class="chart-label-dot"></span>
+                <i>财政拨款收入分布</i>
+            </div>
+            <div class="caizheng-content" ref="caizhengChart"></div>
+        </div>
+		<div class="jingfei-box">
+            <div class="chart-box-title">
+                <span class="chart-label-dot"></span>
+                <i>经费情况</i>
+            </div>
+            <div class="jingfei-content" ref="jingfeiChart"></div>
+        </div>
+		<div class="jiancha-box">
+            <div class="chart-box-title">
+                <span class="chart-label-dot"></span>
+                <i>检察业务费趋势</i>
+            </div>
+            <div class="jiancha-content" ref="jianchaChart"></div>
+        </div>
     </div>
 </template>
 
@@ -72,6 +100,9 @@
 						radius   : '55%',
 						center   : ['40%', '50%'],
 						data     : seriesData,
+						label: {
+            				show:false
+                		},
 						itemStyle: {
 							emphasis: {
 								shadowBlur   : 10,
@@ -100,15 +131,48 @@
 
 <style lang="scss" scoped>
     .home-page-left {
+		width:1324px;
         display: flex;
         flex-wrap: wrap;
         .income-box {
             width: 466px;
             .income-content {
                 width: 80%;
-                height: 330px;
+                height: 261px;
                 margin: 0 auto;
             }
         }
+		.pay-box{
+			width:806px;
+			.pay-content {
+                width: 80%;
+                height: 261px;
+                margin: 0 auto;
+            }
+		}
+		.caizheng-box{
+			width:1234px;
+			.caizheng-content {
+                width: 80%;
+                height: 247px;
+                margin: 0 auto;
+            }
+		}
+		.jingfei-box{
+			width:739px;
+			.jingfei-content {
+                width: 80%;
+                height: 292px;
+                margin: 0 auto;
+            }
+		}
+		.jiancha-box{
+			width:544px;
+			.jiancha-content {
+                width: 80%;
+                height: 292px;
+                margin: 0 auto;
+            }
+		}
     }
 </style>
