@@ -6,7 +6,9 @@
             <ul class="high-content">
                 <li v-for="item in tooltipConfig" :key="item.id">
                     <span>{{ item.name }}：</span>
-                    <i v-html="item.regExp ? getTooltipText(item.regExp, highProcuratorInfo) : highProcuratorInfo[item.id] || '0'"></i>
+                    <p class="high-number">
+                        <i v-html="item.regExp ? getTooltipText(item.regExp, highProcuratorInfo) : highProcuratorInfo[item.id] || '0'"></i>
+                    </p>
                 </li>
             </ul>
         </div>
@@ -60,6 +62,7 @@
         <div class="map-chart-box">
             <div ref="mapRef" class="map-chart"></div>
             <div class="map-option">
+                <i class="map-btn map-icon el-icon-aim" @click="normotopiaMapCvs"></i>
                 <i class="map-btn map-icon el-icon-s-home" @click="showChinaMap"></i>
                 <img class="map-btn" :src="backIcon" alt="..." @click="backSuperiorMap">
             </div>
@@ -165,6 +168,7 @@
 					extendMap,
 					publicName: params.data.publicName
 				};
+				this.extendData = [];
 				// 第四级不加载地图
 				if(!notEndLev) {
 					this.loadMapGraphJson();
@@ -242,7 +246,7 @@
 					},
 					geo    : {
 						map         : name,
-						roam        : 'scale',
+						roam        : true,
 						scaleLimit  : {
 							min: .5,
 							max: 10
@@ -328,6 +332,14 @@
 				this.loadMapChart(name, nowSelectedMap, false);
 			},
 
+            /**
+             * 地图正位
+             * */
+			normotopiaMapCvs(){
+				const { name, data } = this.mapJsonData[this.mapLevel];
+				this.loadMapChart(name, data);
+            },
+
 			/**
 			 * 地图数据分类，对匹配不到的地图区域做特殊处理
 			 * */
@@ -400,6 +412,7 @@
 					nowMapHoleType: true,
 				}];
 				const { name, data }    = this.mapJsonData[0];
+				this.extendData = [];
 				this.loadMapChart(name, data, false);
 				this.getNewRegionInfo && this.getNewRegionInfo({
 					code: 100000,
@@ -415,6 +428,7 @@
 					return false;
 				}
 				let code;
+				this.extendData = [];
 				this.cityCrumbsList.pop();
 				this.mapLevel--;
 				code = this.cityCrumbsList[this.mapLevel].code;
@@ -585,6 +599,9 @@
             }*/
             .el-table {
                 background-color: transparent;
+                max-height: 400px;
+                overflow: auto;
+                overflow-x: hidden;
                 &:before {
                     display: none;
                 }
@@ -721,7 +738,7 @@
                 position: absolute;
                 top: 400px;
                 right: 47px;
-                width: 200px;
+                min-width: 200px;
                 min-height: 230px;
                 padding-bottom: 10px;
                 box-shadow: 0 0 1px rgba(1, 1, 1, 1);
@@ -860,7 +877,7 @@
             left: 50%;
             top: 65px;
             transform: translate(-50%, 0);
-            width: 400px;
+            width: 300px;
             padding: 0 15px;
             border-radius: 10px;
             color: #fff;
@@ -875,8 +892,14 @@
                 display: flex;
                 flex-wrap: wrap;
                 li {
-                    width: 180px;
+                    width: 100%;
                     margin-bottom: 10px;
+                    display: flex;
+                    color: #dfdfdf;
+                    span{
+                        width: 100px;
+                        text-align: right;
+                    }
                 }
             }
         }

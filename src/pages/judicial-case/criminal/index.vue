@@ -1,137 +1,26 @@
 <template>
     <div>
-        <span v-show="false">{{ getSelectDateSection }}</span>
-        <span v-show="false">{{ getMapCode }}</span>
         <div class="judicial-case-title">
             <i class="title-dot"></i>
             刑事
         </div>
         <div class="outer-criminal-page">
-            <div class="criminal-page-left">
-                <div class="left-left">
-                    <div class="accept-total-box">
-                        <div class="chart-box-title">
-                            <span class="chart-label-dot"></span>
-                            <i>受理案件数统计</i>
-                        </div>
-                        <p class="accept-sub-title">案件总数</p>
-                        <ul class="case-num-block">
-                            <li v-for="(item,index) in caseList" :key="index">{{item}}</li>
-                        </ul>
-                        <div ref="caseStatistics" class="case-chart"></div>
-                    </div>
-                    <!-- 起诉top -->
-                    <div class="bg_img prosecute-box" :style="{backgroundImage:'url('+prosecuteImg+')'}">
-                        <p class="title">起诉罪名TOP10</p>
-                        <p class="label">占比 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次数</p>
-                        <ol>
-                            <li v-for="(item,index) in prosecuteList" :key="index">
-                                <i>{{index+1}}</i>
-                                <p :style="{backgroundImage:'url('+lineImg+')'}">
-                                    <span>{{item.title}}</span>
-                                    <span>{{item.proportion}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{item.num}}</span>
-                                </p>
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-                <div class="left-right">
-                    <div class="center-box">
-                    </div>
-                    <div class="bor_col increase-box">
-                        <p class="title">受理案件增长率最快的省市</p>
-                        <div id="cityBox" :style="{width:'920px',height:'230px',marginLeft:'100px'}"></div>
-                        <div class="next">
-                            <p class="bg_img" :style="{backgroundImage:'url('+leftImg+')'}" @click="previousHandle"></p>
-                            <p>1/3</p>
-                            <p class="bg_img" :style="{backgroundImage:'url('+rightImg+')'}" @click="downHandle"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="criminal-page-right">
-                <div class="right-left">
-                    <div class="bg_img top-box" :style="{backgroundImage:'url('+topImg+')'}">
-                        <p class="title">罪名增长率 TOP10</p>
-                        <ul>
-                            <li v-for="(item,index) in topList" :key="index">{{item.title}}</li>
-                        </ul>
-                        <ol>
-                            <li v-for="(item,index) in topList" :key="index">
-                                <p></p>
-                                <p>{{item.num}}</p>
-                            </li>
-                        </ol>
-                    </div>
-                    <div class="right-left-bottom">
-                        <div class="bor_col age-pie">
-                            <p class="title">犯罪嫌疑人年龄分布</p>
-                            <div id="agePie" :style="{width:'400px',height:'180px'}"></div>
-                        </div>
-                        <div class="bor_col education">
-                            <p class="title">受教育状况</p>
-                            <div id="education" :style="{width:'410px',height:'150px'}"></div>
-                        </div>
-                        <div class="bor_col age-bar">
-                            <p class="title">犯罪嫌疑人年龄分布<span>232345</span></p>
-                            <div id="ageBar" :style="{width:'400px',height:'180px',marginLeft:'10px'}"></div>
-                        </div>
-                        <div class="bor_col judgment">
-                            <p class="title">判决生效人数<span>232345</span></p>
-                            <div id="judgment" :style="{width:'410px',height:'150px'}"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="right-right">
-                    <div class="bor_col examineBox">
-                        <p class="title">审查逮捕各类犯罪不捕情况</p>
-                        <div id="examine" :style="{width:'490px',height:'300px'}"></div>
-                        <ol>
-                            <li v-for="(item,index) in scList" :key="index">
-                                {{item.title}}&nbsp;
-                                <span>&nbsp;{{item.num}}</span>
-                                <span>&nbsp;&nbsp;{{item.proportion}}</span>
-                            </li>
-                        </ol>
-                    </div>
-                    <div class="bor_col publicBox">
-                        <p class="title">公诉各类业务受理情况</p>
-                        <ul>
-                            <li v-for="(item,index) in gsList" :key="index">
-                                {{item.title}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span>{{item.proportion}}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="bor_col right-right-bottom">
-                        <div class="capitaBox">
-                            <p>人均办结数<span @click="popupShow=true;popupTitle='全国各省份人均办结数统计表'">更多>></span></p>
-                            <div id="capita" :style="{width:'450px',height:'330px'}"></div>
-                        </div>
-                        <div class="fileBox">
-                            <p>案均办理天数<span @click="popupShow=true;popupTitle='全国各省份案均办理天数统计表'">更多>></span></p>
-                            <div id="file" :style="{width:'470px',height:'330px'}"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <popup v-if="popupShow" :title="popupTitle" :popupData='popupData'></popup>
+            <left-box></left-box>
+            <center-box></center-box>
+            <right-box></right-box>
         </div>
     </div>
 </template>
 <script>
-	import { mapGetters, mapActions }       from 'vuex';
-	import ECharts                          from 'echarts';
-	import Popup                            from '@/components/Popup.vue';
-	import DateTime                         from '@/components/DateTime.vue';
-	import * as services                    from './service';
-	import { fillZero, verifyTriggerState } from "@/utlis/helper";
-	import { acceptCaseChartConfig }        from './constant';
+	import { mapGetters, mapActions } from 'vuex';
+	import ECharts                    from 'echarts';
+	import LeftBox                    from './components/left';
+    import CenterBox                  from './components/center';
+    import RightBox                   from './components/right';
 
 	export default {
 		data() {
 			return {
-				caseTotal     : 0,
 				capitPopup    : false,
 				filePopup     : false,
 				lineImg       : require('@/public/img/judicature/line.png'),
@@ -293,58 +182,12 @@
 			this.oldTriggerState = {};
 		},
 		mounted() {
-			const params         = { ...this.dateSection, ...this.mapData };
-			this.oldTriggerState = params;
-			this.acceptCaseChart = ECharts.init(this.$refs.caseStatistics);
-			this.requestAcceptCase(params);
+
 		},
 		updated() {
-			const params = { ...this.dateSection, ...this.mapData };
-			if(verifyTriggerState(params, this.oldTriggerState)) {
-				this.oldTriggerState = params;
-				this.requestAcceptCase(params);
-			}
+
 		},
 		methods   : {
-			// 受理案件统计
-			async requestAcceptCase(params) {
-				const res = await services.getAcceptingCases(params);
-				if(res.code === 200) {
-					const data     = res.data;
-					this.caseTotal = data.jjjrfz + data.ptfz + data.zdfz + data.zffz;
-					this.loadAcceptCaseChart(data);
-				} else {
-					this.$message.error(res.msg);
-				}
-			},
-			loadAcceptCaseChart(chartData) {
-				this.acceptCaseChart.setOption({
-					legend: {
-						data     : acceptCaseChartConfig.map(i => i.name),
-						bottom   : '50',
-						textStyle: {
-							color: '#fff'
-						}
-					},
-					series: [{
-						name     : '受理案件数',
-						type     : 'pie',
-						radius   : '55%',
-						center   : ['50%', '40%'],
-						data     : acceptCaseChartConfig.map(i => ({
-							name : i.name,
-							value: chartData[i.id]
-						})),
-						itemStyle: {
-							emphasis: {
-								shadowBlur   : 10,
-								shadowOffsetX: 0,
-								shadowColor  : 'rgba(0, 0, 0, 0.5)'
-							}
-						}
-					}]
-				});
-			},
 			fileHandle() {
 				var file   = ECharts.init(document.getElementById("file"));
 				var option = {
@@ -1045,7 +888,7 @@
 				};
 				var data      = [50, -3, -5, -5, 14, -13, -7, -14, 24, -1, -2, -4];
 
-// 求一个数组的最大值
+				// 求一个数组的最大值
 				function max(data) {
 					var max = data[0];
 					for(var i = 0; i < data.length; i++) {
@@ -1060,7 +903,7 @@
 					return max;
 				}
 
-// 背景xdata  渐变色柱状图   间隔色 两种  你可以设置多种
+				// 背景xdata  渐变色柱状图   间隔色 两种  你可以设置多种
 				var bgData = [];
 				for(var i = 0; i < data.length; i++) {
 					bgData.push(max(data));
@@ -1156,11 +999,12 @@
 				// 绘制图表
 				cityBox.setOption(option, true);
 			},
-			...mapActions('judicial', ['setMapData']),
+			...mapActions('judicial', ['setSelectTime']),
 		},
 		components: {
-			Popup,
-			DateTime
+			LeftBox,
+			CenterBox,
+			RightBox,
 		},
 	}
 </script>
@@ -1185,167 +1029,10 @@
     }
 
     .outer-criminal-page {
+        position: relative;
         width: 100%;
         height: 100%;
         display: flex;
-        position: relative;
-        .criminal-page-left {
-            display: flex;
-            width: 1906px;
-            height: 100%;
-            .left-left {
-                margin-right: 10px;
-                position: relative;
-                .accept-total-box {
-                    position: relative;
-                    width: 386px;
-                    .accept-sub-title {
-                        margin-top: 17px;
-                        text-align: center;
-                        font-size: 18px;
-                        font-family: MicrosoftYaHei;
-                        color: rgba(27, 195, 234, 1);
-                        line-height: 24px;
-                    }
-                    .case-num-block {
-                        display: flex;
-                        justify-content: center;
-                        color: #1BC3EA;
-                        margin-top: 6px;
-                        li {
-                            border: 1px solid #1BC3EA;
-                            padding: 0 5px;
-                        }
-                    }
-                    .case-chart {
-                        width: 100%;
-                        height: 350px;
-                    }
-                }
-                .prosecute-box {
-                    width: 731px;
-                    height: 560px;
-                    padding: 40px 40px 20px 40px;
-                    position: relative;
-                    .title {
-                        position: absolute;
-                        left: 295px;
-                        top: 30px;
-                        font-size: 24px;
-                        color: rgba(255, 255, 255, 1);
-                        line-height: 22px;
-                    }
-                    .label {
-                        display: flex;
-                        justify-content: flex-end;
-                        margin-right: 5px;
-                        font-size: 12px;
-                        color: rgba(0, 255, 255, 1);
-                    }
-                    ol {
-                        li {
-                            display: flex;
-                            align-items: center;
-                            i {
-                                display: inline-block;
-                                width: 21px;
-                                height: 21px;
-                                text-align: center;
-                                line-height: 20px;
-                                border-radius: 50%;
-                                margin-right: 10px;
-                                background-color: #33d1f8;
-                                margin-top: -21px;
-                                font-size: 11px;
-                                color: rgba(255, 255, 255, 1);
-                            }
-                            p {
-                                display: flex;
-                                align-items: center;
-                                justify-content: space-between;
-                                width: 100%;
-                                height: 40px;
-                                padding-bottom: 13px;
-                                margin-bottom: 10px;
-                                background-repeat: no-repeat;
-                                background-position-y: bottom;
-                                span:nth-child(1) {
-                                    font-size: 18px;
-                                    color: rgba(255, 255, 255, 1);
-                                    line-height: 22px;
-                                }
-                                span:nth-child(2) {
-                                    font-size: 15px;
-                                    color: rgba(0, 190, 221, 1);
-                                }
-                            }
-                        }
-                        li:nth-child(1), li:nth-child(2), li:nth-child(3) {
-                            i {
-                                background-color: #c49760;
-                            }
-                            color: #d73b3c;
-                            span:nth-child(2) {
-                                color: #c49760;
-                            }
-                        }
-                        li:nth-child(10) {
-                            p {
-                                background-image: none !important;
-                            }
-                        }
-                    }
-                }
-            }
-            .left-right {
-                padding-top: 7px;
-                .center-box {
-                    position: relative;
-                    background: rgba(0, 0, 0, 0.4);
-                    border: 1px solid rgba(1, 218, 226, 1);
-                    width: 1169px;
-                    height: 575px;
-
-                }
-                .increase-box {
-                    width: 1169px;
-                    height: 315px;
-                    margin-top: 18px;
-                    padding-top: 17px;
-                    position: relative;
-                    .title {
-                        font-size: 24px;
-                        color: rgba(255, 255, 255, 1);
-                        text-align: center;
-                    }
-                    .next {
-                        position: absolute;
-                        bottom: 40px;
-                        right: 50px;
-                        display: flex;
-                        p:nth-child(1) {
-                            width: 21px;
-                            height: 21px;
-                        }
-                        p:nth-child(2) {
-                            width: 37px;
-                            height: 21px;
-                            margin: 0 10px;
-                            border-radius: 4px;
-                            text-align: center;
-                            line-height: 21px;
-                            font-size: 11px;
-                            color: rgba(255, 255, 255, 1);
-                            background-color: #00BEDD;
-                        }
-                        p:nth-child(3) {
-                            width: 21px;
-                            height: 21px;
-                        }
-                    }
-                }
-            }
-        }
         .criminal-page-right {
             display: flex;
             width: 1840px;
@@ -1399,31 +1086,6 @@
                                 font-size: 14px;
                                 color: rgba(83, 210, 211, 1);
                             }
-                        }
-                    }
-                }
-                .right-left-bottom {
-                    display: flex;
-                    width: 845px;
-                    flex-wrap: wrap;
-                    margin-top: 20px;
-                    .age-pie {
-                        width: 414px;
-                        height: 233px;
-                        margin-right: 19px;
-                        .title {
-                            font-size: 24px;
-                            color: rgba(255, 255, 255, 1);
-                            margin: 17px 0 0 107px;
-                        }
-                    }
-                    .education {
-                        width: 412px;
-                        height: 233px;
-                        .title {
-                            margin: 17px 0 0 133px;
-                            font-size: 24px;
-                            color: rgba(255, 255, 255, 1);
                         }
                     }
                 }

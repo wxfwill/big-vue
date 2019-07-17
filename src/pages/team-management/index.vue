@@ -25,7 +25,7 @@
 </template>
 
 <script>
-	import Left                  from '@/components/team-management/Left.vue';
+	import Left                  from '@/components/team-management/left.vue';
 	import CenterBox             from '@/components/team-management/Center.vue';
 	import Right                 from '@/components/team-management/Right.vue';
 	import { getTeamManagement } from '@/utlis/request';

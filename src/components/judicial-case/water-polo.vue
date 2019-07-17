@@ -50,7 +50,7 @@
 							show  : false,
 							normal: {
 								formatter: (params) => {
-									const val = params.value * 100;
+									const val = ((params.value * 10000).toFixed(0))/100;
 									let text;
 									if(params.data.number > 0 && val === 0) {
 										text = '>0.01%';

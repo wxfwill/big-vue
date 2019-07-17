@@ -1,4 +1,4 @@
-import { SET_HOME_MAP_STATE, SET_HOME_TIME, POPUP_SHOW } from '../types';
+import { SET_MAP_STATE, SET_DATE } from '../types';
 import { fillZero }                                      from "@/utlis/helper";
 
 const state     = {
@@ -6,19 +6,15 @@ const state     = {
 	endDate  : '',
 	code     : 100000,
 	lev      : 1,
-	popupShow: false,
 };
 const mutations = {
-	[SET_HOME_TIME](state, data) {
+	[SET_DATE](state, data) {
 		state.startDate = data.startDate;
 		state.endDate   = data.endDate;
 	},
-	[SET_HOME_MAP_STATE](state, data) {
+	[SET_MAP_STATE](state, data) {
 		state.code = data.code;
 		state.lev  = data.lev;
-	},
-	[POPUP_SHOW](state, res) {
-		state.popupShow = res
 	}
 };
 
@@ -34,21 +30,18 @@ const getters = {
 			code: state.code,
 			lev : state.lev
 		}
-	},
-	popupShow: state => {
-		return state.popupShow;
-	},
+	}
 };
 
 const actions = {
 	setHomeSelectTime({ state, commit }, { startDate, endDate }) {
-		commit(SET_HOME_TIME, {
+		commit(SET_DATE, {
 			startDate,
 			endDate,
 		});
 	},
 	setMapData({ state, commit }, { code, lev }) {
-		commit(SET_HOME_MAP_STATE, {
+		commit(SET_MAP_STATE, {
 			code,
 			lev
 		});

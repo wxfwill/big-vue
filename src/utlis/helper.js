@@ -45,3 +45,15 @@ export function numberInteger(num = 0) {
 		  carryBit = Number(`10E${len - 2}`);
 	return (~~(num/carryBit + 1)) * carryBit;
 }
+
+export function convertData(configList = [], chartData) {
+	const axisData   = [],
+		  seriesData = configList.map((config) => {
+			  axisData.push(config.name);
+			  return chartData[config.id];
+		  });
+	return {
+		axisData,
+		seriesData,
+	}
+}

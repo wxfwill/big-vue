@@ -2,7 +2,8 @@
     <div class="outer-judicial-page">
         <date-picker
                 :dateChange="setSelectTime"
-        ></date-picker>
+        >
+        </date-picker>
         <div class="menuBox" @mouseover="mouseOver" @mouseleave="mouseLeave">
             <ul class="menu">
                 <div class="shrink"></div>
@@ -19,7 +20,7 @@
 </template>
 <script>
 	import { mapActions } from 'vuex';
-	import DatePicker from '@/components/common/date-picker';
+	import DatePicker     from '@/components/common/date-picker';
 
 	export default {
 		data() {
@@ -124,7 +125,9 @@
 		beforeDestroy() {
 			sessionStorage.setItem('menu', JSON.stringify(0))
 		},
-		components: ['DatePicker']
+		components: {
+			DatePicker
+		}
 	}
 </script>
 <style lang="scss" scoped>
@@ -137,11 +140,11 @@
             z-index: 11;
             width: 149px;
             height: 1080px;
-            top: -69px;
+            top: -122px;
             left: -40px;
             .menu {
                 transition: width 1s;
-                width: 0px;
+                width: 0;
                 overflow: hidden;
                 height: 1080px;
                 background: rgba(60, 61, 109, 0.8);
