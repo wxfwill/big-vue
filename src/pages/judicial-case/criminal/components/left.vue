@@ -19,9 +19,9 @@
                         <i>审查逮捕各类犯罪不捕情况</i>
                     </div>
                     <ul class="examine-list">
-                        <li><label>批准逮捕人数/率：</label><i>{{ examineData.pzdbrs }}</i><i>{{ examineData.pzdbl }}%</i></li>
-                        <li><label>逮捕人数/率：</label><i>{{ examineData.dbl }}</i><i>{{ examineData.dbrs }}%</i></li>
-                        <li><label>不逮捕人数/率：</label><i>{{ examineData.bbrs }}</i><i>{{ examineData.bbl }}%</i></li>
+                        <li><label>批准逮捕人数：</label><i>{{ examineData.pzdbrs }}</i></li>
+                        <li><label>不批准逮捕人数：</label><i>{{ examineData.bpzdbrs }}</i></li>
+                        <li><label>不逮捕人数：</label><i>{{ examineData.bbrs }}</i></li>
                     </ul>
                     <div ref="examineChart" class="examine-chart"></div>
                 </div>
@@ -32,6 +32,11 @@
                     <i>受理案件增长率最快的省市</i>
                 </div>
                 <div class="fchc-chart" ref="fchcChart"></div>
+                <div class="picker-btn-group">
+                    <i class="fchc-btn fchc-icon el-icon-arrow-left" @click="fchcPageChange('sub')"></i>
+                    <p class="fchc-btn fchc-block pagination">{{ fchcPageNumber }} / {{ fchcPageTotal }}</p>
+                    <i class="fchc-btn fchc-icon el-icon-arrow-right" @click="fchcPageChange('add')"></i>
+                </div>
             </div>
         </div>
         <div class="left-right">
@@ -55,7 +60,7 @@
                     <li v-for="(item,index) in prosecutionCaseList" :key="index">
                         <div class="prosecute-title">
                             <i class="numberical" :style="{ backgroundColor: index < 3 ? '#FBBA18' : '#00BEDD' }">{{index+1}}</i>
-                            <span>{{item.qszm}}</span>
+                            <span class="prosecute-text text-ellipsis" :title="item.qszm">{{item.qszm}}</span>
                         </div>
                         <p>
                             <span>{{item.qszm_zb}}% &nbsp;&nbsp;&nbsp;&nbsp;{{item.qssl}}</span>
@@ -64,48 +69,34 @@
                 </ul>
             </div>
         </div>
-        <!--<div class="left-right">
-            <div class="center-box">
-            </div>
-            <div class="bor_col increase-box">
-                <p class="title">受理案件增长率最快的省市</p>
-                <div id="cityBox" :style="{width:'920px',height:'230px',marginLeft:'100px'}"></div>
-                <div class="next">
-                    <p class="bg_img" :style="{backgroundImage:'url('+leftImg+')'}" @click="previousHandle"></p>
-                    <p>1/3</p>
-                    <p class="bg_img" :style="{backgroundImage:'url('+rightImg+')'}" @click="downHandle"></p>
-                </div>
-            </div>
-        </div>-->
         <span v-show="false">{{ mapCode }}</span>
         <span v-show="false">{{ dateSection }}</span>
     </div>
 </template>
 
 <script>
-	import { mapGetters, mapActions }                           from 'vuex';
-	import ECharts                                              from 'echarts';
-	import * as services                                        from '../service';
-	import { fillZero, verifyTriggerState, convertData }        from "@/utlis/helper";
-	import { acceptCaseChartConfig, prosecutionBusinessConfig } from '../constant';
+	import { mapGetters, mapActions }                                               from 'vuex';
+	import ECharts                                                                  from 'echarts';
+	import * as services                                                            from '../service';
+	import { fillZero, verifyTriggerState, convertData }                            from "@/utlis/helper";
+	import { acceptCaseChartConfig, prosecutionBusinessConfig, reviewArrestConfig } from '../constant';
 
 	export default {
 		data() {
 			return {
 				caseTotal          : 0,
 				examineData        : {
-					pzdbrs: 0,
-					pzdbl : 0,
-					dbrs  : 0,
-					dbl   : 0,
-					bbrs  : 0,
-					bbl   : 0,
+					pzdbrs : 0,
+					bpzdbrs: 0,
+					bbrs   : 0,
 				},
 				publicProInfo      : {
 					gsglyebjhj: 0,
 					gsbjbl    : 0,
 				},
 				prosecutionCaseList: [],
+				fchcPageNumber     : 1,
+				fchcPageTotal      : 0,
 			}
 		},
 		computed: {
@@ -118,25 +109,31 @@
 		beforeCreate() {
 			this.trigger         = ['startdate', 'enddate', 'code', 'lev'];
 			this.oldTriggerState = {};
+			this.fchcList        = [];
 		},
 		mounted() {
-			const params         = { ...this.getSelectDateSection, ...this.getMapCode };
+			const params         = { ...this.mapCode, ...this.dateSection };
 			this.oldTriggerState = params;
 			this.caseStatistics  = ECharts.init(this.$refs.caseStatistics);
 			this.examineChart    = ECharts.init(this.$refs.examineChart);
 			this.publicProChart  = ECharts.init(this.$refs.publicProChart);
+			this.fchcChart       = ECharts.init(this.$refs.fchcChart);
 
 			this.requestAcceptCase(params);
 			this.requestPublicProsecutionBusiness(params);
 			this.requestProsecutionCaseList(params);
+			this.requestReviewArrest(params);
+			this.requestFastHandleCaseCity(params);
 		},
 		updated() {
-			const params = { ...this.getSelectDateSection, ...this.getMapCode };
+			const params = { ...this.mapCode, ...this.dateSection };
 			if(verifyTriggerState(this.trigger, this.oldTriggerState, params)) {
 				this.oldTriggerState = params;
 				this.requestAcceptCase(params);
 				this.requestPublicProsecutionBusiness(params);
 				this.requestProsecutionCaseList(params);
+				this.requestReviewArrest(params);
+				this.requestFastHandleCaseCity(params);
 			}
 		},
 		methods : {
@@ -194,10 +191,211 @@
 			},
 
 			// 审查逮捕各类犯罪不捕情况
+			async requestReviewArrest(params) {
+				const res = await services.getReviewArrest(params);
+				if(res.code === 200) {
+					const data       = res.data;
+					this.examineData = {
+						pzdbrs : data.pzdbrs,
+						bpzdbrs: data.bpzdbrs,
+						bbrs   : data.bbrs,
+					};
+					this.loadReviewArrestChart(data);
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			loadReviewArrestChart(chartData) {
+				const { axisData, seriesData } = convertData(reviewArrestConfig, chartData);
+				this.examineChart.setOption({
+					color  : ['#009FE8', '#1BC85D', '#FF6C40', '#17D5E4'],
+					tooltip: {
+						formatter: (params) => {
+							const { marker, name, data } = params;
+							return `${marker} ${name}<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;批准逮捕人数：${data.pzdbrs}<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不批准逮捕人数：${data.bpzdbrs} <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;不逮捕人数：${data.bbrs}`;
+						}
+					},
+					legend : {
+						data     : axisData,
+						bottom   : 55,
+						width    : 300,
+						formatter: '{a|{name}}',
+						itemWidth: 15,
+						textStyle: {
+							color: '#fff',
+							rich : {
+								a: {
+									color   : '#ddd',
+									fontSize: 15,
+									width   : 95,
+									height  : 21,
+									padding : [0, 0, 0, 1]
+								},
+							}
+						},
+					},
+					series : [
+						{
+							name  : '审查逮捕各类犯罪不捕情况',
+							type  : 'pie',
+							radius: ['40%', '60%'],
+							center: ['50%', '32%'],
+							label : {
+								normal: {
+									show: false,
+								},
+							},
+							data  : seriesData.map((i, index) => ({
+								...i,
+								name : axisData[index],
+								value: 25,
+								label: {
+									normal  : {
+										show    : false,
+										position: 'center',
+										fontSize: 18,
+										color   : '#dfdfdf'
+									},
+									emphasis: {
+										show: true
+									}
+								}
+							}))
+						}
+					]
+				})
+			},
 
 			//受理案件增长率最快的省市
 			async requestFastHandleCaseCity(params) {
+				const res = await services.getIncreaseRateOfAdmissibilityList(params);
+				if(res.code === 200) {
+					const itemNum       = 6,
+						  data          = res.data;
+					this.fchcPageNumber = 1;
+					this.fchcList       = data;
+					this.fchcPageTotal  = Math.ceil(data.length / itemNum);
+					this.loadFastHandleCaseCityChart(this.fchcPageNumber);
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
 
+			fchcPageChange(type) {
+				switch(type) {
+					case 'add' : {
+						if(this.fchcPageNumber < this.fchcPageTotal) {
+							this.loadFastHandleCaseCityChart(++this.fchcPageNumber);
+						}
+					}
+						break;
+					case 'sub' : {
+						if(this.fchcPageNumber > 1) {
+							this.loadFastHandleCaseCityChart(--this.fchcPageNumber);
+						}
+					}
+						break;
+				}
+			},
+
+			loadFastHandleCaseCityChart(pageNumber) {
+				const sliceIndex = (pageNumber - 1) * 6,
+					  chartData  = this.fchcList.slice(sliceIndex, sliceIndex + 6),
+					  axisData   = [],
+					  seriesData = chartData.map(i => {
+						  axisData.push(i.csmc);
+						  return {
+							  name : i.csmc,
+							  value: i.slajzcl
+						  }
+					  });
+				this.fchcChart.setOption({
+					legend : {
+						show: false
+					},
+					tooltip: {
+						formatter: (params) => {
+							if(params.seriesName === 'bg') {
+								return '';
+							} else {
+								const { marker, name, seriesName, value } = params;
+								return `${marker} ${name}<br/>${seriesName}：${value}%`;
+							}
+						}
+					},
+					xAxis  : {
+						data     : axisData,
+						axisLine : {
+							lineStyle: {
+								width: 2,
+								color: '#0767D1'
+							}
+						},
+						splitLine: { show: false },
+						splitArea: { show: false },
+						axisTick : { show: false },
+						axisLabel: {
+							color   : '#00FFFF',
+							interval: 0
+						},
+					},
+					yAxis  : {
+						splitArea: { show: false },
+						splitLine: {
+							show    : false,
+							interval: 1
+						},
+						axisLabel: {
+							color    : '#fff',
+							formatter: val => `${val}%`,
+						},
+						axisTick : { show: false },
+						axisLine : { show: false }
+					},
+					grid   : {
+						left  : 50,
+						bottom: 50,
+						right : 15,
+						top   : 30
+					},
+					series : [{
+						name     : 'bg',
+						type     : 'bar',
+						stack    : 'bg',
+						barGap   : '-100%',
+						barWidth : 20,
+						itemStyle: {
+							normal: {
+								color  : '#0767D1',
+								opacity: '.2',
+							}
+						},
+						data     : (new Array(axisData.length)).fill(100)
+					}, {
+						name     : 'bg',
+						type     : 'bar',
+						stack    : 'bg',
+						barGap   : '-100%',
+						barWidth : 20,
+						itemStyle: {
+							normal: {
+								color  : '#0767D1',
+								opacity: '.2',
+							}
+						},
+						data     : (new Array(axisData.length)).fill(-100)
+					}, {
+						name     : '受理案件增长率',
+						type     : 'bar',
+						data     : seriesData,
+						barWidth : 20,
+						itemStyle: {
+							normal: {
+								color: '#30E2E2',
+							}
+						},
+					}]
+				})
 			},
 
 			//公诉各类业务受理情况
@@ -217,9 +415,14 @@
 			loadPublicProsecutionBusiness(chartData) {
 				const { axisData, seriesData } = convertData(prosecutionBusinessConfig, chartData);
 				this.publicProChart.setOption({
-					tooltip: {},
+					tooltip: {
+						trigger       : 'axis',
+						axisPointer: {
+							type: 'shadow'
+						}
+					},
 					grid   : {
-						top: '10%',
+						top: '15%',
 					},
 					legend : {
 						show: false,
@@ -239,12 +442,13 @@
 							formatter : (name) => {
 								const str   = name;
 								let tempStr = '';
-								const len   = str.length - 1;
+								const len   = str.length;
 								for(let i = 0; i < len; i++) {
 									if((i + 1) % 3 === 0) {
 										tempStr += str[i] + '\n';
-									}
-									tempStr += str[i];
+									} else {
+										tempStr += str[i];
+                                    }
 								}
 								return tempStr;
 							},
@@ -383,6 +587,7 @@
                     width: 250px;
                     margin: 16px auto;
                     li {
+                        line-height: 21px;
                         label {
                             width: 150px;
                             display: inline-block;
@@ -404,18 +609,42 @@
                     }
                 }
                 .examine-chart {
-                    width: 250px;
-                    height: 270px;
-                    margin: 0 auto;
+                    width: 100%;
+                    height: 350px;
                 }
             }
         }
         .fchc-box {
             width: 739px;
             .fchc-chart {
-                width: 700px;
-                height: 230px;
+                width: 100%;
+                height: 370px;
                 margin: 0 auto;
+            }
+            .picker-btn-group {
+                display: flex;
+                justify-content: flex-end;
+                .fchc-btn {
+                    margin-left: 7px;
+                    color: #FFFFFF;
+                    background-color: #00BEDD;
+                    text-align: center;
+                    &.fchc-icon {
+                        display: inline-block;
+                        width: 25px;
+                        height: 25px;
+                        line-height: 25px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        &:hover {
+                            box-shadow: 0 0 5px rgba(233, 233, 233, .5);
+                        }
+                    }
+                    &.fchc-block {
+                        padding: 2px 7px;
+                        border-radius: 4px;
+                    }
+                }
             }
         }
         .left-right {
@@ -439,7 +668,7 @@
                 }
                 .public-pro-chart {
                     width: 540px;
-                    height: 250px;
+                    height: 300px;
                     margin: 0 auto;
                 }
             }
@@ -452,7 +681,7 @@
                     padding-right: 40px;
                     li {
                         width: 91%;
-                        height: 40px;
+                        height: 50px;
                         float: right;
                         display: flex;
                         align-items: center;
@@ -472,10 +701,13 @@
                                 font-size: 0.286vw;
                                 color: #fff;
                             }
+                            .prosecute-text {
+                                display: inline-block;
+                                width: 250px;
+                            }
                         }
                         p {
                             color: #FBBA18;
-
                         }
                     }
                 }

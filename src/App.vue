@@ -12,7 +12,7 @@ export default {
 
 <style lang="scss">
 @import './public/css/reset.css';
-@import './public/css/common.css';
+@import 'public/css/common';
 #app {
   width:100%;
   height:100%;

@@ -2,9 +2,10 @@
     <div class="outer-judicial-page">
         <date-picker
                 :dateChange="setSelectTime"
+                :nowSelectDate="dateSection"
         >
         </date-picker>
-        <div class="menuBox" @mouseover="mouseOver" @mouseleave="mouseLeave">
+        <div class="menuBox" @mouseleave="mouseLeave">
             <ul class="menu">
                 <div class="shrink"></div>
                 <li :class="now === index ? 'col':null" v-for="(item,index) in menuList" :key="index"
@@ -13,14 +14,15 @@
                     <p>{{item.title}}</p>
                 </li>
             </ul>
-            <span class="bg_img shrink3j" v-show="shrink" :style="{backgroundImage:'url('+threeImg+')'}"></span>
+            <span class="bg_img shrink3j" @mouseover="mouseOver" v-show="shrink"
+                  :style="{backgroundImage:'url('+threeImg+')'}"></span>
         </div>
         <router-view></router-view>
     </div>
 </template>
 <script>
-	import { mapActions } from 'vuex';
-	import DatePicker     from '@/components/common/date-picker';
+	import { mapActions, mapGetters } from 'vuex';
+	import DatePicker                 from '@/components/common/date-picker';
 
 	export default {
 		data() {
@@ -60,6 +62,9 @@
 					}
 				],
 			}
+		},
+		computed  : {
+			...mapGetters('judicial', ['dateSection']),
 		},
 		created() {
 			if(!JSON.parse(sessionStorage.getItem('menu'))) {

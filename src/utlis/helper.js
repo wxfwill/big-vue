@@ -41,9 +41,9 @@ export function verifyTriggerState(trigger = [], oldState, newState) {
  * 取整
  * */
 export function numberInteger(num = 0) {
-	const len = String(num).length,
+	const len      = String(num).length,
 		  carryBit = Number(`10E${len - 2}`);
-	return (~~(num/carryBit + 1)) * carryBit;
+	return (~~(num / carryBit + 1)) * carryBit;
 }
 
 export function convertData(configList = [], chartData) {
@@ -56,4 +56,13 @@ export function convertData(configList = [], chartData) {
 		axisData,
 		seriesData,
 	}
+}
+
+export function getNowYear() {
+	return new Date().getFullYear();
+}
+
+export function getNowDate() {
+	const date = new Date();
+	return `${date.getFullYear()}-${fillZero(date.getMonth() + 1, 2)}-${fillZero(date.getDate(), 2)}`;
 }

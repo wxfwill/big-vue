@@ -42,19 +42,19 @@
 		computed  : {
 			...mapGetters('penal', ['mapCode']),
 			...mapGetters('judicial', ['dateSection']),
-        },
+		},
 		beforeCreate() {
 			this.trigger         = ['startdate', 'enddate', 'code', 'lev'];
 			this.oldTriggerState = {};
 		},
 		mounted() {
-			const params         = { ...this.getSelectDateSection, ...this.getMapCode };
+			const params         = { ...this.mapCode, ...this.dateSection };
 			this.oldTriggerState = params;
 			this.loadHeadTotalData(params);
 			this.loadMapData(params);
 		},
 		updated() {
-			const params = { ...this.getSelectDateSection, ...this.getMapCode };
+			const params = { ...this.mapCode, ...this.dateSection };
 			if(verifyTriggerState(this.trigger, this.oldTriggerState, params)) {
 				this.oldTriggerState = params;
 				this.loadHeadTotalData(params);
@@ -66,10 +66,10 @@
 				const res = await services.getCriminalData(params);
 				if(res.code === 200) {
 					const { mapSlBjZb: { bjs, sls, zbs }, theMapList } = res.data;
-					this.sls     = sls;
-					this.bjs     = bjs;
-					this.zbs     = zbs;
-					this.mapList = theMapList;
+					this.sls                                           = sls;
+					this.bjs                                           = bjs;
+					this.zbs                                           = zbs;
+					this.mapList                                       = theMapList;
 				} else {
 					this.sls     = 0;
 					this.bjs     = 0;
@@ -88,7 +88,7 @@
 					this.$message.error(res.msg);
 				}
 			},
-			...mapActions('judicial', ['setMapData']),
+			...mapActions('penal', ['setMapData']),
 		},
 		components: {
 			BjMap,

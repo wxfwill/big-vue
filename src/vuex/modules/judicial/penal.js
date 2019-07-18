@@ -1,14 +1,18 @@
-import { SET_MAP_STATE } from '../../types';
+import { SET_MAP_STATE, INIT_STATE } from '../../types';
 
-const state     = {
-	code     : 100000,
-	lev      : 1,
+const defaultState = {
+	code: 100000,
+	lev : 1,
 };
-const mutations = {
+const mutations    = {
 	[SET_MAP_STATE](state, data) {
 		state.code = data.code;
 		state.lev  = data.lev;
-	}
+	},
+	[INIT_STATE](state){
+		state.code = '100000';
+		state.lev  = 1;
+	},
 };
 
 const getters = {
@@ -27,12 +31,15 @@ const actions = {
 			lev
 		});
 	},
+	initPenalState({ state, commit }) {
+		commit(INIT_STATE);
+	}
 };
 
 
 export default {
 	namespaced: true,
-	state,
+	state     : defaultState,
 	mutations,
 	actions,
 	getters,

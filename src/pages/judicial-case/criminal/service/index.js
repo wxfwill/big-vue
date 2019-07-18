@@ -35,19 +35,14 @@ export const getDutyCrime = async (data) => await request({
 	params: data
 });
 
-// 获取刑事:审查逮捕各类犯罪不捕情况-职务犯罪信息
-export const getDutyRelatedCrime = async (data) => await request({
+
+// 获取刑事:审查逮捕各类犯罪不捕情况
+export const getReviewArrest = async (data) => await request({
 	method: 'get',
-	url   : '/api/v1.0/criminal/getDutyRelatedCrime',
+	url   : '/api/v1.0/criminal/getReviewArrest',
 	params: data
 });
 
-// 获取刑事:审查逮捕各类犯罪不捕情况-经济金融犯罪信息
-export const getEconomicAndFinancialCrime = async (data) => await request({
-	method: 'get',
-	url   : '/api/v1.0/criminal/getEconomicAndFinancialCrime',
-	params: data
-});
 
 // 获取刑事:判决生效人数
 export const getEffectiveJudgement = async (data) => await request({
@@ -56,19 +51,6 @@ export const getEffectiveJudgement = async (data) => await request({
 	params: data
 });
 
-// 获取刑事:审查逮捕各类犯罪不捕情况-普通犯罪信息
-export const getGeneralCrime = async (data) => await request({
-	method: 'get',
-	url   : '/api/v1.0/criminal/getGeneralCrime',
-	params: data
-});
-
-// 获取刑事:审查逮捕各类犯罪不捕情况-重大犯罪信息
-export const getGrossCrime = async (data) => await request({
-	method: 'get',
-	url   : '/api/v1.0/criminal/getGrossCrime',
-	params: data
-});
 
 // 获取刑事:受理案件增长率最快的省市
 export const getIncreaseRateOfAdmissibilityList = async (data) => await request({
@@ -105,16 +87,16 @@ export const getPublicProsecutionBusiness = async (data) => await request({
 	params: data
 });
 
-// 获取刑事:审查逮捕各类犯罪不捕情况
-export const getReviewArrest = async (data) => await request({
-	method: 'get',
-	url   : '/api/v1.0/criminal/getReviewArrest',
-	params: data
-});
-
 // 获取刑事:最上方-受理、办结、在办总数
 export const getTopSlBjZb = async (data) => await request({
 	method: 'get',
 	url   : '/api/v1.0/criminal/getTopSlBjZb',
+	params: data
+});
+
+// 获取刑事:受教育状况
+export const getEducationLevel = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/criminal/getEducationLevel',
 	params: data
 });

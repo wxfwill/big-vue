@@ -103,7 +103,7 @@
 				cityCrumbsList    : [{
 					id  : 0,
 					code: 100000,
-					name: '中国'
+					name: '全国'
 				}],
 				mapLevel          : 0,
 				highProcuratorInfo: {},
@@ -122,11 +122,13 @@
 						name: '在办数'
 					}],
 				extendData        : [],
+				loadingMap        : false,
 			}
 		},
 		mounted() {
-			const myChart    = ECharts.init(this.$refs.mapRef);
-			this.mapJsonData = [];
+			const myChart        = ECharts.init(this.$refs.mapRef);
+			this.mapJsonData     = [];
+			this.mapGeoLoadFaily = false;
 			myChart.on('mouseover', (params) => {
 				if(params.name) {
 					this.tooltipData = params.data || { name: params.name };
@@ -148,6 +150,10 @@
 			 *     4、判断@params.data  做是下钻处理
 			 * */
 			myChart.on('click', (params) => {
+				if(this.loadingMap) {
+					this.$message.warning('正在加载数据...');
+					return false;
+				}
 				// 判断沒有数据或者不能下钻则返回
 				if(!params.data || params.data.id.length > 6) {
 					return false;
@@ -159,8 +165,9 @@
 				// 区分地图最后一级
 				if(!(notEndLev && lastIsEndLev)) {
 					this.mapLevel++;
-				}
-
+				} else {
+					return false;
+                }
 				this.cityCrumbsList[this.mapLevel] = {
 					id,
 					code,
@@ -168,17 +175,14 @@
 					extendMap,
 					publicName: params.data.publicName
 				};
-				this.extendData = [];
+				this.extendData                    = [];
 				// 第四级不加载地图
 				if(!notEndLev) {
 					this.loadMapGraphJson();
 				} else {
 					this.highlightCountyArea();
 				}
-				this.getNewRegionInfo && this.getNewRegionInfo({
-					code,
-					lev: this.mapLevel + 1,
-				});
+				this.handleMapStateChange(code);
 			});
 
 			this.loadMapGraphJson();
@@ -206,12 +210,22 @@
 							break;
 					}
 				}
-				const mapGeoJson = await require(`../../../${url}.json`);
-				this.mapJsonData.push({
-					name,
-					data: mapGeoJson
-				});
-				this.loadMapChart(name, mapGeoJson, false);
+				try {
+					const mapGeoJson        = await require(`../../../${url}.json`);
+					this.mapJsonData.length = this.mapLevel;
+					this.mapJsonData.push({
+						name,
+						data: mapGeoJson
+					});
+					this.loadMapChart(name, mapGeoJson, false);
+				} catch(e) {
+					this.mapGeoLoadFaily = true;
+					this.$message.error('地区加载失败');
+					if(this.mapLevel > 0) {
+						this.mapLevel--;
+						this.cityCrumbsList.pop();
+					}
+				}
 			},
 
 			/**
@@ -228,7 +242,7 @@
 					extendData     = classify.extendData;
 					mapData        = classify.mapData;
 
-					if(name === '中国') {
+					if(name === '全国') {
 						extendData.some((i) => {
 							if(i.code === "100000") {
 								this.highProcuratorInfo = i;
@@ -286,8 +300,8 @@
 								shadowColor  : 'rgba(0, 0, 0, 0.5)'
 							}
 						},
-						layoutCenter: name === '中国' ? ['55%', '57%'] : undefined,
-						layoutSize  : name === '中国' ? 950 : undefined,
+						layoutCenter: name === '全国' ? ['55%', '57%'] : undefined,
+						layoutSize  : name === '全国' ? 950 : undefined,
 					},
 					series : [{
 						name            : 'extend',
@@ -332,37 +346,37 @@
 				this.loadMapChart(name, nowSelectedMap, false);
 			},
 
-            /**
-             * 地图正位
-             * */
-			normotopiaMapCvs(){
+			/**
+			 * 地图正位
+			 * */
+			normotopiaMapCvs() {
 				const { name, data } = this.mapJsonData[this.mapLevel];
 				this.loadMapChart(name, data);
-            },
+			},
 
 			/**
 			 * 地图数据分类，对匹配不到的地图区域做特殊处理
 			 * */
 			mapDataClassify(publicName) {
-				let cityData = this.mapData;
-				const mapData                = [],
-					  { data: { features } } = this.mapJsonData[this.mapLevel],
-					  extendData             = cityData.filter((i) => {
-					  	  if(publicName){
-							  i.name = i.name.replace(publicName, '');
-						  }
-						  const isExist = features.some(j => {
-							  if(j.properties.name === i.name) {
-								  i.id = j.properties.id;
-								  return true;
-							  }
-							  return false;
-						  });
-						  if(isExist) {
-							  mapData.push(i);
-						  }
-						  return !isExist
-					  });
+				let cityData               = this.mapData;
+				const mapData              = [],
+					{ data: { features } } = this.mapJsonData[this.mapLevel],
+					extendData             = cityData.filter((i) => {
+						if(publicName) {
+							i.name = i.name.replace(publicName, '');
+						}
+						const isExist = features.some(j => {
+							if(j.properties.name === i.name) {
+								i.id = j.properties.id;
+								return true;
+							}
+							return false;
+						});
+						if(isExist) {
+							mapData.push(i);
+						}
+						return !isExist
+					});
 				return {
 					mapData,
 					extendData
@@ -403,28 +417,29 @@
 			 * 地图返回顶级
 			 * */
 			showChinaMap() {
+				if(this.loadingMap){
+					return false;
+                }
 				this.mapLevel           = 0;
 				this.mapJsonData.length = 1;
 				this.cityCrumbsList     = [{
 					id            : 0,
 					code          : 100000,
-					name          : '中国',
+					name          : '全国',
 					nowMapHoleType: true,
 				}];
 				const { name, data }    = this.mapJsonData[0];
-				this.extendData = [];
+				this.extendData         = [];
 				this.loadMapChart(name, data, false);
-				this.getNewRegionInfo && this.getNewRegionInfo({
-					code: 100000,
-					lev : 1,
-				});
+
+				this.handleMapStateChange(100000);
 			},
 
 			/**
 			 * 返回上一级
 			 * */
 			backSuperiorMap() {
-				if(this.mapLevel === 0) {
+				if(this.mapLevel === 0 || this.loadingMap) {
 					return false;
 				}
 				let code;
@@ -433,10 +448,7 @@
 				this.mapLevel--;
 				code = this.cityCrumbsList[this.mapLevel].code;
 				this.mapJsonData.pop();
-				this.getNewRegionInfo && this.getNewRegionInfo({
-					code,
-					lev: this.mapLevel + 1
-				});
+				this.handleMapStateChange(code);
 			},
 
 			/**
@@ -561,6 +573,14 @@
 					zbsData
 				}
 			},
+
+			handleMapStateChange(code) {
+				this.loadingMap = true;
+				this.getNewRegionInfo && this.getNewRegionInfo({
+					code,
+					lev: this.mapLevel + 1
+				});
+			}
 		},
 		props  : [
 			'mapData',
@@ -577,9 +597,14 @@
 		],
 		watch  : {
 			mapData() {
-				const index       = this.mapLevel;
-				const mapJsonData = this.mapJsonData;
-				this.loadMapChart(mapJsonData[index].name, mapJsonData[index].data);
+				if(this.mapGeoLoadFaily) {
+					this.mapGeoLoadFaily = false;
+				} else {
+					const index       = this.mapLevel,
+						  mapJsonData = this.mapJsonData;
+					this.loadingMap   = false;
+					this.loadMapChart(mapJsonData[index].name, mapJsonData[index].data);
+				}
 			}
 		}
 	}
@@ -615,7 +640,7 @@
                     td {
                         border: 0;
                     }
-                    &:hover{
+                    &:hover {
                         td {
                             background-color: rgba(233, 233, 233, .1);
                         }
@@ -772,49 +797,7 @@
                 }
             }
         }
-        /deep/ .el-dialog {
-            background-color: rgba(11, 21, 53, 1);
-            box-shadow: 0 0 10px #0ff;
-            .el-dialog__header {
-                margin: 34px 0;
-                font-weight: 400;
-                text-align: center;
-                .el-dialog__title {
-                    position: relative;
-                    font-size: 36px;
-                    font-family: PingFangSC-Regular;
-                    color: rgba(255, 255, 255, 1);
-                    line-height: 50px;
-                    &:after {
-                        content: '数据统计表';
-                    }
-                    &:before {
-                        position: absolute;
-                        left: 0;
-                        bottom: -5px;
-                        width: 100%;
-                        height: 1px;
-                        content: '';
-                        background: linear-gradient(90deg, rgba(51, 242, 236, 0) 0%, rgba(50, 238, 235, 1) 56%, rgba(50, 238, 235, 0) 100%);
-                    }
-                }
-                .el-dialog__headerbtn {
-                    width: 38px;
-                    height: 38px;
-                    background: rgba(18, 175, 171, 1);
-                    border-radius: 50%;
-                    cursor: pointer;
-                    .el-dialog__close {
-                        color: #FFFFFF;
-                    }
-                }
-            }
-            .map-data-list {
-                width: 99%;
-                height: 400px;
-                margin: 0 auto 20px;
-            }
-        }
+
         .now-data {
             position: absolute;
             top: 60px;
@@ -896,12 +879,17 @@
                     margin-bottom: 10px;
                     display: flex;
                     color: #dfdfdf;
-                    span{
+                    span {
                         width: 100px;
                         text-align: right;
                     }
                 }
             }
+        }
+        .map-data-list {
+            width: 99%;
+            height: 400px;
+            margin: 0 auto 20px;
         }
     }
 </style>
