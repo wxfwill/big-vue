@@ -612,16 +612,13 @@
 
 <style lang="scss">
     @mixin tooltipBg {
-        background: linear-gradient(90deg, rgba(19, 210, 220, .3) 0%, rgba(5, 138, 227, .5) 100%);
+        background: linear-gradient(90deg, rgba(19, 210, 220, .2) 0%, rgba(5, 138, 227, .4) 100%);
     }
 
     .map-extra-table {
         &.el-popover {
             background-color: rgba(6, 35, 85, 1);
             border: 0;
-            /*.popper__arrow{
-
-            }*/
             .el-table {
                 background-color: transparent;
                 max-height: 400px;
@@ -862,9 +859,9 @@
             transform: translate(-50%, 0);
             width: 300px;
             padding: 0 15px;
+            border: 1px solid #17DDDD;
             border-radius: 10px;
             color: #fff;
-            @include tooltipBg;
             .tooltip-title {
                 position: absolute;
                 top: 30px;

@@ -78,7 +78,7 @@
 	import { mapGetters, mapActions }                                               from 'vuex';
 	import ECharts                                                                  from 'echarts';
 	import * as services                                                            from '../service';
-	import { fillZero, verifyTriggerState, convertData, textFormatter }             from "@/utlis/helper";
+	import { fillZero, verifyTriggerState, convertData }                            from "@/utlis/helper";
 	import { acceptCaseChartConfig, prosecutionBusinessConfig, reviewArrestConfig } from '../constant';
 
 	export default {
@@ -416,7 +416,7 @@
 				const { axisData, seriesData } = convertData(prosecutionBusinessConfig, chartData);
 				this.publicProChart.setOption({
 					tooltip: {
-						trigger    : 'axis',
+						trigger       : 'axis',
 						axisPointer: {
 							type: 'shadow'
 						}
@@ -439,7 +439,19 @@
 							fontSize  : 14,
 							lineHeight: 21,
 							fontFamily: 'PingFangSC-Regular',
-							formatter : (name) => textFormatter(name, 3),
+							formatter : (name) => {
+								const str   = name;
+								let tempStr = '';
+								const len   = str.length;
+								for(let i = 0; i < len; i++) {
+									if((i + 1) % 3 === 0) {
+										tempStr += str[i] + '\n';
+									} else {
+										tempStr += str[i];
+                                    }
+								}
+								return tempStr;
+							},
 						},
 						axisLine : {
 							lineStyle: {

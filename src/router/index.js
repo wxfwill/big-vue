@@ -28,6 +28,7 @@ export default new Router({
 					meta     : {
 						title: '司法办案'
 					},
+					redirect : { name: 'criminal' },
 					children : [
 						{
 							path     : 'criminal',
@@ -40,7 +41,7 @@ export default new Router({
 						{
 							path     : 'civil',
 							name     : 'civil',
-							component: resolve => require(['@/pages/judicial-case/civil'], resolve),
+							component: resolve => require(['@/pages/judicial-case/civil/index'], resolve),
 							meta     : {
 								title: '司法办案-民事'
 							}
@@ -70,16 +71,16 @@ export default new Router({
 							}
 						},
 						{
-							path     : 'control',
-							name     : 'control',
+							path     : 'chargeAppeal',
+							name     : 'chargeAppeal',
 							component: resolve => require(['@/pages/judicial-case/control'], resolve),
 							meta     : {
 								title: '司法办案-控申'
 							}
 						},
 						{
-							path     : 'procuratorial',
-							name     : 'procuratorial',
+							path     : 'checkCharter',
+							name     : 'checkCharter',
 							component: resolve => require(['@/pages/judicial-case/procuratorial'], resolve),
 							meta     : {
 								title: '司法办案-检委办/检察技术'

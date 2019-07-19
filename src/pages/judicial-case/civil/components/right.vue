@@ -83,7 +83,7 @@
 	import { mapGetters }                                                                 from 'vuex';
 	import ECharts                                                                        from 'echarts';
 	import * as services                                                                  from '../service';
-	import { fillZero, verifyTriggerState, convertData, textFormatter }                   from "@/utlis/helper";
+	import { fillZero, verifyTriggerState, convertData }                                  from "@/utlis/helper";
 	import { crimeAgeConfig, dutyCrimeConfig, judgmentChartConfig, educationLevelConfig } from '../constant';
 
 	export default {
@@ -292,13 +292,25 @@
 							show: false,
 						},
 						axisLabel: {
-							color     : '#fff',
-							interval  : 0,
+							color   : '#fff',
+							interval: 0,
 							width     : 20,
 							fontSize  : 14,
 							lineHeight: 21,
 							fontFamily: 'PingFangSC-Regular',
-							formatter : (name) => textFormatter(name, 3),
+							formatter : (name) => {
+								const str   = name;
+								let tempStr = '';
+								const len   = str.length;
+								for(let i = 0; i < len; i++) {
+									if((i + 1) % 3 === 0) {
+										tempStr += str[i] + '\n';
+									} else {
+										tempStr += str[i];
+                                    }
+								}
+								return tempStr;
+							},
 						},
 						splitLine: {
 							show: false,
@@ -473,6 +485,7 @@
 			async requesterCapitaSettlementList(params) {
 				const res = await services.getPerCapitaSettlementList(params);
 				if(res.code === 200) {
+
 					this.capitaSettlementList = res.data;
 					this.loadPerCapitaSettlementChart(res.data.slice(0, 6));
 				} else {
@@ -482,13 +495,9 @@
 			loadPerCapitaSettlementChart(chartData) {
 				const { axisData, seriesData } = this.convertBarData(chartData, 'sl');
 				this.perCapitaChart.setOption({
-					color  : ['#05C2E2'],
+					color  : ['#1DB2E8'],
 					tooltip: {
-						show       : true,
-						trigger    : 'axis',
-						axisPointer: {
-							type: 'shadow'
-						}
+						show: true
 					},
 					grid   : {
 						top   : '5%',
@@ -509,13 +518,25 @@
 							show: false,
 						},
 						axisLabel: {
-							color     : '#fff',
-							interval  : 0,
+							color   : '#fff',
+							interval: 0,
 							width     : 20,
 							fontSize  : 14,
 							lineHeight: 21,
 							fontFamily: 'PingFangSC-Regular',
-							formatter : (name) => textFormatter(name, 4),
+							formatter : (name) => {
+								const str   = name;
+								let tempStr = '';
+								const len   = str.length;
+								for(let i = 0; i < len; i++) {
+									if((i + 1) % 4 === 0) {
+										tempStr += str[i] + '\n';
+									} else {
+										tempStr += str[i];
+									}
+								}
+								return tempStr;
+							},
 						},
 						splitLine: {
 							show: false,
@@ -557,7 +578,7 @@
 				const res = await services.getAverageHandlingOfCasesList(params);
 				if(res.code === 200) {
 					this.averageHandCasesList = res.data;
-					this.loadAverageHandlingOfCasesChart(res.data.slice(0, 7));
+					this.loadAverageHandlingOfCasesChart(res.data.slice(0, 10));
 				} else {
 					this.$message.error(res.msg);
 				}
@@ -570,7 +591,7 @@
 						show: false
 					},
 					grid   : {
-						left  : '20%',
+						left  : '10%',
 						right : '2%',
 						bottom: '3%',
 						top   : "2%",
@@ -601,9 +622,7 @@
 							textStyle: {
 								fontSize: 12,
 								color   : '#D5CBE8'
-							},
-							formatter: (name) => textFormatter(name, 4),
-
+							}
 						},
 						axisLine : {
 							lineStyle: {
@@ -723,10 +742,9 @@
 								}
 							},
 							label      : {
-								normal: {
+								"normal": {
 									"show"    : true,
 									"position": "top",
-									color     : '#00FFFF',
 								}
 							},
 						}
