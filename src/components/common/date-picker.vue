@@ -27,7 +27,7 @@
 </template>
 
 <script>
-	import { fillZero } from "@/utlis/helper";
+	import { fillZero, getNowYear, getNowDate } from "@/utlis/helper";
 
 	export default {
 		data() {
@@ -75,7 +75,20 @@
 				});
 			},
 		},
-		props   : ['dateChange', 'nowSelectDate'],
+		props   : {
+			dateChange   : {
+				type: Function
+			},
+			nowSelectDate: {
+				type   : Object,
+				default: function() {
+					return {
+						startdate: `${getNowYear()}-01-01`,
+						enddate  : getNowDate(),
+					}
+				}
+			}
+		},
 	}
 </script>
 
