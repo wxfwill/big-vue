@@ -99,9 +99,13 @@
 			const params         = { ...this.getSelectDateSection, ...this.getMapCode };
 			this.oldTriggerState = params;
 			this.incomeChart     = ECharts.init(this.$refs.incomeChart);
-			this.caizhengChart   = ECharts.init(this.$refs.caizhengChart)
+			this.caizhengChart   = ECharts.init(this.$refs.caizhengChart);
+			this.jingfeiChart    = ECharts.init(this.$refs.jingfeiChart);
+			this.jianchaChart    = ECharts.init(this.$refs.jianchaChart);
 			this.loadIncomeChart(params);
 			this.loadCaizhengChart();
+			this.loadJingfeiChart();
+			this.loadJianchaChart();
 		},
 		updated() {
 			const params = { ...this.getSelectDateSection, ...this.getMapCode };
@@ -231,6 +235,209 @@
 					]
 				})
 			},
+			loadJingfeiChart(){
+				this.jingfeiChart.setOption({
+					tooltip : {
+						trigger: 'axis',
+						axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+							type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+						}
+					},
+					legend: {
+						data:['检察业务费合计','其中财政拨款','办案（业务）经费','其中财政拨款1','业务装备经费','其中财政拨款2'],
+						icon:"square",
+						orient:'vertical',
+						y: 'center',    //延Y轴居中
+						x: 'right' ,//居右显示
+						align:'left',
+						textStyle:{
+							color:'#fff'
+						}
+					},
+					grid: {
+						left: '3%',
+						right: '18%',
+						bottom: '3%',
+						containLabel: true
+					},
+					xAxis : [
+						{
+							type : 'category',
+							data : ['年初结转结余','收入合计','支出合计','年末结转结余'],
+							axisLine:{
+								show:false,
+								lineStyle: {
+									color: "#fff",
+								}
+							}
+						}
+					],
+					yAxis : [
+						{
+							type : 'value',
+							axisLine:{
+								lineStyle: {
+									color: "#fff",
+								}
+							}
+						}
+					],
+					series : [
+						{
+							name:'检察业务费合计',
+							type:'bar',
+							stack:'哈哈',
+							color:'#0BB0FB',
+							data:[100, 100, 100, 100]
+						},
+						{
+							name:'其中财政拨款',
+							type:'bar',
+							stack: '哈哈',
+							color:'#3687F6',
+							data:[420, 420, 420, 420]
+						},
+						{
+							name:'办案（业务）经费',
+							type:'bar',
+							stack: '广告',
+							color:'#1BC85D',
+							data:[80, 80, 80, 80]
+						},
+						{
+							name:'其中财政拨款1',
+							type:'bar',
+							stack: '广告',
+							color:'#0FA940',
+							data:[60, 60, 60, 60]
+						},
+						
+						{
+							name:'业务装备经费',
+							type:'bar',
+							stack: '搜索引擎',
+							color:'#FBBA18',
+							data:[20, 20, 20, 20]
+						},
+						{
+							name:'其中财政拨款2',
+							type:'bar',
+							stack: '搜索引擎',
+							color:'#F68C3B',
+							data:[10, 10, 10, 10]
+						}
+					]
+				})
+			},
+			loadJianchaChart(){
+				this.jianchaChart.setOption({
+					tooltip : {
+						trigger: 'axis'
+					},
+					legend: {
+						data:['年初结转结余','收入','支出','年末结转结余'],
+						icon: "line",
+						textStyle: {
+							color: "#fff"
+						}
+					},
+					grid: {
+						left: '3%',
+						right: '4%',
+						bottom: '3%',
+						containLabel: true
+					},
+					xAxis : [
+						{
+							type : 'category',
+							boundaryGap : false,
+							data : ['2016','2017','2018'],
+							axisLine:{
+								lineStyle: {
+									color: "#fff",
+								}
+							}
+						}
+					],
+					yAxis : [
+						{
+							type : 'value',
+							axisLine:{
+								show:false,
+								lineStyle: {
+									color: "#fff",
+								}
+							}
+						}
+					],
+					series : [
+						{
+							name:'年初结转结余',
+							type:'line',
+							stack: '总量',
+							smooth: true,
+							areaStyle: {
+									color: new ECharts.graphic.LinearGradient(0, 1, 0, 0, [{
+									offset: 0,
+									color: '#EB5910'
+								}, {
+									offset: 1,
+									color: '#4049FF'
+								}]),
+							},
+							data:[400,500, 200,100]
+						},
+						{
+							name:'收入',
+							type:'line',
+							stack: '总量',
+							smooth: true,
+							areaStyle: {
+									color: new ECharts.graphic.LinearGradient(0, 1, 0, 0, [{
+									offset: 0,
+									color: '#376AF7'
+								}, {
+									offset: 1,
+									color: '#4049FF'
+								}]),
+							},
+							data:[300,400, 100,100]
+						},
+						{
+							name:'支出',
+							type:'line',
+							stack: '总量',
+							smooth: true,
+							areaStyle: {
+									color: new ECharts.graphic.LinearGradient(0, 1, 0, 0, [{
+									offset: 0,
+									color: '#009FE8'
+								}, {
+									offset: 1,
+									color: '#33E8FF'
+								}]),
+							},
+							data:[200,300, 100,80]
+						},
+						{
+							name:'年末结转结余',
+							type:'line',
+							stack: '总量',
+							smooth: true,
+							areaStyle: {
+									color: new ECharts.graphic.LinearGradient(0, 1, 0, 0, [{
+									offset: 0,
+									color: '#FDBF18'
+								}, {
+									offset: 1,
+									color: '#FFFF33'
+								}]),
+							},
+							data:[150,200, 50,60]
+						}
+					]
+				})
+			}
 		},
 		components: {}
 	};
@@ -311,9 +518,8 @@
 		.jingfei-box{
 			width:739px;
 			.jingfei-content {
-                width: 80%;
+                width: 100%;
                 height: 292px;
-                margin: 0 auto;
             }
 		}
 		.jiancha-box{
