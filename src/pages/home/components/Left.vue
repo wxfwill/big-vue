@@ -67,7 +67,7 @@
                     <li v-for="(item,index) in topList" :key="index">
                         <i>{{index + 1}}</i>
                         <div class="list-content">
-                            <p class="list-label">{{item.ay_name}}</p>
+                            <p class="list-label text-ellipsis" :title="item.ay_name">{{item.ay_name}}</p>
                             <div class="top-line" :style="{width: `${item.width}px`}"></div>
                             <span>{{item.qsajsls}}</span>
                         </div>
@@ -184,7 +184,7 @@
 					const maxNum = res.data[0] ? res.data[0].qsajsls : 1;
 					this.topList = res.data.map(i => ({
 						...i,
-						width: (i.qsajsls / maxNum * 240).toFixed(2)
+						width: (i.qsajsls / maxNum * 250).toFixed(2)
 					}));
 				} else {
 					this.$message.error(res.msg);
@@ -370,6 +370,7 @@
 						axisLabel    : {
 							show     : true,
 							margin   : 0,
+							interval : 0,
 							textStyle: {
 								show    : false,
 								color   : 'rgba(255,255,255,1)',
@@ -522,6 +523,7 @@
                                 color: rgba(0, 159, 232, 1);
                                 border: 1px solid rgba(0, 159, 232, 1);
                                 border-radius: 12px;
+                                color: #dfdfdf;
                             }
                         }
                     }
@@ -643,13 +645,14 @@
                             background-position-y: bottom;
                             flex: 1;
                             .list-label {
-                                width: 130px;
+                                min-width: 130px;
+                                max-width: 150px;
                                 font-size: 18px;
                                 color: rgba(255, 255, 255, 1);
                                 line-height: 22px;
                             }
                             .top-line {
-                                max-width: 280px;
+                                max-width: 250px;
                                 height: 10px;
                                 background: linear-gradient(270deg, rgba(23, 208, 244, 1) 0%, rgba(10, 142, 231, 1) 100%);
                                 border-radius: 7px;
@@ -662,8 +665,8 @@
                         }
                         i {
                             display: inline-block;
-                            width: 21px;
-                            height: 21px;
+                            min-width: 21px;
+                            min-height: 21px;
                             text-align: center;
                             line-height: 20px;
                             border-radius: 50%;

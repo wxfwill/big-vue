@@ -1,5 +1,5 @@
 export const geoCoordMap = {
-	'中国' : {
+	'全国' : {
 		'新疆兵团': {
 			id         : '65',
 			extendMap  : true,

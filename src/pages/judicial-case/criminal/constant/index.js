@@ -12,6 +12,22 @@ export const acceptCaseChartConfig = [{
 	id  : 'zffz',
 	name: '职务犯罪'
 }];
+
+// 审查逮捕各类犯罪不捕情况
+export const reviewArrestConfig = [{
+	id  : 'dutyRelatedCrime',
+	name: '职务犯罪',
+}, {
+	id  : 'economicAndFinancialCrime',
+	name: '经济金融犯罪',
+}, {
+	id  : 'generalCrime',
+	name: '普通犯罪',
+}, {
+	id  : 'grossCrime',
+	name: '重大犯罪',
+}];
+
 // 审查逮捕各类犯罪
 export const examineChartConfig = [{
 	id  : 'jjjrfz',
@@ -29,29 +45,29 @@ export const examineChartConfig = [{
 
 // 公诉各类业务受理情况
 export const prosecutionBusinessConfig = [{
-	id: 'scqsaj',
-	name : '审查起诉案件'
+	id  : 'scqsaj',
+	name: '审查起诉案件'
 }, {
-	id: 'bsfyaj',
-	name : '不诉复议案件'
+	id  : 'bsfyaj',
+	name: '不诉复议案件'
 }, {
-	id: 'esssaj',
-	name : '二审上诉案件'
+	id  : 'esssaj',
+	name: '二审上诉案件'
 }, {
-	id: 'bsfhaj',
-	name : '不诉复核案件'
+	id  : 'bsfhaj',
+	name: '不诉复核案件'
 }, {
-	id: 'esksaj',
-	name : '二审抗诉案件'
+	id  : 'esksaj',
+	name: '二审抗诉案件'
 }, {
-	id: 'sjksaj',
-	name : '审监抗诉案件'
+	id  : 'sjksaj',
+	name: '审监抗诉案件'
 }, {
-	id: 'fhcsaj',
-	name : '发回重审案件'
+	id  : 'fhcsaj',
+	name: '发回重审案件'
 }, {
-	id: 'bascaj',
-	name : '备案审查案件'
+	id  : 'bascaj',
+	name: '备案审查案件'
 }];
 
 // 地图tooltip内容
@@ -77,14 +93,14 @@ export const mapTooltipConfig = [{
 
 // 犯罪嫌疑人年龄分布
 export const crimeAgeConfig = [{
-	id    : 'nl1',
-	name  : '0-18岁',
+	id  : 'nl1',
+	name: '0-18岁',
 }, {
-	id    : 'nl2',
-	name  : '18-25岁',
+	id  : 'nl2',
+	name: '18-25岁',
 }, {
-	id    : 'nl3',
-	name  : '25-35岁',
+	id  : 'nl3',
+	name: '25-35岁',
 }, {
 	id  : 'nl4',
 	name: '35-45岁',
@@ -98,14 +114,14 @@ export const crimeAgeConfig = [{
 
 // 职务犯罪人数
 export const dutyCrimeConfig = [{
-	id    : 'xkj',
-	name  : '乡科级',
+	id  : 'xkj',
+	name: '乡科级',
 }, {
-	id    : 'xcj',
-	name  : '县处级',
+	id  : 'xcj',
+	name: '县处级',
 }, {
-	id    : 'tjj',
-	name  : '厅局级',
+	id  : 'tjj',
+	name: '厅局级',
 }, {
 	id  : 'sbjzz',
 	name: '省部级正职',
@@ -116,18 +132,48 @@ export const dutyCrimeConfig = [{
 
 // 判决生效人数
 export const judgmentChartConfig = [{
-	id    : 'pj1',
-	name  : '无罪',
+	id  : 'pj1',
+	name: '无罪',
 }, {
-	id    : 'pj2',
-	name  : '3年以下',
+	id  : 'pj2',
+	name: '3年以下',
 }, {
-	id    : 'pj3',
-	name  : '3-10年',
+	id  : 'pj3',
+	name: '3-10年',
 }, {
 	id  : 'pj4',
 	name: '10年以上',
 }, {
 	id  : 'pj5',
 	name: '无期',
+}];
+
+// 受教育状况
+export const educationLevelConfig = [{
+	id  : 'bxrs',
+	name: '不祥',
+}, {
+	id  : 'czrs',
+	name: '初中',
+}, {
+	id  : 'dxjysrs',
+	name: '大学及以上',
+}, {
+	id  : 'gzrs',
+	name: '高中',
+}, {
+	id  : 'wmrs',
+	name: '文盲',
+}, {
+	id  : 'xxrs',
+	name: '小学',
+}, {
+	id  : 'zjrs',
+	name: '中技',
+}, {
+	id  : 'zkrs',
+	name: '专科',
+}, {
+	id  : 'zzrs',
+	name: '中专',
 }];
