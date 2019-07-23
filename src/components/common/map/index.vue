@@ -1,6 +1,6 @@
 <template>
     <div class="bj-map">
-        <div v-if="lev === 1" class="high-procurator">
+        <div v-if="lev === 1" class="high-procurator" v-show='mapConfig.tooltipIsshow'>
             <div class="tooltip-bg bg_img" :style="{backgroundImage:`url(${this.mapTooltipTitleBg})`}"></div>
             <p class="tooltip-title">最高人民检察院</p>
             <ul class="high-content">
@@ -12,7 +12,7 @@
                 </li>
             </ul>
         </div>
-        <div class="sumBox">
+        <div class="sumBox" v-show="mapConfig.numIsshow">
             <div class="num-block">
                 受理总数：
                 <ul>
@@ -32,7 +32,7 @@
                 </ul>
             </div>
         </div>
-        <div class="now-data">
+        <div class="now-data" v-show='mapConfig.leftIsshow'>
             <h4 class="now-date-text">
                 {{ nowSelectDate.startdate }} ~ {{ nowSelectDate.enddate }}
             </h4>
@@ -66,7 +66,7 @@
                 <i class="map-btn map-icon el-icon-s-home" @click="showChinaMap"></i>
                 <img class="map-btn" :src="backIcon" alt="..." @click="backSuperiorMap">
             </div>
-            <div v-if="showTooltip" class="area-box">
+            <div v-if="showTooltip" class="area-box">xi
                 <p class="tooltip-bg bg_img" :style="{backgroundImage:`url(${this.mapTooltipTitleBg})`}"></p>
                 <h3 class="title">{{ tooltipData.name }}</h3>
                 <ul>
@@ -122,6 +122,8 @@
 						name: '在办数'
 					}],
 				extendData        : [],
+
+				
 			}
 		},
 		mounted() {
@@ -562,19 +564,29 @@
 				}
 			},
 		},
-		props  : [
-			'mapData',
-			'getNewRegionInfo',
-			'tooltipConfig',
-			'totalSls',
-			'totalBjs',
-			'totalZbs',
-			'sls',
-			'bjs',
-			'zbs',
-			'lev',
-			'nowSelectDate',
-		],
+		props  :{
+			mapData:{},
+			getNewRegionInfo:{},
+			tooltipConfig:{},
+			totalSls:{},
+			totalBjs:{},
+			totalZbs:{},
+			sls:{},
+			bjs:{},
+			zbs:{},
+			lev:{},
+			nowSelectDate:{},
+			mapConfig:{
+				type:Object,
+				default(){
+					return {
+						numIsshow:true,
+						leftIsshow:true,
+						tooltipIsshow:true
+					}
+				}
+			}
+		},
 		watch  : {
 			mapData() {
 				const index       = this.mapLevel;

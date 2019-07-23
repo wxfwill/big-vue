@@ -1,12 +1,23 @@
 <template>
     <div class="home-page-center center-box">
 		<div class="mapbox">
-			 <bj-map
+			  <bj-map
                 :tooltipConfig="mapTooltipConfig"
                 :mapData="mapList"
                 :getNewRegionInfo="setMapData"
+                :totalSls="totalSls"
+                :totalBjs="totalBjs"
+                :totalZbs="totalZbs"
+                :sls="sls"
+                :bjs="bjs"
+                :zbs="zbs"
                 :lev="getMapCode.lev"
                 :nowSelectDate="getSelectDateSection"
+				:mapConfig='{
+					numIsshow:false,
+					leftIsshow:false,
+					tooltipIsshow:false
+				}'
         	></bj-map>
         	<span v-show="false">{{ getMapCode }}</span>
 		</div>
@@ -33,6 +44,17 @@
 	export default {
 		data() {
 			return {
+				mapList    : [],
+				mapTooltipConfig,
+				dialogTitle: '全国数据统计表',
+				showMapData: false,
+				numIsshow:false,
+				totalSls   : [0, 0, 0, 0],
+				totalBjs   : [0, 0, 0, 0],
+				totalZbs   : [0, 0, 0, 0],
+				sls        : 0,
+				bjs        : 0,
+				zbs        : 0,
 				mapList    : [],
 				mapTooltipConfig,
 				dialogTitle: '全国数据统计表',
