@@ -6,7 +6,7 @@ import axios from "axios";
  * */
 const service = axios.create({
 	baseURL: process.env.NODE_ENV === 'production' ? 'http://141.3.119.210:8001/' : 'http://172.16.119.242:8001/',
-	timeout: 5000,
+	timeout: 30000,
 	headers: {
 		'content-type'    : 'application/json',
 		'X-Requested-With': 'XMLHttpRequest'

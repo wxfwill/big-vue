@@ -8,7 +8,7 @@
                 </div>
                 <ul class="increase-content">
                     <li v-for="(item,index) in increaseTopTenList" :key="index">
-                        <p class="increase-title">{{ item.zm }}</p>
+                        <p class="increase-title text-ellipsis" :title="item.zm">{{ item.zm }}</p>
                         <div class="progress-bg">
                             <p class="progress"
                                :style="{ width: `${Math.abs(item.zmzcl) / 100 * 450}px`, float: item.zmzcl < 0 ? 'right' : 'left', }"></p>
@@ -54,27 +54,37 @@
                     <span class="chart-label-dot"></span>
                     <i>人均办结数</i>
                 </div>
-                <p class="more-text-btn">更多>></p>
+                <p class="more-text-btn" @click="setDialogVisible('人均办结数')">更多>></p>
                 <div ref="perCapitaChart" class="per-capita-chart"></div>
             </div>
             <div class="case-average-box">
                 <div class="chart-box-title">
                     <span class="chart-label-dot"></span>
-                    <i>案均办结数</i>
+                    <i>案均办结天数</i>
                 </div>
-                <p class="more-text-btn">更多>></p>
+                <p class="more-text-btn" @click="setDialogVisible('案均办结天数')">更多>></p>
                 <div ref="caseAverageChart" style="width: 100%; height: 500px"></div>
             </div>
         </div>
+        <el-dialog
+                :title="dialogContext.name"
+                :visible.sync="dialogVisible"
+                @opened="loadDialogChart"
+                @closed="closeBarDialog"
+                width="90%">
+            <div class="per-dialog-chart" ref="dialogChart"></div>
+        </el-dialog>
+        <span v-show="false">{{ mapCode }}</span>
+        <span v-show="false">{{ dateSection }}</span>
     </div>
 </template>
 
 <script>
-	import { mapGetters, mapActions }                               from 'vuex';
-	import ECharts                                                  from 'echarts';
-	import * as services                                            from '../service';
-	import { fillZero, verifyTriggerState, convertData }            from "@/utlis/helper";
-	import { crimeAgeConfig, dutyCrimeConfig, judgmentChartConfig } from '../constant';
+	import { mapGetters }                                                                 from 'vuex';
+	import ECharts                                                                        from 'echarts';
+	import * as services                                                                  from '../service';
+	import { fillZero, verifyTriggerState, convertData, textFormatter }                   from "@/utlis/helper";
+	import { crimeAgeConfig, dutyCrimeConfig, judgmentChartConfig, educationLevelConfig } from '../constant';
 
 	export default {
 		data() {
@@ -82,6 +92,12 @@
 				increaseTopTenList      : [],
 				capitaSettlementList    : [],
 				averageHandlingCasesList: [],
+				dialogVisible           : false,
+				dialogContext           : {
+					name: '',
+					key : '',
+					data: []
+				}
 			}
 		},
 		computed: {
@@ -92,8 +108,11 @@
 			...mapGetters('judicial', ['dateSection']),
 		},
 		beforeCreate() {
-			this.trigger         = ['startdate', 'enddate', 'code', 'lev'];
-			this.oldTriggerState = {};
+			this.trigger              = ['startdate', 'enddate', 'code', 'lev'];
+			this.oldTriggerState      = {};
+			this.capitaSettlementList = [];      // 人均办结数列表
+			this.averageHandCasesList = [];      // 案均办结数
+			this.dialogBarChart       = null;
 		},
 		mounted() {
 			const params          = { ...this.mapCode, ...this.dateSection };
@@ -103,8 +122,11 @@
 			this.judgmentChart    = ECharts.init(this.$refs.judgmentChart);
 			this.perCapitaChart   = ECharts.init(this.$refs.perCapitaChart);
 			this.caseAverageChart = ECharts.init(this.$refs.caseAverageChart);
+			this.educationChart   = ECharts.init(this.$refs.educationChart);
+
 			this.requestIncreaseRateOfChargesList(params);
 			this.requestAgeDistributionOfCrime(params);
+			this.requestEducationLevel(params);
 			this.requestDutyCrime(params);
 			this.requestEffectiveJudgement(params);
 			this.requesterCapitaSettlementList(params);
@@ -115,6 +137,7 @@
 			if(verifyTriggerState(this.trigger, this.oldTriggerState, params)) {
 				this.oldTriggerState = params;
 				this.requestIncreaseRateOfChargesList(params);
+				this.requestEducationLevel(params);
 				this.requestAgeDistributionOfCrime(params);
 				this.requestDutyCrime(params);
 				this.requestEffectiveJudgement(params);
@@ -142,7 +165,6 @@
 					this.$message.error(res.msg);
 				}
 			},
-
 			loadAgeDistributionChart(chartData) {
 				this.crimeAgeChart.setOption({
 					color  : ['#81D32A', '#31B1DD', '#DBA62E', '#942BD8', '#2F9DE0', '#2FE0BE'],
@@ -175,6 +197,66 @@
 				})
 			},
 
+			//受教育状况
+			async requestEducationLevel(params) {
+				const res = await services.getEducationLevel(params);
+				if(res.code === 200) {
+					this.loadEducationLevel(res.data);
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			loadEducationLevel(chartData) {
+				this.educationChart.setOption({
+					tooltip: {
+						formatter({ marker, name, value, percent }) {
+							return `${marker}  ${name} <br />  数量：${value}人   ${percent}%`;
+						}
+					},
+					legend : {
+						show: false
+					},
+					series : [{
+						type           : 'pie',
+						radius         : [30, 80],
+						center         : ['50%', '52%'],
+						roseType       : 'radius',
+						color          : ['#00FFF8', '#FBBA18', '#15D4EA', '#18D660', '#FF6C40', '#23A4E5', '#F6B420',
+										  '#1DDA31', '#F18126', '#00FFF8'],
+						data           : educationLevelConfig.map(i => ({
+							name : i.name,
+							value: chartData[i.id]
+						})),
+						label          : {
+							normal: {
+								textStyle: {
+									fontSize: 14
+								}
+							}
+						},
+						labelLine      : {
+							normal: {
+								smooth   : true,
+								lineStyle: {
+									width: 2
+								}
+							}
+						},
+						itemStyle      : {
+							normal: {
+								shadowBlur : 30,
+								shadowColor: 'rgba(0, 0, 0, 0.4)'
+							}
+						},
+						animationType  : 'scale',
+						animationEasing: 'elasticOut',
+						animationDelay : function(idx) {
+							return Math.random() * 200;
+						}
+					}]
+				})
+			},
+
 			// 职务犯罪
 			async requestDutyCrime(params) {
 				const res = await services.getDutyCrime(params);
@@ -195,8 +277,7 @@
 						top   : '15%',
 						left  : '15%',
 						right : '4%',
-						bottom: '15%',
-
+						bottom: '25%',
 					},
 					xAxis  : {
 						type     : 'category',
@@ -211,8 +292,13 @@
 							show: false,
 						},
 						axisLabel: {
-							color   : '#fff',
-							interval: 0,
+							color     : '#fff',
+							interval  : 0,
+							width     : 20,
+							fontSize  : 14,
+							lineHeight: 21,
+							fontFamily: 'PingFangSC-Regular',
+							formatter : (name) => textFormatter(name, 3),
 						},
 						splitLine: {
 							show: false,
@@ -267,7 +353,10 @@
 				const { axisData, seriesData } = convertData(judgmentChartConfig, chartData);
 				this.judgmentChart.setOption({
 					tooltip: {
-						show: true,
+						trigger    : 'axis',
+						axisPointer: {
+							type: 'shadow'
+						}
 					},
 					grid   : {
 						top   : '15%',
@@ -371,7 +460,11 @@
 								}])
 							}
 						},
-						data     : seriesData
+						data     : seriesData,
+						tooltip  : {
+							trigger: 'item',
+							show   : true,
+						}
 					}]
 				})
 			},
@@ -380,34 +473,6 @@
 			async requesterCapitaSettlementList(params) {
 				const res = await services.getPerCapitaSettlementList(params);
 				if(res.code === 200) {
-					res.data                  = [{
-						"city_name": "北京",
-						"rjbjs"    : 120
-					}, {
-						"city_name": "北京",
-						"rjbjs"    : 220
-					}, {
-						"city_name": "北京",
-						"rjbjs"    : 330
-					}, {
-						"city_name": "北京",
-						"rjbjs"    : 120
-					}, {
-						"city_name": "string",
-						"rjbjs"    : 330
-					}, {
-						"city_name": "string",
-						"rjbjs"    : 120
-					}, {
-						"city_name": "北京",
-						"rjbjs"    : 310
-					}, {
-						"city_name": "string",
-						"rjbjs"    : 220
-					}, {
-						"city_name": "string",
-						"rjbjs"    : 330
-					}];
 					this.capitaSettlementList = res.data;
 					this.loadPerCapitaSettlementChart(res.data.slice(0, 6));
 				} else {
@@ -415,25 +480,21 @@
 				}
 			},
 			loadPerCapitaSettlementChart(chartData) {
-				const axisData   = [],
-					  seriesData = chartData.map((i) => {
-						  axisData.push(i.city_name);
-						  return {
-							  name : i.city_name,
-							  value: i.rjbjs
-						  }
-					  });
+				const { axisData, seriesData } = this.convertBarData(chartData, 'sl');
 				this.perCapitaChart.setOption({
-					color  : ['#1DB2E8'],
+					color  : ['#05C2E2'],
 					tooltip: {
-						show: true
+						show       : true,
+						trigger    : 'axis',
+						axisPointer: {
+							type: 'shadow'
+						}
 					},
 					grid   : {
 						top   : '5%',
 						left  : '15%',
 						right : '4%',
-						bottom: '15%',
-
+						bottom: '25%',
 					},
 					xAxis  : {
 						type     : 'category',
@@ -448,8 +509,13 @@
 							show: false,
 						},
 						axisLabel: {
-							color   : '#fff',
-							interval: 0,
+							color     : '#fff',
+							interval  : 0,
+							width     : 20,
+							fontSize  : 14,
+							lineHeight: 21,
+							fontFamily: 'PingFangSC-Regular',
+							formatter : (name) => textFormatter(name, 4),
 						},
 						splitLine: {
 							show: false,
@@ -486,59 +552,25 @@
 				})
 			},
 
-			//案均办结数
+			//案均办结天数
 			async requestAverageHandlingOfCasesList(params) {
 				const res = await services.getAverageHandlingOfCasesList(params);
 				if(res.code === 200) {
-					res.data = [{
-						"city_name": "北京",
-						"ajblts"   : 120
-					}, {
-						"city_name": "北京",
-						"ajblts"   : 220
-					}, {
-						"city_name": "北京",
-						"ajblts"   : 330
-					}, {
-						"city_name": "北京",
-						"ajblts"   : 120
-					}, {
-						"city_name": "string",
-						"ajblts"   : 330
-					}, {
-						"city_name": "string",
-						"ajblts"   : 120
-					}, {
-						"city_name": "北京",
-						"ajblts"   : 310
-					}, {
-						"city_name": "string",
-						"ajblts"   : 220
-					}, {
-						"city_name": "string",
-						"ajblts"   : 330
-					}];
-					this.loadAverageHandlingOfCasesChart(res.data.slice(0, 10));
+					this.averageHandCasesList = res.data;
+					this.loadAverageHandlingOfCasesChart(res.data.slice(0, 7));
 				} else {
 					this.$message.error(res.msg);
 				}
 			},
 			loadAverageHandlingOfCasesChart(chartData) {
-				const axisData   = [],
-					  seriesData = chartData.map((i) => {
-						  axisData.push(i.city_name);
-						  return {
-							  name : i.city_name,
-							  value: i.ajblts
-						  }
-					  });
+				const { axisData, seriesData } = this.convertBarData(chartData, 'sl');
 				this.caseAverageChart.setOption({
 					color  : ['#009FE8'],
 					tooltip: {
 						show: false
 					},
 					grid   : {
-						left  : '10%',
+						left  : '20%',
 						right : '2%',
 						bottom: '3%',
 						top   : "2%",
@@ -551,7 +583,16 @@
 						show     : true,
 						splitLine: {
 							show: false
-						}
+						},
+						axisLine : {
+							show: false
+						},
+						axisLabel: {
+							show: false,
+						},
+						axisTick : {
+							show: false
+						},
 					},
 					yAxis  : {
 						type     : 'category',
@@ -560,7 +601,9 @@
 							textStyle: {
 								fontSize: 12,
 								color   : '#D5CBE8'
-							}
+							},
+							formatter: (name) => textFormatter(name, 4),
+
 						},
 						axisLine : {
 							lineStyle: {
@@ -586,7 +629,128 @@
 						}
 					]
 				})
-			}
+			},
+
+			setDialogVisible(name) {
+				let data = [],
+					key  = '';
+				switch(name) {
+					case '人均办结数' :
+						key  = 'sl';
+						data = this.capitaSettlementList;
+						break;
+					case '案均办结天数':
+						key  = 'sl';
+						data = this.averageHandCasesList;
+						break;
+				}
+				this.dialogContext = {
+					name,
+					key,
+					data
+				};
+
+				this.dialogVisible = true;
+			},
+			loadDialogChart() {
+				const { data: chartData, key } = this.dialogContext,
+					  { axisData, seriesData } = this.convertBarData(chartData, key);
+				this.dialogBarChart            = ECharts.init(this.$refs.dialogChart);
+
+				this.dialogBarChart.setOption({
+					tooltip   : {
+						show: false
+					},
+					legend    : {
+						show: false
+					},
+					grid      : {
+						top   : '4%',
+						left  : '3%',
+						right : '3%',
+						bottom: '20%',
+					},
+					calculable: true,
+					xAxis     : {
+						type     : 'category',
+						axisTick : { show: false },
+						data     : axisData,
+						axisLine : {
+							lineStyle: {
+								width: 2,
+								color: '#31DBE8'
+							}
+						},
+						axisLabel: {
+							color     : '#00ffff',
+							fontSize  : 21,
+							lineHeight: 25,
+							interval  : 0
+						}
+					},
+					yAxis     : {
+						type     : 'value',
+						axisLine : {
+							lineStyle: {
+								width: 2,
+								color: '#31DBE8'
+							}
+						},
+						splitLine: {
+							lineStyle: {
+								color: 'rgba(216,216,216,0.4)'
+							}
+						},
+						axisLabel: {
+							color: '#0ff',
+						},
+					},
+					series    : [
+						{
+							name       : '地区',
+							type       : 'bar',
+							data       : seriesData,
+							barMaxWidth: 40,
+							itemStyle  : {
+								normal: {
+									color: new ECharts.graphic.LinearGradient(0, 0, 0, 1, [{
+										offset: 0,
+										color : "#32EEEB"
+									}, {
+										offset: 1,
+										color : "#0379DB"
+									}])
+								}
+							},
+							label      : {
+								normal: {
+									"show"    : true,
+									"position": "top",
+									color     : '#00FFFF',
+								}
+							},
+						}
+					]
+				});
+			},
+			closeBarDialog() {
+				this.dialogBarChart && this.dialogBarChart.clear();
+			},
+
+			convertBarData(chartData, key) {
+				const axisData   = [],
+					  seriesData = chartData.map((i) => {
+						  axisData.push(i.city_name);
+						  return {
+							  name : i.city_name,
+							  value: i[key]
+						  }
+					  });
+				return {
+					axisData,
+					seriesData
+				};
+			},
 		},
 	}
 </script>
@@ -622,7 +786,7 @@
                     .progress-bg {
                         min-width: 450px;
                         height: 8px;
-                        background: rgba(110, 110, 110, 0.2);
+                        background: rgba(110, 110, 110, 0.4);
                         border-radius: 5px;
                         .progress {
                             width: 0;
@@ -646,7 +810,7 @@
             width: 739px;
             display: flex;
             flex-wrap: wrap;
-            margin-top: 40px;
+            margin-top: 20px;
             .age-pie {
                 width: 360px;
                 margin-bottom: 20px;
@@ -659,8 +823,8 @@
             .education-box {
                 width: 360px;
                 .education-chart {
-                    width: 350px;
-                    height: 200px;
+                    width: 100%;
+                    height: 240px;
                     margin: 0 auto;
                 }
             }
@@ -675,7 +839,7 @@
                 width: 360px;
                 .judgment-chart {
                     width: 100%;
-                    height: 220px;
+                    height: 190px;
                 }
             }
         }
@@ -700,5 +864,10 @@
                 width: 464px;
             }
         }
+        .per-dialog-chart {
+            width: 100%;
+            height: 400px;
+        }
+
     }
 </style>

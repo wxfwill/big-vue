@@ -2,128 +2,116 @@
     <div class="outer-judicial-page">
         <date-picker
                 :dateChange="setSelectTime"
+                :nowSelectDate="dateSection"
         >
         </date-picker>
-        <div class="menuBox" @mouseover="mouseOver" @mouseleave="mouseLeave">
-            <ul class="menu">
+        <div class="menuBox" @mouseleave="mouseLeave">
+            <ul class="menu" :style="{ width: `${menuWidth}px` }">
                 <div class="shrink"></div>
-                <li :class="now === index ? 'col':null" v-for="(item,index) in menuList" :key="index"
-                    @click="menuHandle(index)">
+                <li v-for="item in menuList"
+                    :class="nowSelectMenu === item.id ? 'col':null"
+                    :key="item.id"
+                    @click="menuHandle(item)"
+                >
                     <p class="bg_img" :style="{backgroundImage:'url('+item.img+')'}"></p>
                     <p>{{item.title}}</p>
                 </li>
             </ul>
-            <span class="bg_img shrink3j" v-show="shrink" :style="{backgroundImage:'url('+threeImg+')'}"></span>
+            <span
+                    class="bg_img shrink3j"
+                    @mouseover="mouseOver"
+                    v-show="shrink"
+                    :style="{backgroundImage:'url('+threeImg+')'}">
+            </span>
         </div>
         <router-view></router-view>
     </div>
 </template>
 <script>
-	import { mapActions } from 'vuex';
-	import DatePicker     from '@/components/common/date-picker';
+	import { mapActions, mapGetters } from 'vuex';
+	import DatePicker                 from '@/components/common/date-picker';
 
 	export default {
 		data() {
 			return {
-				shrink   : true,
-				now      : 0,
-				threeImg : require('@/public/img/judicature/3j.png'),
-				shrinkImg: require('@/public/img/judicature/shrink.png'),
-				menuList : [
+				shrink       : true,
+				nowSelectMenu: 'criminal',
+				threeImg     : require('@/public/img/judicature/3j.png'),
+				shrinkImg    : require('@/public/img/judicature/shrink.png'),
+				menuList     : [
 					{
+						id   : 'criminal',
 						title: '刑事',
+						url  : '/judicial/criminal',
 						img  : require('@/public/img/judicature/jw.png')
 					},
 					{
+						id   : 'civil',
 						title: '民事',
+						url  : '/judicial/civil',
 						img  : require('@/public/img/judicature/ks.png')
 					},
 					{
-						title: '行政',
-						img  : require('@/public/img/judicature/ms.png')
+						id    : 'administrative',
+						xtitle: '行政',
+						url   : '/judicial/administrative',
+						img   : require('@/public/img/judicature/ms.png')
 					},
 					{
+						id   : 'lawsuit',
 						title: '公益诉讼',
+						url  : '/judicial/lawsuit',
 						img  : require('@/public/img/judicature/ss.png')
 					},
 					{
+						id   : 'inspect',
 						title: '未检',
+						url  : '/judicial/inspect',
 						img  : require('@/public/img/judicature/wj.png')
 					},
 					{
+						id   : 'chargeAppeal',
 						title: '控申',
+						url  : '/judicial/chargeAppeal',
 						img  : require('@/public/img/judicature/xs.png')
 					},
 					{
+						id   : 'checkCharter',
 						title: '检委办/检察技术',
+						url  : '/judicial/checkCharter',
 						img  : require('@/public/img/judicature/xz.png')
 					}
 				],
+				menuWidth    : 0,
 			}
 		},
+		computed  : {
+			...mapGetters('judicial', ['dateSection']),
+		},
 		created() {
-			if(!JSON.parse(sessionStorage.getItem('menu'))) {
-				sessionStorage.setItem('menu', JSON.stringify(0))
-			}
-			this.now = JSON.parse(sessionStorage.getItem('menu'))
+			const hash         = location.hash.substr(1),
+				  nowRoute     = this.menuList.find(i => i.url === hash) || {};
+			this.nowSelectMenu = nowRoute.id;
 		},
 		methods   : {
 			// 移入
 			mouseOver() {
-				document.querySelector('.menu').style.width = "149px";
-				this.shrink                                 = false
+				this.menuWidth = 149;
+				this.shrink    = false;
 			},
 			// 移出
 			mouseLeave() {
-				document.querySelector('.menu').style.width    = "0px"
-				document.querySelector('.menu').style.overflow = "hidden"
-				this.shrink                                    = true
+				this.menuWidth = 0;
+				this.shrink    = true
 			},
-			menuHandle(i) {
-				switch(i) {
-					case 0:
-						this.now = 0
-						sessionStorage.setItem('menu', JSON.stringify(0))
-						this.$router.push('/judicial/criminal')
-						break;
-					case 1:
-						this.now = 1
-						sessionStorage.setItem('menu', JSON.stringify(1))
-						this.$router.push('/judicial/civil')
-						break;
-					case 2:
-						this.now = 2;
-						sessionStorage.setItem('menu', JSON.stringify(2))
-						this.$router.push('/judicial/administrative')
-						break;
-					case 3:
-						this.now = 3;
-						sessionStorage.setItem('menu', JSON.stringify(3))
-						this.$router.push('/judicial/lawsuit')
-						break;
-					case 4:
-						this.now = 4;
-						sessionStorage.setItem('menu', JSON.stringify(4))
-						this.$router.push('/judicial/inspect')
-						break;
-					case 5:
-						this.now = 5;
-						sessionStorage.setItem('menu', JSON.stringify(5))
-						this.$router.push('/judicial/control')
-						break;
-					case 6:
-						this.now = 6;
-						sessionStorage.setItem('menu', JSON.stringify(6))
-						this.$router.push('/judicial/procuratorial')
-						break;
-					default:
-						break;
-				}
+			menuHandle(menuInfo) {
+				console.log(menuInfo);
+				this.nowSelectMenu = menuInfo.id;
+				this.$router.push(menuInfo.url);
 			},
 			...mapActions('judicial', ['setSelectTime']),
 		},
 		beforeDestroy() {
-			sessionStorage.setItem('menu', JSON.stringify(0))
 		},
 		components: {
 			DatePicker

@@ -14,7 +14,7 @@ axios.interceptors.request.use(
     config.headers[
       "Content-Type"
     ] = `application/x-www-form-urlencoded;charset=UTF-8`;
-    // console.log(config.url);
+    // (config.url);
     if (store.state.com.token) {
       config.headers["token"] = `${store.state.com.token}`;
     }

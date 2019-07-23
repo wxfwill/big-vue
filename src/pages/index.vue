@@ -35,7 +35,7 @@
 				}, {
 					id  : 'judicialCase',
 					name: '司法办案',
-					url : '/judicial/criminal',
+					url : '/judicial',
 				}, {
 					id  : 'teamManagement',
 					name: '队伍管理',
@@ -57,21 +57,23 @@
 			}
 		},
 		computed  : {
-            dateTimeLeftOffset() {
+			dateTimeLeftOffset() {
 				return this.nowRoute === 'judicialCase' ? 120 : 0;
 			}
-        },
+		},
 		created() {
-			const hash     = location.hash.substr(1),
-				  nowRoute = this.menuList.find(i => i.url === hash);
-			this.nowRoute  = nowRoute.id;
+			const hash      = location.hash.substr(1),
+				  parentUrl = hash.substring(0, hash.substr(1).indexOf('/') + 1) || hash,
+				  nowRoute  = this.menuList.find(i => parentUrl === i.url) || {};
+			this.nowRoute   = nowRoute.id;
 		},
 		methods   : {
 			pageRouterChange(id, url) {
 				this.$router.push(url);
 				this.nowRoute = id;
 			}
-		},
+		}
+		,
 		components: {
 			DateTime
 		}

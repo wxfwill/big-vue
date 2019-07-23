@@ -27,23 +27,20 @@
 </template>
 
 <script>
-    import { fillZero } from "@/utlis/helper";
+	import { fillZero, getNowYear, getNowDate } from "@/utlis/helper";
 
 	export default {
-		created() {
-			this.handleSearch();
-		},
 		data() {
 			return {
-				startDate: `${this.getNowYear()}-01-01`,
-				endDate  : this.getNowDate(),
+				startDate: this.nowSelectDate.startdate,
+				endDate  : this.nowSelectDate.enddate,
 			}
 		},
 		computed: {
 			pickerOptionsStart() {
 				return {
-					disabledDate: time => {
-						let endDateVal = this.endDate;
+					disabledDate: (time) => {
+						const endDateVal = this.endDate;
 						if(endDateVal) {
 							return time.getTime() > new Date(endDateVal).getTime();
 						}
@@ -53,7 +50,7 @@
 			pickerOptionsEnd() {
 				return {
 					disabledDate: time => {
-						let beginDateVal = this.startDate;
+						const beginDateVal = this.startDate;
 						if(beginDateVal) {
 							return (
 								time.getTime() < new Date(beginDateVal).getTime() - 24 * 60 * 60 * 1000
@@ -63,26 +60,35 @@
 				}
 			},
 		},
+		created() {
+			this.handleSearch();
+		},
 		methods : {
 			handleSearch() {
 				if(!this.startDate || !this.endDate) {
 					this.$message.warning('时间不能为空');
 					return false;
-                }
+				}
 				this.dateChange({
 					startDate: this.startDate,
 					endDate  : this.endDate,
 				});
 			},
-			getNowYear() {
-				return new Date().getFullYear();
-			},
-			getNowDate() {
-				const date = new Date();
-				return `${date.getFullYear()}-${fillZero(date.getMonth() + 1, 2)}-${fillZero(date.getDate(), 2)}`;
-			},
 		},
-		props   : ['dateChange'],
+		props   : {
+			dateChange   : {
+				type: Function
+			},
+			nowSelectDate: {
+				type   : Object,
+				default: function() {
+					return {
+						startdate: `${getNowYear()}-01-01`,
+						enddate  : getNowDate(),
+					}
+				}
+			}
+		},
 	}
 </script>
 

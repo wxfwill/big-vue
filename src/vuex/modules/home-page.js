@@ -1,13 +1,13 @@
-import { SET_MAP_STATE, SET_DATE } from '../types';
-import { fillZero }                                      from "@/utlis/helper";
+import { SET_MAP_STATE, SET_DATE, INIT_STATE } from '../types';
+import { getNowYear, getNowDate }              from "@/utlis/helper";
 
-const state     = {
-	startDate: '',
-	endDate  : '',
+const defaultState = {
+	startDate: `${getNowYear()}-01-01`,
+	endDate  : getNowDate(),
 	code     : 100000,
 	lev      : 1,
 };
-const mutations = {
+const mutations    = {
 	[SET_DATE](state, data) {
 		state.startDate = data.startDate;
 		state.endDate   = data.endDate;
@@ -15,7 +15,11 @@ const mutations = {
 	[SET_MAP_STATE](state, data) {
 		state.code = data.code;
 		state.lev  = data.lev;
-	}
+	},
+	[INIT_STATE](state) {
+		state.code = '100000';
+		state.lev  = 1;
+	},
 };
 
 const getters = {
@@ -34,6 +38,9 @@ const getters = {
 };
 
 const actions = {
+	initHomeState({ state, commit }) {
+		commit(INIT_STATE);
+	},
 	setHomeSelectTime({ state, commit }, { startDate, endDate }) {
 		commit(SET_DATE, {
 			startDate,
@@ -51,7 +58,7 @@ const actions = {
 
 export default {
 	namespaced: true,
-	state,
+	state     : defaultState,
 	mutations,
 	actions,
 	getters,

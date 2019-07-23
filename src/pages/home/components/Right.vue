@@ -88,16 +88,20 @@
                     <div class="analyze-content">
                         <el-carousel
                                 :autoplay=true
-                                indicator-position="outside"
+                                indicator-position="none"
                                 :interval=5000
                                 arrow='hover'
                                 :loop=true
                                 @change="cutHandle"
                         >
-                            <el-carousel-item v-for="caseItem in analyzeList" :key="caseItem.id">
-                                <div class="analyze-media" :style="{ backgroundImage: `url(${analyzeItemBg})` }" @click="skipLawWorks(caseItem.url)">
-                                    <p class="analyze-item-name">{{ caseItem.name }}</p>
-                                </div>
+                            <el-carousel-item v-for="(analyzeItem, analyzeIndex) in analyzeList" :key="analyzeIndex">
+                                <ul class="library" :style="{ backgroundImage: `url(${bookrackImg})` }">
+                                    <li v-for="item in analyzeItem" class="case-item"
+                                        :style="{ backgroundImage: `url(${analyzeItemBg})` }"
+                                        @click="skipLawWorks(item.url)">
+                                        <p class="analyze-item-name">{{ item.name }}</p>
+                                    </li>
+                                </ul>
                             </el-carousel-item>
                         </el-carousel>
                     </div>
@@ -127,10 +131,8 @@
 	export default {
 		data() {
 			return {
-				swiperTitle     : '',
-				civilBoxImg     : require('@/public/img/home/civilBox.png'),
-				empiricaIcon    : require('@/public/img/home/empirica-icon.png'),
-                analyzeItemBg   : require('@/public/img/home/analyze-item-bg.png'),
+				analyzeItemBg   : require('@/public/img/home/analyze-item-bg.png'),
+				bookrackImg     : require('@/public/img/home/bookrack.png'),
 				civilList       : [
 					{
 						id   : 'ms_sljs',
@@ -151,7 +153,7 @@
 					}, {
 						id   : 'ms_tczsjcjys',
 						title: '提出再审检察建议数',
-						value  : 0
+						value: 0
 					}, {
 						id   : 'ms_cnzsjcjys',
 						title: '采纳再审检察建议数',
@@ -166,8 +168,6 @@
 						value: 0
 					}],
 				xzList          : [],
-				date            : '2019-05-29',//现在的日期
-				startDate       : '2019-01-01',
 				rjList          : [
 					{
 						id   : 'ms_rjbjs',
@@ -216,15 +216,15 @@
 				},
 				teamPeopleTotal : 0,
 				swiperColumn    : 0,
-                analyzeList     : [{
-					id   : 'dangerDriving',
-					name : '危险驾驶罪分析报告',
-					url  : 'http://141.3.119.86:8888/display/form/displayHome/insert'
-                }, {
-					id   : 'vaccineCase',
-					name : '涉疫苗案件分析报告',
-                    url  : 'http://jczc.gj.pro:10080'
-                }]
+				analyzeList     : [[{
+					id  : 'dangerDriving',
+					name: '危险驾驶罪分析报告',
+					url : 'http://141.3.119.86:8888/display/form/displayHome/insert'
+				}, {
+					id  : 'vaccineCase',
+					name: '涉疫苗案件分析报告',
+					url : 'http://jczc.gj.pro:10080'
+				}]]
 			};
 		},
 		computed  : {
@@ -361,7 +361,7 @@
 						axisPointer: {
 							type: 'line'
 						},
-						padding: [0, 0, 0, 0],
+						padding    : [0, 0, 0, 0],
 					},
 					legend : {
 						textStyle : {
@@ -418,7 +418,7 @@
 								fontSize: 10,
 								color   : '#ffffff',
 							},
-                            width : 50,
+							width      : 50,
 						},
 						data     : publicInterestLitigationConfig[0].data.map(i => i.name),
 					},
@@ -507,6 +507,14 @@
 									show: false
 								}
 							},
+							labelLine     : {
+								show     : true,
+								length   : index * 30,
+								smooth   : 0.5,
+								lineStyle: {
+									type: 'solid',
+								}
+							},
 							data          : [{
 								value    : item.value,
 								name     : item.name,
@@ -524,8 +532,10 @@
 										show     : true,
 										formatter: function(params) {
 											const data = params.data || {};
-											return `${data.number}人 ${data.value}%`
-										}
+											return `${data.number}   ${data.value}%`
+										},
+										color    : '#fff',
+										fontSize : 18
 									}
 								},
 								lableLine: {
@@ -1070,49 +1080,81 @@
                     }
                 }
                 .analyze-box {
-                    width: 454px;
-                    height: 410px;
+                    width: 464px;
                     margin-top: 40px;
                     .analyze-content {
+                        width: 414px;
+                        margin: 20px auto 0;
                         position: relative;
                         /deep/ .el-carousel__container {
-                            height: 410px;
-                            margin: 0 auto;
-                            .analyze-media {
-                                width: 315px;
-                                height: 380px;
-                                margin: 30px auto;
+                            height: 430px;
+                            .library {
+                                position: relative;
+                                width: 414px;
+                                height: 430px;
                                 border-radius: 5px;
                                 cursor: pointer;
-                                &:hover{
-                                    box-shadow: 0 0 15px rgba(31, 162, 244, .6);
-                                }
-                                .analyze-item-name{
-                                    padding-top: 212px;
-                                    font-size: 18px;
-                                    text-align: center;
-                                    color: #ddd;
+                                display: flex;
+                                flex-wrap: wrap;
+                                background-size: 100% 100%;
+                                .case-item {
+                                    position: absolute;
+                                    width: 117px;
+                                    height: 142px;
+                                    margin-bottom: 20px;
+                                    background-size: 100% 100%;
+                                    &:nth-of-type(1) {
+                                        top : 52px;
+                                        left: 61px;
+                                    }
+                                    &:nth-of-type(2){
+                                        top: 52px;
+                                        right: 57px;
+                                    }
+                                    &:nth-of-type(3) {
+                                        left: 61px;
+                                        bottom: 37px;
+                                    }
+                                    &:nth-of-type(4){
+                                        right: 57px;
+                                        bottom: 37px;
+                                    }
+                                    .analyze-item-name {
+                                        width: 110px;
+                                        margin: 80px auto 0;
+                                        color: #fff;
+                                        text-align: center;
+                                    }
                                 }
                             }
-                            .el-carousel__arrow{
-                                background-color: rgba(29,206,235,.4);
+                            .el-carousel__arrow {
+                                background-color: rgba(29, 206, 235, .4);
                                 color: #fff;
+                                &.el-carousel__arrow--left{
+                                    left: 0;
+                                    top: 47%;
+                                }
+                                &.el-carousel__arrow--right{
+                                    right: 0;
+                                    top: 47%;
+                                }
                             }
                         }
-                        /deep/ .el-carousel__indicator{
-                            &.is-active{
-                                .el-carousel__button{
+                        /deep/ .el-carousel__indicator {
+                            &.is-active {
+                                .el-carousel__button {
                                     background-color: #fff;
                                 }
                             }
-                            .el-carousel__button{
+                            .el-carousel__button {
                                 background-color: #17E4F1;
                                 opacity: 1;
+
                             }
                         }
-                        .soon-text{
+                        .soon-text {
                             position: absolute;
-                            top : 50%;
+                            top: 50%;
                             left: 50%;
                             transform: translate(-50%, -50%);
                             font-size: 40px;
@@ -1122,10 +1164,10 @@
                             animation: textRotate 10s linear infinite;
                         }
                         @keyframes textRotate {
-                            0%{
+                            0% {
                                 transform: translate(-50%, -50%) rotateY(0deg);
                             }
-                            100%{
+                            100% {
                                 transform: translate(-50%, -50%) rotateY(360deg);
                             }
                         }

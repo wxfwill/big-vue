@@ -1,8 +1,9 @@
-import { SET_DATE } from '../../types';
+import { SET_DATE }               from '../../types';
+import { getNowYear, getNowDate } from "@/utlis/helper";
 
 const state     = {
-	startDate: '',
-	endDate  : '',
+	startDate: `${getNowYear()}-01-01`,
+	endDate  : getNowDate(),
 };
 const mutations = {
 	[SET_DATE](state, data) {
