@@ -98,7 +98,6 @@ export default {
             this.acceptIPSxAxis.splice(0,1);
             this.acceptIPS.push(111)
             this.acceptIPS.splice(0,1)
-            console.log(name)
         }
         if(name==='synthesize'){
             this.synthesizeIPSxAxis.push('2020')

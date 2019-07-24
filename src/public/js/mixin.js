@@ -155,7 +155,6 @@ export const FormateNumber = {
             } else {
                 /*6e-7 需要手动转换*/
                 arr = reg.exec(str);
-                console.log(arr)
                 len = Math.abs(arr[3]) - 1;
                 for (var i = 0; i < len; i++) {
                     zero += '0';
