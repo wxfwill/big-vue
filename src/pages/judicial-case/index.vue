@@ -105,7 +105,6 @@
 				this.shrink    = true
 			},
 			menuHandle(menuInfo) {
-				console.log(menuInfo);
 				this.nowSelectMenu = menuInfo.id;
 				this.$router.push(menuInfo.url);
 			},

@@ -49,7 +49,7 @@ export default new Router({
 						{
 							path     : 'administrative',
 							name     : 'administrative',
-							component: resolve => require(['@/pages/judicial-case/administrative'], resolve),
+							component: resolve => require(['@/pages/judicial-case/administrative/index'], resolve),
 							meta     : {
 								title: '司法办案-行政'
 							}

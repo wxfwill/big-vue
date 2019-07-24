@@ -102,7 +102,7 @@
 <script>
 import ajax from "@/fetch/ajax.js";
 import { mapGetters, mapMutations } from "vuex";
-import { fromTip } from "@/public/js/mixin.js";
+import { fromTip } from "@/public/js/name.js";
 
 export default {
   mixins: [fromTip],
