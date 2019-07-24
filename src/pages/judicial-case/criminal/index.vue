@@ -13,7 +13,6 @@
 </template>
 <script>
 	import { mapGetters, mapActions } from 'vuex';
-	import ECharts                    from 'echarts';
 	import LeftBox                    from './components/left';
 	import CenterBox                  from './components/center';
 	import RightBox                   from './components/right';
@@ -34,25 +33,6 @@
 	}
 </script>
 <style lang="scss" scoped>
-    .judicial-case-title {
-        float: left;
-        margin-top: -65px;
-        margin-left: 20px;
-        font-size: 22px;
-        font-family: PingFangSC-Regular;
-        font-weight: 400;
-        color: rgba(48, 226, 226, 1);
-        line-height: 30px;
-        .title-dot {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            background: rgba(48, 226, 226, 1);
-            border-radius: 50%;
-            vertical-align: middle;
-        }
-    }
-
     .outer-criminal-page {
         position: relative;
         width: 100%;

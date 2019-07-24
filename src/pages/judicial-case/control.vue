@@ -1,168 +1,170 @@
 <template>
-    <div class="outer-control-page">
-        <date-time moduleName="控申"></date-time>
-        <div class="control-page-left">
-            <div class="left-left">
-                <div class="bor_col sue">
-                    <p class="title">控告受结案数</p>
-                    <ul>
-                        <li>
-                            <p>23244222</p>
-                            <p>控告检察案件受理数</p>
-                        </li>
-                        <li>
-                            <p>23244222</p>
-                            <p>控告检察案件受理数</p>
-                        </li>
-                        <li>
-                            <p>23244222</p>
-                            <p>控告检察案件受理数</p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="bor_col appeal">
-                    <p class="title">申诉受结案数</p>
-                    <ul>
-                        <li>
-                            <p>23244222</p>
-                            <p>控告检察案件受理数</p>
-                        </li>
-                        <li>
-                            <p>23244222</p>
-                            <p>控告检察案件受理数</p>
-                        </li>
-                        <li>
-                            <p>23244222</p>
-                            <p>控告检察案件受理数</p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="bor_col performance">
-                    <p class="title">案件绩效分析</p>
-                    <ol>
-                        <li class="li1"></li><li class="li2">办结数</li><li class="li3">案均办结天数</li>
-                        <li class="li4">控告</li><li class="li5">218344</li><li class="li6">5</li>
-                        <li class="li7">申控</li><li class="li8">218344</li><li class="li9">4</li>
-                    </ol>
-                </div>
-            </div>
-            <div class="left-right">
-                <div class="bor_col court">
-                    <p class="title">不服法院生效刑事裁判案件办理情况</p>
-                    <div id="courtBox" :style="{width:'540px',height:'300px'}"></div>
-                    <div class="lagend">
-                        <div>
-                        <p><span class="span1"></span>&nbsp;&nbsp;&nbsp;受理件数</p>
-                        <p><span class="span2"></span>&nbsp;&nbsp;&nbsp;提请、提起抗诉数</p>
-                        </div>
-                        <div>
-                        <p><span class="span3"></span>&nbsp;&nbsp;&nbsp;立案复查数</p>
-                        <p><span class="span4"></span>&nbsp;&nbsp;&nbsp;提出再审检察建议数</p>
-                        </div>
+    <div>
+        <div class="outer-control-page">
+            <date-time moduleName="控申"></date-time>
+            <div class="control-page-left">
+                <div class="left-left">
+                    <div class="bor_col sue">
+                        <p class="title">控告受结案数</p>
+                        <ul>
+                            <li>
+                                <p>23244222</p>
+                                <p>控告检察案件受理数</p>
+                            </li>
+                            <li>
+                                <p>23244222</p>
+                                <p>控告检察案件受理数</p>
+                            </li>
+                            <li>
+                                <p>23244222</p>
+                                <p>控告检察案件受理数</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bor_col appeal">
+                        <p class="title">申诉受结案数</p>
+                        <ul>
+                            <li>
+                                <p>23244222</p>
+                                <p>控告检察案件受理数</p>
+                            </li>
+                            <li>
+                                <p>23244222</p>
+                                <p>控告检察案件受理数</p>
+                            </li>
+                            <li>
+                                <p>23244222</p>
+                                <p>控告检察案件受理数</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bor_col performance">
+                        <p class="title">案件绩效分析</p>
+                        <ol>
+                            <li class="li1"></li><li class="li2">办结数</li><li class="li3">案均办结天数</li>
+                            <li class="li4">控告</li><li class="li5">218344</li><li class="li6">5</li>
+                            <li class="li7">申控</li><li class="li8">218344</li><li class="li9">4</li>
+                        </ol>
                     </div>
                 </div>
-                <div class="bor_col office">
-                    <p class="title">不服检察机关处理决定案件办理情况</p>
-                    <div id="officeBox" :style="{width:'540px',height:'350px'}"></div>
+                <div class="left-right">
+                    <div class="bor_col court">
+                        <p class="title">不服法院生效刑事裁判案件办理情况</p>
+                        <div id="courtBox" :style="{width:'540px',height:'300px'}"></div>
+                        <div class="lagend">
+                            <div>
+                                <p><span class="span1"></span>&nbsp;&nbsp;&nbsp;受理件数</p>
+                                <p><span class="span2"></span>&nbsp;&nbsp;&nbsp;提请、提起抗诉数</p>
+                            </div>
+                            <div>
+                                <p><span class="span3"></span>&nbsp;&nbsp;&nbsp;立案复查数</p>
+                                <p><span class="span4"></span>&nbsp;&nbsp;&nbsp;提出再审检察建议数</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bor_col office">
+                        <p class="title">不服检察机关处理决定案件办理情况</p>
+                        <div id="officeBox" :style="{width:'540px',height:'350px'}"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="control-page-center">
-            <div class="sum">
-         <div class="accept">
-             受理总数
-             <ul>
-                 <li v-for="(item,index) in slList" :key="index">{{item}}</li>
-             </ul>
-         </div>
-         <div class="conclude">
-             办结总数
-             <ol>
-                 <li v-for="(item,index) in bjList" :key="index">{{item}}</li>
-             </ol>
-         </div>
-         <div class="office">
-             在办总数
-             <ul>
-                 <li v-for="(item,index) in zbList" :key="index">{{item}}</li>
-             </ul>
-         </div>
-         </div>
-         <div class="control-map">
-             <mapComponent :user="(this.$route.name)"></mapComponent>
-         </div>
-        </div>
-        <div class="control-page-right">
-            <div class="bor_col letter">
-                 <p>信访<em @click="popupShow=true;popupTitle='全国各省份受理信访分流办理件数'">更多>></em></p>
-                 <p class="title">受理信访分流办理件数</p>
-                 <ul>
-                     <li v-for="(item,index) in xfList" :key="index">
+            <div class="control-page-center">
+                <div class="sum">
+                    <div class="accept">
+                        受理总数
+                        <ul>
+                            <li v-for="(item,index) in slList" :key="index">{{item}}</li>
+                        </ul>
+                    </div>
+                    <div class="conclude">
+                        办结总数
+                        <ol>
+                            <li v-for="(item,index) in bjList" :key="index">{{item}}</li>
+                        </ol>
+                    </div>
+                    <div class="office">
+                        在办总数
+                        <ul>
+                            <li v-for="(item,index) in zbList" :key="index">{{item}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="control-map">
+                    <mapComponent :user="(this.$route.name)"></mapComponent>
+                </div>
+            </div>
+            <div class="control-page-right">
+                <div class="bor_col letter">
+                    <p>信访<em @click="popupShow=true;popupTitle='全国各省份受理信访分流办理件数'">更多>></em></p>
+                    <p class="title">受理信访分流办理件数</p>
+                    <ul>
+                        <li v-for="(item,index) in xfList" :key="index">
                             <i>{{item.title}}</i>
                             <span></span>
                             {{item.num}}
-                     </li>
-                 </ul>
-            </div>
-            <div class="right-right">
-                <div class="bor_col clue-page">
-                    <p>举报线索<em @click="popupShow=true;popupTitle='全国各省份举报线索案件办理情况'">更多>></em></p>
-                    <p class="title">举报线索案件办理情况</p>
-                    <div id="clueBox" :style="{width:'540px',height:'200px'}"></div>
-                </div>
-                <div class="bor_col compensate-page">
-                    <p class="title">国家赔偿案件办理情况</p>
-                    <ul>
-                        <li>
-                            <p id="acceptBox" :style="{width:'86px',height:'86px'}"></p>
-                            <p>846,344,22</p>
-                            <p>国家赔偿受理件数</p>
-                        </li>
-                        <li>
-                            <p id="giveBox" :style="{width:'86px',height:'86px'}"></p>
-                            <p>846,344,22</p>
-                            <p>决定给予赔偿件数</p>
-                        </li>
-                        <li>
-                            <p id="putBox" :style="{width:'86px',height:'86px'}"></p>
-                            <p>846,344,22</p>
-                            <p>立案件数</p>
-                        </li>
-                        <li>
-                            <p class="bg_img pay" :style="{backgroundImage:'url('+payImg+')'}"></p>
-                            <p>846,344元</p>
-                            <p>决定支付赔偿金额</p>
                         </li>
                     </ul>
                 </div>
-                <div class="bor_col salvation-page">
-                    <p class="title">司法救助案件办理情况</p>
-                    <table>
-                    <tr>
-                    <th>受理件数</th>
-                    <th>同意救助件数</th>
-                    <th>同意救助人数</th>
-                    <th>发放救助件数</th>
-                    <th>发放救助人数</th>
-                    </tr>
-                    <tr>
-                    <td>123,234,32</td>
-                    <td>123,234,32</td>
-                    <td>123,234,32</td>
-                    <td>123,234,32</td>
-                    <td>123,234,32</td>
-                    </tr>
-                    </table>
-                    <ol>
-                        <li>生效任判决人数</li>
-                        <li>234,342,34</li>
-                        <li>发放救助金额</li>
-                        <li>234,342,34</li>
-                    </ol>
+                <div class="right-right">
+                    <div class="bor_col clue-page">
+                        <p>举报线索<em @click="popupShow=true;popupTitle='全国各省份举报线索案件办理情况'">更多>></em></p>
+                        <p class="title">举报线索案件办理情况</p>
+                        <div id="clueBox" :style="{width:'540px',height:'200px'}"></div>
+                    </div>
+                    <div class="bor_col compensate-page">
+                        <p class="title">国家赔偿案件办理情况</p>
+                        <ul>
+                            <li>
+                                <p id="acceptBox" :style="{width:'86px',height:'86px'}"></p>
+                                <p>846,344,22</p>
+                                <p>国家赔偿受理件数</p>
+                            </li>
+                            <li>
+                                <p id="giveBox" :style="{width:'86px',height:'86px'}"></p>
+                                <p>846,344,22</p>
+                                <p>决定给予赔偿件数</p>
+                            </li>
+                            <li>
+                                <p id="putBox" :style="{width:'86px',height:'86px'}"></p>
+                                <p>846,344,22</p>
+                                <p>立案件数</p>
+                            </li>
+                            <li>
+                                <p class="bg_img pay" :style="{backgroundImage:'url('+payImg+')'}"></p>
+                                <p>846,344元</p>
+                                <p>决定支付赔偿金额</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bor_col salvation-page">
+                        <p class="title">司法救助案件办理情况</p>
+                        <table>
+                            <tr>
+                                <th>受理件数</th>
+                                <th>同意救助件数</th>
+                                <th>同意救助人数</th>
+                                <th>发放救助件数</th>
+                                <th>发放救助人数</th>
+                            </tr>
+                            <tr>
+                                <td>123,234,32</td>
+                                <td>123,234,32</td>
+                                <td>123,234,32</td>
+                                <td>123,234,32</td>
+                                <td>123,234,32</td>
+                            </tr>
+                        </table>
+                        <ol>
+                            <li>生效任判决人数</li>
+                            <li>234,342,34</li>
+                            <li>发放救助金额</li>
+                            <li>234,342,34</li>
+                        </ol>
+                    </div>
                 </div>
             </div>
+            <popup v-if="popupShow" :title="popupTitle" :popupData='popupData'></popup>
         </div>
-        <popup v-if="popupShow" :title="popupTitle" :popupData='popupData'></popup>
     </div>
 </template>
 <script>

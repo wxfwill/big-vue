@@ -54,7 +54,7 @@ module.exports = {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          limit: 10000,
+          limit: 512,
           name: utils.assetsPath('media/[name].[hash:7].[ext]')
         }
       },
