@@ -844,15 +844,6 @@
             }
         }
         .right-right {
-            .more-text-btn {
-                margin-top: 17px;
-                text-align: right;
-                font-size: 14px;
-                font-family: Helvetica;
-                color: rgba(251, 186, 24, 1);
-                line-height: 17px;
-                cursor: pointer;
-            }
             .per-capita-box {
                 width: 464px;
                 .per-capita-chart {

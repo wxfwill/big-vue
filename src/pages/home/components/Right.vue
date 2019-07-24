@@ -118,7 +118,7 @@
 	import { mapGetters }                        from 'vuex';
 	import { verifyTriggerState, numberInteger } from '@/utlis/helper';
 	import 'echarts-liquidfill/src/liquidFill.js';
-	import waterPolo                             from '@/components/judicial-case/water-polo.vue'
+	import waterPolo                             from '@/components/common/water-polo.vue'
 	import * as services                         from '../service';
 	import {
 		administrativeConfig,
@@ -315,7 +315,7 @@
 			async requestTroopAdministration(params) {
 				const res = await services.getTroopAdministration(params);
 				if(res.code === 200) {
-					this.teamPeopleTotal = res.data.dwgl_zs;
+					this.teamPeopleTotal = res.data.dwgl_zs || 0;
 					this.dougHandle(res.data);
 				} else {
 					this.$message.error(res.msg);
@@ -466,6 +466,15 @@
 			dougHandle(chartData) {
 				const { rAxisData, seriesData } = this.convertTeamChartData(chartData);
 				this.dougBoxChart.setOption({
+                    tooltip : {
+                    	trigger : 'item',
+						axisPointer: {
+                    		type: 'shadow'
+                        },
+                        formatter(params){
+                    		return `${params.marker} ${params.name} <br />      ${params.data.number}人  ${params.value}%`
+                        }
+                    },
 					legend: {
 						left     : 'center',
 						bottom   : '20',
@@ -494,6 +503,7 @@
 								color  = ['#e7be40', 'rgba(231, 190, 64, .3)']
 							}
 						}
+						item.value = isNaN(item.value) ? 0 : item.value;
 						return {
 							name          : `Line ${index + 1}`,
 							type          : 'pie',
@@ -503,17 +513,10 @@
 							hoverAnimation: false,
 							startAngle    : 90,
 							label         : {
-								normal: {
-									show: false
-								}
+								show: false
 							},
 							labelLine     : {
-								show     : true,
-								length   : index * 30,
-								smooth   : 0.5,
-								lineStyle: {
-									type: 'solid',
-								}
+								show     : false,
 							},
 							data          : [{
 								value    : item.value,
@@ -522,28 +525,6 @@
 								itemStyle: {
 									normal: {
 										color: color[0]
-									}
-								},
-								label    : {
-									normal  : {
-										show: false
-									},
-									emphasis: {
-										show     : true,
-										formatter: function(params) {
-											const data = params.data || {};
-											return `${data.number}   ${data.value}%`
-										},
-										color    : '#fff',
-										fontSize : 18
-									}
-								},
-								lableLine: {
-									normal  : {
-										show: false
-									},
-									emphasis: {
-										show: true
 									}
 								},
 							}, {
@@ -1104,10 +1085,10 @@
                                     margin-bottom: 20px;
                                     background-size: 100% 100%;
                                     &:nth-of-type(1) {
-                                        top : 52px;
+                                        top: 52px;
                                         left: 61px;
                                     }
-                                    &:nth-of-type(2){
+                                    &:nth-of-type(2) {
                                         top: 52px;
                                         right: 57px;
                                     }
@@ -1115,7 +1096,7 @@
                                         left: 61px;
                                         bottom: 37px;
                                     }
-                                    &:nth-of-type(4){
+                                    &:nth-of-type(4) {
                                         right: 57px;
                                         bottom: 37px;
                                     }
@@ -1130,11 +1111,11 @@
                             .el-carousel__arrow {
                                 background-color: rgba(29, 206, 235, .4);
                                 color: #fff;
-                                &.el-carousel__arrow--left{
+                                &.el-carousel__arrow--left {
                                     left: 0;
                                     top: 47%;
                                 }
-                                &.el-carousel__arrow--right{
+                                &.el-carousel__arrow--right {
                                     right: 0;
                                     top: 47%;
                                 }
