@@ -884,11 +884,11 @@
 					seriesData
 				};
 			},
-			...mapActions('civil', ['initPenalState']),
+			...mapActions('civil', ['initMapState']),
 			...mapActions('civil', ['setMapData']),
 		},
 		destroyed() {
-			this.initPenalState();
+			this.initMapState();
 		},
 		components: {
 			BjMap,

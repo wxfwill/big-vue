@@ -31,7 +31,7 @@ const actions = {
 			lev
 		});
 	},
-	initPenalState({ state, commit }) {
+	initMapState({ state, commit }) {
 		commit(INIT_STATE);
 	}
 };

@@ -20,10 +20,10 @@
 	export default {
 		methods   : {
 			...mapActions('judicial', ['setSelectTime']),
-			...mapActions('penal', ['initPenalState']),
+			...mapActions('penal', ['initMapState']),
 		},
 		destroyed() {
-			this.initPenalState();
+			this.initMapState();
 		},
 		components: {
 			LeftBox,

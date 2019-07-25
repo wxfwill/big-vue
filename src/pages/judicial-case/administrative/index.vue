@@ -597,8 +597,7 @@
 						type    : 'bar',
 						barWidth: 22,
 						data    : seriesData,
-					}
-					]
+					}]
 				})
 			},
 
@@ -750,7 +749,7 @@
 				};
 			},
 
-			...mapActions('administrative', ['initPenalState']),
+			...mapActions('administrative', ['initMapState']),
 			...mapActions('administrative', ['setMapData']),
 		},
 		mixins    : [triggerMixin],

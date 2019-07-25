@@ -57,7 +57,7 @@ export default new Router({
 						{
 							path     : 'lawsuit',
 							name     : 'lawsuit',
-							component: resolve => require(['@/pages/judicial-case/lawsuit'], resolve),
+							component: resolve => require(['@/pages/judicial-case/public-litigation/index'], resolve),
 							meta     : {
 								title: '司法办案-公益诉讼'
 							}

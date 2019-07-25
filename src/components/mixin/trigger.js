@@ -4,6 +4,6 @@ export const triggerMixin = {
 		this.oldTriggerState = {};
 	},
 	destroyed() {
-		this.initPenalState && this.initPenalState();
+		this.initMapState && this.initMapState();
 	},
 };
