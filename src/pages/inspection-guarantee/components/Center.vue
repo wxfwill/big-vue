@@ -1,5 +1,5 @@
 <template>
-    <div class="home-page-center center-box">
+    <div class="jwbzbox">
 		<div class="mapbox">
 			  <bj-map
                 :tooltipConfig="mapTooltipConfig"
@@ -287,8 +287,8 @@
 	}
 </script>
 
-<style lang="scss">
-    .home-page-center {
+<style lang="scss" scope>
+    .jwbzbox{
         width: 1144px;
         margin-top: -20px;
         &.center-box {

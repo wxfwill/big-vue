@@ -15,7 +15,7 @@
 				:mapConfig='{
 					numIsshow:true,
 					leftIsshow:false,
-					tooltipIsshow:false
+					tooltipIsshow:true
 				}'
         ></bj-map>
         <span v-show="false">{{ mapCode }}</span>
@@ -104,11 +104,10 @@
 <style lang="scss">
     .home-page-center {
         min-width: 1319px;
-        margin-top: -20px;
         &.center-box {
             position: relative;
             width: 1319px;
-            height: 850px;
+            height: 950px;
         }
     }
 </style>
