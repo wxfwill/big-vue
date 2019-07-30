@@ -85,29 +85,5 @@ export const getProcuratorialOfficeData = async (data) => await request({
 });
 /**************** 队伍管理模块 end********************/
 
-/*********** 司法办案-民事模块-获取大屏展示系统民事数据 start ************/
-export const getCivilData            = async (data) => await request({
-	method: 'get',
-	url   : `api/v1.0/civil/getCivilData`,
-	params: data
-});
-
-/**
- * 司法办案-民事模块-获取民事:生效裁判监督
- * */
-export const getEffectiveSupervision = async (data) => await request({
-	method: 'get',
-	url   : `api/v1.0/civil/getEffectiveSupervision`,
-	params: data
-});
-
-/**
- * 司法办案-行政模块
- * */
-export const getAdministrationData   = async (data) => await request({
-	method: 'get',
-	url   : `api/v1.0/administration/getAdministrationData`,
-	params: data
-});
 
 export default request;

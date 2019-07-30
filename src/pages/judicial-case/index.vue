@@ -5,8 +5,8 @@
                 :nowSelectDate="dateSection"
         >
         </date-picker>
-        <div class="menuBox" @mouseleave="mouseLeave">
-            <ul class="menu" :style="{ width: `${menuWidth}px` }">
+        <div class="menuBox" :style="{ width: `${menuWidth}px` }" @mouseleave="mouseLeave">
+            <ul class="menu">
                 <div class="shrink"></div>
                 <li v-for="item in menuList"
                     :class="nowSelectMenu === item.id ? 'col':null"
@@ -17,13 +17,13 @@
                     <p>{{item.title}}</p>
                 </li>
             </ul>
-            <span
-                    class="bg_img shrink3j"
-                    @mouseover="mouseOver"
-                    v-show="shrink"
-                    :style="{backgroundImage:'url('+threeImg+')'}">
-            </span>
         </div>
+        <span
+                class="bg_img shrink3j"
+                @mouseover="mouseOver"
+                v-show="shrink"
+                :style="{backgroundImage:'url('+threeImg+')'}">
+        </span>
         <router-view></router-view>
     </div>
 </template>
@@ -52,10 +52,10 @@
 						img  : require('@/public/img/judicature/ks.png')
 					},
 					{
-						id    : 'administrative',
-						xtitle: '行政',
-						url   : '/judicial/administrative',
-						img   : require('@/public/img/judicature/ms.png')
+						id   : 'administrative',
+						title: '行政',
+						url  : '/judicial/administrative',
+						img  : require('@/public/img/judicature/ms.png')
 					},
 					{
 						id   : 'lawsuit',
@@ -66,13 +66,13 @@
 					{
 						id   : 'inspect',
 						title: '未检',
-						url  : '/judicial/inspect',
+						url  : '/judicial/undetected',
 						img  : require('@/public/img/judicature/wj.png')
 					},
 					{
-						id   : 'chargeAppeal',
+						id   : 'prosecution',
 						title: '控申',
-						url  : '/judicial/chargeAppeal',
+						url  : '/judicial/prosecution',
 						img  : require('@/public/img/judicature/xs.png')
 					},
 					{
@@ -105,7 +105,6 @@
 				this.shrink    = true
 			},
 			menuHandle(menuInfo) {
-				console.log(menuInfo);
 				this.nowSelectMenu = menuInfo.id;
 				this.$router.push(menuInfo.url);
 			},
@@ -126,15 +125,14 @@
         .menuBox {
             position: absolute;
             z-index: 11;
-            width: 149px;
             height: 1080px;
             top: -122px;
             left: -40px;
+            overflow: hidden;
+            transition: width 1s;
             .menu {
-                transition: width 1s;
-                width: 0;
-                overflow: hidden;
-                height: 1080px;
+                width: 100%;
+                height: 100%;
                 background: rgba(60, 61, 109, 0.8);
                 .col {
                     background: rgba(25, 158, 216, 1);
@@ -151,6 +149,19 @@
                     //     transform:rotate(0deg);
                     //     transition: all 0.5s;
                     // }
+                }
+                li {
+                    width: 149px;
+                    height: 114px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    p:nth-child(2) {
+                        margin-top: 20px;
+                        font-size: 14px;
+                        color: rgba(255, 255, 255, 1);
+                    }
                 }
                 li:nth-of-type(1) {
                     p:nth-child(1) {
@@ -194,19 +205,6 @@
                         height: 39px;
                     }
                 }
-                li {
-                    width: 149px;
-                    height: 114px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    p:nth-child(2) {
-                        margin-top: 20px;
-                        font-size: 14px;
-                        color: rgba(255, 255, 255, 1);
-                    }
-                }
             }
         }
         .shrink3j {
@@ -214,7 +212,25 @@
             height: 44px;
             position: absolute;
             top: 50%;
-            left: 0px;
+            left: -32px;
+        }
+        /deep/ .judicial-case-title {
+            float: left;
+            margin-top: -65px;
+            margin-left: 20px;
+            font-size: 22px;
+            font-family: PingFangSC-Regular;
+            font-weight: 400;
+            color: rgba(48, 226, 226, 1);
+            line-height: 30px;
+            .title-dot {
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                background: rgba(48, 226, 226, 1);
+                border-radius: 50%;
+                vertical-align: middle;
+            }
         }
     }
 </style>

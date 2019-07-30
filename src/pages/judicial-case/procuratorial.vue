@@ -80,7 +80,7 @@ import 'echarts-liquidfill/src/liquidFill.js'; //在这里引入
 import MapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
 import trendChart from '@/components/judicial-case/trend-chart.vue'
-import waterPolo from '@/components/judicial-case/water-polo.vue'
+import waterPolo from '@/components/common/water-polo.vue'
 import DateTime from '@/components/DateTime.vue'
 import * as services from './procura/service/index';
 
@@ -128,7 +128,6 @@ export default {
             this.acceptIPSxAxis.splice(0,1);
             this.acceptIPS.push(111)
             this.acceptIPS.splice(0,1)
-            console.log(name)
         }
         if(name==='synthesize'){
             this.synthesizeIPSxAxis.push('2020')

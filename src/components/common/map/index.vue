@@ -300,8 +300,8 @@
 								shadowColor  : 'rgba(0, 0, 0, 0.5)'
 							}
 						},
-						layoutCenter: name === '全国' ? ['55%', '57%'] : undefined,
-						layoutSize  : name === '全国' ? 950 : undefined,
+						layoutCenter: name === '全国' ? ['50%', '50%'] : undefined,
+						layoutSize  : name === '全国' ? 1000 : undefined,
 					},
 					series : [{
 						name            : 'extend',
@@ -681,6 +681,7 @@
         position: relative;
         width: 100%;
         height: 100%;
+        margin-top: -20px;
         .sumBox {
             display: flex;
             font-size: 18px;
@@ -738,7 +739,7 @@
             height: 100%;
             float: right;
             .map-chart {
-                width: 1150px;
+                width: 100%;
                 height: 100%;
             }
             .map-option {
@@ -866,7 +867,7 @@
             position: absolute;
             left: 50%;
             top: 65px;
-            transform: translate(-50%, 0);
+            transform: translate(-56%, 0);
             width: 300px;
             padding: 0 15px;
             border: 1px solid #17DDDD;

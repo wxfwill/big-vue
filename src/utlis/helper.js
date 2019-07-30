@@ -15,7 +15,7 @@ export const fillZero    = (num, len) => {
 	if(`${num}`.length < len) {
 		return (Array(len).join('0') + num).slice(-len);
 	} else {
-		return num;
+		return `${num}`;
 	}
 };
 
@@ -38,7 +38,7 @@ export function verifyTriggerState(trigger = [], oldState, newState) {
 }
 
 /**
- * 取整
+ * 向上取整数
  * */
 export function numberInteger(num = 0) {
 	const len      = String(num).length,
@@ -46,7 +46,8 @@ export function numberInteger(num = 0) {
 	return (~~(num / carryBit + 1)) * carryBit;
 }
 
-export function convertData(configList = [], chartData) {
+// 转换定量报表数据
+export function convertData(configList = [], chartData = {}) {
 	const axisData   = [],
 		  seriesData = configList.map((config) => {
 			  axisData.push(config.name);
@@ -57,6 +58,20 @@ export function convertData(configList = [], chartData) {
 		seriesData,
 	}
 }
+
+// 转换不定量折线图
+export function convertLineData(data, axisKey, seriesKey) {
+	const axisData   = [],
+		  seriesData = data.map(i => {
+			  axisData.push(i[axisKey]);
+			  return i[seriesKey];
+		  });
+	return {
+		axisData,
+		seriesData
+	};
+}
+
 
 export function getNowYear() {
 	return new Date().getFullYear();

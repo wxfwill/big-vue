@@ -58,7 +58,7 @@
 		},
 		computed  : {
 			dateTimeLeftOffset() {
-				return this.nowRoute === 'judicialCase' ? 120 : 0;
+				return this.nowRoute === 'judicialCase' ? 140 : 0;
 			}
 		},
 		created() {

@@ -144,6 +144,16 @@ iframe {
   background: rgba(0, 255, 248, 1);
 }
 
+.more-text-btn {
+  margin-top: 17px;
+  text-align: right;
+  font-size: 14px;
+  font-family: Helvetica;
+  color: rgba(251, 186, 24, 1);
+  line-height: 17px;
+  cursor: pointer;
+}
+
 .text-ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -191,4 +201,12 @@ iframe {
   }
 
 }
-
+.per-dialog-chart {
+  width: 100%;
+  height: 400px;
+}
+.fraze-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}

@@ -114,7 +114,7 @@
 	import { mapGetters }                        from 'vuex';
 	import { verifyTriggerState, numberInteger } from '@/utlis/helper';
 	import 'echarts-liquidfill/src/liquidFill.js';
-	import waterPolo                             from '@/components/judicial-case/water-polo.vue'
+	import waterPolo                             from '@/components/common/water-polo.vue'
 	import * as services                         from '../service';
 	import {
 		administrativeConfig,

@@ -572,7 +572,7 @@
 					grid   : {
 						left  : '20%',
 						right : '2%',
-						bottom: '3%',
+						bottom: '2%',
 						top   : "2%",
 					},
 					legend : {
@@ -757,117 +757,105 @@
 
 <style lang="scss" scoped>
     .criminal-page-right {
-        width: 1200px;
-        .increase-top {
+        width: 1275px;
+        display: flex;
+        .right-left{
             width: 739px;
-            min-height: 330px;
-            .increase-content {
-                position: relative;
-                margin: 15px 30px 23px 15px;
-                &:before {
-                    position: absolute;
-                    top: 5px;
-                    left: 140px;
-                    width: 1px;
-                    height: 97%;
-                    background: linear-gradient(top, #0767D1, #05C3E2);
-                    content: '';
-                }
-                li {
-                    display: flex;
-                    align-items: center;
-                    height: 30px;
-                    .increase-title {
-                        width: 120px;
-                        text-align: right;
-                        color: #dfdfdf;
-                        margin-right: 41px;
+            .increase-top {
+                min-height: 330px;
+                .increase-content {
+                    position: relative;
+                    margin: 15px 30px 23px 15px;
+                    &:before {
+                        position: absolute;
+                        top: 5px;
+                        left: 140px;
+                        width: 1px;
+                        height: 97%;
+                        background: linear-gradient(top, #0767D1, #05C3E2);
+                        content: '';
                     }
-                    .progress-bg {
-                        min-width: 450px;
-                        height: 8px;
-                        background: rgba(110, 110, 110, 0.4);
-                        border-radius: 5px;
-                        .progress {
-                            width: 0;
-                            height: 100%;
-                            background: linear-gradient(270deg, rgba(5, 194, 226, 1) 0%, rgba(6, 103, 209, 1) 100%);
+                    li {
+                        display: flex;
+                        align-items: center;
+                        height: 30px;
+                        .increase-title {
+                            width: 120px;
+                            text-align: right;
+                            color: #dfdfdf;
+                            margin-right: 41px;
+                        }
+                        .progress-bg {
+                            min-width: 450px;
+                            height: 8px;
+                            background: rgba(110, 110, 110, 0.4);
                             border-radius: 5px;
+                            .progress {
+                                width: 0;
+                                height: 100%;
+                                background: linear-gradient(270deg, rgba(5, 194, 226, 1) 0%, rgba(6, 103, 209, 1) 100%);
+                                border-radius: 5px;
+                            }
+                        }
+                        .ratio-text {
+                            width: 70px;
+                            margin-left: 18px;
+                            font-size: 14px;
+                            font-family: Helvetica;
+                            color: rgba(5, 193, 226, 1);
+                            line-height: 17px;
                         }
                     }
-                    .ratio-text {
-                        width: 70px;
-                        margin-left: 18px;
-                        font-size: 14px;
-                        font-family: Helvetica;
-                        color: rgba(5, 193, 226, 1);
-                        line-height: 17px;
+                }
+            }
+            .right-left-bottom {
+                display: flex;
+                flex-wrap: wrap;
+                margin-top: 20px;
+                .age-pie {
+                    width: 360px;
+                    margin-bottom: 20px;
+                    .age-pie-chart {
+                        width: 350px;
+                        height: 240px;
+                        margin: 0 auto;
                     }
                 }
-            }
-        }
-        .right-left-bottom {
-            width: 739px;
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: 20px;
-            .age-pie {
-                width: 360px;
-                margin-bottom: 20px;
-                .age-pie-chart {
-                    width: 350px;
-                    height: 240px;
-                    margin: 0 auto;
+                .education-box {
+                    width: 360px;
+                    .education-chart {
+                        width: 100%;
+                        height: 240px;
+                        margin: 0 auto;
+                    }
                 }
-            }
-            .education-box {
-                width: 360px;
-                .education-chart {
-                    width: 100%;
-                    height: 240px;
-                    margin: 0 auto;
+                .duty-crime-box {
+                    width: 360px;
+                    .duty-crime-chart {
+                        width: 100%;
+                        height: 220px;
+                    }
                 }
-            }
-            .duty-crime-box {
-                width: 360px;
-                .duty-crime-chart {
-                    width: 100%;
-                    height: 220px;
-                }
-            }
-            .verdict-box {
-                width: 360px;
-                .judgment-chart {
-                    width: 100%;
-                    height: 190px;
+                .verdict-box {
+                    width: 360px;
+                    .judgment-chart {
+                        width: 100%;
+                        height: 190px;
+                    }
                 }
             }
         }
         .right-right {
-            .more-text-btn {
-                margin-top: 17px;
-                text-align: right;
-                font-size: 14px;
-                font-family: Helvetica;
-                color: rgba(251, 186, 24, 1);
-                line-height: 17px;
-                cursor: pointer;
-            }
+            width: 464px;
             .per-capita-box {
-                width: 464px;
                 .per-capita-chart {
                     width: 100%;
-                    height: 290px;
+                    height: 275px;
                 }
             }
-            .case-average-box {
+            /*.case-average-box {
                 width: 464px;
-            }
+            }*/
         }
-        .per-dialog-chart {
-            width: 100%;
-            height: 400px;
-        }
-
     }
 </style>
