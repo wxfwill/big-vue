@@ -1,9 +1,9 @@
 <template>
     <div class="co-center-container">
         <div class="msg-issue-box">
-			<div class="chart-box-title">
-              <span class="chart-label-dot"></span>
-              <i>信息发布</i>
+            <div class="chart-box-title">
+                <span class="chart-label-dot"></span>
+                <i>信息发布</i>
             </div>
             <div class="table-group">
                 <div class="table-item" v-for="infoPublish in infoPublishTableGroup">
@@ -15,9 +15,9 @@
             </div>
         </div>
         <div class="file-analyze-box">
-			<div class="chart-box-title">
-              <span class="chart-label-dot"></span>
-              <i>归档分析</i>
+            <div class="chart-box-title">
+                <span class="chart-label-dot"></span>
+                <i>归档分析</i>
             </div>
             <div class="file-analyze-chart" ref="fileAnalyzeChart"></div>
         </div>
@@ -172,12 +172,12 @@
             margin-bottom: 19px;
             .table-group {
                 display: flex;
-				padding-left:30px;
+                padding-left: 30px;
                 .table-item {
                     position: relative;
                     flex: 1;
                     margin-right: 60px;
-					text-align:center;
+                    text-align: center;
                     &:after {
                         position: absolute;
                         top: 30px;
@@ -192,23 +192,23 @@
                             display: none;
                         }
                     }
-					.bj-table{
-						thead{
-							th{
-								text-align:left;
-							}
-						}
-					}
-					tbody{
-						tr{
-							td{
-								text-align:left;
-							}
-							td:first-child{
-								padding-right:30px;
-							}
-						}
-					}
+                    .bj-table {
+                        thead {
+                            th {
+                                text-align: left;
+                            }
+                        }
+                    }
+                    tbody {
+                        tr {
+                            td {
+                                text-align: left;
+                            }
+                            td:first-child {
+                                padding-right: 30px;
+                            }
+                        }
+                    }
                 }
             }
         }

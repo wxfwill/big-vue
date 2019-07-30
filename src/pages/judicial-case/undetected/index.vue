@@ -154,7 +154,7 @@
 	import ECharts                             from 'echarts';
 	import BoxHead                             from '@/components/common/box-head';
 	import BjMap                               from '@/components/common/map/index';
-	import TrendChart                          from '@/components/judicial-case/trend-chart.vue'
+	import TrendChart                          from '@/components/common/trend-chart.vue'
 	import * as services                       from './service/index';
 	import { triggerMixin, mapComponentState } from '@/components/mixin/trigger';
 	import {
