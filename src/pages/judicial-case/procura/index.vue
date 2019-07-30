@@ -33,13 +33,11 @@
                         <i>案件分类分析</i>
                     </div>
                     <div class="classify-box">
-                        <!-- <liquid-fill></liquid-fill> -->
                     <water-polo v-for="(item,index) in poloList" :key="index" :chartConfig="item" :ID="`pol${index}`" width='102px' height='102px'></water-polo>
                     </div>
                 </div>
             </div>
             <center-box></center-box>
-            <!-- <right-box></right-box> -->
             <div class="procuratorial-page-right">
                 <div class="accept-box">
                     <div class="chart-box-title">
@@ -80,9 +78,7 @@ import Popup from '@/components/Popup.vue'
 import trendChart from '@/components/judicial-case/trend-chart.vue'
 import waterPolo from '@/components/judicial-case/water-polo.vue'
 import DateTime from '@/components/DateTime.vue'
-import LeftBox from './components/left';
 import CenterBox from './components/Center'
-import RightBox from './components/right'
 import * as services                   from './service';
 //模拟数据
 import {personnelChartConfig,caseNumberAnalysiscongif} from "./constant/index"
@@ -94,9 +90,7 @@ export default {
         DateTime,
         trendChart,
         waterPolo,
-        LeftBox,
-        CenterBox,
-        RightBox
+        CenterBox
     },
     data() {
         return {
@@ -152,7 +146,6 @@ export default {
             const res = await services.getCheckCharterData(params);
             if(res.code === 200) {
                 const data         = res.data;
-                console.log(data)
                 //theInvestigatorsList--相关办案人员（各省市/人）
                 this.theInvestigatorsList = data.theInvestigatorsList;
                 this.loadtheInvestigatorsListchart();
@@ -296,7 +289,6 @@ export default {
                 // })
         },
         loadcaseTrendAnalysisListchart(){
-            console.log(this.caseTrendAnalysisList)
             // const {xAxisData,seriesData}=this.convertChartConfigcz(this.caseTrendAnalysisList)
             this.caseTrendAnalysisListchart.setOption({
                 tooltip: {
@@ -465,7 +457,6 @@ export default {
         },
         loadtheInvestigatorsListchart(params) {
             const { xAxisData, seriesData } = this.convertChartConfigcz(personnelChartConfig.slice(0,10));
-            // console.log(xAxisData,seriesData)
             this.theInvestigatorsListchart.setOption({
                 color: ['#3398DB'],
                 tooltip : {
@@ -550,8 +541,6 @@ export default {
         loadDialogChart(){
             this.dialogBarChart            = echarts.init(this.$refs.dialogChart);
             const { xAxisData, seriesData } = this.convertChartConfigcz(this.theInvestigatorsList);
-            // console.log(xAxisData)
-            // console.log(seriesData)
             this.dialogBarChart.setOption({
                 color: ['#3398DB'],
                 tooltip : {
@@ -610,8 +599,6 @@ export default {
         loadDialogChart1(){
             this.dialogBarChart1           = echarts.init(this.$refs.dialogChart1);
             const { xAxisData, seriesData } = this.convertChartConfigcz(personnelChartConfig);
-            // console.log(xAxisData)
-            // console.log(seriesData)
                 this.dialogBarChart1.setOption({
             tooltip: {
                 trigger: 'axis'

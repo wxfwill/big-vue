@@ -479,7 +479,6 @@
 			loadDialogChart(){
 				const { data: chartData, key } = this.dialogContext,
 					  { xAxisData, seriesData } = this.convertChartConfigcz(chartData, key);
-						console.log(key)
 				this.dialogBarChart            = ECharts.init(this.$refs.dialogChart);
 				const color=
 				this.dialogBarChart.setOption({

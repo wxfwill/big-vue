@@ -310,7 +310,6 @@
 					enddate  : this.endDate,
 				});
 				if(data.code === 200) {
-					console.log(data.data)
 					this.performanceInfo = data.data;
 				} else {
 					this.$message.error(`code : ${data.code}`);

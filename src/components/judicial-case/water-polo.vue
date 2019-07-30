@@ -18,7 +18,6 @@
 		},
 		methods: {
 			poloHandle() {
-				// console.log(this.chartConfig)
 				this.myChart.setOption({
 					series: [{
 						type           : 'liquidFill',
@@ -51,7 +50,6 @@
 							show  : false,
 							normal: {
 								formatter: (params) => {
-									// console.log(params)
 									const val = ((params.value * 10000).toFixed(0))/100;
 									let text;
 									if(params.data.number > 0 && val === 0) {

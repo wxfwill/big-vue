@@ -67,7 +67,6 @@
 				}).then((resolve) => {
 					if(resolve.code === 200) {
 						const data                             = resolve.data;
-						console.log(data)
 						const qgzzrs                           = fillZero(data.incumbency.qgzzrs, 5).split(''),
 							  { leftBox, centerBox, rightBox } = this.$refs;
 

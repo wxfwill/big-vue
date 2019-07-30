@@ -60,7 +60,6 @@
 				if(arr.length > 3) {
 					arr.length = 3;
 				}
-				console.log(arr)
 				return arr;
 			}
 		},
