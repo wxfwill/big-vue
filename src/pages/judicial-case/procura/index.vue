@@ -33,7 +33,12 @@
                         <i>案件分类分析</i>
                     </div>
                     <div class="classify-box">
-                    <!-- <water-polo v-for="(item,index) in poloList" :key="index" :chartConfig="item" :ID="`pol${index}`" width='102px' height='102px'></water-polo> -->
+                        <water-polo
+                                v-for="item in poloList"
+                                :key="item.id"
+                                :chartConfig="item"
+                                :percent=true
+                        ></water-polo>
                     </div>
                 </div>
             </div>
@@ -80,7 +85,7 @@ import DateTime from '@/components/DateTime.vue'
 import CenterBox from './components/Center'
 import * as services                   from './service';
 //模拟数据
-import {personnelChartConfig,caseNumberAnalysiscongif} from "./constant/index"
+import {personnelChartConfig,caseNumberAnalysiscongif,administrativeConfig} from "./constant/index"
 
 
 export default {
@@ -92,13 +97,7 @@ export default {
     },
     data() {
         return {
-            poloList:[
-                {title:'检验鉴定',num:100,col1:'#22715F',col2:'#4FDC99'},
-                {title:'勘验检查',num:80,col1:'#005EFF',col2:'#63E8D7'},
-                {title:'技术协作',num:60,col1:'#FFA11E',col2:'#F3C85D'},
-                {title:'同步录音录像',num:50,col1:'#1EC4FF',col2:'#5DF3DC'},
-                {title:'技术性证据审查',num:40,col1:'#F35DC4',col2:'#FA3882'}
-                ],
+            poloList:[],
             topImg: require('@/public/img/judicature/top@2x.png'),
             bottomImg: require('@/public/img/judicature/bottom@2x.png'),
             correlationIPSxAxis:[],
@@ -152,6 +151,11 @@ export default {
                 this.loadtrendOfAcceptingCasesListchart()
                 //caseNumberAnalysis--案件分类分析
                 this.caseNumberAnalysis=data.caseNumberAnalysis
+                this.poloList = administrativeConfig.map(i => ({
+						...i,
+						value: res.data[i.id],
+						rate : res.data[i.rateId],
+					}));
                 //analysisBySynthesisList--综合分析
                 this.analysisBySynthesisList=data.analysisBySynthesisList
                 this.loadanalysisBySynthesisList()
@@ -284,7 +288,15 @@ export default {
                 })
         },
         loadtrendOfAcceptingCasesListchart(){//受理案件趋势分析
-            // const {xAxisData,seriesData}=this.convertChartConfigcz(this.trendOfAcceptingCasesList)
+            let year=[],jsxz=[],jsxzjsc=[],jyjd=[],kyjc=[],tblylx=[];
+            for(var i=0;i<this.trendOfAcceptingCasesList.length;i++){
+                year.push(this.trendOfAcceptingCasesList[i].year);
+                jsxz.push(this.trendOfAcceptingCasesList[i].jsxz);
+                jsxzjsc.push(this.trendOfAcceptingCasesList[i].jsxzjsc);
+                jyjd.push(this.trendOfAcceptingCasesList[i].jyjd);
+                kyjc.push(this.trendOfAcceptingCasesList[i].kyjc);
+                tblylx.push(this.trendOfAcceptingCasesList[i].tblylx);
+            }
             this.trendOfAcceptingCasesListchart.setOption({
                 tooltip: {
                     trigger: 'axis'
@@ -310,7 +322,7 @@ export default {
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: ['周一','周二','周三','周四','周五','周六','周日'],
+                    data: year,
                     axisLabel: {
                         show: true,
                         textStyle: {
@@ -338,36 +350,45 @@ export default {
                         name:'检验鉴定',
                         type:'line',
                         stack: '总量',
-                        data:[120, 132, 101, 134, 90, 230, 210]
+                        data:jyjd
                     },
                     {
                         name:'勘验检查',
                         type:'line',
                         stack: '总量',
-                        data:[220, 182, 191, 234, 290, 330, 310]
+                        data:kyjc
                     },
                     {
                         name:'技术协作',
                         type:'line',
                         stack: '总量',
-                        data:[150, 232, 201, 154, 190, 330, 410]
+                        data:jsxz
                     },
                     {
                         name:'同步录音录像',
                         type:'line',
                         stack: '总量',
-                        data:[320, 332, 301, 334, 390, 330, 320]
+                        data:tblylx
                     },
                     {
                         name:'技术性证据审查',
                         type:'line',
                         stack: '总量',
-                        data:[820, 932, 901, 934, 1290, 1330, 1320]
+                        data:jsxzjsc
                     }
                 ]
             })
         },
         loadanalysisBySynthesisList(){
+            let cityname=[],jsxz=[],jsxzjsc=[],jyjd=[],kyjc=[],tblylx=[];
+            for(var i=0;i<this.trendOfAcceptingCasesList.length;i++){
+                cityname.push(this.trendOfAcceptingCasesList[i].year);
+                jsxz.push(this.trendOfAcceptingCasesList[i].jsxz);
+                jsxzjsc.push(this.trendOfAcceptingCasesList[i].jsxzjsc);
+                jyjd.push(this.trendOfAcceptingCasesList[i].jyjd);
+                kyjc.push(this.trendOfAcceptingCasesList[i].kyjc);
+                tblylx.push(this.trendOfAcceptingCasesList[i].tblylx);
+            }
             this.analysisBySynthesisListchart.setOption({
                 tooltip: {
                     trigger: 'axis'
@@ -393,7 +414,7 @@ export default {
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: ['周一','周二','周三','周四','周五','周六','周日'],
+                    data: cityname,
                     axisLabel: {
                         show: true,
                         textStyle: {
@@ -421,31 +442,31 @@ export default {
                         name:'检验鉴定',
                         type:'line',
                         stack: '总量',
-                        data:[120, 132, 101, 134, 90, 230, 210]
+                        data:jyjd
                     },
                     {
                         name:'勘验检查',
                         type:'line',
                         stack: '总量',
-                        data:[220, 182, 191, 234, 290, 330, 310]
+                        data:kyjc
                     },
                     {
                         name:'技术协作',
                         type:'line',
                         stack: '总量',
-                        data:[150, 232, 201, 154, 190, 330, 410]
+                        data:jsxz
                     },
                     {
                         name:'同步录音录像',
                         type:'line',
                         stack: '总量',
-                        data:[320, 332, 301, 334, 390, 330, 320]
+                        data:tblylx
                     },
                     {
                         name:'技术性证据审查',
                         type:'line',
                         stack: '总量',
-                        data:[820, 932, 901, 934, 1290, 1330, 1320]
+                        data:jsxzjsc
                     }
                 ]
             })
@@ -480,138 +501,225 @@ export default {
         loadDialogChart(){
             this.dialogBarChart            = echarts.init(this.$refs.dialogChart);
             const { xAxisData, seriesData } = this.convertChartConfigcz(this.theInvestigatorsList);
-            this.dialogBarChart.setOption({
-                color: ['#3398DB'],
-                tooltip : {
-                    trigger: 'axis',
-                    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                        type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                    }
-                },
-                grid: {
-                    left: '3%',
-                    right: '10%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis : [
-                    {
-                        type : 'category',
-                        data : xAxisData,
-                        axisTick: {
-                            show:false
+            alert(this.dialogContext.name)
+            if(this.dialogContext.name=='相关办案人员（各省市/人）' || this.dialogContext.name=='检委办'){
+                    this.dialogBarChart.setOption({
+                        color: ['#3398DB'],
+                        tooltip : {
+                            trigger: 'axis',
+                            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '10%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis : [
+                            {
+                                type : 'category',
+                                data : xAxisData,
+                                axisTick: {
+                                    show:false
+                                },
+                                axisLine:{
+                                    lineStyle: {
+                                        color: "#fff",
+                                    }
+                                }
+                            }
+                        ],
+                        yAxis : [
+                            {
+                                type : 'value',
+                                axisLine:{
+                                    show:false,
+                                    lineStyle: {
+                                        color: "#fff",
+                                    }
+                                }
+                            }
+                        ],
+                        series : [
+                            {
+                                name:'直接访问',
+                                type:'bar',
+                                barWidth: '60%',
+                                data:seriesData,
+                                itemStyle:{
+                                    normal:{
+                                        color:'#5C89FF'
+                                    }
+                                }
+                            }
+                        ]
+                    })
+            }else if(this.dialogContext.name=='受理案件趋势分析'){
+                let year=[],jsxz=[],jsxzjsc=[],jyjd=[],kyjc=[],tblylx=[];
+                for(var i=0;i<this.trendOfAcceptingCasesList.length;i++){
+                    year.push(this.trendOfAcceptingCasesList[i].year);
+                    jsxz.push(this.trendOfAcceptingCasesList[i].jsxz);
+                    jsxzjsc.push(this.trendOfAcceptingCasesList[i].jsxzjsc);
+                    jyjd.push(this.trendOfAcceptingCasesList[i].jyjd);
+                    kyjc.push(this.trendOfAcceptingCasesList[i].kyjc);
+                    tblylx.push(this.trendOfAcceptingCasesList[i].tblylx);
+                }
+                this.dialogBarChart.setOption({
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: year,
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#ffffff'
+                            }
                         },
                         axisLine:{
-                            lineStyle: {
-                                color: "#fff",
+                            lineStyle:{
+                                color:'#00FFFF',
+                                width:1
                             }
                         }
-                    }
-                ],
-                yAxis : [
-                    {
-                        type : 'value',
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            name:'检验鉴定',
+                            type:'line',
+                            stack: '总量',
+                            data:jyjd
+                        },
+                        {
+                            name:'勘验检查',
+                            type:'line',
+                            stack: '总量',
+                            data:kyjc
+                        },
+                        {
+                            name:'技术协作',
+                            type:'line',
+                            stack: '总量',
+                            data:jsxz
+                        },
+                        {
+                            name:'同步录音录像',
+                            type:'line',
+                            stack: '总量',
+                            data:tblylx
+                        },
+                        {
+                            name:'技术性证据审查',
+                            type:'line',
+                            stack: '总量',
+                            data:jsxzjsc
+                        }
+                    ]
+                })
+            }else if(this.dialogContext.name=='综合分析'){
+                let cityname=[],jsxz=[],jsxzjsc=[],jyjd=[],kyjc=[],tblylx=[];
+                for(var i=0;i<this.trendOfAcceptingCasesList.length;i++){
+                    cityname.push(this.trendOfAcceptingCasesList[i].year);
+                    jsxz.push(this.trendOfAcceptingCasesList[i].jsxz);
+                    jsxzjsc.push(this.trendOfAcceptingCasesList[i].jsxzjsc);
+                    jyjd.push(this.trendOfAcceptingCasesList[i].jyjd);
+                    kyjc.push(this.trendOfAcceptingCasesList[i].kyjc);
+                    tblylx.push(this.trendOfAcceptingCasesList[i].tblylx);
+                }
+                this.dialogBarChart.setOption({
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: cityname,
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#ffffff'
+                            }
+                        },
                         axisLine:{
-                            show:false,
-                            lineStyle: {
-                                color: "#fff",
+                            lineStyle:{
+                                color:'#00FFFF',
+                                width:1
                             }
                         }
-                    }
-                ],
-                series : [
-                    {
-                        name:'直接访问',
-                        type:'bar',
-                        barWidth: '60%',
-                        data:seriesData,
-                        itemStyle:{
-                            normal:{
-                                color:'#5C89FF'
+                    },
+                    yAxis: {
+                        type: 'value',
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#ffffff'
                             }
                         }
-                    }
-                ]
-            })
+                    },
+                    series: [
+                        {
+                            name:'检验鉴定',
+                            type:'line',
+                            stack: '总量',
+                            data:jyjd
+                        },
+                        {
+                            name:'勘验检查',
+                            type:'line',
+                            stack: '总量',
+                            data:kyjc
+                        },
+                        {
+                            name:'技术协作',
+                            type:'line',
+                            stack: '总量',
+                            data:jsxz
+                        },
+                        {
+                            name:'同步录音录像',
+                            type:'line',
+                            stack: '总量',
+                            data:tblylx
+                        },
+                        {
+                            name:'技术性证据审查',
+                            type:'line',
+                            stack: '总量',
+                            data:jsxzjsc
+                        }
+                    ]
+                })
+            }
+           
             
-        },
-        loadDialogChart1(){
-            this.dialogBarChart1           = echarts.init(this.$refs.dialogChart1);
-            const { xAxisData, seriesData } = this.convertChartConfigcz(personnelChartConfig);
-                this.dialogBarChart1.setOption({
-            tooltip: {
-                trigger: 'axis'
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis: {
-                type: 'category',
-                boundaryGap: false,
-                data: ['周一','周二','周三','周四','周五','周六','周日'],
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#ffffff'
-                    }
-                },
-                axisLine:{
-                    lineStyle:{
-                        color:'#00FFFF',
-                        width:1
-                    }
-                }
-            },
-            yAxis: {
-                type: 'value',
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#ffffff'
-                    }
-                }
-            },
-            series: [
-                {
-                    name:'检验鉴定',
-                    type:'line',
-                    stack: '总量',
-                    data:[120, 132, 101, 134, 90, 230, 210]
-                },
-                {
-                    name:'勘验检查',
-                    type:'line',
-                    stack: '总量',
-                    data:[220, 182, 191, 234, 290, 330, 310]
-                },
-                {
-                    name:'技术协作',
-                    type:'line',
-                    stack: '总量',
-                    data:[150, 232, 201, 154, 190, 330, 410]
-                },
-                {
-                    name:'同步录音录像',
-                    type:'line',
-                    stack: '总量',
-                    data:[320, 332, 301, 334, 390, 330, 320]
-                },
-                {
-                    name:'技术性证据审查',
-                    type:'line',
-                    stack: '总量',
-                    data:[820, 932, 901, 934, 1290, 1330, 1320]
-                }
-            ]
-            })
-				
         },
         closeBarDialog(){
             this.dialogBarChart && this.dialogBarChart.clear();
-            this.dialogBarChart1 && this.dialogBarChart1.clear();
         },
     }
 }
@@ -680,7 +788,7 @@ export default {
             height:327px;
             .casenumber-analysis{
                     width:1076px;
-                    height:291px;
+                    height:281px;
                 }
             span{
                 position: absolute;

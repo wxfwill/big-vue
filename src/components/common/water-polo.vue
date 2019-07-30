@@ -53,6 +53,9 @@
 							show  : false,
 							normal: {
 								formatter: (params) => {
+									if(this.percent){
+										return ''
+									}
 									const val = ((params.value * 10000).toFixed(0))/100;
 									let text;
 									if(params.data.number > 0 && val === 0) {
@@ -86,7 +89,10 @@
             },
             height : {
 				default: 70
-            }
+			},
+			percent:{
+				default:false
+			}
         },
 	}
 </script>

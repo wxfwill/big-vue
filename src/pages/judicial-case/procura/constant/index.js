@@ -87,11 +87,39 @@ const caseNumberAnalysiscongif=[{
 	id    : 'zbs',
 	name  : '在办数',
 	regExp: '{zbs}&nbsp;&nbsp;&nbsp; {zbs_zb}%',
-}, {
-	id  : 'yejcg',
-	name: '原额检察官',
-}, {
-	id  : 'syjf',
-	name: '使用经费',
 }];
-export{personnelChartConfig,caseNumberAnalysiscongif,mapTooltipConfig}
+// 案件分类分析
+const administrativeConfig = [{
+	id    : 'jyjd',
+	rateId: '',
+	title : '检验鉴定',
+	col1  : '#4FDC99',
+	col2  : '#22A95F'
+}, {
+	id    : 'kyjc',
+	rateId: '',
+	title : '勘验检查',
+	col1  : '#005EFF',
+	col2  : '#4FB8FF'
+}, {
+	id    : 'jsxz',
+	rateId: '',
+	title : '技术协作',
+	col1  : '#FFA11E',
+	col2  : '#F3C85D'
+}
+, {
+	id    : 'tblylx',
+	rateId: '',
+	title : '同步录音录像',
+	col1  : '#FFA11E',
+	col2  : '#F3C85D'
+}
+, {
+	id    : 'jsxzjsc',
+	rateId: '',
+	title : '技术性证据审查',
+	col1  : '#FFA11E',
+	col2  : '#F3C85D'
+}];
+export{personnelChartConfig,caseNumberAnalysiscongif,mapTooltipConfig,administrativeConfig}
