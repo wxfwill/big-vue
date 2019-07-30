@@ -1,8 +1,5 @@
 <template>
     <div class="outer-home-page">
-        <date-picker
-                :dateChange="setSelectTime"
-        ></date-picker>
         <left-box></left-box>
         <center-box></center-box>
         <right-box></right-box>

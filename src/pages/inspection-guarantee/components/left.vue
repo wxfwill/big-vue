@@ -58,6 +58,7 @@
                 <span class="chart-label-dot"></span>
                 <i>财政拨款收入分布</i>
             </div>
+			<p class='more-btn' @click="setDialogVisible('财政拨款收入分布')">更多>></p>
             <div class="caizheng-content" ref="caizhengChart"></div>
         </div>
 		<div class="jingfei-box">
@@ -74,6 +75,14 @@
             </div>
             <div class="jiancha-content" ref="jianchaChart"></div>
         </div>
+		 <el-dialog
+                :title="dialogContext.name"
+                :visible.sync="dialogVisible"
+                @opened="loadDialogChart"
+                @closed="closeBarDialog"
+                width="90%">
+            <div class="per-dialog-chart" ref="dialogChart"></div>
+        </el-dialog>
     </div>
 </template>
 
@@ -86,7 +95,15 @@
 
 	export default {
 		data() {
-			return {}
+			return {
+				dialogVisible:false,
+				dialogContext: {
+					name: '',
+					key : '',
+					data: []
+				},
+				caizhengChartConfig:caizhengChartConfig
+			}
 		},
 		computed  : {
 			...mapGetters('homePage', ['getSelectDateSection', 'getMapCode'])
@@ -191,7 +208,7 @@
 					},
 					grid: {
 						left: '3%',
-						right: '4%',
+						right: '10%',
 						bottom: '3%',
 						containLabel: true
 					},
@@ -437,7 +454,109 @@
 						}
 					]
 				})
+			},
+			setDialogVisible(name) {
+				let data = [],
+					key  = '';
+				switch(name) {
+					case '财政拨款收入分布' :
+						key  = '财政拨款收入分布';
+						data = this.caizhengChartConfig;
+						break;
+					case '全国省份排名':
+						key  = '全国省份排名';
+						data = this.averageHandCasesList;
+						break;
+				}
+				this.dialogContext = {
+					name,
+					key,
+					data
+				};
+
+				this.dialogVisible = true;
+			},
+			loadDialogChart(){
+				const { data: chartData, key } = this.dialogContext,
+					  { xAxisData, seriesData } = this.convertChartConfigcz(chartData, key);
+						console.log(key)
+				this.dialogBarChart            = ECharts.init(this.$refs.dialogChart);
+				const color=
+				this.dialogBarChart.setOption({
+					tooltip   : {
+						show: false
+					},
+					legend    : {
+						show: false
+					},
+					grid      : {
+						top   : '4%',
+						left  : '3%',
+						right : '3%',
+						bottom: '20%',
+					},
+					calculable: true,
+					xAxis     : {
+						type     : 'category',
+						axisTick : { show: false },
+						data     : xAxisData,
+						axisLine : {
+							lineStyle: {
+								width: 2,
+								color: '#31DBE8'
+							}
+						},
+						axisLabel: {
+							color     : '#00ffff',
+							fontSize  : 21,
+							lineHeight: 25,
+							interval  : 0
+						}
+					},
+					yAxis     : {
+						type     : 'value',
+						axisLine : {
+							lineStyle: {
+								width: 2,
+								color: '#31DBE8'
+							}
+						},
+						splitLine: {
+							lineStyle: {
+								color: 'rgba(216,216,216,0.4)'
+							}
+						},
+						axisLabel: {
+							color: '#0ff',
+						},
+					},
+					series    : [
+						{
+							name       : '地区',
+							type       : 'bar',
+							data       : seriesData,
+							barMaxWidth: 40,
+							itemStyle  : {
+								normal: {
+									 show:true,
+									color: '#5C89FF'
+								}
+							},
+							label      : {
+								normal: {
+									"show"    : true,
+									"position": "top",
+									color     : '#00FFFF',
+								}
+							},
+						}
+					]
+				});
+			},
+			closeBarDialog(){
+				this.dialogBarChart && this.dialogBarChart.clear();
 			}
+
 		},
 		components: {}
 	};
@@ -509,11 +628,26 @@
 		}
 		.caizheng-box{
 			width:1234px;
+			position:relative;
 			.caizheng-content {
                 width: 100%;
                 height: 247px;
                 margin: 0 auto;
             }
+			.more-btn{
+				color:#FBBA18;
+				position:absolute;
+				right:25px;
+				bottom:5px;
+				 margin-top: 17px;
+                text-align: right;
+                font-size: 16px;
+                font-family: Helvetica;
+                color: rgba(251, 186, 24, 1);
+                line-height: 17px;
+                cursor: pointer;
+				z-index:999;
+			}
 		}
 		.jingfei-box{
 			width:739px;
@@ -530,5 +664,9 @@
                 margin: 0 auto;
             }
 		}
+		.per-dialog-chart {
+            width: 100%;
+            height: 400px;
+        }
     }
 </style>

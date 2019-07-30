@@ -1,84 +1,112 @@
 <template>
-    <div class="outer-procuratorial-page">
-        <date-time moduleName="检委办/检察技术"></date-time>
-        <div class="procuratorial-page-left">
-            <div class="bor_col correlation-box">
-                <p class="title">相关办案人员（各省市/人）</p>
-                <div :style="{marginLeft:'78px'}">
-                <trend-chart :dataIPSxAxis="correlationIPSxAxis" :dataIPS="correlationIPS" ID='correlation'
-                 width='930px' height='219px' type='bar' left="30px" right="90px" bottom="10px" :barWidth="43"
-                ></trend-chart>
-                </div>
-            </div>
-            <div class="bor_col accept-box">
-                <p class="title">受理案件趋势分析</p>
-                <div :style="{marginLeft:'78px'}">
-                    <span class="bg_img" @click="retreatHandle('accept')" 
-                    :style="{backgroundImage:'url('+topImg+')'}" ></span>
-                    <span class="bg_img" @click="advanceHandle('accept')" 
-                    :style="{backgroundImage:'url('+bottomImg+')'}"></span>
-                    <div id="accept" :style="{width:'930px', height:'269px'}"></div>
-                </div>
-            </div>
-            <div class="bor_col case-box">
-                <p class="title">案件分类分析</p>
-                <div class="classify-box">
-                <water-polo v-for="(item,index) in poloList" :key="index" :item="item" :ID="`pol${index}`" width='102px' height='102px'></water-polo>
-                </div>
-            </div>
+    <div class='box'>
+        <!-- <date-time moduleName="检委办/检察技术"></date-time> -->
+         <div class="judicial-case-title">
+            <i class="title-dot"></i>
+            检委办
         </div>
-        <div class="procuratorial-page-center">
-            <mapComponent :user="(this.$route.name)" :dataIf='false'></mapComponent>
-        </div>
-        <div class="procuratorial-page-right">
-            <div class="bor_col synthesize-box">
-                <p class="title">综合分析</p>
-                <div :style="{marginLeft:'78px'}">
-                    <span class="bg_img" @click="retreatHandle('synthesize')" 
-                    :style="{backgroundImage:'url('+topImg+')'}" ></span>
-                    <span class="bg_img" @click="advanceHandle('synthesize')" 
-                    :style="{backgroundImage:'url('+bottomImg+')'}"></span>
-                    <div id="synthesize" :style="{width:'1105px', height:'400px'}"></div>
+        <div class="outer-procuratorial-page">
+            <div class="procuratorial-page-left">
+                <div class="correlation-box">
+                    <div class="chart-box-title">
+                        <span class="chart-label-dot"></span>
+                        <i>相关办案人员（各省市/人）</i>
+                    </div>
+                    <div :style="{marginLeft:'78px'}">
+                    <trend-chart :dataIPSxAxis="correlationIPSxAxis" :dataIPS="correlationIPS" ID='correlation'
+                    width='930px' height='219px' type='bar' left="30px" right="90px" bottom="10px" :barWidth="43"
+                    ></trend-chart>
+                    </div>
+                </div>
+                <div class="accept-box">
+                    <div class="chart-box-title">
+                        <span class="chart-label-dot"></span>
+                        <i>受理案件趋势分析</i>
+                    </div>
+                    <div :style="{marginLeft:'78px'}">
+                        <span class="bg_img left" @click="retreatHandle('accept')" 
+                        :style="{backgroundImage:'url('+topImg+')'}" ></span>
+                        <span class="bg_img right" @click="advanceHandle('accept')" 
+                        :style="{backgroundImage:'url('+bottomImg+')'}"></span>
+                        <div id="accept" :style="{width:'930px', height:'269px'}"></div>
+                    </div>
+                </div>
+                <div class="case-box">
+                    <div class="chart-box-title">
+                        <span class="chart-label-dot"></span>
+                        <i>案件分类分析</i>
+                    </div>
+                    <div class="classify-box">
+                    <water-polo v-for="(item,index) in poloList" :key="index" :chartConfig="item" :ID="`pol${index}`" width='102px' height='102px'></water-polo>
+                    </div>
                 </div>
             </div>
-            <div class="bor_col inspect-box">
-                <p class="title">检委办</p>
-                <div :style="{marginLeft:'78px'}">
-                <trend-chart :dataIPSxAxis="inspectIPSxAxis" :dataIPS="inspectIPS" ID='inspect'
-                 width='1105px' height='370px' type='bar' left="30px" right="85px" bottom="10px" :barWidth="43"
-                ></trend-chart>
+            <div class="procuratorial-page-center">
+                <map-component :user="(this.$route.name)" :dataIf='false'></map-component>
+            </div>
+            <div class="procuratorial-page-right">
+                <div class="synthesize-box">
+                     <div class="chart-box-title">
+                        <span class="chart-label-dot"></span>
+                        <i>综合分析</i>
+                    </div>
+                    <div :style="{marginLeft:'78px'}">
+                        <span class="bg_img" @click="retreatHandle('synthesize')" 
+                        :style="{backgroundImage:'url('+topImg+')'}" ></span>
+                        <span class="bg_img" @click="advanceHandle('synthesize')" 
+                        :style="{backgroundImage:'url('+bottomImg+')'}"></span>
+                        <div id="synthesize" :style="{width:'1105px', height:'400px'}"></div>
+                    </div>
+                </div>
+                <div class="inspect-box">
+                    <div class="chart-box-title">
+                        <span class="chart-label-dot"></span>
+                        <i>检委办</i>
+                    </div>
+                    <div :style="{marginLeft:'78px'}">
+                    <trend-chart :dataIPSxAxis="inspectIPSxAxis" :dataIPS="inspectIPS" ID='inspect'
+                    width='1105px' height='370px' type='bar' left="30px" right="85px" bottom="10px" :barWidth="43"
+                    ></trend-chart>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
+// import LeftBar from './procura/components/left'
 import echarts from 'echarts';
 import 'echarts-liquidfill/src/liquidFill.js'; //在这里引入
-import mapComponent from '@/components/map/index.vue'
+import MapComponent from '@/components/map/index.vue'
 import Popup from '@/components/Popup.vue'
 import trendChart from '@/components/judicial-case/trend-chart.vue'
 import waterPolo from '@/components/judicial-case/water-polo.vue'
 import DateTime from '@/components/DateTime.vue'
+import * as services from './procura/service/index';
+
+
 export default {
     components:{
-        mapComponent,
+        MapComponent,
         Popup,
         DateTime,
         trendChart,
-        waterPolo
+        waterPolo,
+        LeftBar
     },
     data() {
         return {
             poloList:[
-                {title:'检验鉴定',num:100,col1:'#22715F',col2:'#4FDC99'},{title:'检验鉴定',num:100,col1:'#005EFF',col2:'#63E8D7'},
-                {title:'检验鉴定',num:100,col1:'#FFA11E',col2:'#F3C85D'},{title:'检验鉴定',num:100,col1:'#1EC4FF',col2:'#5DF3DC'},
-                {title:'检验鉴定',num:100,col1:'#F35DC4',col2:'#FA3882'}
+                {title:'检验鉴定',num:100,col1:'#22715F',col2:'#4FDC99'},
+                {title:'勘验检查',num:80,col1:'#005EFF',col2:'#63E8D7'},
+                {title:'技术协作',num:60,col1:'#FFA11E',col2:'#F3C85D'},
+                {title:'同步录音录像',num:50,col1:'#1EC4FF',col2:'#5DF3DC'},
+                {title:'技术性证据审查',num:40,col1:'#F35DC4',col2:'#FA3882'}
                 ],
             topImg: require('@/public/img/judicature/top@2x.png'),
             bottomImg: require('@/public/img/judicature/bottom@2x.png'),
-            correlationIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
-            correlationIPS:[20, 60, 50, 80, 120, 100,20,19,60,88],
+            correlationIPSxAxis:[],
+            correlationIPS:[],
             acceptIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
             acceptIPS:[200, 600, 50, 80, 120, 100,20,19,60,188],
             synthesizeIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
@@ -88,8 +116,10 @@ export default {
         }
     },
     mounted() {
+        const params         = { ...this.mapCode, ...this.dateSection };
         this.acceptChart('synthesize',this.synthesizeIPSxAxis,this.synthesizeIPS)//综合分析
         this.acceptChart('accept',this.acceptIPSxAxis,this.acceptIPS)//受理案件趋势分析
+        this.requestGetCheckCharterData(params);//请求检委办数据
     },
     methods: {
         advanceHandle(name){//后一年
@@ -125,7 +155,7 @@ export default {
         }
         },
         acceptChart(id,IPSxAxis,IPS){
-            var trendChart = ECharts.init(document.getElementById(id));
+            var trendChart = echarts.init(document.getElementById(id));
             var option = {
                 tooltip: {
                     backgroundColor:'#0C99F7',
@@ -292,7 +322,28 @@ export default {
             };
            // 绘制图表
            trendChart.setOption(option,true);
-        }
+        },
+        async requestGetCheckCharterData(params) {
+            const res = await services.getCheckCharterData(params);
+            if(res.code === 200) {
+                const data         = res.data;
+                //theInvestigatorsList--相关办案人员（各省市/人）
+                data.theInvestigatorsList.map((i) => {
+                    this.correlationIPSxAxis.push(i.city_name);
+                    this.correlationIPS.push(i.rs)
+                });
+                //caseNumberAnalysis--受理案件趋势分析
+                //数据不对，后需要修改
+                // data.caseNumberAnalysis.map((i) => {
+                //     this.correlationIPSxAxis.push(i.city_name);
+                //     this.correlationIPS.push(i.rs)
+                // });
+                // analysisBySynthesisList--综合分析
+                console.log(data)
+            } else {
+                this.$message.error(res.msg);
+            }
+        },
     },
     watch  : {
             acceptIPS:{
@@ -311,18 +362,39 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.box{
+    .judicial-case-title {
+        width:100px;
+        float: left;
+        margin-top: -65px;
+        margin-left: 20px;
+        font-size: 22px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(48, 226, 226, 1);
+        line-height: 30px;
+        .title-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: rgba(48, 226, 226, 1);
+            border-radius: 50%;
+            vertical-align: middle;
+        }
+    }
+}
+
 .outer-procuratorial-page{
     width:100%;
     height:100%;
     display: flex;
-    padding-top:65px;
+    // padding-top:65px;
     .procuratorial-page-left{
-        width:1113px;
+        width:1076px;
         position: relative;
         .correlation-box,.accept-box{
                 width:1112px;
                 height:290px;
-                padding:20px 0 0 20px;
                 margin-bottom:19px;
                 position: relative;
                 .title{
@@ -340,11 +412,15 @@ export default {
                 height:14px;
                 z-index:2;
                 }
-            span:nth-child(1){
+            span.chart-label-dot{
+                position: static;
+                margin-right:10px;
+            }
+            span.left{
                 left:130px;
                 bottom:53px;
             }
-            span:nth-child(2){
+            span.right{
                 right:90px;
                 bottom:53px;
             }
@@ -352,7 +428,6 @@ export default {
         .case-box{
             width:1112px;
             height:254px;
-            padding:10px 0 0 20px;
             .title{
                     font-size:24px;
                     font-family:MicrosoftYaHei;
@@ -366,11 +441,9 @@ export default {
         }
     }
     .procuratorial-page-center{
-        width:1331px;
+        width:1319px;
         height:909px;
-        border:1px solid #00FFFF;
-        background:rgba(0,0,0,0.4);
-        margin:0 20px;
+        margin:0px 20px 0px 80px;
     }
     .procuratorial-page-right{
         .synthesize-box{

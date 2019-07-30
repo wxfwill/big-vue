@@ -81,7 +81,7 @@ export default new Router({
 						{
 							path     : 'checkCharter',
 							name     : 'checkCharter',
-							component: resolve => require(['@/pages/judicial-case/procuratorial'], resolve),
+							component: resolve => require(['@/pages/judicial-case/procura'], resolve),
 							meta     : {
 								title: '司法办案-检委办/检察技术'
 							}

@@ -63,7 +63,7 @@
 					<div class="putinto">
 						<p>三年投入</p>
 						<ul>
-							<li>
+							<li @click="righttableIsshowfn">
 								<i class='el-icon-tickets'></i>
 								<p>检察业务装备</p>
 								<span>数量</span>
@@ -73,7 +73,7 @@
 								<b>23,345,567</b>
 								<b>23%</b>
 							</li>
-							<li>
+							<li @click="righttableIsshowfn">
 								<i class='el-icon-tickets'></i>
 								<p>技术装备</p>
 								<span>数量</span>
@@ -83,7 +83,7 @@
 								<b>23,345,567</b>
 								<b>23%</b>
 							</li>
-							<li>
+							<li @click="righttableIsshowfn">
 								<i class='el-icon-tickets'></i>
 								<p>综合保障装备</p>
 								<span>数量</span>
@@ -93,7 +93,7 @@
 								<b>23,345,567</b>
 								<b>23%</b>
 							</li>
-							<li>
+							<li @click="righttableIsshowfn">
 								<i class='el-icon-tickets'></i>
 								<p>司法警察装备</p>
 								<span>数量</span>
@@ -169,6 +169,69 @@
 						</div>
                     </div>
                 </div>
+				<transition name="el-fade-in-linear">
+					<div class="righttable" v-show="righttableIsshow">
+						<div class="left" @click="hidefn">》</div>
+							<div class="right">
+								<table>
+									<thead>
+										<tr>
+											<th rowspan="2">项目</th>
+											<th rowspan="2">数量</th>
+											<th rowspan="2">金额（万元）</th>
+											<th colspan="2">三年投入</th>
+										</tr>
+										<tr>
+											<th>数量增加</th>
+											<th>金额增长</th>
+										</tr>
+										<tr>
+											<td>检察业务装备</td>
+											<td>17,083</td>
+											<td>4947</td>
+											<td>64%</td>
+											<td>4%</td>
+										</tr>
+										<tr>
+											<td>A、检察业务技术装备</td>
+											<td>7275</td>
+											<td>7150</td>
+											<td>83%</td>
+											<td>48%</td>
+										</tr>
+										<tr>
+											<td>1、查办和预防职务犯罪装备</td>
+											<td>7275</td>
+											<td>7150</td>
+											<td>83%</td>
+											<td>48%</td>
+										</tr>
+										<tr>
+											<td>2、查办和预防职务犯罪装备</td>
+											<td>7275</td>
+											<td>7150</td>
+											<td>83%</td>
+											<td>48%</td>
+										</tr>
+										<tr>
+											<td>3、查办和预防职务犯罪装备</td>
+											<td>7275</td>
+											<td>7150</td>
+											<td>83%</td>
+											<td>48%</td>
+										</tr>
+										<tr>
+											<td>4、查办和预防职务犯罪装备</td>
+											<td>7275</td>
+											<td>7150</td>
+											<td>83%</td>
+											<td>48%</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+					</div>
+				</transition>
             </div>
         </div>
         <span v-show="false">{{ getSelectDateSection }}</span>
@@ -192,7 +255,8 @@
 				civilBoxImg     : require('@/public/img/home/civilBox.png'),
 				empiricaIcon    : require('@/public/img/home/empirica-icon.png'),
 				propertyConfig:propertyConfig,
-				agencyConfig:agencyConfig
+				agencyConfig:agencyConfig,
+				righttableIsshow:false
 			};
 		},
 		computed  : {
@@ -504,6 +568,12 @@
 						}
 					]
 				})
+			},
+			righttableIsshowfn(){
+				this.righttableIsshow=true
+			},
+			hidefn(){
+				this.righttableIsshow=false
 			}
 		},
 		components: {
@@ -767,6 +837,7 @@
             }
             .right-view {
 				width:464px;
+				position:relative;
                 .procuratorial-work {
                     position: relative;
                     margin-left: 22px;
@@ -985,6 +1056,73 @@
 								}
 							}
 						}
+					}
+				}
+				.righttable{
+					width:1045px;
+					height: 1080px;
+					position:absolute;
+					right:0;
+					top:-110px;
+					background:rgba(0,0,0,0.31);
+					border:1px solid rgb(138, 250, 233);
+					.left{
+						width:97px;
+						height:1080px;
+						float:left;
+						border-right:1px solid rgb(138, 250, 233);
+						line-height:1080px;
+						text-align:center;
+						color:#09F4FF;
+						font-size:65px;
+					}
+					.right{
+						float:left;
+						width:942px;
+						height:1080px;
+						background:rgba(0,10,19,0.8);
+						table{
+							width:942px;
+							height:1080px;
+							color:#fff;
+							text-align:center;
+							tr{
+								border-bottom:1px solid rgb(138, 250, 233);
+								th{
+									border-bottom:1px solid rgb(138, 250, 233);
+									border-right:1px solid rgb(138, 250, 233);
+									height: 38px;
+									text-align:center;
+									font-size:18px;
+								}
+								th:last-child{
+									border-right:none;
+								}
+								td{
+									height:44px;
+									border-right:1px solid rgb(138, 250, 233);
+									text-align:center;
+								}
+								td:first-child{
+									text-align:left;
+									padding-left:20px;
+								}
+								td:last-child{
+									border-right:none;
+								}
+							}
+							tr:first-child{
+								th:first-child{
+									width:340px;
+								}
+							}
+						}
+					}
+					.fade-enter-active, .fade-leave-active {
+						transition: opacity .5s
+					}
+					.fade-enter, .fade-leave-active {
+						opacity: 0
 					}
 				}
             }

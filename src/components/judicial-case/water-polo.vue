@@ -1,7 +1,7 @@
 <template>
     <div class="water-box">
         <div ref='chartBox' :style="{width:'70px', height:'70px'}"></div>
-        <p>{{chartConfig.value}}</p>
+        <p>{{chartConfig.num}}</p>
         <p>{{chartConfig.title}}</p>
     </div>
 </template>
@@ -18,12 +18,13 @@
 		},
 		methods: {
 			poloHandle() {
+				// console.log(this.chartConfig)
 				this.myChart.setOption({
 					series: [{
 						type           : 'liquidFill',
 						data           : [{
 							number   : this.chartConfig.value,
-							value    : this.chartConfig.rate,
+							value    : this.chartConfig.num,
 							direction: 'right',
 							itemStyle: {
 								normal: {
@@ -32,7 +33,7 @@
 							}
 						}, {
 							number   : this.chartConfig.value,
-							value    : this.chartConfig.rate,
+							value    : this.chartConfig.num,
 							direction: 'right',
 							itemStyle: {
 								normal: {
@@ -50,6 +51,7 @@
 							show  : false,
 							normal: {
 								formatter: (params) => {
+									// console.log(params)
 									const val = ((params.value * 10000).toFixed(0))/100;
 									let text;
 									if(params.data.number > 0 && val === 0) {
@@ -60,7 +62,7 @@
 									return text;
 								},
 								textStyle: {
-									fontSize  : 14,
+									fontSize  : 16,
 									color     : '#fff',
 									fontFamily: 'PingFang-SC-Bold',
 									fontWeight: 'bold'
@@ -74,7 +76,9 @@
 				});
 			}
 		},
-		props  : ['chartConfig'],
+		props  : {
+			chartConfig:{type:Array}
+		},
 	}
 </script>
 <style lang="scss" scoped>
