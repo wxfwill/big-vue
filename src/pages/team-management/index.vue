@@ -59,9 +59,8 @@
 				this.startDate = startDate;
 				this.endDate   = endDate;
 				this.loading   = true;
-
 				getTeamManagement({
-					code     : this.code,
+					pindex     : this.code,
 					lev      : this.lev,
 					enddate  : startDate,
 					startdate: endDate

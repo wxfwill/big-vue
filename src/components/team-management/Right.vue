@@ -38,14 +38,7 @@
 					<i>人员绩效</i>
 				</div>
 				<div class="right-right-select">
-					<el-select v-model="value" placeholder="请选择省">
-						<el-option
-						v-for="item in options"
-						:key="item.value"
-						:label="item.label"
-						:value="item.value">
-						</el-option>
-					</el-select>
+					<city-selector></city-selector>
 				</div>
 				<div class="right-right-bottom">
 					<div class="performance-detail-box white-text">
@@ -92,7 +85,7 @@
 <script>
 	import EChart                      from 'echarts';
 	import CitySelector                from './city-selector';
-	import { getPersonnelPerformance } from '@/utlis/request';
+	import { getPersonnelPerformance,getPersonInfo } from '@/utlis/request';
 
 	export default {
 		mounted() {
@@ -110,24 +103,7 @@
 				topBorderBg       : require('@/public/img/team-management/topBorderBg.png'),
 				sideBorderBg      : require('@/public/img/team-management/sideBorderBg.png'),
 				structureIcon     : require('@/public/img/team-management/structureIcon.png'),
-				performanceInfo   : {},
-				options: [{
-					value: '选项1',
-					label: '黄金糕'
-					}, {
-					value: '选项2',
-					label: '双皮奶'
-					}, {
-					value: '选项3',
-					label: '蚵仔煎'
-					}, {
-					value: '选项4',
-					label: '龙须面'
-					}, {
-					value: '选项5',
-					label: '北京烤鸭'
-					}],
-				value: ''
+				performanceInfo   : {}
 			}
 		},
 		methods   : {
@@ -165,7 +141,7 @@
 					},
 					legend : {
 						data     : eduStructureList.map(i => i.name),
-						icon     : 'rect',
+						icon     : 'circle',
 						itemGap  : 15,
 						bottom:10,
 						textStyle: {

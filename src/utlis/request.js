@@ -72,7 +72,7 @@ export const getPersonnelPerformance = async (data) => await request({
 export const getTeamManagement = async (data) => await request({
 	method: 'get',
 	url   : '/api/v1.0/teamManage/getTeamManageData',
-	//params: data
+	params: data
 });
 
 /**

@@ -14,13 +14,51 @@
                 <span class="chart-label-dot"></span>
                 <i>支出</i>
             </div>
-            <div class="pay-content" ref="payChart"></div>
+            <div class="pay-content">
+				<div class="payBox">
+					<div class="boxborder">
+						<div class='payBox-top'>
+							<p>123,234,23</p>
+							<p>同比<i class="el-icon-top"></i>234,23<br><span>23%</span></p>
+						</div>
+					</div>
+					<div class='payBox-bottom'>总支出</div>
+				</div>
+				<div class="payBox">
+					<div class="boxborder">
+						<div class='payBox-top'>
+							<p>123,234,23</p>
+							<p>同比<i class="el-icon-top"></i>234,23<br><span>23%</span></p>
+						</div>
+					</div>
+					<div class='payBox-bottom'>功能分类支出</div>
+				</div>
+				<div class="payBox">
+					<div class="boxborder">
+						<div class='payBox-top'>
+							<p>123,234,23</p>
+							<p>同比<i class="el-icon-top"></i>234,23<br><span>23%</span></p>
+						</div>
+					</div>
+					<div class='payBox-bottom'>支出性质</div>
+				</div>
+				<div class="payBox">
+					<div class="boxborder">
+						<div class='payBox-top'>
+							<p>123,234,23</p>
+							<p>同比<i class="el-icon-top"></i>234,23<br><span>23%</span></p>
+						</div>
+					</div>
+					<div class='payBox-bottom'>支出经济分类</div>
+				</div>
+			</div>
         </div>
 		<div class="caizheng-box">
             <div class="chart-box-title">
                 <span class="chart-label-dot"></span>
                 <i>财政拨款收入分布</i>
             </div>
+			<p class='more-btn' @click="setDialogVisible('财政拨款收入分布')">更多>></p>
             <div class="caizheng-content" ref="caizhengChart"></div>
         </div>
 		<div class="jingfei-box">
@@ -37,6 +75,14 @@
             </div>
             <div class="jiancha-content" ref="jianchaChart"></div>
         </div>
+		 <el-dialog
+                :title="dialogContext.name"
+                :visible.sync="dialogVisible"
+                @opened="loadDialogChart"
+                @closed="closeBarDialog"
+                width="90%">
+            <div class="per-dialog-chart" ref="dialogChart"></div>
+        </el-dialog>
     </div>
 </template>
 
@@ -45,11 +91,19 @@
 	import { mapGetters }                        from 'vuex';
 	import * as services                         from '../service/index';
 	import { verifyTriggerState, numberInteger } from '@/utlis/helper';
-	import { incomeChartConfig }                 from '../constant/index';
+	import { incomeChartConfig,caizhengChartConfig }                 from '../constant/index';
 
 	export default {
 		data() {
-			return {}
+			return {
+				dialogVisible:false,
+				dialogContext: {
+					name: '',
+					key : '',
+					data: []
+				},
+				caizhengChartConfig:caizhengChartConfig
+			}
 		},
 		computed  : {
 			...mapGetters('homePage', ['getSelectDateSection', 'getMapCode'])
@@ -62,7 +116,13 @@
 			const params         = { ...this.getSelectDateSection, ...this.getMapCode };
 			this.oldTriggerState = params;
 			this.incomeChart     = ECharts.init(this.$refs.incomeChart);
+			this.caizhengChart   = ECharts.init(this.$refs.caizhengChart);
+			this.jingfeiChart    = ECharts.init(this.$refs.jingfeiChart);
+			this.jianchaChart    = ECharts.init(this.$refs.jianchaChart);
 			this.loadIncomeChart(params);
+			this.loadCaizhengChart();
+			this.loadJingfeiChart();
+			this.loadJianchaChart();
 		},
 		updated() {
 			const params = { ...this.getSelectDateSection, ...this.getMapCode };
@@ -89,16 +149,19 @@
 					},
 					legend : {
 						orient  : 'vertical',
-						right   : 10,
-						top     : 20,
+						right   : 50,
+						top     : 50,
 						bottom  : 20,
-						data    : xAxisData,
+						textStyle : {
+							color : 'white'
+						},
+						icon:"circle",
 					},
 					series : {
 						name     : '收入',
 						type     : 'pie',
-						radius   : '55%',
-						center   : ['40%', '50%'],
+						radius   : '65%',
+						center   : ['25%', '50%'],
 						data     : seriesData,
 						label: {
             				show:false
@@ -124,6 +187,375 @@
 					  });
 				return { xAxisData, seriesData };
 			},
+			convertChartConfigcz(configList = []) {
+				const xAxisData  = [],
+					  seriesData = [];
+					  configList.map((config) => {
+						  xAxisData.push(config.id);
+						  seriesData.push(config.name)
+					  });
+				return { xAxisData, seriesData };
+			},
+			loadCaizhengChart() {
+	  			const { xAxisData, seriesData } = this.convertChartConfigcz(caizhengChartConfig);
+				this.caizhengChart.setOption({
+					color: ['#3398DB'],
+					tooltip : {
+						trigger: 'axis',
+						axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+							type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+						}
+					},
+					grid: {
+						left: '3%',
+						right: '10%',
+						bottom: '3%',
+						containLabel: true
+					},
+					xAxis : [
+						{
+							type : 'category',
+							data : xAxisData,
+							axisTick: {
+								show:false
+							},
+							axisLine:{
+								lineStyle: {
+									color: "#fff",
+								}
+							}
+						}
+					],
+					yAxis : [
+						{
+							type : 'value',
+							axisLine:{
+								show:false,
+								lineStyle: {
+									color: "#fff",
+								}
+							}
+						}
+					],
+					series : [
+						{
+							name:'直接访问',
+							type:'bar',
+							barWidth: '60%',
+							data:seriesData,
+							itemStyle:{
+								normal:{
+									color:'#5C89FF'
+								}
+							}
+						}
+					]
+				})
+			},
+			loadJingfeiChart(){
+				this.jingfeiChart.setOption({
+					tooltip : {
+						trigger: 'axis',
+						axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+							type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+						}
+					},
+					legend: {
+						data:['检察业务费合计','其中财政拨款','办案（业务）经费','其中财政拨款1','业务装备经费','其中财政拨款2'],
+						icon:"square",
+						orient:'vertical',
+						y: 'center',    //延Y轴居中
+						x: 'right' ,//居右显示
+						align:'left',
+						textStyle:{
+							color:'#fff'
+						}
+					},
+					grid: {
+						left: '3%',
+						right: '18%',
+						bottom: '3%',
+						containLabel: true
+					},
+					xAxis : [
+						{
+							type : 'category',
+							data : ['年初结转结余','收入合计','支出合计','年末结转结余'],
+							axisLine:{
+								show:false,
+								lineStyle: {
+									color: "#fff",
+								}
+							}
+						}
+					],
+					yAxis : [
+						{
+							type : 'value',
+							axisLine:{
+								lineStyle: {
+									color: "#fff",
+								}
+							}
+						}
+					],
+					series : [
+						{
+							name:'检察业务费合计',
+							type:'bar',
+							stack:'哈哈',
+							color:'#0BB0FB',
+							data:[100, 100, 100, 100]
+						},
+						{
+							name:'其中财政拨款',
+							type:'bar',
+							stack: '哈哈',
+							color:'#3687F6',
+							data:[420, 420, 420, 420]
+						},
+						{
+							name:'办案（业务）经费',
+							type:'bar',
+							stack: '广告',
+							color:'#1BC85D',
+							data:[80, 80, 80, 80]
+						},
+						{
+							name:'其中财政拨款1',
+							type:'bar',
+							stack: '广告',
+							color:'#0FA940',
+							data:[60, 60, 60, 60]
+						},
+						
+						{
+							name:'业务装备经费',
+							type:'bar',
+							stack: '搜索引擎',
+							color:'#FBBA18',
+							data:[20, 20, 20, 20]
+						},
+						{
+							name:'其中财政拨款2',
+							type:'bar',
+							stack: '搜索引擎',
+							color:'#F68C3B',
+							data:[10, 10, 10, 10]
+						}
+					]
+				})
+			},
+			loadJianchaChart(){
+				this.jianchaChart.setOption({
+					tooltip : {
+						trigger: 'axis'
+					},
+					legend: {
+						data:['年初结转结余','收入','支出','年末结转结余'],
+						icon: "line",
+						textStyle: {
+							color: "#fff"
+						}
+					},
+					grid: {
+						left: '3%',
+						right: '4%',
+						bottom: '3%',
+						containLabel: true
+					},
+					xAxis : [
+						{
+							type : 'category',
+							boundaryGap : false,
+							data : ['2016','2017','2018'],
+							axisLine:{
+								lineStyle: {
+									color: "#fff",
+								}
+							}
+						}
+					],
+					yAxis : [
+						{
+							type : 'value',
+							axisLine:{
+								show:false,
+								lineStyle: {
+									color: "#fff",
+								}
+							}
+						}
+					],
+					series : [
+						{
+							name:'年初结转结余',
+							type:'line',
+							stack: '总量',
+							smooth: true,
+							areaStyle: {
+									color: new ECharts.graphic.LinearGradient(0, 1, 0, 0, [{
+									offset: 0,
+									color: '#EB5910'
+								}, {
+									offset: 1,
+									color: '#4049FF'
+								}]),
+							},
+							data:[400,500, 200,100]
+						},
+						{
+							name:'收入',
+							type:'line',
+							stack: '总量',
+							smooth: true,
+							areaStyle: {
+									color: new ECharts.graphic.LinearGradient(0, 1, 0, 0, [{
+									offset: 0,
+									color: '#376AF7'
+								}, {
+									offset: 1,
+									color: '#4049FF'
+								}]),
+							},
+							data:[300,400, 100,100]
+						},
+						{
+							name:'支出',
+							type:'line',
+							stack: '总量',
+							smooth: true,
+							areaStyle: {
+									color: new ECharts.graphic.LinearGradient(0, 1, 0, 0, [{
+									offset: 0,
+									color: '#009FE8'
+								}, {
+									offset: 1,
+									color: '#33E8FF'
+								}]),
+							},
+							data:[200,300, 100,80]
+						},
+						{
+							name:'年末结转结余',
+							type:'line',
+							stack: '总量',
+							smooth: true,
+							areaStyle: {
+									color: new ECharts.graphic.LinearGradient(0, 1, 0, 0, [{
+									offset: 0,
+									color: '#FDBF18'
+								}, {
+									offset: 1,
+									color: '#FFFF33'
+								}]),
+							},
+							data:[150,200, 50,60]
+						}
+					]
+				})
+			},
+			setDialogVisible(name) {
+				let data = [],
+					key  = '';
+				switch(name) {
+					case '财政拨款收入分布' :
+						key  = '财政拨款收入分布';
+						data = this.caizhengChartConfig;
+						break;
+					case '全国省份排名':
+						key  = '全国省份排名';
+						data = this.averageHandCasesList;
+						break;
+				}
+				this.dialogContext = {
+					name,
+					key,
+					data
+				};
+
+				this.dialogVisible = true;
+			},
+			loadDialogChart(){
+				const { data: chartData, key } = this.dialogContext,
+					  { xAxisData, seriesData } = this.convertChartConfigcz(chartData, key);
+				this.dialogBarChart            = ECharts.init(this.$refs.dialogChart);
+				const color=
+				this.dialogBarChart.setOption({
+					tooltip   : {
+						show: false
+					},
+					legend    : {
+						show: false
+					},
+					grid      : {
+						top   : '4%',
+						left  : '3%',
+						right : '3%',
+						bottom: '20%',
+					},
+					calculable: true,
+					xAxis     : {
+						type     : 'category',
+						axisTick : { show: false },
+						data     : xAxisData,
+						axisLine : {
+							lineStyle: {
+								width: 2,
+								color: '#31DBE8'
+							}
+						},
+						axisLabel: {
+							color     : '#00ffff',
+							fontSize  : 21,
+							lineHeight: 25,
+							interval  : 0
+						}
+					},
+					yAxis     : {
+						type     : 'value',
+						axisLine : {
+							lineStyle: {
+								width: 2,
+								color: '#31DBE8'
+							}
+						},
+						splitLine: {
+							lineStyle: {
+								color: 'rgba(216,216,216,0.4)'
+							}
+						},
+						axisLabel: {
+							color: '#0ff',
+						},
+					},
+					series    : [
+						{
+							name       : '地区',
+							type       : 'bar',
+							data       : seriesData,
+							barMaxWidth: 40,
+							itemStyle  : {
+								normal: {
+									 show:true,
+									color: '#5C89FF'
+								}
+							},
+							label      : {
+								normal: {
+									"show"    : true,
+									"position": "top",
+									color     : '#00FFFF',
+								}
+							},
+						}
+					]
+				});
+			},
+			closeBarDialog(){
+				this.dialogBarChart && this.dialogBarChart.clear();
+			}
+
 		},
 		components: {}
 	};
@@ -145,25 +577,82 @@
 		.pay-box{
 			width:806px;
 			.pay-content {
-                width: 80%;
+                width: 90%;
                 height: 261px;
                 margin: 0 auto;
+				display: flex;
+        		flex-wrap: wrap;
+				.payBox{
+					width:160px;
+					margin-top:29px;
+					margin-right:24px;
+					.boxborder{
+						width: 160px; 
+						height: 160px; 
+						border-radius:50%; 
+						box-sizing: border-box; 
+    					padding: 14px;
+						background-image: -webkit-linear-gradient(top,#01AFFF,#005FE8);
+					}
+					.payBox-top{
+						width:100%;
+						height:100%;
+						text-align:center;
+						border-radius:50%;
+						padding-top:30px;
+						background:#04092A;
+						p{
+							color:#00FFF8;
+							padding-bottom:14px;
+							span{
+								color:#FF6C40;
+								padding-left:40px;
+							}
+						}
+						p:first-child{
+							font-size:18px;
+						}
+					}
+					.payBox-bottom{
+						width:160px;
+						color:#fff;
+						text-align:center;
+						margin-top:13px;
+					}
+				}
+				.payBox:last-child{
+					margin-right:0px;
+				}
             }
 		}
 		.caizheng-box{
 			width:1234px;
+			position:relative;
 			.caizheng-content {
-                width: 80%;
+                width: 100%;
                 height: 247px;
                 margin: 0 auto;
             }
+			.more-btn{
+				color:#FBBA18;
+				position:absolute;
+				right:25px;
+				bottom:5px;
+				 margin-top: 17px;
+                text-align: right;
+                font-size: 16px;
+                font-family: Helvetica;
+                color: rgba(251, 186, 24, 1);
+                line-height: 17px;
+                cursor: pointer;
+				z-index:999;
+			}
 		}
 		.jingfei-box{
 			width:739px;
 			.jingfei-content {
-                width: 80%;
+                width: 100%;
                 height: 292px;
-                margin: 0 auto;
             }
 		}
 		.jiancha-box{
@@ -174,5 +663,9 @@
                 margin: 0 auto;
             }
 		}
+		.per-dialog-chart {
+            width: 100%;
+            height: 400px;
+        }
     }
 </style>

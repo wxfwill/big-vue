@@ -2,106 +2,236 @@
     <div class="home-page-right">
         <div class="content-box">
             <div class="left-view">
-                <!-- 民事 -->
-                <!-- 行政 -->
-                <div class="civil-box">
+                <!-- 资产情况 -->
+                <div class="property-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>民事</i>
+                        <i>资产情况</i>
                     </div>
-                    <ul class="civil-content">
-                        <li v-for="(item,index) in civilList" :key="index">
-                            <p class="civil-num">
-                                {{ item.value }}
-                            </p>
-                            <p class="civil-text">{{item.title}}</p>
-                        </li>
-                    </ul>
+					<div class="propertyBox">
+						<div class="propertyContent">
+							<p v-for='(to,index) in propertyConfig.total' :key='index'>{{to.name}}<br/><span>{{to.num}}</span><b></b></p>
+							<ol>
+								<li></li>
+								<li></li>
+								<li></li>
+								<li></li>
+								<li></li>
+							</ol>
+							<ul>
+								<li v-for='(lis,index) in propertyConfig.list' :key='index'>{{lis.name}}<br/><span>{{lis.num}}</span></li>
+							</ul>
+						</div>
+					</div>
                 </div>
-                <div class="administration">
+				<!-- 检察机关机构人员情况 -->
+                <div class="personnel-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>行政</i>
+                        <i>检察机关机构人员情况</i>
                     </div>
-                    <div class="admin-box">
-                        <water-polo
-                                v-for="item in xzList"
-                                :key="item.id"
-                                :chartConfig="item"
-                        ></water-polo>
-                    </div>
-                </div>
-                <!-- 公益诉讼 -->
-                <div class="lawsuitBox">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>公益诉讼</i>
-                    </div>
-                    <div ref="lawsuitContent" class="law-chart"></div>
-                </div>
-                <div class="bottomPortion">
-                    <!-- 人均办结数 -->
-                    <div class="perCapita">
-                        <div class="chart-box-title">
-                            <span class="chart-label-dot"></span>
-                            <i>人均办结数</i>
-                        </div>
-                        <ul class="dom-line-chart">
-                            <li v-for="item in rjList" :key="item.id">
-                                <i>{{item.title}}</i>
-                                <span :style="{ width:`${item.lineLen || 0}px` }"></span>
-                                {{item.value}}
-                            </li>
-                        </ul>
-
-                    </div>
-                    <!-- 案均办办理天数 -->
-                    <div class="fileCapita">
-                        <div class="chart-box-title">
-                            <span class="chart-label-dot"></span>
-                            <i>案均办理天数</i>
-                        </div>
-                        <ul class="dom-line-chart">
-                            <li v-for="item in ajList" :key="item.id">
-                                <i>{{item.title}}</i>
-                                <span :style="{width:`${item.lineLen || 0}px`}"></span>
-                                {{item.value}}
-                            </li>
-                        </ul>
+                    <div class="personnel-content">
+						<div class="personnel-top">
+							<p class='title'>机构情况</p>
+							<div class='agencytotal' v-for='(to,index) in agencyConfig.total' :key='index'>
+								<span class='totalnum'>{{to.num}}</span>
+								<i class='el-icon-top'></i><span>{{to.add}}</span><b>{{to.percent}}</b>
+							</div>
+							<div class='agencylist' v-for='(lis,index) in agencyConfig.list' :key='index'>
+								<p>{{lis.name}}</p>
+								<p>{{lis.num}}</p>
+							</div>
+						</div>
+						<div class="personnel-bottom-left">
+							<p class='title'>机构情况</p>
+							<div class="agency-content" ref="agencyChart" style='top:-30px;'></div>
+						</div>
+						<div class="personnel-bottom-right">
+							<p class='title'>单位在职人数</p>
+							<div class="job-content" ref="jobChart" style='top:-30px!important'></div>
+						</div>
                     </div>
                 </div>
             </div>
             <div class="right-view">
-                <div class="team-construction">
+                <div class="procuratorial-work">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>队伍建设</i>
+                        <i>检察业务装备</i>
                     </div>
-                    <p>总数：{{ teamPeopleTotal }}</p>
-                    <div ref="dougBox" :style="{width: '436px', height: '340px'}"></div>
+                    <div class='service-content' ref="serviceChart"></div>
+					<div class="putinto">
+						<p>三年投入</p>
+						<ul>
+							<li @click="righttableIsshowfn">
+								<i class='el-icon-tickets'></i>
+								<p>检察业务装备</p>
+								<span>数量</span>
+								<span>23,345,567</span>
+								<span>23%</span>
+								<b>金额</b>
+								<b>23,345,567</b>
+								<b>23%</b>
+							</li>
+							<li @click="righttableIsshowfn">
+								<i class='el-icon-tickets'></i>
+								<p>技术装备</p>
+								<span>数量</span>
+								<span>23,345,567</span>
+								<span>23%</span>
+								<b>金额</b>
+								<b>23,345,567</b>
+								<b>23%</b>
+							</li>
+							<li @click="righttableIsshowfn">
+								<i class='el-icon-tickets'></i>
+								<p>综合保障装备</p>
+								<span>数量</span>
+								<span>23,345,567</span>
+								<span>23%</span>
+								<b>金额</b>
+								<b>23,345,567</b>
+								<b>23%</b>
+							</li>
+							<li @click="righttableIsshowfn">
+								<i class='el-icon-tickets'></i>
+								<p>司法警察装备</p>
+								<span>数量</span>
+								<span>23,345,567</span>
+								<span>23%</span>
+								<b>金额</b>
+								<b>23,345,567</b>
+								<b>23%</b>
+							</li>
+					 	</ul>
+					</div>
                 </div>
-                <div class="analyze-box">
+                <div class="totalfiscal-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>实证分析</i>
+                        <i>计财机构及人员情况</i>
                     </div>
-                    <div class="analyze-content">
-                        <el-carousel
-                                :autoplay=true
-                                indicator-position="outside"
-                                :interval=5000
-                                arrow='hover'
-                                :loop=true
-                                @change="cutHandle"
-                        >
-                            <el-carousel-item v-for="caseItem in analyzeList" :key="caseItem.id">
-                                <div class="analyze-media" @click="skipLawWorks(caseItem.url)">
-                                    <p class="analyze-item-name">{{ caseItem.name }}</p>
-                                </div>
-                            </el-carousel-item>
-                        </el-carousel>
+                    <div class="totalfiscal-content">
+						<div class="totalfiscal-top">
+							<p class='title'>机构情况</p>
+							<p>计财部门设置情况</p>
+							<p>100</p>
+							<ul>
+								<li>80</li>
+								<li>20</li>
+							</ul>
+							<ol>
+								<li>已设置计财部门的单位</li>
+								<li>未设置计财部门的单位</li>
+							</ol>
+						</div>
+						<div class="totalfiscal-bottom">
+							<div class="totalfiscal-bottom-left">
+								<p class='title'>人员情况</p>
+								<ul>
+									<li>
+										<i class='el-icon-s-custom'></i>
+										<span>1000</span>
+										<p>计财人员 实有数</p>
+									</li>
+									<li>
+										<i class='el-icon-s-custom'></i>
+										<span>1000</span>
+										<p>会计人员 情况</p>
+									</li>
+								</ul>
+							</div>
+							<div class="totalfiscal-bottom-right">
+								<div class='one'>
+									<p>12,234,231</p>	
+									<p>会计核算形式</p>	
+								</div>
+								<div class='two'>
+									<p>12,234,231</p>	
+									<p>会计独立核算</p>	
+								</div>
+								
+								<div class='four'>
+									<div>
+											<p>12,234,231</p>	
+											<p>会计委派制</p>	
+									</div>
+									<div>
+											<p>12,234,231</p>	
+											<p>其中会计集中核算</p>	
+									</div>
+								</div>
+								<div class='three'>
+									<p>12,234,231</p>	
+									<p>会计独立核算</p>	
+								</div>
+							</div>
+						</div>
                     </div>
                 </div>
+				<transition name="el-fade-in-linear">
+					<div class="righttable" v-show="righttableIsshow">
+						<div class="left" @click="hidefn">》</div>
+							<div class="right">
+								<table>
+									<thead>
+										<tr>
+											<th rowspan="2">项目</th>
+											<th rowspan="2">数量</th>
+											<th rowspan="2">金额（万元）</th>
+											<th colspan="2">三年投入</th>
+										</tr>
+										<tr>
+											<th>数量增加</th>
+											<th>金额增长</th>
+										</tr>
+										<tr>
+											<td>检察业务装备</td>
+											<td>17,083</td>
+											<td>4947</td>
+											<td>64%</td>
+											<td>4%</td>
+										</tr>
+										<tr>
+											<td>A、检察业务技术装备</td>
+											<td>7275</td>
+											<td>7150</td>
+											<td>83%</td>
+											<td>48%</td>
+										</tr>
+										<tr>
+											<td>1、查办和预防职务犯罪装备</td>
+											<td>7275</td>
+											<td>7150</td>
+											<td>83%</td>
+											<td>48%</td>
+										</tr>
+										<tr>
+											<td>2、查办和预防职务犯罪装备</td>
+											<td>7275</td>
+											<td>7150</td>
+											<td>83%</td>
+											<td>48%</td>
+										</tr>
+										<tr>
+											<td>3、查办和预防职务犯罪装备</td>
+											<td>7275</td>
+											<td>7150</td>
+											<td>83%</td>
+											<td>48%</td>
+										</tr>
+										<tr>
+											<td>4、查办和预防职务犯罪装备</td>
+											<td>7275</td>
+											<td>7150</td>
+											<td>83%</td>
+											<td>48%</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+					</div>
+				</transition>
             </div>
         </div>
         <span v-show="false">{{ getSelectDateSection }}</span>
@@ -114,15 +244,9 @@
 	import { mapGetters }                        from 'vuex';
 	import { verifyTriggerState, numberInteger } from '@/utlis/helper';
 	import 'echarts-liquidfill/src/liquidFill.js';
-	import waterPolo                             from '@/components/common/water-polo.vue'
 	import * as services                         from '../service';
-	import {
-		administrativeConfig,
-		publicInterestLitigationConfig,
-		troopAdministrationConfig,
-		ageStructureConfig,
-		eduDegreeConfig,
-	}                                            from '../constant';
+	import {propertyConfig,agencyConfig}                 from '../constant/index';
+
 
 	export default {
 		data() {
@@ -130,100 +254,9 @@
 				swiperTitle     : '',
 				civilBoxImg     : require('@/public/img/home/civilBox.png'),
 				empiricaIcon    : require('@/public/img/home/empirica-icon.png'),
-				civilList       : [
-					{
-						id   : 'ms_sljs',
-						title: '受理件数',
-						value: 0
-					}, {
-						id   : 'ms_bjjs',
-						title: '办结件数',
-						value: 0
-					}, {
-						id   : 'ms_tckss',
-						title: '提出抗诉数',
-						value: 0
-					}, {
-						id   : 'ms_ksajgbyps',
-						title: '抗诉案件改变原判数',
-						value: 0
-					}, {
-						id   : 'ms_tczsjcjys',
-						title: '提出再审检察建议数',
-						value  : 0
-					}, {
-						id   : 'ms_cnzsjcjys',
-						title: '采纳再审检察建议数',
-						value: 0
-					}, {
-						id   : 'ms_spjdcnjcjys',
-						title: '审判监督采纳检察建议数',
-						value: 0
-					}, {
-						id   : 'ms_zxjdcnjcjys',
-						title: '执行监督采纳检察建议数',
-						value: 0
-					}],
-				xzList          : [],
-				date            : '2019-05-29',//现在的日期
-				startDate       : '2019-01-01',
-				rjList          : [
-					{
-						id   : 'ms_rjbjs',
-						title: '民事',
-						value: 0,
-					},
-					{
-						id   : 'gyss_rjbjs',
-						title: '公益诉讼',
-						num  : 16734
-					},
-					{
-						id   : 'xz_rjbjs',
-						title: '行政',
-						num  : 434
-					}],
-				ajList          : [
-					{
-						id   : 'ms_ajblts',
-						title: '民事',
-						val  : 1234,
-					},
-					{
-						id   : 'gyss_ajblts',
-						title: '公益诉讼',
-						num  : 16734,
-					},
-					{
-						id   : 'xz_ajblts',
-						title: '行政',
-						num  : 434,
-					}
-				],
-				placeHolderStyle: {
-					normal: {
-						label      : {
-							show: false
-						},
-						labelLine  : {
-							show: false
-						},
-						color      : 'rgba(0, 0, 0, 0)',
-						borderColor: 'rgba(0, 0, 0, 0)',
-						borderWidth: 0
-					}
-				},
-				teamPeopleTotal : 0,
-				swiperColumn    : 0,
-                analyzeList     : [{
-					id   : 'dangerDriving',
-					name : '危险驾驶罪分析报告',
-					url  : 'http://141.3.119.86:8888/display/form/displayHome/insert'
-                }, {
-					id   : 'vaccineCase',
-					name : '涉疫苗案件分析报告',
-                    url  : 'jczc.gj.pro:10080'
-                }]
+				propertyConfig:propertyConfig,
+				agencyConfig:agencyConfig,
+				righttableIsshow:false
 			};
 		},
 		computed  : {
@@ -236,656 +269,315 @@
 		mounted() {
 			const params                       = { ...this.getSelectDateSection, ...this.getMapCode };
 			this.oldTriggerState               = params;
-			this.publicInterestLitigationChart = ECharts.init(this.$refs.lawsuitContent);
-			this.dougBoxChart                  = ECharts.init(this.$refs.dougBox);
-
-			this.requestCivilData(params);
-			this.requestAdministration(params);
-			this.requestPublicInterestLitigation(params);
-			this.requestTroopAdministration(params);
-
-			// 实证分析监听窗口
-			this.lawWorksWin = {
-				closed: true
-			};
+			this.jobChart   = ECharts.init(this.$refs.jobChart);
+			this.serviceChart= ECharts.init(this.$refs.serviceChart);
+			this.agencyChart=ECharts.init(this.$refs.agencyChart);
+			this.loadjobChart();
+			this.loadserviceChart();
+			this.loadagencyChart();
 		},
 		updated() {
 			const params = { ...this.getSelectDateSection, ...this.getMapCode };
 			if(verifyTriggerState(this.trigger, this.oldTriggerState, params)) {
 				this.oldTriggerState = params;
-				this.requestCivilData(params);
-				this.requestAdministration(params);
-				this.requestPublicInterestLitigation(params);
-				this.requestTroopAdministration(params);
 			}
 		},
 		methods   : {
-			async requestCivilData(params) {
-				const res = await services.getCivilCase(params);
-				if(res.code === 200) {
-					this.civilList = this.civilList.map(i => ({
-						...i,
-						value: res.data[i.id]
-					}))
-				} else {
-					this.$message.error(res.msg);
-				}
-			},
-			async requestAdministration(params) {
-				const res = await services.getAdministration(params);
-				if(res.code === 200) {
-					this.xzList = administrativeConfig.map(i => ({
-						...i,
-						value: res.data[i.id],
-						rate : (res.data[i.rateId] || 0) / 100,
-					}));
-				} else {
-					this.$message.error(res.msg);
-				}
-			},
-			async requestPublicInterestLitigation(params) {
-				const res = await services.getHomePagaeData(params);
-				if(res.code === 200) {
-					const data = res.data;
-					this.gyssHandle(data.administrationLitigation, data.civilLitigation);
-					const perCapitaMaxNum = Math.max(...Object.values(data.perCapitaHandlingNumber)),
-						  manageDays      = Math.max(...Object.values(data.casesAreHandledNumber));
-					this.rjList           = this.rjList.map(i => {
-						const val = data.perCapitaHandlingNumber[i.id];
-						return {
-							...i,
-							value  : val,
-							lineLen: ~~(val / perCapitaMaxNum * 200)
-						}
-					});
-					this.ajList           = this.ajList.map(i => {
-						const val = data.casesAreHandledNumber[i.id];
-						return {
-							...i,
-							value  : val,
-							lineLen: ~~(val / manageDays * 200)
-						}
-					})
+			loadjobChart() {
+				var datas = [{
+					value: 2234,
+					name: '专业技术人员'
+				}, {
+					value: 2234,
+					name: '干部行政职务1'
+				}, {
+					value: 2234,
+					name: '干部行政职务2'
+				}];
+				var scale = 1;
+				var rich = {
+					yellow: {
+						color: "#ffc72b",
+						fontSize: 22 * scale,
+						padding: [5, 4],
+						align: 'center'
+					},
+					total: {
+						color: "#ffc72b",
+						fontSize: 30 * scale,
+						align: 'center',
+					},
+					white: {
+						color: "#fff",
+						align: 'center',
+						fontSize: 18 * scale,
+						padding: [10, 0]
+					},
+					blue: {
+						color: '#49dff0',
+						fontSize: 20 * scale,
+						align: 'center'
+					},
+					hr: {
+						borderColor: '#0b5263',
+						width: '100%',
+						borderWidth: 1,
+						height: 0,
+					}
+				};
 
-				} else {
-					this.$message.error(res.msg);
-				}
-			},
-			async requestTroopAdministration(params) {
-				const res = await services.getTroopAdministration(params);
-				if(res.code === 200) {
-					this.teamPeopleTotal = res.data.dwgl_zs;
-					this.dougHandle(res.data);
-				} else {
-					this.$message.error(res.msg);
-				}
-			},
-			async requestAgeStructure(params) {
-				const res = await services.getAgeStructure(params);
-				if(res.code === 200) {
-					this.ageHandle(res.data);
-				} else {
-					this.$message.error(res.msg);
-				}
-			},
-			async requestEducationLevel(params) {
-				const res = await services.getEducationLevel(params);
-				if(res.code === 200) {
-					this.education(res.data);
-				} else {
-					this.$message.error(res.msg);
-				}
-			},
-			async requestDangerousDrivingList(params) {
-				const res = await services.getDangerousDrivingList(params);
-				if(res.code === 200) {
-					this.tendencyHandle(res.data);
-				} else {
-					this.$message.error(res.msg);
-				}
-			},
-			// 公益诉讼
-			gyssHandle(administrationLitigation, civilLitigation) {
-				this.publicInterestLitigationChart.setOption({
-					color  : ['rgba(11,229,241,1)', 'rgba(12,153,247,1)'],
-					grid   : {
-						top         : 20,
-						left        : '3%',
-						right       : '4%',
-						bottom      : '5%',
-						containLabel: true
-					},
-					tooltip: {
-						trigger    : 'axis',
-						axisPointer: {
-							type: 'line'
-						},
-						padding: [0, 0, 0, 0],
-					},
-					legend : {
-						textStyle : {
-							color: '#ffffff'
-						},
-						width     : 1000,
-						itemWidth : 10,
-						itemHeight: 10,
-						left      : '30%',
-						top       : '0',
-						data      : publicInterestLitigationConfig.map(i => i.name),
-					},
-					yAxis  : {
-						type      : 'value',
-						axisLine  : {
-							show: false,
-						},
-						"axisTick": {       //y轴刻度线
-							"show": false
-						},
-						axisLabel : {
-							show     : true,
-							interval : 'auto',
-							formatter: '{value} ',
+				this.jobChart.setOption( {
+						title: {
+							left: 'center',
+							padding: [0, 0],
 							textStyle: {
-								fontSize: 10,
-								color   : '#ffffff'
+								color: '#fff',
+								fontSize: 18 * scale,
+								align: 'center'
+							}
+						},
+						legend: {
+							selectedMode: false,
+							formatter: function(name) {
+								var total = 0; //各科正确率总和
+								var averagePercent; //综合正确率
+								datas.forEach(function(value, index, array) {
+									total += value.value;
+								});
+								return total;
+							},
+							data: [datas[0].name],
+							left: 'center',
+							top: 'center',
+							icon: 'none',
+							align: 'center',
+							padding: [10, 0],
+							textStyle: {
+								color: "#ffc72b",
+								fontSize: 30 * scale
 							},
 						},
-						splitLine : {
-							show     : false,
-							lineStyle: {
-
-								type: 'dashed'
-							},
-						},
-						show      : true
-
-					},
-					xAxis  : {
-						axisLine : {
-							show: false,
-						},
-						axisTick : {       //x轴刻度线
-							"show": false
-						},
-						type     : 'category',
-						axisLabel: {
-							interval   : 0,
-							show       : true,
-							splitNumber: 15,
-							margin     : 14,
-							textStyle  : {
-								fontSize: 10,
-								color   : '#ffffff',
-							},
-                            width : 50,
-						},
-						data     : publicInterestLitigationConfig[0].data.map(i => i.name),
-					},
-					series : [
-						{
-							name    : '民事公益诉讼',
-							type    : 'bar',
-							color   : 'rgba(11,229,241,1)',
-							stack   : 'pubLit',
-							barWidth: 40,
-							label   : {
+						series: [{
+							type: 'pie',
+							radius: ['32%', '40%'],
+							hoverAnimation: true,
+							color: ['#FBBA18', '#0CADE8', '#1BC85D'],
+							label: {
 								normal: {
-									show     : true,
-									position : 'inside',
 									textStyle: {
-										color   : "#ffffff",
-										fontSize: 10
+										fontSize: 12 * scale,
+									},
+									formatter: function(params, ticket, callback) {
+										var total = 0; 
+										var percent = 0; 
+										datas.forEach(function(value, index, array) {
+											total += value.value;
+										});
+										percent = ((params.value / total) * 100).toFixed(1);
+										return '{white|' + params.name + '}\n{hr|}\n{yellow|' + params.value + '}\n{blue|' + percent + '%}';
+									},
+									rich: rich
+								},
+							},
+							labelLine: {
+								normal: {
+									length: 30 * scale,
+									length2: 20,
+									lineStyle: {
+										color: '#fff'
 									}
 								}
 							},
-							data    : publicInterestLitigationConfig[0].data.map(i => civilLitigation[i.id]),
-						},
-						{
-							name    : '行政公益诉讼',
-							type    : 'bar',
-							color   : 'rgba(12,153,247,1)',
-							stack   : 'pubLit',
-							barWidth: 40,
-							label   : {
-								normal: {
-									show     : true,
-									position : 'inside',
-									textStyle: {
-										color   : "#ffffff",
-										fontSize: 10
-									}
-								}
-							},
-							data    : publicInterestLitigationConfig[1].data.map(i => administrationLitigation[i.id]),
-						},
-					]
-				});
+							data: datas
+						}]
+					})
 			},
-			// 队伍建设
-			dougHandle(chartData) {
-				const { rAxisData, seriesData } = this.convertTeamChartData(chartData);
-				this.dougBoxChart.setOption({
+			loadserviceChart(){
+				this.serviceChart.setOption({
+					color: ['#FBBA18', '#0CADE8', '#1BC85D'],
+					tooltip: {
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
+					},
 					legend: {
-						left     : 'center',
-						bottom   : '20',
-						itemGap  : 20,
-						data     : rAxisData,
+						show:false,
+						orient: 'horizontal',
+						icon: 'circle',
+						bottom: 20,
+						x: 'center',
 						textStyle: {
 							color: '#fff'
-						}
+						},
+						data: ['司法警察装备', '综合保障装备', '技术装备']
 					},
-					series: seriesData.map((item, index) => {
-						let radius = [],
-							color  = [];
-						switch(index) {
-							case 0: {
-								radius = [90, 110];
-								color  = ['#E85558', 'rgba(232, 85, 88, .3)'];
-							}
-								break;
-							case 1 : {
-								radius = [68, 88];
-								color  = ['#4BB0E4', 'rgba(75, 176, 228, .3)']
-							}
-								break;
-							case 2 : {
-								radius = [46, 66];
-								color  = ['#e7be40', 'rgba(231, 190, 64, .3)']
-							}
-						}
-						return {
-							name          : `Line ${index + 1}`,
-							type          : 'pie',
-							barWidth      : 25,
-							radius,
-							center        : ['50%', '40%'],
-							hoverAnimation: false,
-							startAngle    : 90,
-							label         : {
+					series: [{
+							name: '访问来源',
+							type: 'pie',
+							selectedMode: 'single',
+							radius: [0, '58%'],
+
+							label: {
+								normal: {
+									show: true,
+									position: 'inner',
+									textStyle: {
+										color: '#fff',
+										fontWeight: 'normal',
+										fontSize: 14
+									}
+								}
+							},
+							labelLine: {
 								normal: {
 									show: false
 								}
 							},
-							data          : [{
-								value    : item.value,
-								name     : item.name,
-								number   : item.number,
-								itemStyle: {
-									normal: {
-										color: color[0]
-									}
+							data: [{
+									value: 100,
+									name: '司法警察装备'
 								},
-								label    : {
-									normal  : {
-										show: false
-									},
-									emphasis: {
-										show     : true,
-										formatter: function(params) {
-											const data = params.data || {};
-											return `${data.number}人 ${data.value}%`
-										}
-									}
+								{
+									value: 100,
+									name: '综合保障装备'
 								},
-								lableLine: {
-									normal  : {
-										show: false
-									},
-									emphasis: {
-										show: true
-									}
-								},
-							}, {
-								value    : 100 - item.value,
-								name     : '',
-								tooltip  : {
-									show: false
-								},
-								itemStyle: {
-									normal  : {
-										color    : color[1],
-										label    : {
-											show: false
+								{
+									value: 100,
+									name: '技术装备'
+								}
+							]
+						},
+						{
+							name: '访问来源',
+							type: 'pie',
+							radius: ['60%', '62%'],
+							label: {
+								normal: {
+									formatter: '{b|{b}}\n{hr|}\n金额 占比\n{c}{d|{d}%}',
+									rich: {
+										b: {
+											fontSize: 20,
+											color: '#fff',
+											align: 'left',
+											padding: 4
 										},
-										labelLine: {
-											show: false
+										hr: {
+											borderColor: '#12EABE',
+											width: '100%',
+											borderWidth: 2,
+											height: 0
+										},
+										d: {
+											fontSize: 20,
+											color: '#fff',
+											align: 'left',
+											padding: 4
+										},
+										c: {
+											fontSize: 20,
+											color: '#fff',
+											align: 'center',
+											padding: 4
+										},
+										a: {
+											fontSize: 20,
+											color: '#fff',
+											align: 'center',
+											padding: 4
 										}
-									},
-									emphasis: {
-										color: color[1]
 									}
 								}
-							}]
-						}
-					})
-				});
-			},
-			convertTeamChartData(chartData) {
-				const rAxisData  = [],
-					  seriesData = troopAdministrationConfig.map(i => ({
-						  name  : i.name,
-						  value : (chartData[i.id] / chartData.dwgl_zs * 100).toFixed(0),
-						  number: chartData[i.id]
-					  })).sort((a, b) => b.value - a.value);
-				seriesData.forEach(i => rAxisData.push(i.name));
-				return {
-					rAxisData,
-					seriesData
-				}
-			},
-			//  实证分析
-			cutHandle(n) {//切换轮播事件
-				this.swiperColumn = n;
-			},
-			// 年龄分布
-			ageHandle(chartData) {
+							},
+							labelLine: {
+								normal: {
+									show: true,
+									length: 20,
+									length2: 20,
+									lineStyle: {
+										type: 'dashed',
+										width: 2
+									}
+								}
+							},
+							data: [{
+									value: 100,
+									name: '司法警察装备'
+								},
+								{
+									value: 100,
+									name: '综合保障装备'
+								},
+								{
+									value: 100,
+									name: '技术装备'
+								}
 
-				const option = {
-					tooltip   : {
-						trigger  : 'item',
-						formatter: "{a} <br/>{b} : {c} ({d}%)"
-					},
-					grid      : {
-						top: 20
-					},
-					left      : 'center',
-					legend    : {
-						orient    : 'horizontal',
-						width     : 400,
-						left      : '10%',
-						bottom    : '10%',
-						textStyle : {
-							color   : 'rgba(255,255,255,1)',
-							fontSize: 14,
-							rich    : {
-								yellow: {
-									color   : "rgba(255,255,255,1)",
-									fontSize: 16,
-									padding : [5, 0],
-									align   : 'bottom',
-								}
-							},
-							width   : 130,
-							height  : 20,
-						},
-						padding   : [0, 0, 0, 0],
-						itemWidth : 40,
-						itemHeight: 20,
-						itemGap   : 20,
-						data      : ageStructureConfig.map(i => i.name),
-						formatter : function(name) {
-							let oa    = option.series[0].data;
-							let total = 0;
-							oa.forEach((item, index) => {
-								total += item.value;
-							});
-							for(let i = 0; i < oa.length; i++) {
-								if(name === oa[i].name) {
-									return name + ' {yellow|' + '}';
-								}
-							}
-						},
-					},
-					graphic   : {
-						elements: [{
-							type : 'image',
-							style: {
-								width : 40,
-								height: 40
-							},
-						}]
-					},
-					color     : ['#705ADC', '#0BE3DE', '#15A4E6', '#ECAF14', '#0AD67F', '#1DCEEB'],
-					calculable: false,
-					series    : [{
-						name     : '年龄',
-						type     : 'pie',
-						radius   : [20, 110],
-						center   : ['50%', '35%'],
-						roseType : 'radius',
-						width    : '100%',
-						max      : 80,
-						itemStyle: {
-							normal  : {
-								label    : {
-									show: false
-								},
-								labelLine: {
-									show: false
-								}
-							},
-							emphasis: {
-								label    : {
-									show: false
-								},
-								labelLine: {
-									show: false
-								}
-							}
-						},
-						data     : ageStructureConfig.map(i => ({
-							name : i.name,
-							value: chartData[i.id]
-						}))
-					}]
-				};
-				this.agePieChart.setOption(option);
+							]
+						}
+					]	
+				})
 			},
-			// 危险驾驶罪教育程度
-			education(chartData) {
-				const { yAxisData, seriesData, maxNum } = this.convertEduDegreeData(chartData);
-				this.educationChart.setOption({
-					color  : ['#74F0DD'],
+			loadagencyChart(){
+				this.agencyChart.setOption({
 					tooltip: {
-						trigger    : 'axis',
-						axisPointer: {
-							type: 'shadow'
-						},
-						formatter  : "{b} <br>人数: {c}"//y value值
+						trigger: 'item',
+						formatter: "{a} <br/>{b}: {c} ({d}%)"
 					},
-					grid   : {
-						show        : false,
-						left        : '4',
-						right       : '10%',
-						bottom      : '0%',
-						containLabel: true
+					grid:{
+						top:'0'
 					},
-					xAxis  : {
-						type       : 'value',
-						boundaryGap: [0, 0.01],
-						min        : 0,
-						interval   : ~~(numberInteger(maxNum) / 3),
-						axisLabel  : {
-							formatter: '{value}',
-							textStyle: {
-								color     : 'rgba(255,255,255,1)',
-								fontSize  : 18,
-								fontWeight: '80'
-							}
-						},
-						splitLine  : {
-							show: false
-						},
-						axisLine   : {
-							show: false
-						},
-						axisTick   : {
-							show: false
-						},
-					},
-					yAxis  : {
-						type     : 'category',
-						data     : yAxisData,
-						axisLine : {
-							show: false //隐藏X轴轴线
-						},
-						axisTick : {
-							show: false //隐藏X轴刻度
-						},
-						axisLabel: {
-							show     : true,
-							interval : 0,
-							rotate   : 0,
-							inside   : false,
-							textStyle: {
-								color     : 'rgba(255,255,255,1)',
-								fontSize  : 18,
-								fontWeight: '50',
-							}
-						}
-					},
-					series : [{
-						type     : 'bar',
-						barWidth : 6,
-						itemStyle: {//柱状圆角
-							normal: {
-								barBorderRadius: 3
-							}
-						},
-						data     : seriesData
-					}]
-				});
-			},
-			convertEduDegreeData(chartData) {
-				let maxNum      = 0;
-				const yAxisData = [],
-					seriesData  = eduDegreeConfig.map(i => {
-						yAxisData.push(i.name);
-						if(maxNum < chartData[i.id]) {
-							maxNum = chartData[i.id];
-						}
-						return {
-							...i,
-							value: chartData[i.id]
-						}
-					});
-				return {
-					yAxisData,
-					seriesData,
-					maxNum
-				}
-			},
-			// 危险驾驶罪年度趋势
-			tendencyHandle(chartData) {
-				const allNum = chartData.map(i => [i.bqss, i.slqss]);
-				let maxValue = Math.max(...(allNum.toString().split()));
-				maxValue     = numberInteger(maxValue);
-				this.tendencyChart.setOption({
-					color  : ['#61E6D6', '#9961E6', '#0000FF', '#FFFF00'],
-					tooltip: {
-						trigger    : 'axis',
-						axisPointer: { type: 'cross' }
-					},
-					grid   : {
-						right : '8%',
-						bottom: '12%'
-					},
-					legend : {
-						right    : '8%',
-						top      : '5%',
-						data     : ['不起诉数', '受理起诉数'],
-						textStyle: {
-							color: "rgba(255,255,255,1)"
-						}
-					},
-					xAxis  : {
-						type     : 'category',
-						axisTick : {
-							show          : false,
-							alignWithLabel: false
-						},
-						axisLabel: {
-							fontSize    : 18,
-							interval    : 0,
-							rotate      : 0,
-							textStyle   : {
-								color: 'rgba(255,255,255,1)'
-							},
-							showMinLabel: true,
-							showMaxLabel: true
-						},
-						axisLine : {
-							show: false
-						},
-						tooltip  : {
-							backgroundColor: 'rgba(0,0,255,0.5)'
-						},
-						data     : chartData.map(i => i.nd)
-					},
-					yAxis  : [
+					color:['#009FE8'],
+					series: [
 						{
-							type     : 'value',
-							name     : 'UPH',
-							show     : false,
-							position : 'right',
-							axisLine : {
-								lineStyle: {
-									color: '#61E6D6'
+							name:'访问来源',
+							type:'pie',
+							radius: ['30%', '40%'],
+							avoidLabelOverlap: false,
+							label: {
+								normal: {
+									show: true,
+									formatter:'{a}\n{c}人',
+									rich:{
+										c:{
+											align:'center',
+											color:'yellow'
+										}
+									}
+								},
+								emphasis: {
+									show: true,
+									textStyle: {
+										fontSize: '30',
+										fontWeight: 'bold'
+									}
 								}
 							},
-							axisLabel: {
-								formatter: '{value}'
-							},
-							splitLine: {
-								show: false
-							}
-						},
-						{
-							type     : 'value',
-							name     : ' ',
-							position : 'left',
-							axisLabel: {
-								fontSize : 18,
-								textStyle: {
-									color: 'rgba(255,255,255,1)',
+							labelLine: {
+								normal: {
+									show: false
 								}
 							},
-							axisLine : {
-								show: false
+							itemStyle:{
+								borderWidth:5, //设置border的宽度有多大
+								borderColor:'#020309',
 							},
-							axisTick : {
-								show: false
-							},
-							splitLine: {
-								show: false,
-							}
-						}
-					],
-					series : [
-						{
-							name      : '不起诉数',
-							type      : 'line',
-							yAxisIndex: 0,
-							data      : chartData.map(i => i.bqss)
-						},
-						{
-							name      : '受理起诉数',
-							type      : 'line',
-							yAxisIndex: 1,
-							data      : chartData.map(i => i.slqss)
-						},
-						{
-							name      : 'line2',
-							barWidth  : 55,
-							type      : 'bar',
-							color     : 'rgba(25,134,222,0.3)',
-							yAxisIndex: 1,
-							data      : Array.from(chartData.length).map(() => maxValue)
+							data:[
+								{value:12234, name:'人员编制数'},
+								{value:12234, name:'着装人员'},
+								{value:12234, name:'其他人员'}
+							]
 						}
 					]
-				});
+				})
 			},
-			// 打开外部链接
-			skipLawWorks(url) {
-				if(!this.lawWorksWin.closed) {
-					this.lawWorksWin.close();
-				}
-				this.lawWorksWin = window.open(url, '_blank', 'fullscreen=yes, height=1080, width=1280, left=1280, location=no, menubar=no, status=no, titlebar=no, toolbar=no, top=0');
+			righttableIsshowfn(){
+				this.righttableIsshow=true
+			},
+			hidefn(){
+				this.righttableIsshow=false
 			}
-
 		},
 		components: {
-			waterPolo
+			
 		},
 	}
 </script>
@@ -893,51 +585,162 @@
 <style lang="scss" scoped>
     .home-page-right {
         height: 900px;
-        width: 1228px;
+        width: 1256px;
         .content-box {
             display: flex;
             .left-view {
-                .civil-box {
+                .property-box {
                     width: 739px;
-                    .civil-content {
-                        padding: 20px 0 10px;
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: space-around;
-                        color: #FFFFFF;
-                        li {
-                            text-align: center;
-                            margin-bottom: 10px;
-                            margin-right: 20px;
-                            .civil-num {
-                                height: 27px;
-                                display: inline-block;
-                                border: 1px solid #009FE8;
-                                background-size: 100% 100%;
-                                font-size: 14px;
-                                border-radius: 10px;
-                                padding: 4px 10px 2px;
-                            }
-                            .civil-text {
-                                width: 130px;
-                                margin-top: 11px;
-                                font-size: 18px;
-                                text-align: center;
-                            }
-                            &:nth-of-type(7), &:nth-of-type(8) {
-                                margin-bottom: 0;
-                            }
-                        }
-                    }
+					.propertyBox{			
+						height:301px;
+						.propertyContent{
+							color:#fff;
+							text-align:center;
+							p{
+								width:198px;
+								height:66px;
+								border-radius:2px;
+								border:1px solid rgba(0,216,233,1);
+								padding-top:8px;
+								margin-top:39px;
+								margin-left:270px;
+								position:relative;
+								b{
+									width:1px;
+									height:31px;
+									background:#979797;
+									position:absolute;
+									bottom:-31px;
+									left:97px;
+								}
+							}
+							ol{
+								width:636px;
+								height:29px;
+								border:1px solid #979797;
+								border-bottom:none;
+								margin-top:31px;
+								margin-left:51px;
+								overflow:hidden;
+								li{
+									width:131px;
+									height:29px;
+									float:left;
+									border-right:1px solid #979797;
+								}
+								li:last-child{
+									border-right:none;
+								}
+							}
+							span{
+								color:#FBBA18;
+							}
+							ul{
+								li{
+									float:left;
+									width:95px;
+									height:59px;
+									border-radius:2px;
+									border:1px solid rgba(0,216,233,1);
+									margin-right:30px;
+									margin-top:13px;
+									padding-top:8px;
+								}
+								li:last-child{
+									margin-right:0px;
+								}
+							}
+						}
+					}
                 }
-                .administration {
-                    width: 739px;
-                    .admin-box {
-                        display: flex;
-                        justify-content: space-around;
-                        margin: 20px auto;
-                    }
-                }
+				.personnel-box{
+					width:739px;
+					height:543px;
+					.personnel-content{
+						display: flex;
+						flex-wrap: wrap;
+						height:543px;
+						.personnel-top{
+							width:739px;
+							height:307px;
+							padding:10px 27px;
+							overflow:hidden;
+							.agencytotal{
+								.totalnum{
+									color:#00FFF8;
+									width:162px;
+									height:55px;
+									line-height:55px;
+									background:rgba(2,119,205,0.21);
+									border-radius:33px;
+									border:1px solid rgba(4,169,230,1);
+									text-align:center;
+									margin-left:289px;
+									display:inline-block;
+									font-size:20px;
+								}
+								span{
+									color:#00FFF8;
+								}
+								.el-icon-top{
+									color:#1BC85D;
+									margin-right:7px;
+								}
+								b{
+									color:#FF6C40;
+									margin-left:7px;
+								}
+							}
+							.agencylist{
+								float:left;
+								margin-right:37px;
+								text-align:center;
+								p:first-child{
+									color:#fff;
+									margin:24px 0px 10px 0px;
+								}
+								p:last-child{
+									color:#04A9E6;
+									width:100px;
+									height:36px;
+									line-height:36px;
+									background:rgba(2,119,205,0.21);
+									border-radius:28px;
+									border:1px solid rgba(4,169,230,1);
+								}
+							}
+						}
+						p{
+							color:#2FE0BE;
+						}
+						.personnel-bottom-left{
+							width:296px;
+							height:247px;
+							padding:10px 27px;
+							.agency-content{
+								width:267px;
+								height:247px;
+							}
+						}
+						.personnel-bottom-right{
+							width:443px;
+							height:247px;
+							padding:10px 27px;
+							.job-content{
+								width:443px;
+								height:247px;
+								div{
+									width:443px;
+									height:247px;
+									canvas{
+										top:-30px!important;
+									}
+								}
+								
+							}
+						}
+					}
+				}
                 .lawsuitBox {
                     width: 739px;
                     .lawsuit-label {
@@ -1033,104 +836,295 @@
                 }
             }
             .right-view {
-                .team-construction {
+				width:464px;
+				position:relative;
+                .procuratorial-work {
                     position: relative;
                     margin-left: 22px;
-                    width: 454px;
-                    height: 405px;
-                    .team-label {
-                        display: flex;
-                        align-items: center;
-                        i {
-                            margin: 0 0 0 10px;
-                            font-size: 24px;
-                            color: rgba(255, 255, 255, 1);
-                            line-height: 29px;
-                        }
-                        .team {
-                            width: 13px;
-                            height: 13px;
-                            border-radius: 50%;
-                            background: rgba(0, 178, 226, 1);
-                        }
-                    }
-                    p {
-                        margin: 20px 0 0 160px;
-                        font-size: 22px;
-                        font-family: Helvetica;
-                        color: rgba(0, 255, 255, 1);
-                    }
-                    .bar {
-                        position: absolute;
-                        width: 222px;
-                        height: 222px;
-                        left: 131px;
-                        top: 133px;
-                    }
+                    width: 464px;
+                    height: 522px;
+					.service-content{
+						width:464px;
+						height:205px;
+						background:none!important;
+					}
+					.putinto{
+							width: 464px;
+							height:264px;
+							p{
+								color:#fff;
+								text-align:center;
+								margin:10px 0px 10px 0px;
+								font-size:16px;
+							}
+							ul{
+								width:464px;
+								height:215px;
+								li{
+									width:108px;
+									height:215px;
+									float:left;
+									border:1px solid rgba(11,184,250,1);
+									margin-right:10px;
+									text-align:center;
+									p{
+									margin-bottom:8px;
+									}
+									i{
+										margin-top:9px;
+										font-size:22px;
+									}
+									span{
+										color:#0BB8FA;
+										display:block;
+									}
+									b{
+										color:#FF6C40;
+									}
+								}
+								
+								li:first-child{
+									background:linear-gradient(180deg,rgba(23,213,191,0.6) 0%,rgba(12,143,226,0.6) 100%);
+									i{
+										color:#0BAEFF;
+									}
+								}
+								li:nth-child(2){
+									i{
+										color:#1BC85D;
+									}
+								}
+								li:nth-child(3){
+									i{
+										color:#FF6C40;
+									}
+								}
+								li:last-child{
+									margin-right:0px;
+									i{
+										color:#FBBA18;
+									}
+								}
+							}
+						}
                 }
-                .analyze-box {
-                    width: 454px;
-                    height: 390px;
-                    margin-top: 40px;
-                    .analyze-content {
-                        position: relative;
-                        /deep/ .el-carousel__container {
-                            height: 390px;
-                            margin: 0 auto;
-                            .analyze-media {
-                                width: 300px;
-                                height: 330px;
-                                margin: 30px auto;
-                                background-color: #fff;
-                                border-radius: 5px;
-                                cursor: pointer;
-                                &:hover{
-                                    box-shadow: 0 0 15px rgba(31, 162, 244, .6);
-                                }
-                                .analyze-item-name{
-                                    padding-top: 120px;
-                                    font-size: 18px;
-                                    text-align: center;
-                                    color: #0b91e8;
-                                }
-                            }
-                            .el-carousel__arrow{
-                                background-color: rgba(29,206,235,.4);
-                                color: #fff;
-                            }
-                        }
-                        /deep/ .el-carousel__indicator{
-                            &.is-active{
-                                .el-carousel__button{
-                                    background-color: #fff;
-                                }
-                            }
-                            .el-carousel__button{
-                                background-color: #17E4F1;
-                                opacity: 1;
-                            }
-                        }
-                        .soon-text{
-                            position: absolute;
-                            top : 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            font-size: 40px;
-                            font-weight: bolder;
-                            color: #ccc;
-                            text-shadow: 0 0 10px rgba(0, 255, 248, 1);
-                            animation: textRotate 10s linear infinite;
-                        }
-                        @keyframes textRotate {
-                            0%{
-                                transform: translate(-50%, -50%) rotateY(0deg);
-                            }
-                            100%{
-                                transform: translate(-50%, -50%) rotateY(360deg);
-                            }
-                        }
-                    }
-                }
+                .totalfiscal-box{
+					width: 464px;
+					height:420px;
+					.totalfiscal-content{
+						height:376px;
+						p{
+							color:#fff;
+							text-align:center;
+						}
+						.title{
+							color:#2FE0BE;
+							text-align:left;
+							margin:13px 0px 0px 30px;
+						}
+						.totalfiscal-top{
+							ul{
+								width:397px;
+								height:21px;
+								background:rgba(12,173,232,1);
+								border-radius:11px;
+								margin-left:26px;
+								margin-top:6px;
+								li{
+									text-align:center;
+									float:left;
+									color:#fff;
+								}
+								li:first-child{
+									width:80%;
+								}
+								li:last-child{
+									width:20%;
+									background:#FF6C40;
+									border-radius:11px;
+								}
+							}
+							ol{
+								width:397px;
+								height:21px;
+								margin-top:13px;
+								color:#fff;
+								li{
+									float:left;
+									text-align:center;
+									width:50%;
+								}
+							}
+						}
+						
+						.totalfiscal-bottom{
+							margin-top:21px;
+							.totalfiscal-bottom-left{
+								float:left;
+								ul{
+									width:158px;
+									height:95px;
+									margin-top:40px;
+									li{
+										text-align:center;
+										width:64px;
+										margin-right:29px;
+										float:left;
+										i{
+											color:#1BC85D;
+											font-size:26px;
+										}
+										span{
+											color:#1BC85D;
+											display:block;
+										}
+									}
+									li:last-child{
+										margin-right:0px;
+										i{
+											color:#0CADE8;
+										}
+										span{
+											color:#0CADE8;
+										}
+									}
+								}
+							}
+							.totalfiscal-bottom-right{
+								float:left;
+								width:257px;
+								color:#fff;
+								margin-left:36px;
+								div.one{
+									height:57px;
+									text-align:center;
+									p:first-child{
+										margin-left:66px;
+										width:116px;
+										height:36px;
+										line-height:36px;
+										background:rgba(2,119,205,0.21);
+										border-radius:4px;
+										border:1px solid rgba(4,169,230,1);
+									}
+								}
+								.two{
+									float:left;
+									margin-top:6px;
+									p:first-child{
+										width:116px;
+										height:36px;
+										line-height:36px;
+										background:rgba(2,119,205,0.21);
+										border-radius:4px;
+										border:1px solid rgba(4,169,230,1);
+										margin-bottom:10px;
+									}
+								}
+								.three{
+									float:left;
+									margin-top:11px;
+									p:first-child{
+										width:116px;
+										height:36px;
+										line-height:36px;
+										background:rgba(2,119,205,0.21);
+										border-radius:4px;
+										border:1px solid rgba(4,169,230,1);
+										margin-bottom:10px;
+									}
+								}
+								.four{
+									float:right;
+									width:134px;
+									height:133px;
+									border-radius:4px;
+									border:1px solid rgba(4,169,230,1);
+									margin-top:3px;
+									div:first-child{
+										width:134px;
+										height:64px;
+										background:rgba(2,119,205,0.21);
+										border-radius:4px;
+										border:1px solid rgba(4,169,230,1);
+									}
+									div{
+										p:first-child{
+											margin-top:11px;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				.righttable{
+					width:1045px;
+					height: 1080px;
+					position:absolute;
+					right:0;
+					top:-110px;
+					background:rgba(0,0,0,0.31);
+					border:1px solid rgb(138, 250, 233);
+					.left{
+						width:97px;
+						height:1080px;
+						float:left;
+						border-right:1px solid rgb(138, 250, 233);
+						line-height:1080px;
+						text-align:center;
+						color:#09F4FF;
+						font-size:65px;
+					}
+					.right{
+						float:left;
+						width:942px;
+						height:1080px;
+						background:rgba(0,10,19,0.8);
+						table{
+							width:942px;
+							height:1080px;
+							color:#fff;
+							text-align:center;
+							tr{
+								border-bottom:1px solid rgb(138, 250, 233);
+								th{
+									border-bottom:1px solid rgb(138, 250, 233);
+									border-right:1px solid rgb(138, 250, 233);
+									height: 38px;
+									text-align:center;
+									font-size:18px;
+								}
+								th:last-child{
+									border-right:none;
+								}
+								td{
+									height:44px;
+									border-right:1px solid rgb(138, 250, 233);
+									text-align:center;
+								}
+								td:first-child{
+									text-align:left;
+									padding-left:20px;
+								}
+								td:last-child{
+									border-right:none;
+								}
+							}
+							tr:first-child{
+								th:first-child{
+									width:340px;
+								}
+							}
+						}
+					}
+					.fade-enter-active, .fade-leave-active {
+						transition: opacity .5s
+					}
+					.fade-enter, .fade-leave-active {
+						opacity: 0
+					}
+				}
             }
         }
     }

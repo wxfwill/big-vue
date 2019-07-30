@@ -171,7 +171,7 @@
 						case 4:
 							region = this.selectCounty;
 							break;
-					}
+                    }
 					getPersonInfo({
 						lev      : this.lev,
 						name     : this.officeName,
@@ -220,41 +220,47 @@
 
 <style lang="scss">
     .search-form {
-        width: 475px;
-        margin: 0 auto;
+        width:774px;
+        // margin: 0 auto;
+        margin-left:29px;
+        margin-top:10px;
+        display: flex;
         .select-list {
             display: flex;
             .staff-select {
-                width: 153px;
-                margin-right: 7px;
+               width:153px;
+                height:40px;
+                background:rgba(14,132,218,1);
+                opacity:0.3607;
+                color:#00FFFF;
+                margin-right:11px;
                 .el-input__inner {
-                    background: rgba(255, 255, 255, .2);
-                    color: #00FFFF;
-                    height: 45px;
+                    width:153px;
+                    height:40px;
+                    background:rgba(14,132,218,1);
+                    color:#00FFFF;
                 }
             }
         }
         .search-group {
-            width: 470px;
-            margin: 46px auto 0;
+            width:238px;
+            margin-left:10px;
             display: flex;
             .search-input {
-                width: 380px;
-                height: 50px;
-                padding-left: 8px;
-                color: #ffffff;
-                background-color: #0767D1;
-                border: 1px solid rgba(0, 255, 255, 1);
-                outline: none;
-                font-size: 20px;
+                width:182px;
+                height:40px;
+                background:rgba(14,132,218,1);
+                opacity:0.3607;
+                color:#00FFFF;
             }
             .search-btn {
-                width: 90px;
-                height: 50px;
-                background: linear-gradient(90deg, rgba(7, 103, 209, 1) 0%, rgba(7, 103, 209, 1) 100%);
-                border: 1px solid rgba(0, 255, 255, 1);
-                color: #ffffff;
-                outline: none;
+               width:91px;
+                height:40px;
+                background:rgba(14,132,218,1);
+                opacity:0.7;
+                outline:none;
+                margin-left:10px;
+                color:#fff;
             }
         }
         .staff-model {

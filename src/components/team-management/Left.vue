@@ -14,7 +14,7 @@
               <h1 class="title">全国在职人数</h1>
               <div class="in-job-detail">
                 <ul class="digital-block">
-                  <li class="white-text" v-for="item in incumbency.qgzzrs">{{ item }}</li>
+                  <li class="white-text" v-for="(item,index) in incumbency.qgzzrs" :key='index'>{{ item }}</li>
                 </ul>
                 <div class="to-leave">
                   <div class="to-block">
@@ -64,7 +64,7 @@
             <div class="education-situation-box">
               <h1 class="title text-left">检察人员参与培训情况</h1>
               <div class="education-chart-box">
-                <div ref="educationChart" :style="{width: '580px', height: '200px'}"></div>
+                <div ref="educationChart" :style="{width: '580px', height: '368px'}"></div>
               </div>
             </div>
           </div>
@@ -78,48 +78,18 @@
           <span class="chart-label-dot"></span>
           <i>各级检察机关人员现状</i>
         </div>
+        <p class='more-btn' @click="setDialogVisible">更多>></p>
         <div ref="personnelStatusQuos" :style="{width: '1285px', height: '273px', margin: '23px auto 46px' }"></div>
       </div>
     </div>
-    <!-- <div class="in-job-box" :style="{backgroundImage:`url(${inJobBg})`}">
-            <h1 class="title">全国在职人数</h1>
-            <div class="in-job-detail">
-                <ul class="digital-block">
-                    <li class="white-text" v-for="item in incumbency.qgzzrs">
-                        {{ item }}
-                    </li>
-                </ul>
-                <div class="to-leave">
-                    <div class="to-block">
-                        <p class="white-text"><img :src="jobToIcon" class="to-leave-icon">当年入院</p>
-                        <span class="to-num">{{ incumbency.dnry }}</span>
-                    </div>
-                    <div class="leave-block">
-                        <p class="white-text"><img :src="jobOutIcon" class="to-leave-icon">当年离院</p>
-                        <span class="leave-num">{{ incumbency.dnly }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="work-life-box">
-            <h1 class="title">工作年限统计</h1>
-            <div class="work-life-charts">
-                <pie-chart
-                        v-for="item in workLife"
-                        :key="item.key"
-                        :text="item.text"
-                        :percent="workingLife[item.key]"
-                        :strokeColor="item.strokeColor"
-                        :tintColor="item.tintColor"
-                ></pie-chart>
-            </div>
-        </div>
-        <div class="education-situation-box">
-            <h1 class="title text-left">教育情况</h1>
-            <div class="education-chart-box">
-                <div ref="educationChart" :style="{width: '580px', height: '200px'}"></div>
-            </div>
-    </div>-->
+    <el-dialog
+                :title="dialogContext.name"
+                :visible.sync="dialogVisible"
+                @opened="loadDialogChart"
+                @closed="closeBarDialog"
+                width="90%">
+            <div class="per-dialog-chart" ref="dialogChart"></div>
+        </el-dialog>
   </div>
 </template>
 <script>
@@ -181,7 +151,14 @@ export default {
           key: "llb",
           name: "理论班"
         }
-      ]
+      ],
+      dialogVisible:false,
+      dialogContext: {
+        name: '',
+        key : '',
+        data: []
+      },
+      personnelStatusQuos:[]//全国各省份各级检察机关人员现状的数据
     };
   },
   mounted() {
@@ -202,7 +179,6 @@ export default {
         };
       });
       this.myChart.setOption({
-        tooltip: { trigger: "item" },
         visualMap: {
           show: false,
           min: 0,
@@ -217,11 +193,18 @@ export default {
                 color: '#ffffff'//字体颜色
             }
         },
+         tooltip : {  //hover提示
+          trigger: 'item',
+          formatter:'培训情况:<br/>{b}:{c}%'
+          // formatter:function(params){
+          //     return params.name+'<br/>总条数 : '+params.data.totalNumber+'条 <br/>占比：'+ (params.percent - 0).toFixed(2)+'%';
+          // }
+        },
         series: [
           {
             name: "教育情况",
             type: "pie",
-            radius: "70%",
+            radius: "100%",
             center: ["50%", "45%"],
             color: ["#61e0c1", "#1c98f0", "#33c6f4", "#33d1f8"],
             data: seriesData.sort((a, b) => a.value - b.value),
@@ -251,6 +234,9 @@ export default {
             },
             itemStyle: {
               normal: {
+                label:{
+                  show:false
+                },
                 shadowColor: "rgba(0, 0, 0, 0.8)",
                 shadowBlur: 50
               }
@@ -259,206 +245,578 @@ export default {
         ]
       });
     },
+    personnelStatusQuosConfig(configList = []) {
+				const xAxisData  = [],
+            zz = [],
+            zy=[],
+            lt=[],
+            qtjy=[];
+					  configList.map((config) => {
+						  xAxisData.push(config.city_name);
+              zz.push(config.zz);
+              zy.push(config.zy);
+              lt.push(config.lt);
+              qtjy.push(config.qtjy);
+					  });
+				return { xAxisData, zz,zy,lt,qtjy };
+			},
     loadpersonnelStatusQuosChart(personnelStatusQuos) {
-    //   this.personStatus.setOption({
-    //     legend: {
-    //             textStyle:{
-    //             fontSize: 18,//字体大小
-    //             color: '#ffffff'//字体颜色
-    //         }
-    //     },
-    //     tooltip: {},
-    //     dataset: {
-    //       dimensions: ["product", "2015", "2016", "2017"],
-    //       source: [
-    //         {
-    //           product: "Matcha Latte",
-    //           "2015": 43.3,
-    //           "2016": 85.8,
-    //           "2017": 93.7
-    //         },
-    //         { product: "Milk Tea", "2015": 83.1, "2016": 73.4, "2017": 55.1 },
-    //         {
-    //           product: "Cheese Cocoa",
-    //           "2015": 86.4,
-    //           "2016": 65.2,
-    //           "2017": 82.5
-    //         },
-    //         {
-    //           product: "Walnut Brownie",
-    //           "2015": 72.4,
-    //           "2016": 53.9,
-    //           "2017": 39.1
-    //         }
-    //       ]
-    //     },
-    //     xAxis: { type: "category" ,
-    //                 axisLabel: {
-    //                     show: true,
-    //                     textStyle: {
-    //                         color: '#ffffff'
-    //                     }
-    //                 }
-    //             },
-    //     yAxis: {
-    //          axisLabel: {
-    //                 show: true,
-    //                 textStyle: {
-    //                     color: '#ffffff'
-    //                 }
-    //             }
-    //     },
-    //     // Declare several bar series, each will be mapped
-    //     // to a column of dataset.source by default.
-    //     series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }]
-    //   });
+      //模拟数据，后续去掉
+      personnelStatusQuos=[{
+          city_name: '最高检',
+          lt: '28',
+          qtjy: '45',
+          zy: '35',
+          zz: '25'
+        },
+        {
+          city_name: '北京',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '天津',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '河北',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '山西',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '内蒙古',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '辽宁',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '吉林',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '黑龙江',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '上海',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '江苏',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '浙江',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '安徽',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '福建',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '江西',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '山东',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '河南',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '湖北',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '湖南',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '广东',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '广西',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '海南',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '重庆',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '四川',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '贵州',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '云南',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '西藏',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '陕西',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '甘肃',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '青海',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '宁夏',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        },
+        {
+          city_name: '新疆',
+          lt: '18',
+          qtjy: '28',
+          zy: '22',
+          zz: '15'
+        }]
+      this.personnelStatusQuos=personnelStatusQuos
+      const { xAxisData, zz, zy,lt,qtjy} = this.personnelStatusQuosConfig(this.personnelStatusQuos.slice(0, 10));
       this.personStatus.setOption({
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'shadow'
-        }
+          tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                  type: 'shadow'
+              }
+          },
+          legend: {
+              data: ['在职', '增员', '离退','其他减员'],
+              align: 'left',
+              right: 10,
+              textStyle: {
+                  color: "#fff"
+              },
+              itemWidth: 10,
+              itemHeight: 10,
+              itemGap: 35.,
+              x: 'center',  
+          },
+          grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+          },
+          xAxis: [{
+              type: 'category',
+              data: xAxisData,
+              axisLine: {
+                  show: true,
+                  lineStyle: {
+                      color: "#0ED8D1",
+                      width: 1,
+                      type: "solid"
+                  }
+              },
+              axisTick: {
+                  show: false,
+              },
+              axisLabel: {
+                  show: true,
+                  textStyle: {
+                      color: "#fff",
+                  }
+              },
+          }],
+          yAxis: [{
+              type: 'value',
+              axisLabel: {
+                  formatter: '{value} '
+              },
+              axisTick: {
+                  show: false,
+              },
+              axisLabel: {
+                  show: true,
+                  textStyle: {
+                      color: "#fff",
+                  }
+              },
+              axisLine: {
+                  show: true,
+                  lineStyle: {
+                      color: "#0ED8D1",
+                      width: 1,
+                      type: "solid"
+                  },
+              },
+              splitLine: {
+                  lineStyle: {
+                      color: "#063374",
+                  }
+              }
+          }],
+          series: [{
+              name: '在职',
+              type: 'bar',
+              data: zz,
+              barWidth: 10, //柱子宽度
+              barGap: 1, //柱子之间间距
+              itemStyle: {
+                  normal: {
+                      color:new EChart.graphic.LinearGradient(0, 0, 0, 1, [{
+                          offset: 1,
+                          color : "#11E7AA"
+                        }, {
+                          offset: 0,
+                          color : "#01C26E"
+                        }]),
+                      barBorderRadius: [30, 30, 0, 0],
+                  }
+              }
+          }, {
+              name: '增员',
+              type: 'bar',
+              data: zy,
+              barWidth: 10,
+              barGap: 1,
+              itemStyle: {
+                  normal: {
+                      color:new EChart.graphic.LinearGradient(0, 0, 0, 1, [{
+                          offset: 0,
+                          color : "#32EEEB"
+                        }, {
+                          offset: 1,
+                          color : "#0379DB"
+                        }]),
+                      barBorderRadius: [30, 30, 0, 0],
+                  }
+              }
+          }, {
+              name: '离退',
+              type: 'bar',
+              data: lt,
+              barWidth: 10,
+              barGap: 1,
+              itemStyle: {
+                  normal: {
+                      color:new EChart.graphic.LinearGradient(0, 0, 0, 1, [{
+                          offset: 0,
+                          color : "#1D96FA"
+                        }, {
+                          offset: 1,
+                          color : "#178EF9"
+                        }]),
+                      barBorderRadius: [30, 30, 0, 0],
+                  }
+              }
+          }, {
+              name: '其他减员',
+              type: 'bar',
+              data: qtjy,
+              barWidth: 10,
+              barGap: 1,
+              itemStyle: {
+                  normal: {
+                      color:new EChart.graphic.LinearGradient(0, 0, 0, 1, [{
+                          offset: 0,
+                          color : "#6D7EFF"
+                        }, {
+                          offset: 1,
+                          color : "#3B56FB"
+                        }]),
+                      barBorderRadius: [30, 30, 0, 0],
+                  }
+              }
+          }]
+        })
     },
-    legend: {
-        data: ['在职', '增员', '离退','其他减员'],
-        align: 'left',
-        right: 10,
-        textStyle: {
-            color: "#fff"
-        },
-        itemWidth: 10,
-        itemHeight: 10,
-        itemGap: 35.,
-        x: 'center',  
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis: [{
-        type: 'category',
-        data: ['最高检',
-            '北京',
-            '天津',
-            '河北',
-            '山西',
-            '内蒙古',
-            '辽宁',
-            '吉林',
-            '黑龙江',
-            '上海 ',
-        ],
-        axisLine: {
-            show: true,
-            lineStyle: {
-                color: "#063374",
-                width: 1,
-                type: "solid"
-            }
-        },
-        axisTick: {
-            show: false,
-        },
-        axisLabel: {
-            show: true,
-            textStyle: {
-                color: "#00c7ff",
-            }
-        },
-    }],
-    yAxis: [{
-        type: 'value',
-        axisLabel: {
-            formatter: '{value} '
-        },
-        axisTick: {
-            show: false,
-        },
-        axisLine: {
-            show: false,
-            lineStyle: {
-                color: "#00c7ff",
-                width: 1,
-                type: "solid"
-            },
-        },
-        splitLine: {
-            lineStyle: {
-                color: "#063374",
-            }
-        }
-    }],
-    series: [{
-        name: '在职',
-        type: 'bar',
-        data: [20, 50, 30, 50, 43, 38, 27, 50, 42, 46],
-        barWidth: 10, //柱子宽度
-        barGap: 1, //柱子之间间距
-        itemStyle: {
-            normal: {
-                color:['rgba(17,231,170,1)', 'rgba(1,194,110,0)'],
-                barBorderRadius: [30, 30, 0, 0],
-            }
-        }
-    }, {
-        name: '增员',
-        type: 'bar',
-        data: [50, 30, 40, 41, 35, 47, 30, 22, 46, 26],
-        barWidth: 10,
-        barGap: 1,
-        // itemStyle: {
-        //     normal: {
-        //         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-        //             offset: 0,
-        //             color: '#00da9c'
-        //         }, {
-        //             offset: 1,
-        //             color: '#007a55'
-        //         }]),
-        //         opacity: 1,
-        //     }
-        // }
-    }, {
-        name: '离退',
-        type: 'bar',
-        data: [30, 48, 33, 48, 23, 47, 50, 32, 26, 46],
-        barWidth: 10,
-        barGap: 1,
-        // itemStyle: {
-        //     normal: {
-        //         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-        //             offset: 0,
-        //             color: '#c4e300'
-        //         }, {
-        //             offset: 1,
-        //             color: '#728400'
-        //         }]),
-        //         opacity: 1,
-        //     }
-        // }
-    }, {
-        name: '其他减员',
-        type: 'bar',
-        data: [20, 48, 43, 28, 43, 47, 50, 42, 36, 26],
-        barWidth: 10,
-        barGap: 1,
-        // itemStyle: {
-        //     normal: {
-        //         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-        //             offset: 0,
-        //             color: '#c4e300'
-        //         }, {
-        //             offset: 1,
-        //             color: '#728400'
-        //         }]),
-        //         opacity: 1,
-        //     }
-        // }
-    }]
-})
-    }
+    convertChartConfigsort(configList = []) {
+				const xAxisData  = [],
+					  seriesData = [];
+					  configList.map((config) => {
+						  xAxisData.push(config.id);
+						  seriesData.push(config.name)
+					  });
+				return { xAxisData, seriesData };
+			},
+    setDialogVisible() {
+				let data = [],
+					key  = '';
+					name='各级检察机关人员现状';
+					key  = '各级检察机关人员现状';
+					data = this.personnelStatusQuos;
+				this.dialogContext = {
+					name,
+					key,
+					data
+				};
+
+				this.dialogVisible = true;
+			},
+			loadDialogChart(){
+				// const { data: chartData, key } = this.dialogContext,
+				// 	  { xAxisData, seriesData } = this.convertChartConfigsort(chartData, key);
+				this.dialogBarChart            = EChart.init(this.$refs.dialogChart);
+				const { xAxisData, zz, zy,lt,qtjy} = this.personnelStatusQuosConfig(this.personnelStatusQuos);
+        this.dialogBarChart.setOption({
+          tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                  type: 'shadow'
+              }
+          },
+          legend: {
+              data: ['在职', '增员', '离退','其他减员'],
+              align: 'left',
+              right: 10,
+              textStyle: {
+                  color: "#fff"
+              },
+              itemWidth: 10,
+              itemHeight: 10,
+              itemGap: 35.,
+              x: 'center',  
+          },
+          grid: {
+              left: '3%',
+              right: '4%',
+              bottom: '3%',
+              containLabel: true
+          },
+          xAxis: [{
+              type: 'category',
+              data: xAxisData,
+              axisLine: {
+                  show: true,
+                  lineStyle: {
+                      color: "#0ED8D1",
+                      width: 1,
+                      type: "solid"
+                  }
+              },
+              axisTick: {
+                  show: false,
+              },
+              axisLabel: {
+                  show: true,
+                  textStyle: {
+                      color: "#fff",
+                  }
+              },
+          }],
+          yAxis: [{
+              type: 'value',
+              axisLabel: {
+                  formatter: '{value} '
+              },
+              axisTick: {
+                  show: false,
+              },
+              axisLabel: {
+                  show: true,
+                  textStyle: {
+                      color: "#fff",
+                  }
+              },
+              axisLine: {
+                  show: true,
+                  lineStyle: {
+                      color: "#0ED8D1",
+                      width: 1,
+                      type: "solid"
+                  },
+              },
+              splitLine: {
+                  lineStyle: {
+                      color: "#063374",
+                  }
+              }
+          }],
+          series: [{
+              name: '在职',
+              type: 'bar',
+              data: zz,
+              barWidth: 10, //柱子宽度
+              barGap: 1, //柱子之间间距
+              itemStyle: {
+                  normal: {
+                      color:new EChart.graphic.LinearGradient(0, 0, 0, 1, [{
+                          offset: 1,
+                          color : "#11E7AA"
+                        }, {
+                          offset: 0,
+                          color : "#01C26E"
+                        }]),
+                      barBorderRadius: [30, 30, 0, 0],
+                  }
+              }
+          }, {
+              name: '增员',
+              type: 'bar',
+              data: zy,
+              barWidth: 10,
+              barGap: 1,
+              itemStyle: {
+                  normal: {
+                      color:new EChart.graphic.LinearGradient(0, 0, 0, 1, [{
+                          offset: 0,
+                          color : "#32EEEB"
+                        }, {
+                          offset: 1,
+                          color : "#0379DB"
+                        }]),
+                      barBorderRadius: [30, 30, 0, 0],
+                  }
+              }
+          }, {
+              name: '离退',
+              type: 'bar',
+              data: lt,
+              barWidth: 10,
+              barGap: 1,
+              itemStyle: {
+                  normal: {
+                      color:new EChart.graphic.LinearGradient(0, 0, 0, 1, [{
+                          offset: 0,
+                          color : "#1D96FA"
+                        }, {
+                          offset: 1,
+                          color : "#178EF9"
+                        }]),
+                      barBorderRadius: [30, 30, 0, 0],
+                  }
+              }
+          }, {
+              name: '其他减员',
+              type: 'bar',
+              data: qtjy,
+              barWidth: 10,
+              barGap: 1,
+              itemStyle: {
+                  normal: {
+                      color:new EChart.graphic.LinearGradient(0, 0, 0, 1, [{
+                          offset: 0,
+                          color : "#6D7EFF"
+                        }, {
+                          offset: 1,
+                          color : "#3B56FB"
+                        }]),
+                      barBorderRadius: [30, 30, 0, 0],
+                  }
+              }
+          }]
+        })
+			},
+			closeBarDialog(){
+				this.dialogBarChart && this.dialogBarChart.clear();
+			},
   },
   components: {
     PieChart
@@ -468,87 +826,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 $boxMarginTop: 20px;
-
-// .team-left-container {
-//     .in-job-box {
-//         width: 580px;
-//         height: 217px;
-//         background-size: 100% 100%;
-//         .in-job-detail {
-//             display: flex;
-//             justify-content: space-around;
-//             .digital-block {
-//                 max-width: 340px;
-//                 margin-left: 16px;
-//                 li {
-//                     width: 28px;
-//                     height: 44px;
-//                     line-height: 44px;
-//                     text-align: center;
-//                     float: left;
-//                     margin: 0 16px 10px 0;
-//                     font-size: 24px;
-//                     background-color: #1C6EB7;
-//                     box-shadow: 1px 1px 0 #cde8f9;
-//                     &:last-of-type{
-//                         margin-right: 0;
-//                     }
-//                 }
-//             }
-//             .to-leave {
-//                 display: flex;
-//                 text-align: center;
-//                 margin-top: -5px;
-//                 margin-left: 27px;
-//                 .to-leave-icon {
-//                     width: 15px;
-//                     height: 13px;
-//                     vertical-align: middle;
-//                 }
-//                 .leave-block {
-//                     margin-left: 14px;
-//                 }
-//                 p {
-//                     font-size: 14px;
-//                     margin-bottom: 12px;
-//                 }
-//                 span {
-//                     font-size: 24px;
-//                     &.to-num {
-//                         color: #dda62c;
-//                     }
-//                     &.leave-num {
-//                         color: #00ffff;
-//                     }
-//                 }
-//             }
-//         }
-//     }
-//     .work-life-box {
-//         margin-top: $boxMarginTop;
-//         background-size: 100% 100%;
-//         width: 580px;
-//         height: 351px;
-//         background: rgba(10, 103, 209, 0.2);
-//         border-radius: 8px;
-//         border: 1px solid rgba(1, 218, 226, 1);
-//         .work-life-charts {
-//             width: 500px;
-//             margin: 0 auto;
-//             display: flex;
-//             flex-wrap: wrap-reverse;
-//             justify-content: center;
-//         }
-//     }
-//     .education-situation-box {
-//         width: 580px;
-//         height: 315px;
-//         background: rgba(10, 103, 209, 0.2);
-//         border-radius: 8px;
-//         border: 1px solid rgba(1, 218, 226, 1);
-//         margin-top: $boxMarginTop;
-//     }
-// }
 .team-left-container {
   display: flex;
   flex-wrap: wrap;
@@ -724,6 +1001,7 @@ $boxMarginTop: 20px;
     height: 358px;
     .personnelStatus-box {
       width: 100%;
+      position: relative;
       .overview-box {
         width: 100%;
         position: relative;
@@ -782,6 +1060,20 @@ $boxMarginTop: 20px;
         color: rgba(255, 255, 255, 1);
         line-height: 22px;
       }
+      .more-btn{
+                color:#FBBA18;
+                position:absolute;
+                right:85px;
+                top:55px;
+                margin-top: 17px;
+                text-align: right;
+                font-size: 16px;
+                font-family: Helvetica;
+                color: rgba(251, 186, 24, 1);
+                line-height: 17px;
+                cursor: pointer;
+				        z-index:999;
+			}
     }
     .top-box {
       width: 550px;
@@ -860,6 +1152,10 @@ $boxMarginTop: 20px;
         }
       }
     }
+  }
+  .per-dialog-chart {
+      width: 100%;
+      height: 400px;
   }
 }
 </style>
