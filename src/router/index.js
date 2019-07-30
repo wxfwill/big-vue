@@ -63,17 +63,17 @@ export default new Router({
 							}
 						},
 						{
-							path     : 'inspect',
-							name     : 'inspect',
-							component: resolve => require(['@/pages/judicial-case/inspect'], resolve),
+							path     : 'undetected',
+							name     : 'undetected',
+							component: resolve => require(['@/pages/judicial-case/undetected/index'], resolve),
 							meta     : {
 								title: '司法办案-未检'
 							}
 						},
 						{
-							path     : 'chargeAppeal',
-							name     : 'chargeAppeal',
-							component: resolve => require(['@/pages/judicial-case/control'], resolve),
+							path     : 'prosecution',
+							name     : 'prosecution',
+							component: resolve => require(['@/pages/judicial-case/prosecution/index'], resolve),
 							meta     : {
 								title: '司法办案-控申'
 							}

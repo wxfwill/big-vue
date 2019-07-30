@@ -97,12 +97,8 @@
 
 <style lang="scss">
     .home-page-center {
+        position: relative;
         width: 1230px;
-        margin-top: -20px;
-        &.center-box {
-            position: relative;
-            width: 1211px;
-            height: 850px;
-        }
+        height: 970px;
     }
 </style>

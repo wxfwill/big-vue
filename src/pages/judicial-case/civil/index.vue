@@ -118,7 +118,7 @@
                         </div>
                         <div class="file-content">
                             <div ref="fileChart" :style="{width:'490px',height:'220px'}"></div>
-                            <p class="more-text-btn more-text-btn" @click="setDialogVisible('案均办结天数')">更多>></p>
+                            <p class="more-text-btn" @click="setDialogVisible('案均办结天数')">更多>></p>
                         </div>
                     </div>
                     <div class="capita-box">
@@ -128,7 +128,7 @@
                         </div>
                         <div class="capita-content">
                             <div ref="capitaChart" :style="{width:'490px',height:'280px'}"></div>
-                            <p class="more-text-btn more-text-btn" @click="setDialogVisible('人均办结数')">更多>></p>
+                            <p class="more-text-btn" @click="setDialogVisible('人均办结数')">更多>></p>
                         </div>
                     </div>
                 </div>
@@ -1049,8 +1049,7 @@
         .civil-page-content {
             width: 1211px;
             min-width: 1230px;
-            margin-top: -20px;
-            height: 850px;
+            height: 950px;
         }
         .civil-page-right {
             display: flex;

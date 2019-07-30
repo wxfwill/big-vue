@@ -1,5 +1,5 @@
 <template>
-    <div class="home-page-center center-box">
+    <div class="criminal-page-center">
         <bj-map
                 :tooltipConfig="mapTooltipConfig"
                 :mapData="mapList"
@@ -97,13 +97,10 @@
 </script>
 
 <style lang="scss">
-    .home-page-center {
-        min-width: 1230px;
-        margin-top: -20px;
-        &.center-box {
-            position: relative;
-            width: 1211px;
-            height: 850px;
-        }
+    .criminal-page-center {
+        width: 1250px;
+        min-width: 1250px;
+        position: relative;
+        height: 950px;
     }
 </style>

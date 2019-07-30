@@ -126,7 +126,7 @@
                     </div>
                     <div class="capita-content">
                         <div ref="capitaChart" :style="{width:'490px',height:'260px'}"></div>
-                        <p class="more-text-btn more-text-btn" @click="setDialogVisible('人均办结数')">更多>></p>
+                        <p class="more-text-btn" @click="setDialogVisible('人均办结数')">更多>></p>
                     </div>
                 </div>
                 <div class="file-box">
@@ -136,7 +136,7 @@
                     </div>
                     <div class="file-content">
                         <div ref="fileChart" :style="{width:'490px',height:'280px'}"></div>
-                        <p class="more-text-btn more-text-btn" @click="setDialogVisible('案均办结天数')">更多>></p>
+                        <p class="more-text-btn" @click="setDialogVisible('案均办结天数')">更多>></p>
                     </div>
                 </div>
             </div>
@@ -161,7 +161,8 @@
 	import { triggerMixin }           from '@/components/mixin/trigger';
 	import {
 		verifyTriggerState, fillZero,
-		convertData, textFormatter
+		convertData, textFormatter,
+		convertLineData,
 	}                                 from '@/utlis/helper';
 	import {
 		conditionConfig,
@@ -295,7 +296,7 @@
 
 			// 加载受理案件趋势分析报表
 			loadTrendencyChart(chartData) {
-				const { axisData, seriesData } = this.convertLineData(chartData, 'year', 'sls');
+				const { axisData, seriesData } = convertLineData(chartData, 'year', 'sls');
 				this.trendencyChart.setOption({
 					tooltip: {
 						trigger    : 'axis',
@@ -737,17 +738,6 @@
 					seriesData
 				};
 			},
-			convertLineData(data, axisKey, seriesKey) {
-				const axisData   = [],
-					  seriesData = data.map(i => {
-						  axisData.push(i[axisKey]);
-						  return i[seriesKey];
-					  });
-				return {
-					axisData,
-					seriesData
-				};
-			},
 
 			...mapActions('administrative', ['initMapState']),
 			...mapActions('administrative', ['setMapData']),
@@ -878,9 +868,8 @@
         }
         .administrative-page-center {
             width: 1250px;
-            min-width: 1230px;
-            height: 850px;
-            margin: -20px 0 0;
+            min-width: 1250px;
+            height: 950px;
         }
         .administrative-page-right {
             display: flex;

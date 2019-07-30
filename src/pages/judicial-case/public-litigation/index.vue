@@ -4,7 +4,7 @@
             <i class="title-dot"></i>
             公益诉讼
         </div>
-        <div class="outer-lawsuit-page">
+        <div class="outer-lawsuit-page fraze-grid">
             <div class="lawsuit-page-left">
                 <div class="left-top">
                     <div class="index-box">
@@ -116,7 +116,7 @@
                         </div>
                         <div class="capita-content">
                             <div ref="capitaChart" :style="{width:'490px',height:'240px'}"></div>
-                            <p class="more-text-btn more-text-btn" @click="setDialogVisible('人均办结数')">更多>></p>
+                            <p class="more-text-btn" @click="setDialogVisible('人均办结数')">更多>></p>
                         </div>
                     </div>
                     <div class="file-box">
@@ -126,7 +126,7 @@
                         </div>
                         <div class="file-content">
                             <div ref="fileChart" :style="{width:'490px',height:'240px'}"></div>
-                            <p class="more-text-btn more-text-btn" @click="setDialogVisible('案均办结天数')">更多>></p>
+                            <p class="more-text-btn" @click="setDialogVisible('案均办结天数')">更多>></p>
                         </div>
                     </div>
                 </div>
@@ -939,9 +939,6 @@
 </script>
 <style lang="scss" scoped>
     .outer-lawsuit-page {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
         .lawsuit-page-left {
             width: 1310px;
             display: flex;
@@ -1032,8 +1029,7 @@
         }
         .lawsuit-page-center {
             min-width: 1211px;
-            height: 850px;
-            padding-top: -20px;
+            height: 950px;
         }
         .lawsuit-page-right {
             width: 1275px;

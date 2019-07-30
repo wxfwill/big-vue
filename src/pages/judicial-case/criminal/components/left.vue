@@ -119,6 +119,7 @@
 			this.publicProChart  = ECharts.init(this.$refs.publicProChart);
 			this.fchcChart       = ECharts.init(this.$refs.fchcChart);
 
+			this.requestReviewArrestCount(params);
 			this.requestAcceptCase(params);
 			this.requestPublicProsecutionBusiness(params);
 			this.requestProsecutionCaseList(params);
@@ -129,6 +130,7 @@
 			const params = { ...this.mapCode, ...this.dateSection };
 			if(verifyTriggerState(this.trigger, this.oldTriggerState, params)) {
 				this.oldTriggerState = params;
+				this.requestReviewArrestCount(params);
 				this.requestAcceptCase(params);
 				this.requestPublicProsecutionBusiness(params);
 				this.requestProsecutionCaseList(params);
@@ -190,9 +192,9 @@
 				});
 			},
 
-			// 审查逮捕各类犯罪不捕情况
-			async requestReviewArrest(params) {
-				const res = await services.getReviewArrest(params);
+			// 审查逮捕各类犯罪不捕情况总数
+			async requestReviewArrestCount(params) {
+				const res = await services.getReviewArrestCount(params);
 				if(res.code === 200) {
 					const data       = res.data;
 					this.examineData = {
@@ -200,7 +202,16 @@
 						bpzdbrs: data.bpzdbrs,
 						bbrs   : data.bbrs,
 					};
-					this.loadReviewArrestChart(data);
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+
+			// 审查逮捕各类犯罪不捕情况总数
+			async requestReviewArrest(params) {
+				const res = await services.getReviewArrest(params);
+				if(res.code === 200) {
+					this.loadReviewArrestChart(res.data);
 				} else {
 					this.$message.error(res.msg);
 				}
@@ -534,10 +545,10 @@
 <style lang="scss" scoped>
     .criminal-page-left {
         display: flex;
-        width: 1906px;
         height: 100%;
         .left-left {
-            margin-right: 10px;
+            width: 739px;
+            margin-right: 20px;
             position: relative;
             .left-group {
                 width: 740px;
@@ -636,6 +647,7 @@
             }
         }
         .left-right {
+            width: 544px;
             .public-pro-status {
                 width: 544px;
                 .public-pro-info {

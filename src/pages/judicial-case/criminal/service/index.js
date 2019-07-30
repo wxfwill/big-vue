@@ -35,15 +35,6 @@ export const getDutyCrime = async (data) => await request({
 	params: data
 });
 
-
-// 获取刑事:审查逮捕各类犯罪不捕情况
-export const getReviewArrest = async (data) => await request({
-	method: 'get',
-	url   : '/api/v1.0/criminal/getReviewArrest',
-	params: data
-});
-
-
 // 获取刑事:判决生效人数
 export const getEffectiveJudgement = async (data) => await request({
 	method: 'get',
@@ -98,5 +89,19 @@ export const getTopSlBjZb = async (data) => await request({
 export const getEducationLevel = async (data) => await request({
 	method: 'get',
 	url   : '/api/v1.0/criminal/getEducationLevel',
+	params: data
+});
+
+// 获取刑事:审查逮捕各类犯罪不捕情况-总数
+export const getReviewArrestCount = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/criminal/getReviewArrestCount',
+	params: data
+});
+
+// 获取刑事:审查逮捕各类犯罪不捕情况
+export const getReviewArrest = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/criminal/getReviewArrest',
 	params: data
 });
