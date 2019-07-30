@@ -24,7 +24,7 @@
                     </div>
                     <div>
                         <p class='more-btn' @click="setDialogVisible('受理案件趋势分析')">更多>></p>
-                        <div class="casenumber-analysis" ref='caseTrendAnalysisList'></div>
+                        <div class="casenumber-analysis" ref='trendOfAcceptingCasesList'></div>
                     </div>
                 </div>
                 <div class="case-box">
@@ -33,7 +33,7 @@
                         <i>案件分类分析</i>
                     </div>
                     <div class="classify-box">
-                    <water-polo v-for="(item,index) in poloList" :key="index" :chartConfig="item" :ID="`pol${index}`" width='102px' height='102px'></water-polo>
+                    <!-- <water-polo v-for="(item,index) in poloList" :key="index" :chartConfig="item" :ID="`pol${index}`" width='102px' height='102px'></water-polo> -->
                     </div>
                 </div>
             </div>
@@ -112,7 +112,7 @@ export default {
             inspectIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
             inspectIPS:[20, 60, 50, 80, 120, 100,20,19,60,88],
             theInvestigatorsList:{},//相关办案人员（各省市/人）
-            caseTrendAnalysisList:{},//受理案件趋势分析
+            trendOfAcceptingCasesList:{},//受理案件趋势分析
             dialogVisible:false,
              dialogContext: {
                 name: '',
@@ -136,8 +136,7 @@ export default {
         // this.acceptChart('accept',this.acceptIPSxAxis,this.acceptIPS)//受理案件趋势分析
         this.theInvestigatorsListchart   = echarts.init(this.$refs.personnelchart);
         
-        this.caseTrendAnalysisListchart = echarts.init(this.$refs.caseTrendAnalysisList);
-        this.theInvestigatorsListchart   = echarts.init(this.$refs.theInvestigatorsList);
+        this.trendOfAcceptingCasesListchart = echarts.init(this.$refs.trendOfAcceptingCasesList);
         this.analysisBySynthesisListchart = echarts.init(this.$refs.analysisBySynthesisList);
         this.toAcceptTheNumberListchart = echarts.init(this.$refs.toAcceptTheNumberList);
     },
@@ -146,14 +145,13 @@ export default {
             const res = await services.getCheckCharterData(params);
             if(res.code === 200) {
                 const data         = res.data;
+                console.log(data)
                 //theInvestigatorsList--相关办案人员（各省市/人）
                 this.theInvestigatorsList = data.theInvestigatorsList;
                 this.loadtheInvestigatorsListchart();
-                // LeftBox.loadtheInvestigatorsListchart(data.theInvestigatorsList);
-                //caseTrendAnalysisList--受理案件趋势分析
-                this.caseTrendAnalysisList=data.caseTrendAnalysisList
-                this.loadcaseTrendAnalysisListchart()
-                // LeftBox.loadcaseNumberAnalysischart(data.caseNumberAnalysis)
+                //trendOfAcceptingCasesList	--受理案件趋势分析
+                this.trendOfAcceptingCasesList=data.trendOfAcceptingCasesList	
+                this.loadtrendOfAcceptingCasesListchart()
                 //caseNumberAnalysis--案件分类分析
                 this.caseNumberAnalysis=data.caseNumberAnalysis
                 //analysisBySynthesisList--综合分析
@@ -175,8 +173,7 @@ export default {
                     });
             return { xAxisData, seriesData };
         },
-        loadtheInvestigatorsListchart() {
-            this.theInvestigatorsList=personnelChartConfig
+        loadtheInvestigatorsListchart() {//theInvestigatorsList--相关办案人员（各省市/人)
            const { xAxisData, seriesData } = this.convertChartConfigcz(this.theInvestigatorsList.slice(0,10));
             this.theInvestigatorsListchart.setOption({
                 color: ['#3398DB'],
@@ -234,63 +231,63 @@ export default {
         },
         loadtoAcceptTheNumberList(){
             const { xAxisData, seriesData } = this.convertChartConfigcz(this.toAcceptTheNumberList.slice(0,10));
-                // this.toAcceptTheNumberListchart.setOption({
-                //     color: ['#3398DB'],
-                //     tooltip : {
-                //         trigger: 'axis',
-                //         axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                //             type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                //         }
-                //     },
-                //     grid: {
-                //         left: '3%',
-                //         right: '10%',
-                //         bottom: '3%',
-                //         containLabel: true
-                //     },
-                //     xAxis : [
-                //         {
-                //             type : 'category',
-                //             data : xAxisData,
-                //             axisTick: {
-                //                 show:false
-                //             },
-                //             axisLine:{
-                //                 lineStyle: {
-                //                     color: "#fff",
-                //                 }
-                //             }
-                //         }
-                //     ],
-                //     yAxis : [
-                //         {
-                //             type : 'value',
-                //             axisLine:{
-                //                 show:false,
-                //                 lineStyle: {
-                //                     color: "#fff",
-                //                 }
-                //             }
-                //         }
-                //     ],
-                //     series : [
-                //         {
-                //             name:'直接访问',
-                //             type:'bar',
-                //             barWidth: '60%',
-                //             data:seriesData,
-                //             itemStyle:{
-                //                 normal:{
-                //                     color:'#5C89FF'
-                //                 }
-                //             }
-                //         }
-                //     ]
-                // })
+                this.toAcceptTheNumberListchart.setOption({
+                    color: ['#3398DB'],
+                    tooltip : {
+                        trigger: 'axis',
+                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '10%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data : xAxisData,
+                            axisTick: {
+                                show:false
+                            },
+                            axisLine:{
+                                lineStyle: {
+                                    color: "#fff",
+                                }
+                            }
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value',
+                            axisLine:{
+                                show:false,
+                                lineStyle: {
+                                    color: "#fff",
+                                }
+                            }
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'直接访问',
+                            type:'bar',
+                            barWidth: '60%',
+                            data:seriesData,
+                            itemStyle:{
+                                normal:{
+                                    color:'#5C89FF'
+                                }
+                            }
+                        }
+                    ]
+                })
         },
-        loadcaseTrendAnalysisListchart(){
-            // const {xAxisData,seriesData}=this.convertChartConfigcz(this.caseTrendAnalysisList)
-            this.caseTrendAnalysisListchart.setOption({
+        loadtrendOfAcceptingCasesListchart(){//受理案件趋势分析
+            // const {xAxisData,seriesData}=this.convertChartConfigcz(this.trendOfAcceptingCasesList)
+            this.trendOfAcceptingCasesListchart.setOption({
                 tooltip: {
                     trigger: 'axis'
                 },
@@ -455,62 +452,6 @@ export default {
                 ]
             })
         },
-        loadtheInvestigatorsListchart(params) {
-            const { xAxisData, seriesData } = this.convertChartConfigcz(personnelChartConfig.slice(0,10));
-            this.theInvestigatorsListchart.setOption({
-                color: ['#3398DB'],
-                tooltip : {
-                    trigger: 'axis',
-                    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                        type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                    }
-                },
-                grid: {
-                    left: '3%',
-                    right: '10%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                xAxis : [
-                    {
-                        type : 'category',
-                        data : xAxisData,
-                        axisTick: {
-                            show:false
-                        },
-                        axisLine:{
-                            lineStyle: {
-                                color: "#fff",
-                            }
-                        }
-                    }
-                ],
-                yAxis : [
-                    {
-                        type : 'value',
-                        axisLine:{
-                            show:false,
-                            lineStyle: {
-                                color: "#fff",
-                            }
-                        }
-                    }
-                ],
-                series : [
-                    {
-                        name:'直接访问',
-                        type:'bar',
-                        barWidth: '60%',
-                        data:seriesData,
-                        itemStyle:{
-                            normal:{
-                                color:'#5C89FF'
-                            }
-                        }
-                    }
-                ]
-            })
-        },
         setDialogVisible(name) {
 				let data = [],
                     key  = '';
@@ -521,7 +462,7 @@ export default {
                             break;
                         case '受理案件趋势分析':
                             key  = '受理案件趋势分析';
-                            data = this.caseTrendAnalysisList;
+                            data = this.trendOfAcceptingCasesList;
                             break;
                         case '综合分析':
                             key  = '综合分析';
