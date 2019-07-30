@@ -95,7 +95,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .home-page-center {
         width: 1230px;
         margin-top: -20px;

@@ -301,7 +301,7 @@
 							}
 						},
 						layoutCenter: name === '全国' ? ['50%', '50%'] : undefined,
-						layoutSize  : name === '全国' ? 1000 : undefined,
+						layoutSize  : name === '全国' ? 950 : undefined,
 					},
 					series : [{
 						name            : 'extend',
@@ -867,7 +867,7 @@
             position: absolute;
             left: 50%;
             top: 65px;
-            transform: translate(-56%, 0);
+            transform: translate(-50%, 0);
             width: 300px;
             padding: 0 15px;
             border: 1px solid #17DDDD;

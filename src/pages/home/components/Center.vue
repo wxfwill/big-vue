@@ -95,7 +95,7 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     .home-page-center {
         position: relative;
         width: 1230px;

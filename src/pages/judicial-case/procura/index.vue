@@ -76,7 +76,7 @@
 import echarts from 'echarts';
 import Popup from '@/components/Popup.vue'
 import trendChart from '@/components/judicial-case/trend-chart.vue'
-import waterPolo from '@/components/judicial-case/water-polo.vue'
+import waterPolo from '@/components/common/water-polo.vue'
 import DateTime from '@/components/DateTime.vue'
 import CenterBox from './components/Center'
 import * as services                   from './service';
