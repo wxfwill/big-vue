@@ -88,7 +88,7 @@
 </template>
 
 <script>
-	import { getAreas, getPersonInfo } from '@/utlis/request';
+	import { getAreas, getPersonInfo } from '../service/index';
 	import { uuid }                    from '@/utlis/helper';
 
 	export default {

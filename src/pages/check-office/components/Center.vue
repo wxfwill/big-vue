@@ -10,7 +10,7 @@
 
 <script>
 	import EChart                           from 'echarts';
-	import { securityClassificationConfig } from '@/pages/check-office/chart-config';
+	import { securityClassificationConfig } from '../constant/index';
 
 	export default {
 		mounted() {

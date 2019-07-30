@@ -23,7 +23,7 @@
 
 <script>
 	import PieGroup                     from './pie-group';
-	import { jeremyLevinUnitColorList } from '@/pages/check-office/chart-config';
+	import { jeremyLevinUnitColorList } from '../constant/index';
 
 	export default {
 		data() {

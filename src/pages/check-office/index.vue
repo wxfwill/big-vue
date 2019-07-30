@@ -1,5 +1,5 @@
 <template>
-    <div class="check-office-wrap outer-home-page">
+    <div class="check-office-wrap fraze-grid">
         <date-picker
                 :dateChange="requestCheckOfficeData"
         ></date-picker>
@@ -24,11 +24,11 @@
 </template>
 
 <script>
-	import LeftSide                                                 from '@/components/check-office/Left';
-	import CenterBox                                                from '@/components/check-office/Center';
-	import RightSide                                                from '@/components/check-office/Right';
-	import { getProcuratorialOfficeData }                           from '@/utlis/request';
-	import { postDistributeConfig, submitApprovalPrioritiesConfig } from './chart-config';
+	import LeftSide                                                 from './components/Left';
+	import CenterBox                                                from './components/Center';
+	import RightSide                                                from './components/Right';
+	import { getProcuratorialOfficeData }                           from './services/index';
+	import { postDistributeConfig, submitApprovalPrioritiesConfig } from './constant/index';
 	import DatePicker                                               from '@/components/common/date-picker';
 
 	export default {
@@ -98,7 +98,6 @@
 
 <style lang="scss">
     .check-office-wrap {
-        padding-top: 40px;
         position: relative;
         .cursor-img {
             width: 240px;

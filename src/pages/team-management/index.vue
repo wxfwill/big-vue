@@ -1,5 +1,5 @@
 <template>
-    <div class="team-wrap outer-home-page">
+    <div class="team-wrap">
         <date-picker
                 :dateChange="requestTeamData"
         ></date-picker>
@@ -26,10 +26,10 @@
 </template>
 
 <script>
-	import Left                  from '@/components/team-management/left.vue';
-	import CenterBox             from '@/components/team-management/Center.vue';
-	import Right                 from '@/components/team-management/Right.vue';
-	import { getTeamManagement } from '@/utlis/request';
+	import Left                  from './components/left.vue';
+	import CenterBox             from './components/Center.vue';
+	import Right                 from './components/Right.vue';
+	import { getTeamManagement } from './service/index';
 	import { fillZero }          from '@/utlis/helper';
 	import DatePicker            from '@/components/common/date-picker';
 
@@ -111,36 +111,16 @@
 
 <style lang="scss">
     .team-wrap {
-        &.outer-home-page {
-            display: flex;
-            padding-top: 40px;
-            position: relative;
-            .title {
-                padding: 27px 20px 31px;
-                font-size: 24px;
-                color: #ffffff;
-                text-align: center;
-            }
+        display: flex;
+        position: relative;
+        .white-text {
+            color: #ffffff !important;
         }
-        .outer-home-page {
-            display: flex;
-            padding-top: 50px;
-            position: relative;
-            .title {
-                padding: 27px 20px 31px;
-                font-size: 24px;
-                color: #ffffff;
-                text-align: center;
-            }
-            .white-text {
-                color: #ffffff !important;
-            }
-            .text-center {
-                text-align: center;
-            }
-            .text-left {
-                text-align: left;
-            }
+        .text-center {
+            text-align: center;
+        }
+        .text-left {
+            text-align: left;
         }
     }
 	// .dateBox{

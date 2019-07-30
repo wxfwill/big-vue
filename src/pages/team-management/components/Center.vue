@@ -19,9 +19,9 @@
 
 <script>
 	import { mapGetters, mapActions }       from 'vuex';
-	import * as services                    from './service';
+	import * as services                    from '../service/index';
 	import { verifyTriggerState, fillZero } from '@/utlis/helper';
-	import { mapTooltipConfig }             from './constant';
+	import { mapTooltipConfig }             from '../constant/index';
 	import BjMap                            from '@/components/common/map/index';
 
 	export default {
@@ -62,30 +62,10 @@
 		},
 		methods   : {
 			async loadMapData(params) {
-				const res = await services.getMapTopData(params);
-				if(res.code === 200) {
-					const data   = res.data;
-					this.sls     = data.sls;
-					this.bjs     = data.bjs;
-					this.zbs     = data.zbs;
-					this.mapList = data.homePageMapDataList;
-				} else {
-					this.sls     = 0;
-					this.bjs     = 0;
-					this.zbs     = 0;
-					this.mapList = [];
-					this.$message.error(res.msg);
-				}
+
 			},
 			async loadHeadTotalData(params) {
-				const res = await services.getTopSlBjZb(params);
-				if(res.code === 200) {
-					this.totalSls = `${fillZero(res.data.slzs, 4)}`.split('');
-					this.totalBjs = `${fillZero(res.data.bjzs, 4)}`.split('');
-					this.totalZbs = `${fillZero(res.data.zbzs, 4)}`.split('');
-				} else {
-					this.$message.error(res.msg);
-				}
+
 			},
 			...mapActions('homePage', ['setMapData']),
 		},

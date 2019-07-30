@@ -83,9 +83,9 @@
     </div>
 </template>
 <script>
-	import EChart                      from 'echarts';
-	import CitySelector                from './city-selector';
-	import { getPersonnelPerformance,getPersonInfo } from '@/utlis/request';
+	import EChart                                    from 'echarts';
+	import CitySelector                              from './city-selector';
+	import { getPersonnelPerformance,getPersonInfo } from '../service/index';
 
 	export default {
 		mounted() {

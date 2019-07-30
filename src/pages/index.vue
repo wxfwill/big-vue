@@ -21,7 +21,7 @@
 </template>
 
 <script>
-	import DateTime from '@/components/DateTime.vue';
+	import DateTime from '@/components/common/DateTime.vue';
 
 	export default {
 		name      : 'home',

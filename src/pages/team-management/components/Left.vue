@@ -93,7 +93,7 @@
   </div>
 </template>
 <script>
-import EChart from "echarts";
+import EChart   from "echarts";
 import PieChart from "./pie-chart";
 
 export default {
