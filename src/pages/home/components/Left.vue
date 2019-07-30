@@ -83,7 +83,7 @@
 	import { mapGetters }                                                   from 'vuex';
 	import * as services                                                    from '../service/index';
 	import { verifyTriggerState, numberInteger }                            from '@/utlis/helper';
-	import PenalGauge                                                       from './penal-gauge';
+	import PenalGauge                                                       from '@/components/common/penal-gauge';
 	import { undetectedChartConfig, criminalCaseConfig, prosecutionConfig } from '../constant/index';
 
 	export default {

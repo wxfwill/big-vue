@@ -117,7 +117,6 @@
 	import ECharts                               from 'echarts';
 	import { mapGetters }                        from 'vuex';
 	import { verifyTriggerState, numberInteger } from '@/utlis/helper';
-	import 'echarts-liquidfill/src/liquidFill.js';
 	import waterPolo                             from '@/components/common/water-polo.vue'
 	import * as services                         from '../service';
 	import {
@@ -278,7 +277,7 @@
 					this.xzList = administrativeConfig.map(i => ({
 						...i,
 						value: res.data[i.id],
-						rate : (res.data[i.rateId] || 0) / 100,
+						rate : res.data[i.rateId],
 					}));
 				} else {
 					this.$message.error(res.msg);
