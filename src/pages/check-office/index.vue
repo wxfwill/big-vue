@@ -65,18 +65,18 @@
 						const data                = resolve.data;
 						// left
 						this.publishingStatistics = data.publishingStatistics;
+						
 						this.postPriorities       = postDistributeConfig.map(i => ({
 							...i,
-							value: data.postPriorities[i.id],
+							percent: data.postPriorities[i.id],
 						}));
-
 						this.receivingStatistics = data.receivingStatistics;
 						this.jeremyLevinUnitList = data.jeremyLevinUnitList;
 
 						this.submitApprovalStatistics = data.submitApprovalStatistics;
 						this.submitApprovalPriorities = submitApprovalPrioritiesConfig.map(i => ({
 							...i,
-							value: data.submitApprovalPriorities[i.id]
+							percent: data.submitApprovalPriorities[i.id]
 						}));
 
 						// center

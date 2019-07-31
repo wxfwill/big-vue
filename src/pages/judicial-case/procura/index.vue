@@ -87,7 +87,7 @@ import * as services                   from './service';
 import { triggerMixin } from '@/components/mixin/trigger';
 //模拟数据
 import {personnelChartConfig,caseNumberAnalysiscongif,administrativeConfig} from "./constant/index"
-import {verifyTriggerState} from '@/utlis/helper'
+import {verifyTriggerState,textFormatter} from '@/utlis/helper'
 
 
 export default {
@@ -181,7 +181,7 @@ export default {
                 grid: {
                     left: '3%',
                     right: '10%',
-                    bottom: '3%',
+                    bottom: 30,
                     containLabel: true
                 },
                 xAxis : [
@@ -195,7 +195,9 @@ export default {
                             lineStyle: {
                                 color: "#fff",
                             }
-                        }
+                        },
+                        interval:1,
+                        formatter: (name) => textFormatter(name, 4),
                     }
                 ],
                 yAxis : [
@@ -296,7 +298,7 @@ export default {
                 },
                 legend: {
                     right: '15%',
-                    bottom:'-3%',
+                    bottom:'3%',
                     itemGap:15,
                     data: ['检验鉴定','勘验检查','技术协作','同步录音录像','技术性证据审查'],
                     itemWidth:48,
@@ -309,7 +311,7 @@ export default {
                 grid: {
                     left: '3%',
                     right: '4%',
-                    bottom: '3%',
+                    bottom: '10%',
                     containLabel: true
                 },
                 xAxis: {
@@ -388,7 +390,7 @@ export default {
                 },
                 legend: {
                     right: '15%',
-                    bottom:'-3%',
+                    bottom:'3%',
                     itemGap:15,
                     data: ['检验鉴定','勘验检查','技术协作','同步录音录像','技术性证据审查'],
                     itemWidth:48,
@@ -401,7 +403,7 @@ export default {
                 grid: {
                     left: '3%',
                     right: '4%',
-                    bottom: '3%',
+                    bottom: '10%',
                     containLabel: true
                 },
                 xAxis: {
@@ -469,7 +471,7 @@ export default {
                     key  = '';
                     switch(name){
                         case '相关办案人员（各省市/人）':
-                            key  = '相关办案人员（各省市/人）';
+                            key  = '相关办案人员';
                             data = this.theInvestigatorsList;
                             break;
                         case '受理案件趋势分析':
@@ -749,6 +751,7 @@ export default {
     width:100%;
     height:100%;
     display: flex;
+    justify-content:space-between;
     // padding-top:65px;
     .procuratorial-page-left{
         width:1268px;
