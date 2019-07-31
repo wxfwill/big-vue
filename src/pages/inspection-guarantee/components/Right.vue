@@ -10,7 +10,8 @@
                     </div>
 					<div class="propertyBox">
 						<div class="propertyContent">
-							<p v-for='(to,index) in propertyConfig.total' :key='index'>{{to.name}}<br/><span>{{to.num}}</span><b></b></p>
+							<p>总资产<br/><span>{{assetsSituation.zzc}}</span><b></b></p>
+							
 							<ol>
 								<li></li>
 								<li></li>
@@ -19,7 +20,12 @@
 								<li></li>
 							</ol>
 							<ul>
-								<li v-for='(lis,index) in propertyConfig.list' :key='index'>{{lis.name}}<br/><span>{{lis.num}}</span></li>
+								<li>长期投资<br/><span>{{assetsSituation.cqtzzc}}</span></li>
+								<li>固定资产<br/><span>{{assetsSituation.gdzc}}</span></li>
+								<li>流动资产<br/><span>{{assetsSituation.ldzc}}</span></li>
+								<li>其他资产<br/><span>{{assetsSituation.qtzc}}</span></li>
+								<li>无形资产<br/><span>{{assetsSituation.wxzc}}</span></li>
+								<li>在建工程<br/><span>{{assetsSituation.zjgczc}}</span></li>
 							</ul>
 						</div>
 					</div>
@@ -258,6 +264,11 @@
 				agencyConfig:agencyConfig,
 				righttableIsshow:false
 			};
+		},
+		props:{
+			assetsSituation:{
+				default:{}
+			}
 		},
 		computed  : {
 			...mapGetters('homePage', ['getSelectDateSection', 'getMapCode'])

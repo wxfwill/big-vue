@@ -45,7 +45,7 @@
 			}
 		},
 		computed  : {
-			...mapGetters('penal', ['mapCode']),
+			...mapGetters('procura', ['mapCode']),
 			...mapGetters('judicial', ['dateSection']),
 		},
 		beforeCreate() {
@@ -93,7 +93,7 @@
 					this.$message.error(res.msg);
 				}
 			},
-			...mapActions('penal', ['setMapData']),
+			...mapActions('procura', ['setMapData']),
 		},
 		components: {
 			BjMap,

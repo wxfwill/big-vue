@@ -1,7 +1,5 @@
 <template>
     <div class="home-page-left">
-        <span v-show="false">{{ getSelectDateSection }}</span>
-        <span v-show="false">{{ getMapCode }}</span>
         <div class="income-box">
             <div class="chart-box-title">
                 <span class="chart-label-dot"></span>
@@ -18,8 +16,8 @@
 				<div class="payBox">
 					<div class="boxborder">
 						<div class='payBox-top'>
-							<p>123,234,23</p>
-							<p>同比<i class="el-icon-top"></i>234,23<br><span>23%</span></p>
+							<p>{{expenditure.zzcs}}</p>
+							<p>同比<i class="el-icon-top"></i>{{expenditure.zzc_tb}}<br><span>{{expenditure.zzc_bfb}}</span></p>
 						</div>
 					</div>
 					<div class='payBox-bottom'>总支出</div>
@@ -27,8 +25,8 @@
 				<div class="payBox">
 					<div class="boxborder">
 						<div class='payBox-top'>
-							<p>123,234,23</p>
-							<p>同比<i class="el-icon-top"></i>234,23<br><span>23%</span></p>
+							<p>{{expenditure.gnflzcs}}</p>
+							<p>同比<i class="el-icon-top"></i>{{expenditure.gnflzc_tb}}<br><span>{{expenditure.gnflzc_bfb}}</span></p>
 						</div>
 					</div>
 					<div class='payBox-bottom'>功能分类支出</div>
@@ -36,8 +34,8 @@
 				<div class="payBox">
 					<div class="boxborder">
 						<div class='payBox-top'>
-							<p>123,234,23</p>
-							<p>同比<i class="el-icon-top"></i>234,23<br><span>23%</span></p>
+							<p>{{expenditure.zcxzs}}</p>
+							<p>同比<i class="el-icon-top"></i>{{expenditure.zcxz_tb}}<br><span>{{expenditure.zcxz_bfb}}</span></p>
 						</div>
 					</div>
 					<div class='payBox-bottom'>支出性质</div>
@@ -45,8 +43,8 @@
 				<div class="payBox">
 					<div class="boxborder">
 						<div class='payBox-top'>
-							<p>123,234,23</p>
-							<p>同比<i class="el-icon-top"></i>234,23<br><span>23%</span></p>
+							<p>{{expenditure.zcjjfls}}</p>
+							<p>同比<i class="el-icon-top"></i>{{expenditure.zcjjfl_tb}}<br><span>{{expenditure.zcjjfl_bfb}}</span></p>
 						</div>
 					</div>
 					<div class='payBox-bottom'>支出经济分类</div>
@@ -88,10 +86,9 @@
 
 <script>
 	import ECharts                               from 'echarts';
-	import { mapGetters }                        from 'vuex';
 	import * as services                         from '../service/index';
 	import { verifyTriggerState, numberInteger } from '@/utlis/helper';
-	import { incomeChartConfig,caizhengChartConfig }                 from '../constant/index';
+	import {incomeChartConfig,caizhengChartConfig }                 from '../constant/index';
 
 	export default {
 		data() {
@@ -102,11 +99,8 @@
 					key : '',
 					data: []
 				},
-				caizhengChartConfig:caizhengChartConfig
+				// caizhengChartConfig:caizhengChartConfig
 			}
-		},
-		computed  : {
-			...mapGetters('homePage', ['getSelectDateSection', 'getMapCode'])
 		},
 		beforeCreate() {
 			this.trigger         = ['startdate', 'enddate', 'code', 'lev'];
@@ -140,7 +134,7 @@
 					fsdwsj: 321,
 					qtsr  : 122,
 				};
-				const { xAxisData, seriesData } = this.convertChartConfig(incomeChartConfig, chartData);
+				const { xAxisData, seriesData } = this.convertChartConfig(incomeChartConfig, this.income);
 				this.incomeChart.setOption({
 					color  : ['#4F79E2', '#1BC85D', '#009FE8', '#FF6C40', '#FF6C40', '#0BD7AA'],
 					tooltip: {
@@ -197,7 +191,7 @@
 				return { xAxisData, seriesData };
 			},
 			loadCaizhengChart() {
-	  			const { xAxisData, seriesData } = this.convertChartConfigcz(caizhengChartConfig);
+	  			const { xAxisData, seriesData } = this.convertChartConfigcz(this.financialAllocationList);
 				this.caizhengChart.setOption({
 					color: ['#3398DB'],
 					tooltip : {
@@ -261,7 +255,7 @@
 						}
 					},
 					legend: {
-						data:['检察业务费合计','其中财政拨款','办案（业务）经费','其中财政拨款1','业务装备经费','其中财政拨款2'],
+						data:['检察业务费合计','检察业务-其中财政拨款','办案（业务）经费','办案经费-其中财政拨款','业务装备经费','业务装备-其中财政拨款'],
 						icon:"square",
 						orient:'vertical',
 						y: 'center',    //延Y轴居中
@@ -273,7 +267,7 @@
 					},
 					grid: {
 						left: '3%',
-						right: '18%',
+						right: '22%',
 						bottom: '3%',
 						containLabel: true
 					},
@@ -305,28 +299,28 @@
 							type:'bar',
 							stack:'哈哈',
 							color:'#0BB0FB',
-							data:[100, 100, 100, 100]
+							data:this.jingfeiqingkuang.jcywfhj
 						},
 						{
-							name:'其中财政拨款',
+							name:'检察业务-其中财政拨款',
 							type:'bar',
 							stack: '哈哈',
 							color:'#3687F6',
-							data:[420, 420, 420, 420]
+							data:this.jingfeiqingkuang.jcywf_qzczbk
 						},
 						{
 							name:'办案（业务）经费',
 							type:'bar',
 							stack: '广告',
 							color:'#1BC85D',
-							data:[80, 80, 80, 80]
+							data:this.jingfeiqingkuang.bajf
 						},
 						{
-							name:'其中财政拨款1',
+							name:'办案经费-其中财政拨款',
 							type:'bar',
 							stack: '广告',
 							color:'#0FA940',
-							data:[60, 60, 60, 60]
+							data:this.jingfeiqingkuang.bajf_qzczbk
 						},
 						
 						{
@@ -334,19 +328,27 @@
 							type:'bar',
 							stack: '搜索引擎',
 							color:'#FBBA18',
-							data:[20, 20, 20, 20]
+							data:this.jingfeiqingkuang.ywzbjf
 						},
 						{
-							name:'其中财政拨款2',
+							name:'业务装备-其中财政拨款',
 							type:'bar',
 							stack: '搜索引擎',
 							color:'#F68C3B',
-							data:[10, 10, 10, 10]
+							data:this.jingfeiqingkuang.ywzbjf_qzczbk
 						}
 					]
 				})
 			},
 			loadJianchaChart(){
+				let ncjzjy=[],sr=[],zc=[],nmjzjy=[],year=[];
+				for(var i=0;i<this.trendsProcuratorialBusinessList.length;i++){
+					ncjzjy.push(this.trendsProcuratorialBusinessList[i].ncjzjy);
+					sr.push(this.trendsProcuratorialBusinessList[i].sr);
+					zc.push(this.trendsProcuratorialBusinessList[i].zc);
+					nmjzjy.push(this.trendsProcuratorialBusinessList[i].nmjzjy);
+					year.push(this.trendsProcuratorialBusinessList[i].year);
+				}
 				this.jianchaChart.setOption({
 					tooltip : {
 						trigger: 'axis'
@@ -368,7 +370,7 @@
 						{
 							type : 'category',
 							boundaryGap : false,
-							data : ['2016','2017','2018'],
+							data :year,
 							axisLine:{
 								lineStyle: {
 									color: "#fff",
@@ -402,7 +404,7 @@
 									color: '#4049FF'
 								}]),
 							},
-							data:[400,500, 200,100]
+							data:ncjzjy
 						},
 						{
 							name:'收入',
@@ -418,7 +420,7 @@
 									color: '#4049FF'
 								}]),
 							},
-							data:[300,400, 100,100]
+							data:sr
 						},
 						{
 							name:'支出',
@@ -434,7 +436,7 @@
 									color: '#33E8FF'
 								}]),
 							},
-							data:[200,300, 100,80]
+							data:zc
 						},
 						{
 							name:'年末结转结余',
@@ -450,7 +452,7 @@
 									color: '#FFFF33'
 								}]),
 							},
-							data:[150,200, 50,60]
+							data:nmjzjy
 						}
 					]
 				})
@@ -461,7 +463,7 @@
 				switch(name) {
 					case '财政拨款收入分布' :
 						key  = '财政拨款收入分布';
-						data = this.caizhengChartConfig;
+						data = this.financialAllocationList;
 						break;
 					case '全国省份排名':
 						key  = '全国省份排名';
@@ -557,7 +559,24 @@
 			}
 
 		},
-		components: {}
+		components: {},
+		props:{
+			income:{
+				default:{}
+			},
+			expenditure:{
+				default:{}
+			},
+			financialAllocationList:{
+				default:{}
+			},
+			jingfeiqingkuang:{
+				default:{}
+			},
+			trendsProcuratorialBusinessList:{
+				default:{}
+			}
+		}
 	};
 </script>
 

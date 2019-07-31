@@ -11,4 +11,10 @@ export const getTopSlBjZb = async (data) => await request({
 	url   : '/api/v1.0/homePage/getTopSlBjZb',
 	params: data
 });
+// 获取大屏展示系统检务保障数据
+export const getPSGuaranteeData = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/psguarantee/getPSGuaranteeData',
+	params: data
+});
 

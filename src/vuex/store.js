@@ -9,6 +9,7 @@ import publicLitigation    from './modules/judicial/public-litigation';
 import undetected          from './modules/judicial/undetected';
 import inspectionGuarantee from './modules/inspection-guarantee';
 import prosecution         from './modules/judicial/prosecution';
+import procura from './modules/judicial/procura'
 
 Vue.use(Vuex);
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
 		administrative,
 		publicLitigation,
 		undetected,
-		prosecution
+		prosecution,
+		procura
 	}
 })

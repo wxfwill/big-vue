@@ -74,7 +74,7 @@
 					key : '',
 					data: []
 				},
-				sortChartConfig:sortChartConfig
+				// sortChartConfig:sortChartConfig
 			}
 		},
 		computed  : {
@@ -113,13 +113,13 @@
 				const xAxisData  = [],
 					  seriesData = [];
 					  configList.map((config) => {
-						  xAxisData.push(config.id);
-						  seriesData.push(config.name)
+						  xAxisData.push(config.city_name);
+						  seriesData.push(config.sl)
 					  });
 				return { xAxisData, seriesData };
 			},
 			loadSortChart() {
-	  			const { xAxisData, seriesData } = this.convertChartConfigsort(sortChartConfig);
+	  			const { xAxisData, seriesData } = this.convertChartConfigsort(this.nationalProvinceRankList);
 				this.sortChart.setOption({
 					color: ['#1AE7F8'],
 					tooltip : {
@@ -185,7 +185,7 @@
 					key  = '';
 					name='全国省份排名';
 					key  = '全国省份排名';
-					data = this.sortChartConfig;
+					data = this.nationalProvinceRankList;
 				this.dialogContext = {
 					name,
 					key,
@@ -284,6 +284,11 @@
 		components: {
 			BjMap,
 		},
+		props:{
+			nationalProvinceRankList:{
+				default:{}
+			}
+		}
 	}
 </script>
 

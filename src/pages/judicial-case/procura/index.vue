@@ -73,17 +73,21 @@
                 width="90%">
             <div class="per-dialog-chart" ref="dialogChart"></div>
         </el-dialog>
+        <span v-show="false">{{ mapCode }}</span>
+        <span v-show="false">{{ dateSection }}</span>
         </div>
     </div>
 </template>
 <script>
-
+import { mapGetters, mapActions }                                           from 'vuex';
 import echarts from 'echarts';
 import waterPolo from '@/components/common/water-polo.vue'
 import CenterBox from './components/Center'
 import * as services                   from './service';
+import { triggerMixin } from '@/components/mixin/trigger';
 //模拟数据
 import {personnelChartConfig,caseNumberAnalysiscongif,administrativeConfig} from "./constant/index"
+import {verifyTriggerState} from '@/utlis/helper'
 
 
 export default {
@@ -94,26 +98,10 @@ export default {
     data() {
         return {
             poloList:[],
-            topImg: require('@/public/img/judicature/top@2x.png'),
-            bottomImg: require('@/public/img/judicature/bottom@2x.png'),
-            correlationIPSxAxis:[],
-            correlationIPS:[],
-            acceptIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
-            acceptIPS:[200, 600, 50, 80, 120, 100,20,19,60,188],
-            synthesizeIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
-            synthesizeIPS:[20, 60, 50, 80, 120, 100,20,19,60,88],
-            inspectIPSxAxis:['2010', '2011', '2012', '2013', '2014','2015','2016','2017','2018','2019'],
-            inspectIPS:[20, 60, 50, 80, 120, 100,20,19,60,88],
             theInvestigatorsList:{},//相关办案人员（各省市/人）
             trendOfAcceptingCasesList:{},//受理案件趋势分析
             dialogVisible:false,
              dialogContext: {
-                name: '',
-                key : '',
-                data: []
-            },
-             dialogVisible1:false,
-             dialogContext1: {
                 name: '',
                 key : '',
                 data: []
@@ -123,22 +111,26 @@ export default {
         }
     },
     mounted() {
-        const params         = { ...this.mapCode, ...this.dateSection };
+        const params                = { ...this.mapCode, ...this.dateSection };
+		this.oldTriggerState        = params;
         this.requestGetCheckCharterData(params)//请求检委办数据
-        // this.acceptChart('synthesize',this.synthesizeIPSxAxis,this.synthesizeIPS)//综合分析
-        // this.acceptChart('accept',this.acceptIPSxAxis,this.acceptIPS)//受理案件趋势分析
         this.theInvestigatorsListchart   = echarts.init(this.$refs.personnelchart);
-        
         this.trendOfAcceptingCasesListchart = echarts.init(this.$refs.trendOfAcceptingCasesList);
         this.analysisBySynthesisListchart = echarts.init(this.$refs.analysisBySynthesisList);
         this.toAcceptTheNumberListchart = echarts.init(this.$refs.toAcceptTheNumberList);
+    },
+    updated(){
+        const params = { ...this.mapCode, ...this.dateSection };
+			if(verifyTriggerState(this.trigger, this.oldTriggerState, params)) {
+				this.oldTriggerState = params;
+                this.requestGetCheckCharterData(params)
+			}
     },
     methods: {
         async requestGetCheckCharterData(params) {
             const res = await services.getCheckCharterData(params);
             if(res.code === 200) {
                 const data         = res.data;
-                console.log(data)
                 //theInvestigatorsList--相关办案人员（各省市/人）
                 this.theInvestigatorsList = data.theInvestigatorsList;
                 this.loadtheInvestigatorsListchart();
@@ -717,7 +709,13 @@ export default {
         closeBarDialog(){
             this.dialogBarChart && this.dialogBarChart.clear();
         },
-    }
+        ...mapActions('procura', ['initMapState','setMapData']),
+    },
+    computed:{
+        ...mapGetters('procura', ['mapCode']),
+		...mapGetters('judicial', ['dateSection']),
+    },
+    mixins    : [triggerMixin],
 }
 </script>
 <style lang="scss" scoped>

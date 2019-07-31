@@ -1,20 +1,90 @@
 <template>
     <div class="outer-home-page">
-        <left-box></left-box>
-        <center-box></center-box>
-        <right-box></right-box>
+        <left-box 
+            :income=income
+            :expenditure=expenditure
+            :financialAllocationList=financialAllocationList
+            :jingfeiqingkuang=jingfeiqingkuang
+            :trendsProcuratorialBusinessList=trendsProcuratorialBusinessList
+        >
+        </left-box>
+        <center-box :nationalProvinceRankList=nationalProvinceRankList></center-box>
+        <right-box
+            :assetsSituation=assetsSituation
+        ></right-box>
     </div>
 </template>
 <script>
-	import { mapActions } from 'vuex';
 	import DatePicker     from '@/components/common/date-picker';
     import LeftBox        from './components/left';
     import CenterBox        from './components/Center';
     import RightBox        from './components/Right';
-
+    import * as services from './service/index'
+    import {caizhengChartConfig,jingfeiqingkuang,trendsProcuratorialBusinessList,sortChartConfig,assetsSituation} from './constant/index'
 	export default {
+        data(){
+            return{
+                income:{
+					czbk  : 122,
+					sjbz  : 123,
+					sysr  : 92,
+					jysr  : 222,
+					fsdwsj: 321,
+					qtsr  : 122,
+                },
+                expenditure:{
+                    zzcs:12345,
+                    zzc_tb:1234,
+                    zzc_bfb:'23%',
+                    gnflzcs:12345,
+                    gnflzc_tb:1234,
+                    gnflzc_bfb:'24%',
+                    zcxzs:12345,
+                    zcxz_tb:1234,
+                    zcxz_bfb:'25%',
+                    zcjjfls:12345,
+                    zcjjfl_tb:1234,
+                    zcjjfl_bfb:'26%'
+                },
+                financialAllocationList:caizhengChartConfig,
+                jingfeiqingkuang:jingfeiqingkuang,
+                trendsProcuratorialBusinessList:trendsProcuratorialBusinessList,
+                nationalProvinceRankList:sortChartConfig,
+                assetsSituation:assetsSituation
+            }
+        },
+        mounted(){
+            let params={
+                startdate:'',
+                enddate:'',
+                code:'',
+                lev:''
+            }
+            this.getPSGuaranteeData(params); 
+        },
 		methods: {
-            ...mapActions('inspectionGuarantee', ['setSelectTime']),
+            async getPSGuaranteeData(params) {
+				const res = await services.getPSGuaranteeData(params);
+				if(res.code === 200) {
+                    const data   = res.data;
+                    //收入
+                    this.income=data.income
+                    //支出
+                    this.expenditure=data.expenditure
+                    //财政拨款收入分布
+                    this.financialAllocationList=data.financialAllocationList
+                    //经费情况
+                    //检察业务费趋势
+                    this.trendsProcuratorialBusinessList=data.trendsProcuratorialBusinessList
+                    //全国省份排名
+                    this.nationalProvinceRankList=data.nationalProvinceRankList
+                    //资产情况
+                    this.assetsSituation=data.assetsSituation
+                    console.log(data)
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
         },
 		components: {
 			DatePicker,
