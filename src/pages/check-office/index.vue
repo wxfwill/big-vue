@@ -2,6 +2,7 @@
     <div class="check-office-wrap fraze-grid">
         <date-picker
                 :dateChange="requestCheckOfficeData"
+                :nowSelectDate="selectDateSection"
         ></date-picker>
         <left-side
                 :publishingStatistics="publishingStatistics"
@@ -24,6 +25,7 @@
 </template>
 
 <script>
+	import { mapGetters, mapActions }                               from 'vuex';
 	import LeftSide                                                 from './components/Left';
 	import CenterBox                                                from './components/Center';
 	import RightSide                                                from './components/Right';
@@ -49,14 +51,18 @@
 				infoPublishList       : []
 			}
 		},
+        computed: {
+			...mapGetters('checkOffice', ['selectDateSection']),
+		},
 		methods   : {
-			requestCheckOfficeData({startDate, endDate}) {
+			requestCheckOfficeData({ startDate, endDate }) {
+				this.setSelectDate({ startDate, endDate });
 				getProcuratorialOfficeData({
 					startdate: startDate,
 					enddate  : endDate
 				}).then((resolve) => {
 					if(resolve.code === 200) {
-						const data = resolve.data;
+						const data                = resolve.data;
 						// left
 						this.publishingStatistics = data.publishingStatistics;
 						this.postPriorities       = postDistributeConfig.map(i => ({
@@ -80,12 +86,13 @@
 
 						// right
 						this.theArchiveAnalysisList = data.theArchiveAnalysisList;
-						this.infoPublishList=data.jeremyLevinUnitList
+						this.infoPublishList        = data.jeremyLevinUnitList
 					} else {
 						this.$message.error(`code:${resolve.code}`);
 					}
 				});
-			}
+			},
+			...mapActions('checkOffice', ['setSelectDate']),
 		},
 		components: {
 			LeftSide,
