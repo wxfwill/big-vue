@@ -10,6 +10,7 @@ import undetected          from './modules/judicial/undetected';
 import inspectionGuarantee from './modules/inspection-guarantee';
 import prosecution         from './modules/judicial/prosecution';
 import procura from './modules/judicial/procura'
+import checkOffice         from './modules/check-office';
 
 Vue.use(Vuex);
 
@@ -24,6 +25,7 @@ export default new Vuex.Store({
 		publicLitigation,
 		undetected,
 		prosecution,
+		checkOffice,
 		procura
 	}
 })

@@ -91,7 +91,7 @@ export const mapTooltipConfig = [{
 	regExp: '{zbs}&nbsp;&nbsp;&nbsp; {zbs_zb}%',
 }, {
 	id  : 'yejcg',
-	name: '原额检察官',
+	name: '员额检察官',
 }, {
 	id  : 'syjf',
 	name: '使用经费',

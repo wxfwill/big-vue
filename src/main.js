@@ -14,6 +14,7 @@ import {
 	Table,
 	TableColumn,
 	Popover,
+	Pagination,
 }              from 'element-ui';
 //import './public/mock';
 
@@ -28,6 +29,7 @@ const elementComponents = [
 		  Table,
 		  TableColumn,
 		  Popover,
+		  Pagination,
 	  ],
 	  vt                = new Vue();
 elementComponents.forEach(i => Vue.use(i));

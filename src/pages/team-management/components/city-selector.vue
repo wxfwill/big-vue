@@ -55,7 +55,7 @@
                     width="1000"
             >
                 <el-table
-                        :data="staffList"
+                        :data="partStaffList"
                         style="width: 100%"
                 >
                     <el-table-column
@@ -65,7 +65,6 @@
                             :label="column.label">
                     </el-table-column>
                     <el-table-column
-                            prop="option"
                             key="option"
                             label="操作"
                     >
@@ -79,6 +78,16 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                <div class="text-right pagination-box">
+                    <el-pagination
+                            background
+                            :current-page="nowPageIndex"
+                            layout="prev, pager, next"
+                            @current-change="currentPageChange"
+                            :page-size=6
+                            :total="staffList.length">
+                    </el-pagination>
+                </div>
                 <span slot="footer" class="dialog-footer">
                 <el-button @click="staffTableDialog = false">关闭</el-button>
             </span>
@@ -92,9 +101,6 @@
 	import { uuid }                    from '@/utlis/helper';
 
 	export default {
-		created() {
-			this.getProvinceList();
-		},
 		data() {
 			return {
 				selectProvince  : '',
@@ -105,6 +111,8 @@
 				countyList      : [],
 				officeName      : '',
 				staffList       : [],
+				nowPageIndex    : 1,
+				totalPage       : 0,
 				staffTableDialog: false,
 				lev             : 1,
 				staffColumns    : [{
@@ -122,7 +130,16 @@
 				}]
 			}
 		},
-		methods: {
+		computed: {
+			partStaffList() {
+				const lastIndex = (this.nowPageIndex - 1) * 6;
+				return this.staffList.slice(lastIndex, lastIndex + 6);
+			}
+		},
+		created() {
+			this.getProvinceList();
+		},
+		methods : {
 			getProvinceList() {
 				this.requestList(1, '全国', 'provinceList');
 			},
@@ -171,7 +188,7 @@
 						case 4:
 							region = this.selectCounty;
 							break;
-                    }
+					}
 					getPersonInfo({
 						lev      : this.lev,
 						name     : this.officeName,
@@ -179,88 +196,77 @@
 					}).then((resolve) => {
 						this.staffTableDialog = true;
 						if(resolve.code === 200) {
-							this.staffList = [{
-								"company": "北京检",
-								"job"    : "监督",
-								"name"   : "王晨",
-								"region" : "北京",
-								"sex"    : "男"
-							}, {
-								"company": "最高检",
-								"job"    : "监督",
-								"name"   : "王晨",
-								"region" : "北京",
-								"sex"    : "男"
-							}, {
-								"company": "最高检",
-								"job"    : "监督",
-								"name"   : "王晨",
-								"region" : "北京",
-								"sex"    : "男"
-							}];
+							const data = resolve.data;
+							this.nowPageIndex = 1;
+							this.staffList    = data;
 						} else {
 							this.$message.error(`code:${resolve.code}`);
 						}
 					});
 				} else {
 					this.staffList = [];
+					this.$message.warning('请输入要搜索的人员姓名');
 				}
 			},
 			searchStaffPer(index, row) {
-				this.search({
+				this.getStaffInfo({
 					name   : row.name,
 					company: row.company,
+				}, () => {
+					this.staffTableDialog = false;
 				});
-				this.staffTableDialog = false;
 			},
+			currentPageChange(index) {
+				this.nowPageIndex = index;
+			}
 		},
-		props  : ['search']
+		props   : ['getStaffInfo']
 	}
 </script>
 
 <style lang="scss">
     .search-form {
-        width:774px;
+        width: 774px;
         // margin: 0 auto;
-        margin-left:29px;
-        margin-top:10px;
+        margin-left: 29px;
+        margin-top: 10px;
         display: flex;
         .select-list {
             display: flex;
             .staff-select {
-               width:153px;
-                height:40px;
-                background:rgba(14,132,218,1);
-                opacity:0.3607;
-                color:#00FFFF;
-                margin-right:11px;
+                width: 153px;
+                height: 40px;
+                background: rgba(14, 132, 218, 1);
+                opacity: 0.3607;
+                color: #00FFFF;
+                margin-right: 11px;
                 .el-input__inner {
-                    width:153px;
-                    height:40px;
-                    background:rgba(14,132,218,1);
-                    color:#00FFFF;
+                    width: 153px;
+                    height: 40px;
+                    background: rgba(14, 132, 218, 1);
+                    color: #fff;
                 }
             }
         }
         .search-group {
-            width:238px;
-            margin-left:10px;
+            width: 238px;
+            margin-left: 10px;
             display: flex;
             .search-input {
-                width:182px;
-                height:40px;
-                background:rgba(14,132,218,1);
-                opacity:0.3607;
-                color:#00FFFF;
+                width: 182px;
+                height: 40px;
+                background: rgba(14, 132, 218, 1);
+                opacity: 0.3607;
+                color: #00FFFF;
             }
             .search-btn {
-               width:91px;
-                height:40px;
-                background:rgba(14,132,218,1);
-                opacity:0.7;
-                outline:none;
-                margin-left:10px;
-                color:#fff;
+                width: 91px;
+                height: 40px;
+                background: rgba(14, 132, 218, 1);
+                opacity: 0.7;
+                outline: none;
+                margin-left: 10px;
+                color: #fff;
             }
         }
         .staff-model {
@@ -275,6 +281,7 @@
                     }
                 }
                 .el-table {
+                    height: 367px;
                     background-color: transparent;
                     &:before {
                         height: 0;
@@ -296,6 +303,9 @@
                         }
                     }
                 }
+            }
+            .pagination-box{
+                margin-top: 20px;
             }
         }
     }

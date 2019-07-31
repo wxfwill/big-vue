@@ -1,3 +1,4 @@
+
 export const geoCoordMap = {
 	'全国' : {
 		'新疆兵团': {

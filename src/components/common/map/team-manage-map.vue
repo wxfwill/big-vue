@@ -13,36 +13,24 @@
             </ul>
         </div>
         <div class="sumBox" v-show="mapConfig.numIsshow">
-            <div class="num-block">
-                受理总数：
+            <div class="num-block" v-for="topDataItem in topDataConfig" :key="topDataItem.id">
+                {{ topDataItem.name }}
                 <ul>
-                    <li v-for="(item,index) in totalSls" :key="index">{{item}}</li>
-                </ul>
-            </div>
-            <div class="num-block">
-                办结总数：
-                <ul>
-                    <li v-for="(item,index) in totalBjs" :key="index">{{item}}</li>
-                </ul>
-            </div>
-            <div class="num-block">
-                在办总数：
-                <ul>
-                    <li v-for="(item, index) in totalZbs" :key="index">{{item}}</li>
+                    <li v-for="(item,index) in topData[topDataItem.id]" :key="index">{{item}}</li>
                 </ul>
             </div>
         </div>
         <div class="now-data" v-show='mapConfig.leftIsshow'>
-            <h4 class="now-date-text">
+            <h4 class="now-date-text" v-if="nowSelectDate">
                 {{ nowSelectDate.startdate }} ~ {{ nowSelectDate.enddate }}
             </h4>
             <h4 class="now-area">
                 <span>{{ cityCrumbsList[mapLevel].name }}</span>
                 <i class="now-data-icon el-icon-coin" @click="dialogVisible = true"></i>
             </h4>
-            <p class="nd-accept-text">受理数：{{ ~~sls }}</p>
-            <p class="nd-conclude-text">办结数：{{ ~~bjs }}</p>
-            <p class="nd-office-text">在办数：{{ ~~zbs }}</p>
+            <p class="nd-accept-text" v-for="item in leftDataConfig" :key="item.id">
+                {{ item.name }} {{ ~~leftData[item.id] }}
+            </p>
             <el-popover
                     popper-class="map-extra-table"
                     v-show="extendData.length !== 0"
@@ -167,7 +155,7 @@
 					this.mapLevel++;
 				} else {
 					return false;
-                }
+				}
 				this.cityCrumbsList[this.mapLevel] = {
 					id,
 					code,
@@ -417,9 +405,9 @@
 			 * 地图返回顶级
 			 * */
 			showChinaMap() {
-				if(this.loadingMap){
+				if(this.loadingMap) {
 					return false;
-                }
+				}
 				this.mapLevel           = 0;
 				this.mapJsonData.length = 1;
 				this.cityCrumbsList     = [{
@@ -582,28 +570,32 @@
 				});
 			}
 		},
-		props  :{
-			mapData:{},
-			getNewRegionInfo:{},
-			tooltipConfig:{},
-			totalSls:{},
-			totalBjs:{},
-			totalZbs:{},
-			sls:{},
-			bjs:{},
-			zbs:{},
-			lev:{},
-			nowSelectDate:{},
-			mapConfig:{
-				type:Object,
-				default(){
+		props  : {
+			mapData         : {},
+			getNewRegionInfo: {},
+			tooltipConfig   : {},
+			leftDataConfig  : {
+				default: []
+			},
+			leftData        : {
+				default: {},
+            },
+			topDataConfig   : {
+				default: []
+			},
+			topData         : {},
+			lev             : {},
+			nowSelectDate   : {},
+			mapConfig       : {
+				type: Object,
+				default() {
 					return {
-						numIsshow:true,
-						leftIsshow:true,
-						tooltipIsshow:true
+						numIsshow    : true,
+						leftIsshow   : true,
+						tooltipIsshow: true
 					}
 				}
-			}
+			},
 		},
 		watch  : {
 			mapData() {
@@ -772,7 +764,7 @@
                 top: 400px;
                 right: 47px;
                 min-width: 200px;
-                min-height: 230px;
+                min-height: 200px;
                 padding-bottom: 10px;
                 box-shadow: 0 0 1px rgba(1, 1, 1, 1);
                 border-radius: 5px;
@@ -797,7 +789,7 @@
                         padding: 10px 7px;
                         span {
                             display: inline-block;
-                            width: 85px;
+                            width: 100px;
                             text-align: right;
                             margin-right: 5px;
                         }
@@ -888,7 +880,7 @@
                     display: flex;
                     color: #dfdfdf;
                     span {
-                        width: 100px;
+                        width: 120px;
                         text-align: right;
                     }
                 }

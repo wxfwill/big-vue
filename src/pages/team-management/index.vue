@@ -1,24 +1,16 @@
 <template>
     <div class="team-wrap">
-        <date-picker
-                :dateChange="requestTeamData"
-        ></date-picker>
         <left
                 ref="leftBox"
                 :incumbency="incumbency"
                 :workingLife="workingLife"
-				:personnelStatusQuos='personnelStatusQuos'
         ></left>
         <center-box
-                ref="centerBox"
-                :teamManageMaps="teamManageMaps"
-                :personnelStatusQuos="personnelStatusQuos"
-                :changeRegion="changeRegion"
+                :personnelCategory="personnelCategory"
+                :lev="lev"
         ></center-box>
         <right
                 ref="rightBox"
-                :startDate="startDate"
-                :endDate="endDate"
                 :personnelEducation="personnelEducation"
                 :ageDistribution="ageDistribution"
         ></right>
@@ -26,17 +18,15 @@
 </template>
 
 <script>
-	import Left                  from './components/left.vue';
-	import CenterBox             from './components/Center.vue';
-	import Right                 from './components/Right.vue';
-	import { getTeamManagement } from './service/index';
-	import { fillZero }          from '@/utlis/helper';
-	import DatePicker            from '@/components/common/date-picker';
+	import Left                             from './components/left.vue';
+	import CenterBox                        from './components/Center.vue';
+	import Right                            from './components/Right.vue';
+	import { getTeamManagement }            from './service/index';
+	import { fillZero, verifyTriggerState } from '@/utlis/helper';
 
 	export default {
 		data() {
 			return {
-				loading            : false,
 				incumbency         : {
 					dnly  : '-',
 					dnry  : '-',
@@ -44,68 +34,62 @@
 				},
 				workingLife        : {},
 				educationSituation : {},
+				personnelCategory  : {
+					jcgzl : fillZero(0, 4).split(''),
+					sfxzry: fillZero(0, 4).split(''),
+					yenjcg: fillZero(0, 4).split('')
+				},
 				personnelStatusQuos: [],
 				personnelEducation : {},
 				ageDistribution    : {},
-				teamManageMaps     : [],
-				startDate          : '',
-				endDate            : '',
-				code               : 100000,
+				pindex             : '000',
 				lev                : 1,
 			}
 		},
+		mounted() {
+			this.requestTeamData();
+		},
 		methods   : {
-			requestTeamData({ startDate, endDate }) {
-				this.startDate = startDate;
-				this.endDate   = endDate;
-				this.loading   = true;
-				getTeamManagement({
-					pindex     : this.code,
-					lev      : this.lev,
-					enddate  : startDate,
-					startdate: endDate
-				}).then((resolve) => {
-					if(resolve.code === 200) {
-						const data                             = resolve.data;
-						const qgzzrs                           = fillZero(data.incumbency.qgzzrs, 5).split(''),
-							  { leftBox, centerBox, rightBox } = this.$refs;
-
-
-						this.incumbency  = {
-							...data.incumbency,
-							qgzzrs,
-						};
-						this.workingLife = data.workingLife;
-						leftBox.loadEducationChart(data.educationSituation);
-
-						this.personnelStatusQuos = data.personnelStatusQuos;
-						leftBox.loadpersonnelStatusQuosChart(data.personnelStatusQuos);
-
-						// this.teamManageMaps = data.teamManageMaps;
-						// centerBox.loadteamManageMapsChart(data.teamManageMaps);
-
-						this.personnelEducation=data.personnelEducation
-						rightBox.loadEduBgStrChart(data.personnelEducation);
-
-						this.ageDistribution=data.ageDistribution
-						rightBox.loadAgeDistributeChart(data.ageDistribution);
-					} else {
-						this.$message.error(`code:${resolve.code}`);
-					}
+			async requestTeamData() {
+				let res = await getTeamManagement({
+					pindex: this.pindex,
+					lev   : this.lev
 				});
+				if(res.code === 200) {
+					const data                  = res.data;
+					const qgzzrs                = fillZero(data.incumbency.qgzzrs, 5).split(''),
+						  { leftBox, rightBox } = this.$refs;
+					this.incumbency             = {
+						...data.incumbency,
+						qgzzrs,
+					};
+					this.workingLife            = data.workingLife;
+					leftBox.loadEducationChart(data.educationSituation);
+
+					this.personnelStatusQuos = data.personnelStatusQuos;
+					leftBox.loadpersonnelStatusQuosChart(data.personnelStatusQuos);
+
+					this.personnelCategory = {
+						jcgzl : fillZero(data.personnelCategory.jcgzl, 4).split(''),
+						sfxzry: fillZero(data.personnelCategory.sfxzry, 4).split(''),
+						yenjcg: fillZero(data.personnelCategory.yenjcg, 4).split('')
+					};
+
+					this.personnelEducation = data.personnelEducation;
+					rightBox.loadEduBgStrChart(data.personnelEducation);
+
+					this.ageDistribution = data.ageDistribution;
+					rightBox.loadAgeDistributeChart(data.ageDistribution);
+				} else {
+					this.$message.error(res.msg);
+				}
 			},
-			changeRegion(code, lev) {
-				this.requestTeamData(this.startDate, this.endDate);
-				this.code = code;
-				this.lev  = lev;
-			}
 		},
 		components: {
 			Left,
 			CenterBox,
 			Right,
-			DatePicker,
-		}
+		},
 	}
 </script>
 
@@ -122,11 +106,8 @@
         .text-left {
             text-align: left;
         }
+        .text-right {
+            text-align: right;
+        }
     }
-	// .dateBox{
-	// 	position: fixed!important;
-	// 	right: 33px!important;
-	// 	top: 103px!important;
-	// 	z-index: 1;
-	// }
 </style>
