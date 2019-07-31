@@ -77,8 +77,8 @@
                                 <div class="item-media" :style="{backgroundImage:`url(${lineImg})`}">
                                     <p class="item-title text-ellipsis" :title="item.qszm">{{item.qszm}}</p>
                                     <div class="item-number" :style="{ color: index < 3 ? '#F7931E': '#00BEDD' }">
-                                        <span>{{item.qscs}}</span>
-                                        <span>{{item.zb}}%</span>
+                                        <span>{{item.zb}}</span>
+                                        <span>{{item.qscs}}%</span>
                                     </div>
                                 </div>
                             </li>

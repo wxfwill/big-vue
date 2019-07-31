@@ -31,19 +31,10 @@
                         <span class="chart-label-dot"></span>
                         <i>受理案件趋势分析</i>
                     </div>
-                    <el-select
-                            v-model="acceptCaseSelectYear"
-                            class="accept-case-select"
-                            placeholder="请选择"
-                            @change="changeAcceptCaseYear"
-                    >
-                        <el-option
-                                v-for="item in yearList"
-                                :key="item.value"
-                                :label="item.name"
-                                :value="item.value">
-                        </el-option>
-                    </el-select>
+                    <year-selector
+                        :selectYear="acceptCaseSelectYear"
+                        :handleChange="changeAcceptCaseYear"
+                    ></year-selector>
                     <div class="accept-chart" ref="qstjContent"></div>
                 </div>
             </div>
@@ -85,6 +76,7 @@
 	import { verifyTriggerState, numberInteger }                            from '@/utlis/helper';
 	import PenalGauge                                                       from '@/components/common/penal-gauge';
 	import { undetectedChartConfig, criminalCaseConfig, prosecutionConfig } from '../constant/index';
+	import YearSelector                                                     from '@/components/common/year-selector';
 
 	export default {
 		data() {
@@ -99,14 +91,6 @@
 			}
 		},
 		computed  : {
-			yearList() {
-				const nowYear      = new Date().getFullYear(),
-					  timeInterval = nowYear - 2010;
-				return Array.from({ length: timeInterval }).map((i, index) => ({
-					name : `${nowYear - index}年`,
-					value: nowYear - index,
-				}));
-			},
 			...mapGetters('homePage', ['getSelectDateSection', 'getMapCode'])
 		},
 		beforeCreate() {
@@ -460,7 +444,8 @@
 			},
 		},
 		components: {
-			PenalGauge
+			PenalGauge,
+			YearSelector
 		}
 	};
 </script>
@@ -529,19 +514,7 @@
                     }
                 }
                 .accept-box {
-                    .accept-case-select {
-                        margin: 20px 0;
-                        float: right;
-                        z-index: 2;
-                        /deep/ .el-input__inner {
-                            height: 30px;
-                            background-color: transparent;
-                            color: #fff;
-                        }
-                        /deep/ .el-select__caret {
-                            line-height: 30px;
-                        }
-                    }
+
                     .accept-chart {
                         width: 700px;
                         height: 260px;
@@ -563,6 +536,7 @@
                 width: 545px;
                 .overview-box {
                     width: 100%;
+                    height: 325px;
                     position: relative;
                     display: flex;
                     flex-wrap: wrap;

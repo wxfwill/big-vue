@@ -14,10 +14,11 @@ export const getCompensationCase = async (data) => await request({
 	params: data
 });
 
-// 获取控申:信访数据集合
+//
+// 获取控申:司法救助案件办理情况数据
 export const getJudicialReparation = async (data) => await request({
 	method: 'get',
-	url   : '/api/v1.0/chargeAppeal/getLettersAndVisitsList',
+	url   : '/api/v1.0/chargeAppeal/getJudicialReparation',
 	params: data
 });
 
