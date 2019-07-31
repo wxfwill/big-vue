@@ -91,33 +91,33 @@ const caseNumberAnalysiscongif=[{
 // 案件分类分析
 const administrativeConfig = [{
 	id    : 'jyjd',
-	rateId: '',
+	rateId: '50',
 	title : '检验鉴定',
 	col1  : '#4FDC99',
 	col2  : '#22A95F'
 }, {
 	id    : 'kyjc',
-	rateId: '',
+	rateId: '50',
 	title : '勘验检查',
 	col1  : '#005EFF',
 	col2  : '#4FB8FF'
 }, {
 	id    : 'jsxz',
-	rateId: '',
+	rateId: '50',
 	title : '技术协作',
 	col1  : '#FFA11E',
 	col2  : '#F3C85D'
 }
 , {
 	id    : 'tblylx',
-	rateId: '',
+	rateId: '50',
 	title : '同步录音录像',
 	col1  : '#FFA11E',
 	col2  : '#F3C85D'
 }
 , {
 	id    : 'jsxzjsc',
-	rateId: '',
+	rateId: '50',
 	title : '技术性证据审查',
 	col1  : '#FFA11E',
 	col2  : '#F3C85D'

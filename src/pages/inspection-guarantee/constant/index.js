@@ -296,4 +296,46 @@ const assetsSituation={
 	zjgczc:12345,
 	zzc:12345
 }
-export {incomeChartConfig,caizhengChartConfig,sortChartConfig,mapTooltipConfig,propertyConfig,agencyConfig,jingfeiqingkuang,trendsProcuratorialBusinessList,assetsSituation}
+//机构情况
+const theProcuratorialAgency={
+	count:12345,
+	
+	dsjgs:1234,
+	
+	kqygs:1234,
+	
+	lqygs:1234,
+	
+	nmjgs:1234,
+	
+	pcygs:1234,
+	
+	sjygs:1234,
+	
+	sydwgs:1234,
+	
+	tbss:1234,
+	
+	tbssbfb:'23%',
+	
+	tjygs:1234,
+	
+	xqjgs:1234,
+	
+	ytygs:1234
+}
+//监察机构情况
+const prosecutionPersonnel={
+	qtry:12234,
+	rybzs:12234,
+	zzry:12234
+}
+//单位在职人数
+const numberOfEmployees={
+
+}
+
+export {incomeChartConfig,caizhengChartConfig,
+	sortChartConfig,mapTooltipConfig,propertyConfig,
+	agencyConfig,jingfeiqingkuang,trendsProcuratorialBusinessList,assetsSituation,theProcuratorialAgency,prosecutionPersonnel
+,numberOfEmployees}

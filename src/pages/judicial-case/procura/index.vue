@@ -141,8 +141,8 @@ export default {
                 this.caseNumberAnalysis=data.caseNumberAnalysis
                 this.poloList = administrativeConfig.map(i => ({
 						...i,
-						value: res.data[i.id],
-						rate : res.data[i.rateId],
+						value: res.data.caseNumberAnalysis[i.id],
+						rate : 50,
 					}));
                 //analysisBySynthesisList--综合分析
                 this.analysisBySynthesisList=data.analysisBySynthesisList
@@ -159,7 +159,12 @@ export default {
                     seriesData = [];
                     configList.map((config) => {
                         xAxisData.push(config.city_name);
-                        seriesData.push(config.rs)
+                        if(config.rs){
+                            seriesData.push(config.rs)
+                        }  
+                        if(config.sls){
+                            seriesData.push(config.sls)
+                        }                     
                     });
             return { xAxisData, seriesData };
         },
@@ -489,7 +494,6 @@ export default {
         loadDialogChart(){
             this.dialogBarChart            = echarts.init(this.$refs.dialogChart);
             const { xAxisData, seriesData } = this.convertChartConfigcz(this.theInvestigatorsList);
-            alert(this.dialogContext.name)
             if(this.dialogContext.name=='相关办案人员（各省市/人）' || this.dialogContext.name=='检委办'){
                     this.dialogBarChart.setOption({
                         color: ['#3398DB'],
@@ -747,7 +751,7 @@ export default {
     display: flex;
     // padding-top:65px;
     .procuratorial-page-left{
-        width:1076px;
+        width:1268px;
         position: relative;
         .correlation-box,.accept-box{
                 width:1112px;
@@ -774,14 +778,14 @@ export default {
                                 z-index:999;
                     }
                     .personnel-content{
-                        width:1076px;
+                        width:1268px;
                         height:257px;
                     }
         }
         .accept-box{
             height:327px;
             .casenumber-analysis{
-                    width:1076px;
+                    width:1268px;
                     height:281px;
                 }
             span{
@@ -853,7 +857,7 @@ export default {
                     }
                     .personnel-content{
                         width:1194px;
-                        height:422px;
+                        height:370px;
                     }
         }
         .accept-box{

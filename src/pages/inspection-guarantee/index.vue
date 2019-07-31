@@ -11,6 +11,9 @@
         <center-box :nationalProvinceRankList=nationalProvinceRankList></center-box>
         <right-box
             :assetsSituation=assetsSituation
+            :theProcuratorialAgency=theProcuratorialAgency
+            :prosecutionPersonnel=prosecutionPersonnel
+            :numberOfEmployees=numberOfEmployees
         ></right-box>
     </div>
 </template>
@@ -20,7 +23,8 @@
     import CenterBox        from './components/Center';
     import RightBox        from './components/Right';
     import * as services from './service/index'
-    import {caizhengChartConfig,jingfeiqingkuang,trendsProcuratorialBusinessList,sortChartConfig,assetsSituation} from './constant/index'
+    import {caizhengChartConfig,jingfeiqingkuang,trendsProcuratorialBusinessList,sortChartConfig,assetsSituation,theProcuratorialAgency,prosecutionPersonnel
+    ,numberOfEmployees} from './constant/index'
 	export default {
         data(){
             return{
@@ -50,7 +54,10 @@
                 jingfeiqingkuang:jingfeiqingkuang,
                 trendsProcuratorialBusinessList:trendsProcuratorialBusinessList,
                 nationalProvinceRankList:sortChartConfig,
-                assetsSituation:assetsSituation
+                assetsSituation:assetsSituation,
+                theProcuratorialAgency:theProcuratorialAgency,
+                prosecutionPersonnel:prosecutionPersonnel,
+                numberOfEmployees:numberOfEmployees
             }
         },
         mounted(){
@@ -80,6 +87,12 @@
                     this.nationalProvinceRankList=data.nationalProvinceRankList
                     //资产情况
                     this.assetsSituation=data.assetsSituation
+                    //检察机关机构机构人员情况
+                    this.theProcuratorialAgency=data.theProcuratorialAgency
+                    //机构情况
+                    this.prosecutionPersonnel=data.prosecutionPersonnels
+                    //单位在职人数
+                    this.numberOfEmployees=data.numberOfEmployees
                     console.log(data)
 				} else {
 					this.$message.error(res.msg);

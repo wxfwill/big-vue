@@ -11,7 +11,6 @@
 					<div class="propertyBox">
 						<div class="propertyContent">
 							<p>总资产<br/><span>{{assetsSituation.zzc}}</span><b></b></p>
-							
 							<ol>
 								<li></li>
 								<li></li>
@@ -20,12 +19,12 @@
 								<li></li>
 							</ol>
 							<ul>
-								<li>长期投资<br/><span>{{assetsSituation.cqtzzc}}</span></li>
+								<li>长期投资资产<br/><span>{{assetsSituation.cqtzzc}}</span></li>
 								<li>固定资产<br/><span>{{assetsSituation.gdzc}}</span></li>
 								<li>流动资产<br/><span>{{assetsSituation.ldzc}}</span></li>
 								<li>其他资产<br/><span>{{assetsSituation.qtzc}}</span></li>
 								<li>无形资产<br/><span>{{assetsSituation.wxzc}}</span></li>
-								<li>在建工程<br/><span>{{assetsSituation.zjgczc}}</span></li>
+								<li>在建工程资产<br/><span>{{assetsSituation.zjgczc}}</span></li>
 							</ul>
 						</div>
 					</div>
@@ -39,13 +38,49 @@
                     <div class="personnel-content">
 						<div class="personnel-top">
 							<p class='title'>机构情况</p>
-							<div class='agencytotal' v-for='(to,index) in agencyConfig.total' :key='index'>
-								<span class='totalnum'>{{to.num}}</span>
-								<i class='el-icon-top'></i><span>{{to.add}}</span><b>{{to.percent}}</b>
+							<div class='agencytotal'>
+								<span class='totalnum'>{{theProcuratorialAgency.count}}</span>
+								<i class='el-icon-top'></i><span>{{theProcuratorialAgency.tbss}}</span><b>{{theProcuratorialAgency.tbssbfb}}</b>
 							</div>
-							<div class='agencylist' v-for='(lis,index) in agencyConfig.list' :key='index'>
-								<p>{{lis.name}}</p>
-								<p>{{lis.num}}</p>
+							<div class='agencylist'>
+								<p>年末机构数</p>
+								<p>{{theProcuratorialAgency.nmjgs}}</p>
+							</div>
+							<div class='agencylist'>
+								<p>省级院个数</p>
+								<p>{{theProcuratorialAgency.sjygs}}</p>
+							</div>
+							<div class='agencylist'>
+								<p>地市级个数</p>
+								<p>{{theProcuratorialAgency.dsjgs}}</p>
+							</div>
+							<div class='agencylist'>
+								<p>县区级个数</p>
+								<p>{{theProcuratorialAgency.xqjgs}}</p>
+							</div>
+							<div class='agencylist'>
+								<p>派出院个数</p>
+								<p>{{theProcuratorialAgency.pcygs}}</p>
+							</div>
+							<div class='agencylist'>
+								<p>铁检院个数</p>
+								<p>{{theProcuratorialAgency.tjygs}}</p>
+							</div>
+							<div class='agencylist'>
+								<p>林区院个数</p>
+								<p>{{theProcuratorialAgency.lqygs}}</p>
+							</div>
+							<div class='agencylist'>
+								<p>油田院个数</p>
+								<p>{{theProcuratorialAgency.ytygs}}</p>
+							</div>
+							<div class='agencylist'>
+								<p>矿区院个数</p>
+								<p>{{theProcuratorialAgency.kqygs}}</p>
+							</div>
+							<div class='agencylist'>
+								<p>事业单位个数</p>
+								<p>{{theProcuratorialAgency.sydwgs}}</p>
 							</div>
 						</div>
 						<div class="personnel-bottom-left">
@@ -267,6 +302,12 @@
 		},
 		props:{
 			assetsSituation:{
+				default:{}
+			},
+			theProcuratorialAgency:{
+				default:{}
+			},
+			prosecutionPersonnel:{
 				default:{}
 			}
 		},
@@ -572,9 +613,9 @@
 								borderColor:'#020309',
 							},
 							data:[
-								{value:12234, name:'人员编制数'},
-								{value:12234, name:'着装人员'},
-								{value:12234, name:'其他人员'}
+								{value:this.prosecutionPersonnel.rybzs, name:'人员编制数'},
+								{value:this.prosecutionPersonnel.zzry, name:'着装人员'},
+								{value:this.prosecutionPersonnel.qtry, name:'其他人员'}
 							]
 						}
 					]
@@ -656,6 +697,7 @@
 									margin-right:30px;
 									margin-top:13px;
 									padding-top:8px;
+									font-size: 12px;
 								}
 								li:last-child{
 									margin-right:0px;
