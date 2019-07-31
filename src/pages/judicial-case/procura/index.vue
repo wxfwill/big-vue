@@ -297,8 +297,8 @@ export default {
                     trigger: 'axis'
                 },
                 legend: {
-                    right: '15%',
-                    bottom:'3%',
+                    right: '20%',
+                    bottom:'0',
                     itemGap:15,
                     data: ['检验鉴定','勘验检查','技术协作','同步录音录像','技术性证据审查'],
                     itemWidth:48,
@@ -310,7 +310,7 @@ export default {
                 },
                 grid: {
                     left: '3%',
-                    right: '4%',
+                    right: '10%',
                     bottom: '10%',
                     containLabel: true
                 },
@@ -390,7 +390,7 @@ export default {
                 },
                 legend: {
                     right: '15%',
-                    bottom:'3%',
+                    bottom:'0',
                     itemGap:15,
                     data: ['检验鉴定','勘验检查','技术协作','同步录音录像','技术性证据审查'],
                     itemWidth:48,
@@ -757,7 +757,7 @@ export default {
         width:1268px;
         position: relative;
         .correlation-box,.accept-box{
-                width:1112px;
+                width:1268px;
                 height:290px;
                 margin-bottom:19px;
                 position: relative;
@@ -812,7 +812,7 @@ export default {
             }
         }
         .case-box{
-            width:1112px;
+            width:1268px;
             height:254px;
             .title{
                     font-size:24px;

@@ -112,14 +112,14 @@ const administrativeConfig = [{
 	id    : 'tblylx',
 	rateId: '50',
 	title : '同步录音录像',
-	col1  : '#FFA11E',
-	col2  : '#F3C85D'
+	col1  : '#5DF3DC',
+	col2  : '#1EC4FF'
 }
 , {
 	id    : 'jsxzjsc',
 	rateId: '50',
 	title : '技术性证据审查',
-	col1  : '#FFA11E',
-	col2  : '#F3C85D'
+	col1  : '#F35DC4',
+	col2  : '#FA3882'
 }];
 export{personnelChartConfig,caseNumberAnalysiscongif,mapTooltipConfig,administrativeConfig}
