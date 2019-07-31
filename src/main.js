@@ -16,7 +16,7 @@ import {
 	Popover,
 	Pagination,
 }              from 'element-ui';
-//import './public/mock';
+
 
 const elementComponents = [
 		  DatePicker,

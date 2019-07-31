@@ -210,3 +210,16 @@ iframe {
   justify-content: space-between;
   align-items: flex-start;
 }
+.chart-select {
+  margin: 20px 0;
+  float: right;
+  z-index: 2;
+  .el-input__inner {
+    height: 30px;
+    background-color: transparent;
+    color: #fff;
+  }
+  .el-select__caret {
+    line-height: 30px;
+  }
+}

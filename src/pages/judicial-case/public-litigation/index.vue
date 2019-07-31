@@ -66,6 +66,10 @@
                         <span class="chart-label-dot"></span>
                         <i>受理案件趋势分析</i>
                     </div>
+                    <year-selector
+                            :selectYear="trendsAcceptingCaseYear"
+                            :handleChange="changetrendsAcceptingCaseYear"
+                    ></year-selector>
                     <div ref="tendencyChart" class="tendency-chart"></div>
                 </div>
             </div>
@@ -155,6 +159,7 @@
 		mapTooltipConfig, territoryConfig,
 		CHART_COLOR_LIST, statisticsConfig,
 	}                                                      from './constant';
+	import YearSelector                                    from '@/components/common/year-selector';
 
 	export default {
 		data() {
@@ -188,7 +193,8 @@
 					data: []
 				},
 				casesAreHandledList           : [],
-				perCapitaHandlingList         : []
+				perCapitaHandlingList         : [],
+				trendsAcceptingCaseYear       : new Date().getFullYear(),
 			}
 		},
 		computed  : {
@@ -213,14 +219,25 @@
 			this.capitaChart      = ECharts.init(this.$refs.capitaChart);
 
 			this.requestPublicLitigationData(params);
-			this.requestTrendsInAcceptingCasesList(params);
+			this.requestTrendsInAcceptingCasesList({
+				year: this.trendsAcceptingCaseYear,
+				code: params.dev,
+				lev : params.lev
+			});
 		},
 		updated() {
 			const params = { ...this.mapCode, ...this.dateSection };
 			if(verifyTriggerState(this.trigger, this.oldTriggerState, params)) {
+				if(verifyTriggerState(['code', 'lev'], this.oldTriggerState, params)) {
+					this.requestTrendsInAcceptingCasesList({
+						code: params.code,
+						lev : params.lev,
+						year: this.trendsAcceptingCaseYear,
+					});
+				}
 				this.oldTriggerState = params;
 				this.requestPublicLitigationData(params);
-				this.requestTrendsInAcceptingCasesList(params);
+
 			}
 		},
 		methods   : {
@@ -266,6 +283,12 @@
 				} else {
 					this.$message.error(res.msg);
 				}
+			},
+			changetrendsAcceptingCaseYear(year) {
+				this.requestTrendsInAcceptingCasesList({
+                    ...this.mapCode,
+                    year,
+                })
 			},
 			// 涉案领域统计分析
 			loadTerritoryChart(civilInvolvedData, administrationData) {
@@ -334,7 +357,8 @@
 						}
 					}]
 				})
-			},
+			}
+			,
 			// 受理案件趋势分析
 			loadTendencyChart(chartData = []) {
 				const civilData          = [],
@@ -445,7 +469,8 @@
 						data     : civilData
 					}]
 				});
-			},
+			}
+			,
 			// 案件性质分类
 			loadNatureChart(chartData) {
 				this.natureChart.setOption({
@@ -479,7 +504,8 @@
 					}
 					]
 				});
-			},
+			}
+			,
 			// 审查情况
 			loadInvestigateChart(chartData) {
 				this.investigateChart.setOption({
@@ -520,7 +546,8 @@
 					}
 					]
 				});
-			},
+			}
+			,
 			// 受理数分类情况统计
 			loadStatisticsChart(civilData, administrationData) {
 				const civilChartData          = [],
@@ -650,7 +677,8 @@
 						data     : administrationChartData
 					}]
 				});
-			},
+			}
+			,
 			// 案均办结数
 			loadFileChart(chartData) {
 				const { axisData, seriesData } = this.convertBarData(chartData, 'ajblts');
@@ -734,7 +762,8 @@
 						}
 					]
 				})
-			},
+			}
+			,
 			// 人均办结天数
 			loadPerCapitaSettlementChart(chartData) {
 				const { axisData, seriesData } = this.convertBarData(chartData, 'rjbjs');
@@ -807,7 +836,8 @@
 						}
 					]
 				})
-			},
+			}
+			,
 			setDialogVisible(name) {
 				let data = [],
 					key  = '';
@@ -828,7 +858,8 @@
 				};
 
 				this.dialogVisible = true;
-			},
+			}
+			,
 			loadDialogChart() {
 				const { data: chartData, key } = this.dialogContext,
 					  { axisData, seriesData } = this.convertBarData(chartData, key);
@@ -910,10 +941,12 @@
 						}
 					]
 				});
-			},
+			}
+			,
 			closeBarDialog() {
 				this.dialogBarChart && this.dialogBarChart.clear();
-			},
+			}
+			,
 			convertBarData(chartData, key) {
 				const axisData   = [],
 					  seriesData = chartData.map((i) => {
@@ -927,14 +960,20 @@
 					axisData,
 					seriesData
 				};
-			},
-			...mapActions('publicLitigation', ['initMapState']),
-			...mapActions('publicLitigation', ['setMapData']),
+			}
+			,
+			...
+				mapActions('publicLitigation', ['initMapState']),
+			...
+				mapActions('publicLitigation', ['setMapData']),
 		},
 		mixins    : [triggerMixin],
-		components: {
-			BjMap,
-		},
+		components:
+			{
+				BjMap,
+				YearSelector,
+			}
+		,
 	}
 </script>
 <style lang="scss" scoped>
@@ -949,12 +988,12 @@
                 justify-content: space-between;
                 .index-box {
                     width: 578px;
-                    height: 248px;
+                    height: 210px;
                     .index-content {
                         display: flex;
                         justify-content: center;
                         flex-wrap: wrap;
-                        margin-top: 40px;
+                        margin-top: 30px;
                         .index-block {
                             display: flex;
                             justify-content: center;
