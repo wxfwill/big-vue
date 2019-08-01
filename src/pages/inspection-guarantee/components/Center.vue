@@ -305,6 +305,10 @@
 			width:973px;
 			height:705px;
 		}
+		.map-chart-box{
+			width:973px;
+			height:790px!important;
+		}
 		.map-chart{
 			div{
 				width:973px;	
@@ -322,8 +326,8 @@
 				color:#FBBA18;
 				position:absolute;
 				right:-560px;
-				bottom:25px;
-				 margin-top: 17px;
+				top:70px;
+				margin-top: 17px;
                 text-align: right;
                 font-size: 16px;
                 font-family: Helvetica;

@@ -656,7 +656,7 @@
 				color:#FBBA18;
 				position:absolute;
 				right:25px;
-				bottom:5px;
+				bottom:25px;
 				 margin-top: 17px;
                 text-align: right;
                 font-size: 16px;

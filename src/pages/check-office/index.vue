@@ -11,6 +11,8 @@
                 :jeremyLevinUnitList="jeremyLevinUnitList"
                 :submitApprovalStatistics="submitApprovalStatistics"
                 :submitApprovalPriorities="submitApprovalPriorities"
+				:postmaxValue='postmaxValue'
+				:postmaxValue1='postmaxValue1'
         ></left-side>
         <center-box
                 :securityClassificationSw="securityClassificationSw"
@@ -48,7 +50,9 @@
 				securityClassificationCpj: {},
 
 				theArchiveAnalysisList: [],
-				infoPublishList       : []
+				infoPublishList       : [],
+				postmaxValue:[],
+				postmaxValue1:[]
 			}
 		},
         computed: {
@@ -65,7 +69,9 @@
 						const data                = resolve.data;
 						// left
 						this.publishingStatistics = data.publishingStatistics;
-						
+						this.postmaxValue=Object.values(data.postPriorities).reduce(function(prev, cur, index, arr) {
+								return prev + cur;
+							});
 						this.postPriorities       = postDistributeConfig.map(i => ({
 							...i,
 							percent: data.postPriorities[i.id],
@@ -74,6 +80,9 @@
 						this.jeremyLevinUnitList = data.jeremyLevinUnitList;
 
 						this.submitApprovalStatistics = data.submitApprovalStatistics;
+						this.postmaxValue1=Object.values(data.submitApprovalPriorities).reduce(function(prev, cur, index, arr) {
+								return prev + cur;
+							});
 						this.submitApprovalPriorities = submitApprovalPrioritiesConfig.map(i => ({
 							...i,
 							percent: data.submitApprovalPriorities[i.id]

@@ -14,6 +14,7 @@
             :theProcuratorialAgency=theProcuratorialAgency
             :prosecutionPersonnel=prosecutionPersonnel
             :numberOfEmployees=numberOfEmployees
+            :financialInstitutions=financialInstitutions
         ></right-box>
     </div>
 </template>
@@ -24,7 +25,7 @@
     import RightBox        from './components/Right';
     import * as services from './service/index'
     import {caizhengChartConfig,jingfeiqingkuang,trendsProcuratorialBusinessList,sortChartConfig,assetsSituation,theProcuratorialAgency,prosecutionPersonnel
-    ,numberOfEmployees} from './constant/index'
+    ,numberOfEmployees,financialInstitutions} from './constant/index'
 	export default {
         data(){
             return{
@@ -57,7 +58,8 @@
                 assetsSituation:assetsSituation,
                 theProcuratorialAgency:theProcuratorialAgency,
                 prosecutionPersonnel:prosecutionPersonnel,
-                numberOfEmployees:numberOfEmployees
+                numberOfEmployees:numberOfEmployees,
+                financialInstitutions:financialInstitutions
             }
         },
         mounted(){
@@ -93,6 +95,8 @@
                     this.prosecutionPersonnel=data.prosecutionPersonnels
                     //单位在职人数
                     this.numberOfEmployees=data.numberOfEmployees
+                    //计财机构及人员情况
+                    this.financialInstitutions=data.financialInstitutions
                     console.log(data)
 				} else {
 					this.$message.error(res.msg);

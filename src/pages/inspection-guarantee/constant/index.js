@@ -88,8 +88,8 @@ const caizhengChartConfig=[{
 
 //全国省份排名
 const sortChartConfig=[{
-	id: '北京',
-	name: "2600"
+	city_name: '北京',
+	sl: "2600"
   },
   {
 	city_name: '天津',
@@ -332,10 +332,25 @@ const prosecutionPersonnel={
 }
 //单位在职人数
 const numberOfEmployees={
-
+	gbxzzw:2234,
+	gqry:2234,
+	zyjsry:2234
+}
+//计财机构及人员情况
+const financialInstitutions={
+	jcbmszqk:100,
+	yszjcbm:50,
+	wszjcbm:50,
+	jcrysys:100,
+	kjryqk:100,
+	kjhsxs:1234,
+	kjdlhs:1234,
+	qtxs:1234,
+	kjwpz:1234,
+	qzkjjzhs:1234
 }
 
 export {incomeChartConfig,caizhengChartConfig,
 	sortChartConfig,mapTooltipConfig,propertyConfig,
 	agencyConfig,jingfeiqingkuang,trendsProcuratorialBusinessList,assetsSituation,theProcuratorialAgency,prosecutionPersonnel
-,numberOfEmployees}
+,numberOfEmployees,financialInstitutions}

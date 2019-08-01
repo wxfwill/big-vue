@@ -156,10 +156,10 @@
 						<div class="totalfiscal-top">
 							<p class='title'>机构情况</p>
 							<p>计财部门设置情况</p>
-							<p>100</p>
+							<p>{{financialInstitutions.jcbmszqk}}</p>
 							<ul>
-								<li>80</li>
-								<li>20</li>
+								<li :style="{width:`${financialInstitutions.yszjcbm}%`}">{{financialInstitutions.yszjcbm}}</li>
+								<li :style="{width:`${financialInstitutions.wszjcbm}%`}">{{financialInstitutions.wszjcbm}}</li>
 							</ul>
 							<ol>
 								<li>已设置计财部门的单位</li>
@@ -172,38 +172,38 @@
 								<ul>
 									<li>
 										<i class='el-icon-s-custom'></i>
-										<span>1000</span>
+										<span>{{financialInstitutions.jcrysys}}</span>
 										<p>计财人员 实有数</p>
 									</li>
 									<li>
 										<i class='el-icon-s-custom'></i>
-										<span>1000</span>
+										<span>{{financialInstitutions.kjryqk}}</span>
 										<p>会计人员 情况</p>
 									</li>
 								</ul>
 							</div>
 							<div class="totalfiscal-bottom-right">
 								<div class='one'>
-									<p>12,234,231</p>	
+									<p>{{financialInstitutions.kjhsxs}}</p>	
 									<p>会计核算形式</p>	
 								</div>
 								<div class='two'>
-									<p>12,234,231</p>	
+									<p>{{financialInstitutions.kjdlhs}}</p>	
 									<p>会计独立核算</p>	
 								</div>
 								
 								<div class='four'>
 									<div>
-											<p>12,234,231</p>	
+											<p>{{financialInstitutions.kjwpz}}</p>	
 											<p>会计委派制</p>	
 									</div>
 									<div>
-											<p>12,234,231</p>	
+											<p>{{financialInstitutions.qzkjjzhs}}</p>	
 											<p>其中会计集中核算</p>	
 									</div>
 								</div>
 								<div class='three'>
-									<p>12,234,231</p>	
+									<p>{{financialInstitutions.kjdlhs}}</p>	
 									<p>会计独立核算</p>	
 								</div>
 							</div>
@@ -309,6 +309,12 @@
 			},
 			prosecutionPersonnel:{
 				default:{}
+			},
+			numberOfEmployees:{
+				default:{}
+			},
+			financialInstitutions:{
+				default:{}
 			}
 		},
 		computed  : {
@@ -337,14 +343,14 @@
 		methods   : {
 			loadjobChart() {
 				var datas = [{
-					value: 2234,
+					value: this.numberOfEmployees.zyjsry,
 					name: '专业技术人员'
 				}, {
-					value: 2234,
-					name: '干部行政职务1'
+					value: this.numberOfEmployees.gqry,
+					name: '工勤人员'
 				}, {
-					value: 2234,
-					name: '干部行政职务2'
+					value: this.numberOfEmployees.gbxzzw,
+					name: '干部行政职务'
 				}];
 				var scale = 1;
 				var rich = {
@@ -388,6 +394,9 @@
 								align: 'center'
 							}
 						},
+						grid:{
+							bottom:'10%'
+						},
 						legend: {
 							selectedMode: false,
 							formatter: function(name) {
@@ -406,7 +415,7 @@
 							padding: [10, 0],
 							textStyle: {
 								color: "#ffc72b",
-								fontSize: 30 * scale
+								fontSize: 20 * scale
 							},
 						},
 						series: [{
@@ -448,9 +457,13 @@
 				this.serviceChart.setOption({
 					color: ['#FBBA18', '#0CADE8', '#1BC85D'],
 					tooltip: {
-						trigger: 'item',
-						formatter: "{a} <br/>{b}: {c} ({d}%)"
-					},
+							trigger: 'item',
+							formatter: "{b}<br/>\n金额{c} <br/>占比\n {d}%",
+							itemStyle:{
+								fontSize:'14'
+							},
+							extraCssText:'background:#03C4C3'
+						},
 					legend: {
 						show:false,
 						orient: 'horizontal',
@@ -463,7 +476,6 @@
 						data: ['司法警察装备', '综合保障装备', '技术装备']
 					},
 					series: [{
-							name: '访问来源',
 							type: 'pie',
 							selectedMode: 'single',
 							radius: [0, '58%'],
@@ -475,7 +487,7 @@
 									textStyle: {
 										color: '#fff',
 										fontWeight: 'normal',
-										fontSize: 14
+										fontSize: 12
 									}
 								}
 							},
@@ -499,43 +511,12 @@
 							]
 						},
 						{
-							name: '访问来源',
 							type: 'pie',
 							radius: ['60%', '62%'],
 							label: {
 								normal: {
-									formatter: '{b|{b}}\n{hr|}\n金额 占比\n{c}{d|{d}%}',
-									rich: {
-										b: {
-											fontSize: 20,
-											color: '#fff',
-											align: 'left',
-											padding: 4
-										},
-										hr: {
-											borderColor: '#12EABE',
-											width: '100%',
-											borderWidth: 2,
-											height: 0
-										},
-										d: {
-											fontSize: 20,
-											color: '#fff',
-											align: 'left',
-											padding: 4
-										},
-										c: {
-											fontSize: 20,
-											color: '#fff',
-											align: 'center',
-											padding: 4
-										},
-										a: {
-											fontSize: 20,
-											color: '#fff',
-											align: 'center',
-											padding: 4
-										}
+									formatter:function(params){
+										return ''+params.name+'\n\n金额:'+params.value+'\n\n占比'+params.percent+''
 									}
 								}
 							},
@@ -572,7 +553,11 @@
 				this.agencyChart.setOption({
 					tooltip: {
 						trigger: 'item',
-						formatter: "{a} <br/>{b}: {c} ({d}%)"
+						formatter: "{b}:{c}",
+						itemStyle:{
+							fontSize:'16'
+						},
+						extraCssText:'background:#03C4C3'
 					},
 					grid:{
 						top:'0'
@@ -580,14 +565,13 @@
 					color:['#009FE8'],
 					series: [
 						{
-							name:'访问来源',
 							type:'pie',
 							radius: ['30%', '40%'],
 							avoidLabelOverlap: false,
 							label: {
 								normal: {
 									show: true,
-									formatter:'{a}\n{c}人',
+									formatter:'{b}\n{c}人',
 									rich:{
 										c:{
 											align:'center',
@@ -598,7 +582,7 @@
 								emphasis: {
 									show: true,
 									textStyle: {
-										fontSize: '30',
+										fontSize: '14',
 										fontWeight: 'bold'
 									}
 								}
@@ -768,11 +752,11 @@
 						}
 						.personnel-bottom-left{
 							width:296px;
-							height:247px;
+							height:200px;
 							padding:10px 27px;
 							.agency-content{
 								width:267px;
-								height:247px;
+								height:200px;
 							}
 						}
 						.personnel-bottom-right{
@@ -781,10 +765,10 @@
 							padding:10px 27px;
 							.job-content{
 								width:443px;
-								height:247px;
+								height:200px;
 								div{
 									width:443px;
-									height:247px;
+									height:200px;
 									canvas{
 										top:-30px!important;
 									}

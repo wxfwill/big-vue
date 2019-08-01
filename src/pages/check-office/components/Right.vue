@@ -157,7 +157,6 @@
 					},
 					yAxis  : {
 						type         : 'value',
-						name         : '归档件数',
 						nameTextStyle: {
 							padding : [0, 40, 0, 0],
 							color   : "#fff",
@@ -241,7 +240,7 @@
 			},
         loadDialogChart(){
             this.dialogBarChart            = EChart.init(this.$refs.dialogChart);
-            const { xAxisData, seriesData } = this.convertChartConfigcz(this.infoPublishList);
+            const { xAxisData, seriesData } = this.getinfoChartConfigData(this.infoPublishList);
 			this.dialogBarChart.setOption({
 				color: ['#3398DB'],
 				tooltip : {
@@ -319,12 +318,12 @@
         width: 1606px;
         .msg-issue-box {
             height: 454px;
-            padding: 19px 75px;
+            padding: 23px 64px;
 			padding-right:0px;
             margin-bottom: 19px;
             .table-group {
                 display: flex;
-                padding-left: 30px;
+				height:400px;
                 .table-item {
                     position: relative;
                     flex: 1;
@@ -376,6 +375,10 @@
 					cursor: pointer;
 							z-index:999;
 				}
+				.file-analyze-chart{
+					width: 1606px;
+					height:400px;
+				}
             }
         }
         .file-analyze-box {
@@ -383,7 +386,7 @@
             padding: 23px 64px;
 			padding-right:0px;
             .file-analyze-chart {
-                width: 1480px;
+                // width: 1531px;
                 height: 370px;
             }
         }

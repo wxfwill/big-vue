@@ -17,6 +17,8 @@
             <pie-group
                     name="发文缓急分布"
                     :pieConfigList="postPriorities"
+                    :maxValue='postmaxValue'
+                    type='number'
             ></pie-group>
         </div>
         <div class="chart-box">
@@ -48,6 +50,8 @@
             <pie-group
                     name="呈批文件缓急分布"
                     :pieConfigList="submitApprovalPriorities"
+                    :maxValue='postmaxValue1'
+                    type='number'
             ></pie-group>
         </div>
     </div>
@@ -72,7 +76,9 @@
 			'receivingStatistics',
 			'jeremyLevinUnitList',
 			'submitApprovalStatistics',
-			'submitApprovalPriorities'
+            'submitApprovalPriorities',
+            'postmaxValue',
+            'postmaxValue1'
 		],
 		components: {
 			GranularBar,
