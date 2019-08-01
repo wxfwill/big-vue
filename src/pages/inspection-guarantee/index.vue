@@ -99,7 +99,7 @@
                     this.financialInstitutions=data.financialInstitutions
                     console.log(data)
 				} else {
-					this.$message.error(res.msg);
+					// this.$message.error(res.msg);
 				}
 			},
         },

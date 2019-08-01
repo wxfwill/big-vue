@@ -32,6 +32,26 @@
                 </ul>
             </div>
         </div>
+		<div class="sumBox" v-show="mapConfig.numIsshow1">
+            <div class="num-block">
+                受理总数：
+                <ul>
+                    <li v-for="(item,index) in totalSls" :key="index">{{item}}</li>
+                </ul>
+            </div>
+            <div class="num-block">
+                完成总数：
+                <ul>
+                    <li v-for="(item,index) in totalBjs" :key="index">{{item}}</li>
+                </ul>
+            </div>
+            <div class="num-block">
+                未完成总数：
+                <ul>
+                    <li v-for="(item, index) in totalZbs" :key="index">{{item}}</li>
+                </ul>
+            </div>
+        </div>
         <div class="now-data" v-show='mapConfig.leftIsshow'>
             <h4 class="now-date-text">
                 {{ nowSelectDate.startdate }} ~ {{ nowSelectDate.enddate }}
@@ -41,8 +61,8 @@
                 <i class="now-data-icon el-icon-coin" @click="dialogVisible = true"></i>
             </h4>
             <p class="nd-accept-text">受理数：{{ ~~sls }}</p>
-            <p class="nd-conclude-text">办结数：{{ ~~bjs }}</p>
-            <p class="nd-office-text">在办数：{{ ~~zbs }}</p>
+            <p class="nd-conclude-text"><span v-if='mapConfig.numIsshow==true'>办结数</span><span v-else>完成数</span>：{{ ~~bjs }}</p>
+            <p class="nd-office-text"><span v-if='mapConfig.numIsshow==true'>在办数</span><span v-else>未完成数</span>：{{ ~~zbs }}</p>
             <el-popover
                     popper-class="map-extra-table"
                     v-show="extendData.length !== 0"
@@ -606,7 +626,8 @@
 					return {
 						numIsshow:true,
 						leftIsshow:true,
-						tooltipIsshow:true
+						tooltipIsshow:true,
+						numIsshow1:false
 					}
 				}
 			}

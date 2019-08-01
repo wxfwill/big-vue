@@ -13,9 +13,10 @@
                 :lev="mapCode.lev"
                 :nowSelectDate="dateSection"
 				:mapConfig='{
-					numIsshow:true,
-					leftIsshow:false,
-					tooltipIsshow:true
+					numIsshow:false,
+					leftIsshow:true,
+					tooltipIsshow:true,
+					numIsshow1:true
 				}'
         ></bj-map>
         <span v-show="false">{{ mapCode }}</span>
@@ -68,13 +69,12 @@
 		},
 		methods   : {
 			async loadMapData(params) {
-				const res = await services.getCriminalData(params);
+				const res = await services.getCheckCharterData(params);
 				if(res.code === 200) {
-					const { mapSlBjZb: { bjs, sls, zbs }, theMapList } = res.data;
-					this.sls                                           = sls;
-					this.bjs                                           = bjs;
-					this.zbs                                           = zbs;
-					this.mapList                                       = theMapList;
+					this.sls                                           =res.data.checkCharterMapData.sls;
+					this.bjs                                           = res.data.checkCharterMapData.wcs;
+					this.zbs                                           = res.data.checkCharterMapData.wwcs;
+					this.mapList                                       = res.data.checkCharterTheMapList;
 				} else {
 					this.sls     = 0;
 					this.bjs     = 0;
@@ -84,11 +84,11 @@
 				}
 			},
 			async loadHeadTotalData(params) {
-				const res = await services.getTopSlBjZb(params);
+				const res = await services.getCheckCharterData(params);
 				if(res.code === 200) {
-					this.totalSls = `${fillZero(res.data.slzs, 4)}`.split('');
-					this.totalBjs = `${fillZero(res.data.bjzs, 4)}`.split('');
-					this.totalZbs = `${fillZero(res.data.zbzs, 4)}`.split('');
+					this.totalSls = `${fillZero(res.data.checkCharterTopData.slzs, 4)}`.split('');
+					this.totalBjs = `${fillZero(res.data.checkCharterTopData.wczs, 4)}`.split('');
+					this.totalZbs = `${fillZero(res.data.checkCharterTopData.wwczs, 4)}`.split('');
 				} else {
 					this.$message.error(res.msg);
 				}
