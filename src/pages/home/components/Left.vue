@@ -619,8 +619,7 @@
                             background-position-y: bottom;
                             flex: 1;
                             .list-label {
-                                min-width: 130px;
-                                max-width: 150px;
+                                width: 130px;
                                 font-size: 18px;
                                 color: rgba(255, 255, 255, 1);
                                 line-height: 22px;

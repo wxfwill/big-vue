@@ -26,7 +26,7 @@
                 </div>
                 <div class="right-right-select">
                     <city-selector
-                        :getStaffInfo="getStaffInfo"
+                            :getStaffInfo="getStaffInfo"
                     ></city-selector>
                 </div>
                 <div class="right-right-bottom">
@@ -78,13 +78,13 @@
 	export default {
 		data() {
 			return {
-				bottomStageBg     : require('@/public/img/team-management/bottomStageBg.png'),
-				shadeBg           : require('@/public/img/team-management/shadeBg.png'),
-				staffImg          : require('@/public/img/team-management/staff.png'),
-				topBorderBg       : require('@/public/img/team-management/topBorderBg.png'),
-				sideBorderBg      : require('@/public/img/team-management/sideBorderBg.png'),
-				structureIcon     : require('@/public/img/team-management/structureIcon.png'),
-				performanceInfo   : {},
+				bottomStageBg  : require('@/public/img/team-management/bottomStageBg.png'),
+				shadeBg        : require('@/public/img/team-management/shadeBg.png'),
+				staffImg       : require('@/public/img/team-management/staff.png'),
+				topBorderBg    : require('@/public/img/team-management/topBorderBg.png'),
+				sideBorderBg   : require('@/public/img/team-management/sideBorderBg.png'),
+				structureIcon  : require('@/public/img/team-management/structureIcon.png'),
+				performanceInfo: {},
 			}
 		},
 		mounted() {
@@ -134,7 +134,7 @@
 								formatter: function(params) {
 									return `${params.value}人 ${params.percent}%`;
 								},
-                                color : '#fff'
+								color    : '#fff'
 							}
 						},
 						itemStyle     : {
@@ -195,7 +195,7 @@
 					grid  : {
 						top         : '10%',
 						height      : '100%',
-						width       : '80%',
+						right       : 150,
 						left        : 0,
 						containLabel: true,
 					},
@@ -220,8 +220,8 @@
 								color: "rgba(256, 256, 256, .4)",
 							}
 						},
-                        axisLabel : {
-							color : '#53D2D3',
+						axisLabel: {
+							color   : '#53D2D3',
 							fontSize: 14
 						}
 					},
@@ -272,14 +272,17 @@
 				return (num * 100).toFixed(1);
 			},
 			async getStaffInfo({ name, company }, callback) {
-				const res = await getPersonInfo({ name, company });
+				const res = await getPersonInfo({
+					name,
+					company
+				});
 				if(res.code === 200) {
-                    this.performanceInfo = res.data;
-                    callback();
-                } else {
+					this.performanceInfo = res.data;
+					callback();
+				} else {
 					this.$message.error(res.msg);
-                }
-            }
+				}
+			}
 		},
 		components: {
 			CitySelector,

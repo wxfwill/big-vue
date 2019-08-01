@@ -8,6 +8,8 @@
         <center-box
                 :personnelCategory="personnelCategory"
                 :lev="lev"
+                :code="pindex"
+                :changeMapState="changeMapState"
         ></center-box>
         <right
                 ref="rightBox"
@@ -84,6 +86,10 @@
 					this.$message.error(res.msg);
 				}
 			},
+            changeMapState({ pindex, lev }){
+				this.pindex = pindex;
+				this.lev = lev;
+            },
 		},
 		components: {
 			Left,

@@ -1,5 +1,5 @@
 <template>
-    <div class="bj-map">
+    <div class="extend-bj-map">
         <div v-if="lev === 1" class="high-procurator" v-show='mapConfig.tooltipIsshow'>
             <div class="tooltip-bg bg_img" :style="{backgroundImage:`url(${this.mapTooltipTitleBg})`}"></div>
             <p class="tooltip-title">最高人民检察院</p>
@@ -25,7 +25,7 @@
                 {{ nowSelectDate.startdate }} ~ {{ nowSelectDate.enddate }}
             </h4>
             <h4 class="now-area">
-                <span>{{ cityCrumbsList[mapLevel].name }}</span>
+                <span>{{ nowAreaName }}</span>
                 <i class="now-data-icon el-icon-coin" @click="dialogVisible = true"></i>
             </h4>
             <p class="nd-accept-text" v-for="item in leftDataConfig" :key="item.id">
@@ -66,7 +66,7 @@
             </div>
         </div>
         <el-dialog
-                :title="cityCrumbsList[mapLevel].name"
+                :title="nowAreaName"
                 :visible.sync="dialogVisible"
                 @opened="loadMapLineChart"
                 width="90%">
@@ -76,8 +76,8 @@
 </template>
 
 <script>
-	import ECharts         from 'echarts';
-	import { geoCoordMap } from './config';
+	import ECharts                                            from 'echarts';
+	import { geoCoordMap, extraCityColumnConfig, geoMapName } from './config';
 
 	export default {
 		data() {
@@ -88,30 +88,25 @@
 				showTooltip       : false,
 				dialogVisible     : false,
 				tooltipData       : {},
-				cityCrumbsList    : [{
-					id  : 0,
-					code: 100000,
-					name: '全国'
-				}],
+				cityCrumbsList    : [],
 				mapLevel          : 0,
 				highProcuratorInfo: {},
-				extraCityColumn   : [
-					{
-						id  : 'name',
-						name: '名称'
-					}, {
-						id  : 'sls',
-						name: '受理数'
-					}, {
-						id  : 'bjs',
-						name: '办结数'
-					}, {
-						id  : 'zbs',
-						name: '在办数'
-					}],
 				extendData        : [],
 				loadingMap        : false,
 			}
+		},
+		computed: {
+			nowAreaName() {
+				const name = this.cityCrumbsList[this.mapLevel].name;
+				return geoMapName[name] || name;
+			}
+		},
+		created() {
+			this.cityCrumbsList = [{
+				id  : 0,
+				code: this.defaultCode,
+				name: 'china'
+			}];
 		},
 		mounted() {
 			const myChart        = ECharts.init(this.$refs.mapRef);
@@ -170,19 +165,18 @@
 				} else {
 					this.highlightCountyArea();
 				}
-				this.handleMapStateChange(code);
 			});
 
 			this.loadMapGraphJson();
 			this.myChart = myChart;
 		},
-		methods: {
+		methods : {
 			/**
 			 * 加载地图json离线数据包
 			 * */
 			async loadMapGraphJson() {
-				const { id, name, extendMap } = this.cityCrumbsList[this.mapLevel];
-				let url                       = 'public/map-json';
+				const { id, name, extendMap, code } = this.cityCrumbsList[this.mapLevel];
+				let url                             = 'public/map-json';
 				if(extendMap) {
 					url += `/extendProvince/${id}`;
 				} else {
@@ -205,6 +199,7 @@
 						name,
 						data: mapGeoJson
 					});
+					this.handleMapStateChange(code);
 					this.loadMapChart(name, mapGeoJson, false);
 				} catch(e) {
 					this.mapGeoLoadFaily = true;
@@ -230,9 +225,9 @@
 					extendData     = classify.extendData;
 					mapData        = classify.mapData;
 
-					if(name === '全国') {
+					if(name === 'china') {
 						extendData.some((i) => {
-							if(i.code === "100000") {
+							if(i.code === this.defaultCode) {
 								this.highProcuratorInfo = i;
 								return true;
 							}
@@ -288,8 +283,8 @@
 								shadowColor  : 'rgba(0, 0, 0, 0.5)'
 							}
 						},
-						layoutCenter: name === '全国' ? ['50%', '50%'] : undefined,
-						layoutSize  : name === '全国' ? 950 : undefined,
+						layoutCenter: name === 'china' ? ['50%', '50%'] : undefined,
+						layoutSize  : name === 'china' ? 950 : undefined,
 					},
 					series : [{
 						name            : 'extend',
@@ -412,15 +407,15 @@
 				this.mapJsonData.length = 1;
 				this.cityCrumbsList     = [{
 					id            : 0,
-					code          : 100000,
-					name          : '全国',
+					code          : this.defaultCode,
+					name          : 'china',
 					nowMapHoleType: true,
 				}];
 				const { name, data }    = this.mapJsonData[0];
 				this.extendData         = [];
 				this.loadMapChart(name, data, false);
 
-				this.handleMapStateChange(100000);
+				this.handleMapStateChange(this.defaultCode);
 			},
 
 			/**
@@ -458,9 +453,9 @@
 			 * 加载地图数据柱状图
 			 * */
 			loadMapLineChart() {
-				const chartData                                = this.mapData,
-					  { xAxisList, bjsData, slsData, zbsData } = this.convertMapChartData(chartData),
-					  mapLineChart                             = ECharts.init(this.$refs.mapLineChart);
+				const chartData                             = this.mapData,
+					  { xAxisList, legendData, seriesData } = this.convertMapChartData(chartData),
+					  mapLineChart                          = ECharts.init(this.$refs.mapLineChart);
 				mapLineChart.setOption({
 					color     : ['#12E9E9', '#F7BD07', '#10E77E'],
 					tooltip   : {
@@ -470,17 +465,16 @@
 						}
 					},
 					legend    : {
-						data     : ['受理数', '在办数', '办结数'],
-						right    : 0,
-						top      : 20,
-						orient   : 'vertical',
+						data     : legendData,
+						left     : 'center',
+						top      : 0,
 						textStyle: {
 							color   : "#fff",
 							fontSize: 18
 						}
 					},
 					grid      : {
-						top   : '4%',
+						top   : '10%',
 						left  : '3%',
 						right : '3%',
 						bottom: '20%',
@@ -520,57 +514,48 @@
 							color: '#0ff',
 						},
 					},
-					series    : [
-						{
-							name       : '受理数',
-							type       : 'bar',
-							barGap     : 0,
-							data       : slsData,
-							barMaxWidth: 40,
-						},
-						{
-							name       : '在办数',
-							type       : 'bar',
-							barMaxWidth: 40,
-							data       : zbsData
-						},
-						{
-							name       : '办结数',
-							type       : 'bar',
-							barMaxWidth: 40,
-							data       : bjsData
-						}
-					]
+					series    : seriesData
 				})
 			},
 			convertMapChartData(chartData) {
-				const xAxisList = [],
-					  bjsData   = [],
-					  slsData   = [],
-					  zbsData   = [];
-				chartData.forEach((i) => {
-					xAxisList.push(`${i.name}`);
-					bjsData.push(i.bjs);
-					slsData.push(i.sls);
-					zbsData.push(i.zbs);
-				});
+				const xAxisList  = [],
+					  legendData = [],
+					  seriesData = this.topDataConfig.map((i, index) => {
+						  legendData.push(i.name);
+						  return {
+							  name       : i.name,
+							  type       : 'bar',
+							  barMaxWidth: 40,
+							  data       : chartData.map(j => {
+								  if(index === 0) {
+									  xAxisList.push(j.name);
+								  }
+								  return j[i.id];
+							  }),
+						  }
+					  });
+
 				return {
 					xAxisList,
-					bjsData,
-					slsData,
-					zbsData
+					seriesData,
+					legendData
 				}
 			},
 
 			handleMapStateChange(code) {
+				const strList   = this.mapJsonData[this.mapLevel].data.features.map(i => {
+					return i.properties.name;
+				});
 				this.loadingMap = true;
 				this.getNewRegionInfo && this.getNewRegionInfo({
 					code,
-					lev: this.mapLevel + 1
+					lev   : this.mapLevel + 1,
+					strList,
 				});
-			}
+			},
+
 		},
-		props  : {
+		props   : {
 			mapData         : {},
 			getNewRegionInfo: {},
 			tooltipConfig   : {},
@@ -579,12 +564,16 @@
 			},
 			leftData        : {
 				default: {},
-            },
+			},
 			topDataConfig   : {
 				default: []
 			},
 			topData         : {},
 			lev             : {},
+			code            : {},
+			defaultCode     : {
+				type: String
+			},
 			nowSelectDate   : {},
 			mapConfig       : {
 				type: Object,
@@ -596,8 +585,13 @@
 					}
 				}
 			},
+			extraCityColumn : {
+				type   : Array,
+				default: extraCityColumnConfig
+			},
+
 		},
-		watch  : {
+		watch   : {
 			mapData() {
 				if(this.mapGeoLoadFaily) {
 					this.mapGeoLoadFaily = false;
@@ -626,6 +620,19 @@
                 max-height: 400px;
                 overflow: auto;
                 overflow-x: hidden;
+                &::-webkit-scrollbar {
+                    width: 5px;
+                    background-color: transparent;
+                }
+                &::-webkit-scrollbar-track {
+                    border-radius: 10px;
+                }
+                &::-webkit-scrollbar-thumb {
+                    border-radius: 10px;
+                    background: rgba(14, 132, 218, .4);
+                    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+                }
+
                 &:before {
                     display: none;
                 }
@@ -669,7 +676,7 @@
         }
     }
 
-    .bj-map {
+    .extend-bj-map {
         position: relative;
         width: 100%;
         height: 100%;
@@ -789,7 +796,7 @@
                         padding: 10px 7px;
                         span {
                             display: inline-block;
-                            width: 100px;
+                            width: 110px;
                             text-align: right;
                             margin-right: 5px;
                         }
@@ -888,7 +895,7 @@
         }
         .map-data-list {
             width: 99%;
-            height: 400px;
+            height: 420px;
             margin: 0 auto 20px;
         }
     }

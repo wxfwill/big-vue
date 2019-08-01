@@ -37,7 +37,7 @@
                 {{ nowSelectDate.startdate }} ~ {{ nowSelectDate.enddate }}
             </h4>
             <h4 class="now-area">
-                <span>{{ cityCrumbsList[mapLevel].name }}</span>
+                <span>{{ nowAreaName }}</span>
                 <i class="now-data-icon el-icon-coin" @click="dialogVisible = true"></i>
             </h4>
             <p class="nd-accept-text">受理数：{{ ~~sls }}</p>
@@ -78,7 +78,7 @@
             </div>
         </div>
         <el-dialog
-                :title="cityCrumbsList[mapLevel].name"
+                :title="nowAreaName"
                 :visible.sync="dialogVisible"
                 @opened="loadMapLineChart"
                 width="90%">
@@ -89,7 +89,7 @@
 
 <script>
 	import ECharts         from 'echarts';
-	import { geoCoordMap } from './config';
+	import { geoCoordMap, geoMapName } from './config';
 
 	export default {
 		data() {
@@ -103,7 +103,7 @@
 				cityCrumbsList    : [{
 					id  : 0,
 					code: 100000,
-					name: '全国'
+					name: 'china'
 				}],
 				mapLevel          : 0,
 				highProcuratorInfo: {},
@@ -125,6 +125,12 @@
 				loadingMap        : false,
 			}
 		},
+        computed: {
+            nowAreaName(){
+            	const name = this.cityCrumbsList[this.mapLevel].name;
+            	return geoMapName[name] || name;
+            }
+        },
 		mounted() {
 			const myChart        = ECharts.init(this.$refs.mapRef);
 			this.mapJsonData     = [];
@@ -242,7 +248,7 @@
 					extendData     = classify.extendData;
 					mapData        = classify.mapData;
 
-					if(name === '全国') {
+					if(name === 'china') {
 						extendData.some((i) => {
 							if(i.code === "100000") {
 								this.highProcuratorInfo = i;
@@ -300,8 +306,8 @@
 								shadowColor  : 'rgba(0, 0, 0, 0.5)'
 							}
 						},
-						layoutCenter: name === '全国' ? ['50%', '50%'] : undefined,
-						layoutSize  : name === '全国' ? 950 : undefined,
+						layoutCenter: name === 'china' ? ['50%', '50%'] : undefined,
+						layoutSize  : name === 'china' ? 950 : undefined,
 					},
 					series : [{
 						name            : 'extend',
@@ -417,7 +423,7 @@
 			 * 地图返回顶级
 			 * */
 			showChinaMap() {
-				if(this.loadingMap){
+				if(this.loadingMap || this.mapLevel === 0){
 					return false;
                 }
 				this.mapLevel           = 0;
@@ -425,12 +431,12 @@
 				this.cityCrumbsList     = [{
 					id            : 0,
 					code          : 100000,
-					name          : '全国',
+					name          : 'china',
 					nowMapHoleType: true,
 				}];
 				const { name, data }    = this.mapJsonData[0];
 				this.extendData         = [];
-				this.loadMapChart(name, data, false);
+				this.loadMapChart(name, data);
 
 				this.handleMapStateChange(100000);
 			},

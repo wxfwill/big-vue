@@ -68,11 +68,25 @@ export const mapTooltipConfig = [{
 	id  : 'yenjcg',
 	name: '员额检察官:',
 }, {
-	id  : 'sfxzry',
+	id  : 'jcgzl',
 	name: '检察官助理:',
 }, {
 	id  : 'sfxzry',
-	name: '检察官助理:',
+	name: '司法行政人员:',
+}];
+
+export const mapTableConfig = [{
+	id  : 'name',
+	name: '名称',
+},{
+	id  : 'yenjcg',
+	name: '员额检察官',
+}, {
+	id  : 'jcgzl',
+	name: '检察官助理',
+}, {
+	id  : 'sfxzry',
+	name: '司法行政人员',
 }];
 
 export const eduStructureConfig = [{

@@ -5,18 +5,26 @@
                 :mapData="mapList"
                 :getNewRegionInfo="loadMapData"
                 :lev="lev"
+                :code="code"
+                defaultCode="000"
                 :topDataConfig="topDataConfig"
                 :topData="personnelCategory"
                 :leftDataConfig="leftSideList"
+                :leftData={}
+                :extraCityColumn="mapTableConfig"
         ></bj-map>
     </div>
 </template>
 
 <script>
-	import * as services                                     from '../service/index';
-	import { verifyTriggerState, fillZero }                  from '@/utlis/helper';
-	import BjMap                                             from '@/components/common/map/team-manage-map';
-	import { mapTooltipConfig, topDataConfig, leftSideList } from '../constant/index';
+	import * as services                    from '../service/index';
+	import { verifyTriggerState, fillZero } from '@/utlis/helper';
+	import BjMap                            from '@/components/common/map/team-manage-map';
+	import {
+		mapTooltipConfig,
+		topDataConfig,
+		leftSideList, mapTableConfig
+	}                                       from '../constant/index';
 
 	export default {
 		data() {
@@ -24,7 +32,8 @@
 				mapList: [],
 				mapTooltipConfig,
 				topDataConfig,
-                leftSideList,
+				leftSideList,
+				mapTableConfig,
 			}
 		},
 		mounted() {
@@ -32,8 +41,13 @@
 		},
 		methods   : {
 			async loadMapData(params) {
+				params.pindex = params.code;
 				const res = await services.getTeamManageMap(params);
 				if(res.code === 200) {
+					this.changeMapState({
+						pindex: params.pindex,
+						lev   : params.lev
+					});
 					this.mapList = res.data;
 				} else {
 					this.$message.error(res.msg);
@@ -45,7 +59,9 @@
 		},
 		props     : [
 			'personnelCategory',
-			'lev'
+			'lev',
+			'code',
+			'changeMapState',
 		],
 	}
 </script>

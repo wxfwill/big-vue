@@ -89,13 +89,13 @@ export const mapTooltipConfig = [{
 	id    : 'zbs',
 	name  : '在办数',
 	regExp: '{zbs}&nbsp;&nbsp;&nbsp; {zbs_zb}%',
-}, {
+}/*, {
 	id  : 'yejcg',
 	name: '员额检察官',
 }, {
 	id  : 'syjf',
 	name: '使用经费',
-}];
+}*/];
 
 // 行政
 export const administrativeConfig = [{

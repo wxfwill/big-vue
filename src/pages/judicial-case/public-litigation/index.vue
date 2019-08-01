@@ -221,7 +221,7 @@
 			this.requestPublicLitigationData(params);
 			this.requestTrendsInAcceptingCasesList({
 				year: this.trendsAcceptingCaseYear,
-				code: params.dev,
+				code: params.code,
 				lev : params.lev
 			});
 		},
@@ -391,7 +391,7 @@
 						top         : '25%',
 						left        : 80,
 						right       : 150,
-						bottom      : 20,
+						bottom      : 30,
 						containLabel: true,
 					},
 					xAxis  : {
@@ -762,8 +762,7 @@
 						}
 					]
 				})
-			}
-			,
+			},
 			// 人均办结天数
 			loadPerCapitaSettlementChart(chartData) {
 				const { axisData, seriesData } = this.convertBarData(chartData, 'rjbjs');

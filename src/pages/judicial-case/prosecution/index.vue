@@ -89,7 +89,7 @@
                     <p class="pl-list-title">受理信访分流办理件数</p>
                     <ul class="pl-list">
                         <li v-for="(item,index) in partLettersVisitsList" :key="index">
-                            <i class="pl-name">{{item.name}}</i>
+                            <i class="pl-name">{{item.city_name}}</i>
                             <div class="line"></div>
                             <span>{{item.xfs}}</span>
                         </li>
@@ -409,8 +409,8 @@
 						if(i.jbxss > maxValue) {
 							maxValue = i.jbxss;
 						}
-						axisData.push(i.name);
-						return i.jbxss
+						axisData.push(i.city_name);
+						return i.jbxss;
 					});
 				maxValue       = numberInteger(maxValue);
 				this.reportCluesChart.setOption({
@@ -541,13 +541,13 @@
 					seriesKey = '';
 				switch(name) {
 					case '受理信访分流办理件数' : {
-						axisKey   = 'name';
+						axisKey   = 'city_name';
 						seriesKey = 'xfs';
 						data      = this.lettersVisitsList;
 					}
 						break;
 					case '举报线索案件办理情况' : {
-						axisKey   = 'name';
+						axisKey   = 'city_name';
 						seriesKey = 'jbxss';
 						data      = this.reportCluesList;
 					}

@@ -1,6 +1,9 @@
+export const geoMapName = {
+	china: '全国',
+};
 
 export const geoCoordMap = {
-	'全国' : {
+	'china': {
 		'新疆兵团': {
 			id         : '65',
 			extendMap  : true,
@@ -9,3 +12,17 @@ export const geoCoordMap = {
 		},
 	}
 };
+
+export const extraCityColumnConfig = [{
+	id  : 'name',
+	name: '名称'
+}, {
+	id  : 'sls',
+	name: '受理数'
+}, {
+	id  : 'bjs',
+	name: '办结数'
+}, {
+	id  : 'zbs',
+	name: '在办数'
+}];

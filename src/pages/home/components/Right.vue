@@ -242,7 +242,9 @@
 			this.requestCivilData(params);
 			this.requestAdministration(params);
 			this.requestPublicInterestLitigation(params);
-			this.requestTroopAdministration(params);
+			this.requestTroopAdministration({
+                pindex: params.code
+            });
 
 			// 实证分析监听窗口
 			this.lawWorksWin = {
@@ -256,7 +258,9 @@
 				this.requestCivilData(params);
 				this.requestAdministration(params);
 				this.requestPublicInterestLitigation(params);
-				this.requestTroopAdministration(params);
+				this.requestTroopAdministration({
+                    pindex: params.code
+                });
 			}
 		},
 		methods   : {
