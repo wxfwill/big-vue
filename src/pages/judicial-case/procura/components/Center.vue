@@ -56,48 +56,35 @@
 		mounted() {
 			const params         = { ...this.mapCode, ...this.dateSection };
 			this.oldTriggerState = params;
-			this.loadHeadTotalData(params);
 			this.loadMapData(params);
 		},
 		updated() {
 			const params = { ...this.mapCode, ...this.dateSection };
 			if(verifyTriggerState(this.trigger, this.oldTriggerState, params)) {
 				this.oldTriggerState = params;
-				this.loadHeadTotalData(params);
 				this.loadMapData(params);
 			}
 		},
 		methods   : {
 			async loadMapData(params) {
-				const res = await services.getCheckCharterData(params);
-				if(res.code === 200) {
-					this.sls                                           =res.data.checkCharterMapData.sls;
-					this.bjs                                           = res.data.checkCharterMapData.wcs;
-					this.zbs                                           = res.data.checkCharterMapData.wwcs;
-					this.mapList                                       = res.data.checkCharterTheMapList;
-				} else {
-					this.sls     = 0;
-					this.bjs     = 0;
-					this.zbs     = 0;
-					this.mapList = [];
-					this.$message.error(res.msg);
-				}
-			},
-			async loadHeadTotalData(params) {
-				const res = await services.getCheckCharterData(params);
-				if(res.code === 200) {
-					this.totalSls = `${fillZero(res.data.checkCharterTopData.slzs, 4)}`.split('');
-					this.totalBjs = `${fillZero(res.data.checkCharterTopData.wczs, 4)}`.split('');
-					this.totalZbs = `${fillZero(res.data.checkCharterTopData.wwczs, 4)}`.split('');
-				} else {
-					this.$message.error(res.msg);
-				}
+				this.sls                                           = this.checkCharterData.checkCharterMapData.sls;
+				this.bjs                                           = this.checkCharterData.checkCharterMapData.wcs;
+				this.zbs                                           = this.checkCharterData.checkCharterMapData.wwcs;
+				this.mapList                                       = this.checkCharterData.checkCharterTheMapList;
+				this.totalSls = `${fillZero(this.checkCharterData.checkCharterTopData.slzs, 4)}`.split('');
+				this.totalBjs = `${fillZero(this.checkCharterData.checkCharterTopData.wczs, 4)}`.split('');
+				this.totalZbs = `${fillZero(this.checkCharterData.checkCharterTopData.wwczs, 4)}`.split('');
 			},
 			...mapActions('procura', ['setMapData']),
 		},
 		components: {
 			BjMap,
 		},
+		props:{
+			checkCharterData:{
+				default:{}
+			}
+		}
 	}
 </script>
 

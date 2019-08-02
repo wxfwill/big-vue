@@ -42,7 +42,7 @@
                     </div>
                 </div>
             </div>
-            <center-box></center-box>
+            <center-box :checkCharterData='checkCharterData'></center-box>
             <div class="procuratorial-page-right">
                 <div class="accept-box">
                     <div class="chart-box-title">
@@ -108,6 +108,7 @@ export default {
             },
             analysisBySynthesisList:{},//综合分析
             toAcceptTheNumberList:{},//检委办
+            checkCharterData:{},//检委办所有的数据
         }
     },
     mounted() {
@@ -131,6 +132,7 @@ export default {
             const res = await services.getCheckCharterData(params);
             if(res.code === 200) {
                 const data         = res.data;
+                this.checkCharterData=data
                 //theInvestigatorsList--相关办案人员（各省市/人）
                 this.theInvestigatorsList = data.theInvestigatorsList;
                 this.loadtheInvestigatorsListchart();
