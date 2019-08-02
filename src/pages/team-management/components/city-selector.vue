@@ -238,18 +238,21 @@
         display: flex;
         .select-list {
             display: flex;
+            border: none;
             .staff-select {
                 width: 153px;
                 height: 40px;
-                background: rgba(14, 132, 218, 1);
-                opacity: 0.3607;
+                background: rgba(14, 132, 218, .5);
+                // opacity: 0.3607;
                 color: #00FFFF;
                 margin-right: 11px;
+                border: none;
                 .el-input__inner {
                     width: 153px;
                     height: 40px;
-                    background: rgba(14,132,218,1);
+                    background: rgba(14,132,218,.5);
                     color: #fff;
+                    border:none;
                 }
             }
         }
@@ -261,17 +264,31 @@
                 width: 182px;
                 height: 40px;
                 padding: 10px;
-                background: rgba(14, 132, 218, .5);
-                color: #fff;
+                background: #0e84da;
+                color: #fff!important;
                 border: 1px solid #000;
                 border-radius: 5px;
 
             }
+            ::-webkit-input-placeholder { /* WebKit browsers */
+            color: #fff;
+            font-size: 14px;
+            }
+
+            ::-moz-placeholder { /* Mozilla Firefox 19+ */
+            color: #fff;
+            font-size: 14px;
+            }
+
+            :-ms-input-placeholder { /* Internet Explorer 10+ */
+            color: #fff;
+            font-size: 14px;
+            }  
             .search-btn {
                 width: 91px;
                 height: 40px;
                 background: rgba(14, 132, 218, 1);
-                opacity: 0.7;
+                // opacity: 0.7;
                 outline: none;
                 margin-left: 10px;
                 color: #fff;
