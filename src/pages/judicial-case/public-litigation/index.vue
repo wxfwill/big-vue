@@ -15,7 +15,7 @@
                         <div class="index-content">
                             <ul class="index-block">
                                 <li v-for="(item,index) in civilPublicList" :key="index">{{item}}</li>
-                                <span>宗</span>
+                                <span>件</span>
                             </ul>
                             <div class="index-text">
                                 <p>
@@ -37,7 +37,7 @@
                         <div class="index-content">
                             <ul class="index-block">
                                 <li v-for="(item,index) in administrationList" :key="index">{{item}}</li>
-                                <span>宗</span>
+                                <span>件</span>
                             </ul>
                             <div class="index-text">
                                 <p>

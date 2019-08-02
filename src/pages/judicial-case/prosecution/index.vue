@@ -56,8 +56,7 @@
                             <li v-for="item in procuratorialOrganList" :key="item.id">
                                 <p>{{ item.name }}</p>
                                 <div class="office-data">
-
-                                    <div class="shadow-line">
+                                    <div class="shadow-line" style="width: 492px;">
                                         <div class="full-line" :style="{ width: `${item.len}px` }"></div>
                                     </div>
                                     <span>{{ item.value || 0 }}</span>
@@ -90,7 +89,9 @@
                     <ul class="pl-list">
                         <li v-for="(item,index) in partLettersVisitsList" :key="index">
                             <i class="pl-name">{{item.city_name}}</i>
-                            <div class="line"></div>
+                            <div class="shadow-line pl-line">
+                                <div class="full-line" :style="{ width : `${item.width}px` }"></div>
+                            </div>
                             <span>{{item.xfs}}</span>
                         </li>
                     </ul>
@@ -206,7 +207,12 @@
 		},
 		computed  : {
 			partLettersVisitsList() {
-				return this.lettersVisitsList.slice(0, 12);
+				const data     = this.lettersVisitsList.slice(0, 12),
+					  maxValue = Math.max(...data.map(i => i.xfs));
+				return data.map(i => ({
+					...i,
+					width: i.xfs / maxValue * 280
+				}));
 			},
 			...mapGetters('prosecution', ['mapCode']),
 			...mapGetters('judicial', ['dateSection']),
@@ -677,6 +683,19 @@
 	}
 </script>
 <style lang="scss" scoped>
+    .shadow-line {
+        position: relative;
+        height: 28px;
+        background-color: rgba(17, 198, 255, 0.2);
+        overflow: hidden;
+        .full-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: rgba(17, 198, 255, 1);
+        }
+    }
     .outer-control-page {
         width: 100%;
         height: 100%;
@@ -769,20 +788,6 @@
                                 display: flex;
                                 align-items: center;
                                 margin-top: 10px;
-                                .shadow-line {
-                                    position: relative;
-                                    width: 492px;
-                                    height: 28px;
-                                    background-color: rgba(17, 198, 255, 0.2);
-                                    overflow: hidden;
-                                    .full-line {
-                                        position: absolute;
-                                        top: 0;
-                                        left: 0;
-                                        height: 100%;
-                                        background: rgba(17, 198, 255, 1);
-                                    }
-                                }
                                 span {
                                     margin-left: 15px;
                                     color: #11C6FF;
@@ -829,12 +834,15 @@
                             line-height: 22px;
                             text-align: right;
                         }
-                        .line {
+                        .pl-line{
                             width: 280px;
                             height: 10px;
                             margin: 0 20px;
-                            background: linear-gradient(270deg, rgba(67, 244, 254, 1) 0%, rgba(28, 223, 253, 1) 100%);
-                            border-radius: 14px;
+                            border-radius: 10px;
+                            .full-line{
+                                border-radius: 10px;
+                                background:linear-gradient(to left ,rgba(65,243,253,1),rgba(0,159,232,1));
+                            }
                         }
                         span {
                             color: #31DCFF;

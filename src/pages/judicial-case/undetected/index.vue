@@ -238,14 +238,6 @@
 					};
 					this.caseAcceptances           = caseAcceptances;
 					this.prosecuteList             = accusationRatioList;
-					ageOfCommittingACrime  = {
-						"nl1": 1220,
-						"nl2": 3330,
-						"nl3": 220,
-						"nl4": 330,
-						"nl5": 440,
-						"nl6": 5550
-                    };
 					this.ageCrimeDataSum = Object.values(ageOfCommittingACrime).reduce((a, b) => a + b);
 					this.ageCrimeList              = ageCrimeConfig.map(i => {
 						return {

@@ -46,6 +46,8 @@
 					pindex: params.pindex,
 					lev   : params.lev
 				});
+				delete params.strList;
+				delete params.code;
 				const res = await services.getTeamManageMap(params);
 				if(res.code === 200) {
 					this.mapList = res.data;
