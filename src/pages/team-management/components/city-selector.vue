@@ -250,6 +250,9 @@
                     height: 40px;
                     background: rgba(14,132,218,1);
                     color: #fff;
+                    &::placeholder{
+                        color: #FFFFFF;
+                    }
                 }
             }
         }

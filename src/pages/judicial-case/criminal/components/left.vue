@@ -62,8 +62,9 @@
                             <i class="numberical" :style="{ backgroundColor: index < 3 ? '#FBBA18' : '#00BEDD' }">{{index+1}}</i>
                             <span class="prosecute-text text-ellipsis" :title="item.qszm">{{item.qszm}}</span>
                         </div>
-                        <p>
-                            <span>{{item.qszm_zb}}% &nbsp;&nbsp;&nbsp;&nbsp;{{item.qssl}}</span>
+                        <p :class="{ 'top-three-color': index < 3, 'general-color' : index >= 3 }">
+                            <span class="number">{{item.qssl}}</span>
+                            <span class="ratio-text text-interval">{{item.qszm_zb}}%</span>
                         </p>
                     </li>
                 </ul>

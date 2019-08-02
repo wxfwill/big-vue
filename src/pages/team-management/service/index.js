@@ -31,6 +31,6 @@ export const getTeamManagement = async (data) => await request({
 // 获取队伍建设地图数据
 export const getTeamManageMap = async (data) => await request({
 	method: 'post',
-	url   : '/api/v1.0/teamManage/getTeamManageMap',
+	url   : '/api/v1.0/teamManage/getTeamManageMaps',
 	data
 });

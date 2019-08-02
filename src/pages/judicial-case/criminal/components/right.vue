@@ -271,7 +271,10 @@
 				this.dutyCrimeChart.setOption({
 					color  : ['#17DDDD'],
 					tooltip: {
-						show: false
+						trigger    : 'axis',
+						axisPointer: {
+							type: 'shadow'
+						}
 					},
 					grid   : {
 						top   : '15%',

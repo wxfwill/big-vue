@@ -594,7 +594,7 @@
 			loadAcceptChart() {
 				const { cnjcjys, tcjcjys } = this.reviewCase;
 				this.acceptChart.setOption({
-					color  : ['#2BD4EA', '#FF6C40'],
+					color  : ['#1DB0F3', '#FF6C40'],
 					tooltip: {
 						trigger  : 'item',
 						formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -605,7 +605,7 @@
 					series : [{
 						name      : '提出检察建议数',
 						type      : 'pie',
-						radius    : '80%',
+						radius    : '70%',
 						center    : ['50%', '51%'],
 						startAngle: 310,
 						label     : {
