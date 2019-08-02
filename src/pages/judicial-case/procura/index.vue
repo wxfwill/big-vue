@@ -42,7 +42,21 @@
                     </div>
                 </div>
             </div>
-            <center-box :checkCharterData='checkCharterData'></center-box>
+            <div class="inspect-page-center">
+                <bj-map
+                        :tooltipConfig="mapTooltipConfig"
+                        :mapData="mapList"
+                        :getNewRegionInfo="setMapData"
+                        :totalSls="totalSls"
+                        :totalBjs="totalBjs"
+                        :totalZbs="totalZbs"
+                        :sls="sls"
+                        :bjs="bjs"
+                        :zbs="zbs"
+                        :lev="mapCode.lev"
+                        :nowSelectDate="dateSection"
+                ></bj-map>
+            </div>
             <div class="procuratorial-page-right">
                 <div class="accept-box">
                     <div class="chart-box-title">
@@ -82,18 +96,19 @@
 import { mapGetters, mapActions }                                           from 'vuex';
 import echarts from 'echarts';
 import waterPolo from '@/components/common/water-polo.vue'
-import CenterBox from './components/Center'
 import * as services                   from './service';
-import { triggerMixin } from '@/components/mixin/trigger';
+import { triggerMixin,mapComponentState } from '@/components/mixin/trigger';
 //模拟数据
-import {personnelChartConfig,caseNumberAnalysiscongif,administrativeConfig} from "./constant/index"
+import {personnelChartConfig,caseNumberAnalysiscongif,administrativeConfig,mapTooltipConfig} from "./constant/index"
 import {verifyTriggerState,textFormatter} from '@/utlis/helper'
+import BjMap                               from '@/components/common/map/index';
+
 
 
 export default {
     components:{
         waterPolo,
-        CenterBox
+        BjMap,
     },
     data() {
         return {
@@ -109,6 +124,10 @@ export default {
             analysisBySynthesisList:{},//综合分析
             toAcceptTheNumberList:{},//检委办
             checkCharterData:{},//检委办所有的数据
+            checkCharterTopData:{},
+            checkCharterMapData:{},
+            checkCharterTheMapList:[],
+            mapTooltipConfig
         }
     },
     mounted() {
@@ -132,7 +151,6 @@ export default {
             const res = await services.getCheckCharterData(params);
             if(res.code === 200) {
                 const data         = res.data;
-                this.checkCharterData=data
                 //theInvestigatorsList--相关办案人员（各省市/人）
                 this.theInvestigatorsList = data.theInvestigatorsList;
                 this.loadtheInvestigatorsListchart();
@@ -151,7 +169,23 @@ export default {
                 this.loadanalysisBySynthesisList()
                 //toAcceptTheNumberList--检委办
                 this.toAcceptTheNumberList=data.toAcceptTheNumberList
-                this.loadtoAcceptTheNumberList()
+                this.loadtoAcceptTheNumberList();
+                const { slzs, wczs: bjzs, wwczs: zbzs } = data.checkCharterTopData || {};
+                const { sls, wcs: bjs, wwcs: zbs } =data.checkCharterMapData || {}
+                const theMapList = (data.checkCharterTheMapList || []).map(i => {
+					return {
+						code : i.code,
+						name : i.name,
+						sls: i.sls,
+						sls_zb:i.sls_zb,
+						bjs : i.wcs,
+						bjs_zb: i.wcs_zb,
+						zbs:  i.wwcs,
+						zbs_zb:i.wwcs_zb
+					}
+                });
+                this.convertMapHeadData({ slzs, bjzs, zbzs });
+				this.loadMapContent({ theMapList, sls,bjs ,zbs});
             } else {
                 this.$message.error(res.msg);
             }
@@ -723,7 +757,7 @@ export default {
         ...mapGetters('procura', ['mapCode']),
 		...mapGetters('judicial', ['dateSection']),
     },
-    mixins    : [triggerMixin],
+    mixins    : [triggerMixin, mapComponentState],
 }
 </script>
 <style lang="scss" scoped>
@@ -922,6 +956,9 @@ export default {
                 justify-content: space-around;
             }
         }
+    }
+    .inspect-page-center{
+        width:1319px;
     }
 }
 .per-dialog-chart {

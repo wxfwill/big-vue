@@ -80,13 +80,13 @@ const caseNumberAnalysiscongif=[{
 	name  : '受理数',
 	regExp: '{sls}&nbsp;&nbsp;&nbsp; {sls_zb}%',
 }, {
-	id    : 'wcs',
+	id    : 'bjs',
 	name  : '完成数',
-	regExp: '{wcs}&nbsp;&nbsp;&nbsp; {wcs_zb}%',
+	regExp: '{bjs}&nbsp;&nbsp;&nbsp; {bjs_zb}%',
 }, {
-	id    : 'wwcs',
+	id    : 'zbs',
 	name  : '未完成数',
-	regExp: '{wwcs}&nbsp;&nbsp;&nbsp; {wwcs_zb}%',
+	regExp: '{zbs}&nbsp;&nbsp;&nbsp; {zbs_zb}%',
 }];
 // 案件分类分析
 const administrativeConfig = [{

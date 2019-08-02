@@ -66,14 +66,26 @@
 			}
 		},
 		methods   : {
-			async loadMapData(params) {
-				this.sls                                           = this.checkCharterData.checkCharterMapData.sls;
-				this.bjs                                           = this.checkCharterData.checkCharterMapData.wcs;
-				this.zbs                                           = this.checkCharterData.checkCharterMapData.wwcs;
-				this.mapList                                       = this.checkCharterData.checkCharterTheMapList;
-				this.totalSls = `${fillZero(this.checkCharterData.checkCharterTopData.slzs, 4)}`.split('');
-				this.totalBjs = `${fillZero(this.checkCharterData.checkCharterTopData.wczs, 4)}`.split('');
-				this.totalZbs = `${fillZero(this.checkCharterData.checkCharterTopData.wwczs, 4)}`.split('');
+			loadMapData(params) {
+				console.log(this.checkCharterTheMapList)
+				this.sls                                           = this.checkCharterMapData.sls;
+				this.bjs                                           = this.checkCharterMapData.wcs;
+				this.zbs                                           = this.checkCharterMapData.wwcs;
+				this.mapList                                       = this.checkCharterTheMapList.map(i => {
+					return {
+						code : i.code,
+						name : i.name,
+						sls: i.sls,
+						sls_zb:i.sls_zb,
+						bjs : i.wcs,
+						bjs_zb: i.wcs_zb,
+						zbs:  i.wwcs,
+						zbs_zb:i.wwcs_zb
+					}
+				});
+				this.totalSls = `${fillZero(this.checkCharterTopData.slzs, 4)}`.split('');
+				this.totalBjs = `${fillZero(this.checkCharterTopData.wczs, 4)}`.split('');
+				this.totalZbs = `${fillZero(this.checkCharterTopData.wwczs, 4)}`.split('');
 			},
 			...mapActions('procura', ['setMapData']),
 		},
@@ -82,6 +94,15 @@
 		},
 		props:{
 			checkCharterData:{
+				default:{}
+			},
+			checkCharterTopData:{
+				default:{}
+			},
+			checkCharterMapData:{
+				default:{}
+			},
+			checkCharterTheMapList:{
 				default:{}
 			}
 		}

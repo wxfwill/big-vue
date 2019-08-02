@@ -23,9 +23,9 @@ export const mapComponentState = {
 	},
 	methods: {
 		convertMapHeadData(data) {
-			this.totalSls = `${fillZero(data.slzs, 4)}`.split('');
-			this.totalBjs = `${fillZero(data.bjzs, 4)}`.split('');
-			this.totalZbs = `${fillZero(data.zbzs, 4)}`.split('');
+			this.totalSls = `${fillZero(data.slzs||0, 4)}`.split('');
+			this.totalBjs = `${fillZero(data.bjzs||0, 4)}`.split('');
+			this.totalZbs = `${fillZero(data.zbzs||0, 4)}`.split('');
 		},
 		loadMapContent({ sls, bjs, zbs, theMapList }) {
 			this.sls                                                                   = sls;
