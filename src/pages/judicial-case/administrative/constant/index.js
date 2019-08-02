@@ -51,7 +51,7 @@ export const judgmentConfig = [{
 	color: '#21CE68'
 }, {
 	id   : 'tczsjcjys',
-	title: '提出再审检查建议',
+	title: '提出再审检察建议',
 	color: '#1DB5E0'
 }, {
 	id   : 'fycns',

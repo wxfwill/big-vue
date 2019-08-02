@@ -8,15 +8,15 @@
                     :strokeColor="pieConfig.strokeColor"
                     :tintColor="pieConfig.tintColor"
                     :circleMaxNumber="maxValue"
-                    width="110"
-                    height="110"
+                    :width="size"
+                    :height="size"
             ></pie-chart>
         </li>
     </ul>
 </template>
 
 <script>
-	import PieChart from '../../team-management/components/pie-chart';
+	import PieChart from './pie-chart';
 
 	export default {
 		data() {
@@ -33,16 +33,21 @@
 			},
 			type         : {
 				default: 'ratio'
-			}
+			},
+			size         : {
+				default : 110,
+            }
 		},
 	}
 </script>
 
 <style lang="scss" scoped>
     .pie-list {
+        width: 100%;
         margin-top: 47px;
         display: flex;
         justify-content: start;
+        flex-wrap: wrap;
         li {
             line-height: 30px;
         }

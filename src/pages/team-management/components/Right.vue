@@ -48,7 +48,7 @@
                                 <p>年度考核：{{ performanceInfo.ndkh }}</p>
                             </div>
                             <div class="info-box right-side-1" :style="{backgroundImage: `url(${sideBorderBg})`}">
-                                <h3 class="detail-title">检查办公</h3>
+                                <h3 class="detail-title">检察办公</h3>
                                 <p>办文数量：{{ performanceInfo.bwsl }}</p>
                             </div>
                             <div class="info-box right-side-2" :style="{backgroundImage: `url(${sideBorderBg})`}">

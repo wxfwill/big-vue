@@ -227,7 +227,7 @@
 			};
 		},
 		computed  : {
-			...mapGetters('homePage', ['getSelectDateSection', 'getMapCode'])
+			...mapGetters('homePage', ['getSelectDateSection', 'getMapCode', 'mapName'])
 		},
 		beforeCreate() {
 			this.trigger         = ['startdate', 'enddate', 'code', 'lev'];
@@ -243,7 +243,7 @@
 			this.requestAdministration(params);
 			this.requestPublicInterestLitigation(params);
 			this.requestTroopAdministration({
-                pindex: params.code
+                name : this.mapName
             });
 
 			// 实证分析监听窗口
@@ -259,7 +259,7 @@
 				this.requestAdministration(params);
 				this.requestPublicInterestLitigation(params);
 				this.requestTroopAdministration({
-                    pindex: params.code
+                    name : this.mapName
                 });
 			}
 		},

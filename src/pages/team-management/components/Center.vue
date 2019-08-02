@@ -42,12 +42,12 @@
 		methods   : {
 			async loadMapData(params) {
 				params.pindex = params.code;
+				this.changeMapState({
+					pindex: params.pindex,
+					lev   : params.lev
+				});
 				const res = await services.getTeamManageMap(params);
 				if(res.code === 200) {
-					this.changeMapState({
-						pindex: params.pindex,
-						lev   : params.lev
-					});
 					this.mapList = res.data;
 				} else {
 					this.$message.error(res.msg);

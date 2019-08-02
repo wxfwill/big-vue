@@ -6,6 +6,7 @@ const defaultState = {
 	endDate  : getNowDate(),
 	code     : 100000,
 	lev      : 1,
+	name     : '全国检察机关'
 };
 const mutations    = {
 	[SET_DATE](state, data) {
@@ -15,10 +16,12 @@ const mutations    = {
 	[SET_MAP_STATE](state, data) {
 		state.code = data.code;
 		state.lev  = data.lev;
+		state.name = data.name;
 	},
 	[INIT_STATE](state) {
 		state.code = '100000';
 		state.lev  = 1;
+		state.name = '全国检察机关';
 	},
 };
 
@@ -32,8 +35,11 @@ const getters = {
 	getMapCode(state) {
 		return {
 			code: state.code,
-			lev : state.lev
+			lev : state.lev,
 		}
+	},
+	mapName(state) {
+		return state.name
 	}
 };
 
@@ -47,12 +53,17 @@ const actions = {
 			endDate,
 		});
 	},
-	setMapData({ state, commit }, { code, lev }) {
+	setMapData({ state, commit }, { code, lev, name }) {
+		if(lev === 1) {
+			name = '全国检察机关';
+		}
 		commit(SET_MAP_STATE, {
 			code,
-			lev
+			lev,
+			name
 		});
 	},
+	
 };
 
 

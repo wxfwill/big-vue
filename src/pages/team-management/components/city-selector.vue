@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="search-group">
-            <input type="text" class="search-input" v-model.trim="officeName" @keyup.enter="remoteMethod">
+            <input type="text" class="search-input" placeholder="请输入人员姓名" v-model.trim="officeName" @keyup.enter="remoteMethod">
             <button type="button" class="search-btn" @click="remoteMethod">搜索</button>
         </div>
         <div class="staff-model">
@@ -141,7 +141,7 @@
 		},
 		methods : {
 			getProvinceList() {
-				this.requestList(1, '全国', 'provinceList');
+				this.requestList(1, '全国检察机关', 'provinceList');
 			},
 			getCityList(name) {
 				this.selectCity   = '';
@@ -177,7 +177,7 @@
 					let region;
 					switch(this.lev) {
 						case 1:
-							region = '全国';
+							region = '全国检察机关';
 							break;
 						case 2:
 							region = this.selectProvince;
@@ -243,7 +243,7 @@
                 .el-input__inner {
                     width: 153px;
                     height: 40px;
-                    background: rgba(14, 132, 218, 1);
+                    background: rgba(14,132,218,1);
                     color: #fff;
                 }
             }
@@ -255,9 +255,12 @@
             .search-input {
                 width: 182px;
                 height: 40px;
-                background: rgba(14, 132, 218, 1);
-                opacity: 0.3607;
-                color: #00FFFF;
+                padding: 10px;
+                background: rgba(14, 132, 218, .5);
+                color: #fff;
+                border: 1px solid #000;
+                border-radius: 5px;
+
             }
             .search-btn {
                 width: 91px;
@@ -267,6 +270,8 @@
                 outline: none;
                 margin-left: 10px;
                 color: #fff;
+                border-radius:5px;
+                border: 0;
             }
         }
         .staff-model {

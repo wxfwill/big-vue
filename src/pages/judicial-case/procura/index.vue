@@ -300,7 +300,7 @@ export default {
                     right: '20%',
                     bottom:'0',
                     itemGap:15,
-                    data: ['检验鉴定','勘验检查','技术协作','同步录音录像','技术性证据审查'],
+                    data: ['检验鉴定','勘验检察','技术协作','同步录音录像','技术性证据审查'],
                     itemWidth:48,
                     itemHeight:3,
                     textStyle:{
@@ -348,7 +348,7 @@ export default {
                         data:jyjd
                     },
                     {
-                        name:'勘验检查',
+                        name:'勘验检察',
                         type:'line',
                         stack: '总量',
                         data:kyjc
@@ -392,7 +392,7 @@ export default {
                     right: '15%',
                     bottom:'0',
                     itemGap:15,
-                    data: ['检验鉴定','勘验检查','技术协作','同步录音录像','技术性证据审查'],
+                    data: ['检验鉴定','勘验检察','技术协作','同步录音录像','技术性证据审查'],
                     itemWidth:48,
                     itemHeight:3,
                     textStyle:{
@@ -440,7 +440,7 @@ export default {
                         data:jyjd
                     },
                     {
-                        name:'勘验检查',
+                        name:'勘验检察',
                         type:'line',
                         stack: '总量',
                         data:kyjc
@@ -604,7 +604,7 @@ export default {
                             data:jyjd
                         },
                         {
-                            name:'勘验检查',
+                            name:'勘验检察',
                             type:'line',
                             stack: '总量',
                             data:kyjc
@@ -683,7 +683,7 @@ export default {
                             data:jyjd
                         },
                         {
-                            name:'勘验检查',
+                            name:'勘验检察',
                             type:'line',
                             stack: '总量',
                             data:kyjc

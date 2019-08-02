@@ -86,18 +86,14 @@
                     </div>
                     <div class="crime-age-box">
                         <box-head title="作案年龄分布"></box-head>
-                        <ul class="crime-age-content">
-                            <li v-for="item in ageCrimeList" :key="item.id">
-                                <div class="circle-style hollow-circle"
-                                     :style="{ borderColor: `rgba(${item.color}, .4)` }"></div>
-                                <div class="circle-style">
-                                    <div class="sector-line"
-                                         :style="{ borderBottomColor: `rgba(${item.color}, 1)` }"></div>
-                                </div>
-                                <p class="crime-age-number">{{item.value}}</p>
-                                <p class="crime-age-text">{{item.name}}</p>
-                            </li>
-                        </ul>
+                        <div class="crime-age-content">
+                            <pie-group
+                                    :pieConfigList="ageCrimeList"
+                                    :maxValue='ageCrimeDataSum'
+                                    type='number'
+                                    size="80"
+                            ></pie-group>
+                        </div>
                     </div>
                 </div>
                 <div class="right-right">
@@ -157,6 +153,7 @@
 	import TrendChart                          from '@/components/common/trend-chart.vue'
 	import * as services                       from './service/index';
 	import { triggerMixin, mapComponentState } from '@/components/mixin/trigger';
+	import PieGroup                            from '@/components/common/pie-group';
 	import {
 		verifyTriggerState, fillZero,
 		convertData, textFormatter,
@@ -187,10 +184,11 @@
 				noCatchList              : noCatchNumberConfig,
 				mapTooltipConfig,
 				ageCrimeList             : ageCrimeConfig,
+				ageCrimeDataSum     : 0,
 				prosecuteList            : [],
 				lineImg                  : require('@/public/img/judicature/line.png'),
 				crimeInvadingPropertyList: [],
-				sexualAssaultList        : []
+				sexualAssaultList        : [],
 			}
 		},
 		computed  : {
@@ -226,7 +224,7 @@
 			async requestUndetectedData(params) {
 				const res = await services.getUndetectedData(params);
 				if(res.code === 200) {
-					const {
+					let {
 							  reviewArrest, prosecution,
 							  caseAcceptances, educationalProcedure,
 							  topSlBjZb, theMapList, mapSlBjZb,
@@ -240,10 +238,22 @@
 					};
 					this.caseAcceptances           = caseAcceptances;
 					this.prosecuteList             = accusationRatioList;
-					this.ageCrimeList              = ageCrimeConfig.map(i => ({
-						...i,
-						value: ageOfCommittingACrime[i.id]
-					}));
+					ageOfCommittingACrime  = {
+						"nl1": 1220,
+						"nl2": 3330,
+						"nl3": 220,
+						"nl4": 330,
+						"nl5": 440,
+						"nl6": 5550
+                    };
+					this.ageCrimeDataSum = Object.values(ageOfCommittingACrime).reduce((a, b) => a + b);
+					this.ageCrimeList              = ageCrimeConfig.map(i => {
+						return {
+							...i,
+							percent: ageOfCommittingACrime[i.id]
+						};
+                    });
+					console.log(this.ageCrimeList, this.ageCrimeDataSum);
 					this.crimeInvadingPropertyList = crimeOfInvadingPropertyList;
 					this.sexualAssaultList         = sexualAssaultList;
 
@@ -664,6 +674,7 @@
 			BjMap,
 			TrendChart,
 			BoxHead,
+			PieGroup,
 		},
 	}
 </script>
@@ -821,51 +832,8 @@
                     margin-top: 20px;
                     .crime-age-content {
                         width: 500px;
-                        margin: 30px auto 0;
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: space-between;
-                        li {
-                            width: 33.33%;
-                            height: 140px;
-                            position: relative;
-                            text-align: center;
-                            .circle-style {
-                                position: absolute;
-                                left: 50%;
-                                transform: translate(-50%, 0);
-                                width: 90px;
-                                height: 90px;
-                                border-radius: 50%;
-                                .sector-line {
-                                    position: absolute;
-                                    top: 0;
-                                    left: 0;
-                                    width: 100%;
-                                    height: 100%;
-                                    border: 8px solid;
-                                    border-color: transparent;
-                                    transform: rotate(-45deg);
-                                    border-radius: 50%;
-                                }
-                            }
-                            .hollow-circle {
-                                border: 8px solid;
-                            }
-                            .crime-age-number {
-                                line-height: 90px;
-                                font-size: 14px;
-                                font-family: PingFangSC-Semibold;
-                                font-weight: 600;
-                                color: #fff;
-                            }
-                            .crime-age-text {
-                                margin-top: 15px;
-                                font-size: 14px;
-                                font-family: MicrosoftYaHei;
-                                color: rgba(255, 255, 255, 1);
-                            }
-                        }
+                        margin: 0 auto;
+
                     }
                 }
             }
