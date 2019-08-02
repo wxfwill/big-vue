@@ -145,6 +145,7 @@
 						axisLabel: {
 							color   : '#fff',
 							fontSize: 16,
+                            interval: 0,
 						},
 						axisLine : {
 							lineStyle: {

@@ -208,7 +208,7 @@
 				} else {
 					this.highlightCountyArea();
 				}
-				this.handleMapStateChange(code);
+				this.handleMapStateChange();
 			});
 
 			this.loadMapGraphJson();
@@ -458,7 +458,7 @@
 				this.extendData         = [];
 				this.loadMapChart(name, data);
 
-				this.handleMapStateChange(100000);
+				this.handleMapStateChange();
 			},
 
 			/**
@@ -468,13 +468,11 @@
 				if(this.mapLevel === 0 || this.loadingMap) {
 					return false;
 				}
-				let code;
 				this.extendData = [];
 				this.cityCrumbsList.pop();
 				this.mapLevel--;
-				code = this.cityCrumbsList[this.mapLevel].code;
 				this.mapJsonData.pop();
-				this.handleMapStateChange(code);
+				this.handleMapStateChange();
 			},
 
 			/**
@@ -600,11 +598,13 @@
 				}
 			},
 
-			handleMapStateChange(code) {
+			handleMapStateChange() {
+				const { name, code } = this.cityCrumbsList[this.mapLevel];
 				this.loadingMap = true;
 				this.getNewRegionInfo && this.getNewRegionInfo({
 					code,
-					lev: this.mapLevel + 1
+					lev: this.mapLevel + 1,
+                    name,
 				});
 			}
 		},

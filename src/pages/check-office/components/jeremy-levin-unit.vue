@@ -22,7 +22,7 @@
 </template>
 
 <script>
-	import PieGroup                     from './pie-group';
+	import PieGroup                     from '../../../components/common/pie-group';
 	import { jeremyLevinUnitColorList } from '../constant/index';
 
 	export default {

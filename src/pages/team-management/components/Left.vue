@@ -52,6 +52,8 @@
                                         :percent="workingLife[item.key]"
                                         :strokeColor="item.strokeColor"
                                         :tintColor="item.tintColor"
+                                        :circleMaxNumber="workingLife.maxValue"
+                                        type="number"
                                 ></pie-chart>
                             </div>
                         </div>
@@ -98,7 +100,7 @@
 </template>
 <script>
 	import EChart   from "echarts";
-	import PieChart from "./pie-chart";
+	import PieChart from "../../../components/common/pie-chart";
 	import {
 		workLifeConfig,
 		educationSituationAxisConfig,

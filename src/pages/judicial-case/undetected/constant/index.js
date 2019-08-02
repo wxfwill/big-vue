@@ -77,27 +77,33 @@ export const mapTooltipConfig = [{
 export const ageCrimeConfig = [{
 	id  : 'nl1',
 	name: '0-10岁',
-	color: '44, 236, 248'
+	strokeColor : '#2CECF8',
+	tintColor: 'rgba(44,236,248,0.2)',
 }, {
 	id  : 'nl2',
 	name: '10-12岁',
-	color: '247, 147, 30'
+	strokeColor : '#F7931E',
+	tintColor: 'rgba(247,147,30,0.2)',
 },{
 	id  : 'nl3',
 	name: '12-14岁',
-	color: '17, 198, 255'
+	strokeColor : '#11C6FF',
+	tintColor: 'rgba(17,198,255,0.2)',
 },{
 	id  : 'nl4',
 	name: '15岁',
-	color: '44, 248, 147',
+	strokeColor : '#2CF893',
+	tintColor: 'rgba(44,248,147,0.2)',
 },{
 	id  : 'nl5',
 	name: '16岁',
-	color: '44, 183, 248'
+	strokeColor : '#2CB7F8',
+	tintColor: 'rgba(44,183,248,0.2)',
 },{
 	id  : 'nl6',
 	name: '17岁',
-	color: '159, 44, 248'
+	strokeColor : '#9F2CF8',
+	tintColor: 'rgba(159,44,248,0.2)',
 }];
 
 export const noCatchNumberConfig = [{

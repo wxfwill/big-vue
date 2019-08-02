@@ -58,7 +58,7 @@
 </template>
 <script>
 	import GranularBar     from './granular-bar';
-	import PieGroup        from './pie-group';
+	import PieGroup        from '@/components/common/pie-group';
 	import JeremyLevinUnit from './jeremy-levin-unit';
 
 	export default {

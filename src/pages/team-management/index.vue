@@ -65,7 +65,8 @@
 						...data.incumbency,
 						qgzzrs,
 					};
-					this.workingLife            = data.workingLife;
+					data.workingLife.maxValue = Math.max(...Object.values(data.workingLife));
+					this.workingLife          = data.workingLife;
 					leftBox.loadEducationChart(data.educationSituation);
 
 					this.personnelStatusQuos = data.personnelStatusQuos;
