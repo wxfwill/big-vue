@@ -115,7 +115,7 @@
                                 ></water-polo>
                                 <div class="custom-block" v-else>
                                     <div class="bg_img pay-icon" :style="{backgroundImage:`url(${payImg})`}"></div>
-                                    <p class="number">{{ item.value || 0 }}</p>
+                                    <p class="number">{{ item.value || 0 }}万元</p>
                                     <p class="title">{{ item.title }}</p>
                                 </div>
                             </li>
