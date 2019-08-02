@@ -253,7 +253,6 @@
 							percent: ageOfCommittingACrime[i.id]
 						};
                     });
-					console.log(this.ageCrimeList, this.ageCrimeDataSum);
 					this.crimeInvadingPropertyList = crimeOfInvadingPropertyList;
 					this.sexualAssaultList         = sexualAssaultList;
 
