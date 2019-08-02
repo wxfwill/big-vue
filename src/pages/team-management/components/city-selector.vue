@@ -194,11 +194,16 @@
 						name     : this.officeName,
 						city_name: region,
 					}).then((resolve) => {
-						this.staffTableDialog = true;
 						if(resolve.code === 200) {
-							const data = resolve.data;
-							this.nowPageIndex = 1;
-							this.staffList    = data;
+                            if(resolve.data.length!=0){
+                                this.staffTableDialog = true;
+                                const data = resolve.data;
+                                this.nowPageIndex = 1;
+                                this.staffList    = data;
+                            }else{
+                                this.$message.warning('无数据');
+                            }
+                            
 						} else {
 							this.$message.error(`code:${resolve.code}`);
 						}
