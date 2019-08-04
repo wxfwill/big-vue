@@ -52,6 +52,7 @@
 				if(res.code === 200) {
 					this.mapList = res.data;
 				} else {
+					this.mapList = [];
 					this.$message.error(res.msg);
 				}
 			},
