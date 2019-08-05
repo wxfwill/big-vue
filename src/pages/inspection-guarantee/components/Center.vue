@@ -277,8 +277,8 @@
                 width: 100px;
                 color: #FBBA18;
                 position: absolute;
-                right: -560px;
-                top: 70px;
+                right: 160px;
+                top: 50px;
                 margin-top: 17px;
                 text-align: right;
                 font-size: 16px;

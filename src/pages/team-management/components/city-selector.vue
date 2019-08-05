@@ -216,7 +216,8 @@
 			searchStaffPer(index, row) {
 				this.getStaffInfo({
 					name   : row.name,
-					company: row.company,
+                    company: row.company,
+                    sex:row.sex
 				}, () => {
 					this.staffTableDialog = false;
 				});

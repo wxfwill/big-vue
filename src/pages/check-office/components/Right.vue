@@ -136,7 +136,7 @@
 					grid   : {
 						left        : '3%',
 						right       : '4%',
-						bottom      : '3%',
+						bottom      : '40',
 						containLabel: true
 					},
 					xAxis  : {
@@ -145,7 +145,8 @@
 						axisLabel: {
 							color   : '#fff',
 							fontSize: 16,
-                            interval: 0,
+							interval: 0,
+							formatter : (name) => textFormatter(name, 4),
 						},
 						axisLine : {
 							lineStyle: {
@@ -186,8 +187,10 @@
 							type     : 'bar',
 							barWidth : 48,
 							data     : seriesData,
-							itemStyle: {
-								color: '#1BECFD'
+							itemStyle:{
+							normal:{
+									color:'#5C89FF'
+								}
 							},
 							label    : {
 								show    : true,
@@ -267,6 +270,10 @@
 							lineStyle: {
 								color: "#fff",
 							}
+						},
+						axisLabel:{
+							interval: 0,
+							formatter : (name) => textFormatter(name, 4),
 						}
 					}
 				],

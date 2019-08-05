@@ -412,13 +412,13 @@ export default {
         },
         loadanalysisBySynthesisList(){
             let cityname=[],jsxz=[],jsxzjsc=[],jyjd=[],kyjc=[],tblylx=[];
-            for(var i=0;i<this.trendOfAcceptingCasesList.length;i++){
-                cityname.push(this.trendOfAcceptingCasesList[i].year);
-                jsxz.push(this.trendOfAcceptingCasesList[i].jsxz);
-                jsxzjsc.push(this.trendOfAcceptingCasesList[i].jsxzjsc);
-                jyjd.push(this.trendOfAcceptingCasesList[i].jyjd);
-                kyjc.push(this.trendOfAcceptingCasesList[i].kyjc);
-                tblylx.push(this.trendOfAcceptingCasesList[i].tblylx);
+            for(var i=0;i<this.analysisBySynthesisList.length;i++){
+                cityname.push(this.analysisBySynthesisList[i].city_name);
+                jsxz.push(this.analysisBySynthesisList[i].jsxz);
+                jsxzjsc.push(this.analysisBySynthesisList[i].jsxzjsc);
+                jyjd.push(this.analysisBySynthesisList[i].jyjd);
+                kyjc.push(this.analysisBySynthesisList[i].kyjc);
+                tblylx.push(this.analysisBySynthesisList[i].tblylx);
             }
             this.analysisBySynthesisListchart.setOption({
                 tooltip: {
@@ -667,13 +667,13 @@ export default {
                 })
             }else if(this.dialogContext.name=='综合分析'){
                 let cityname=[],jsxz=[],jsxzjsc=[],jyjd=[],kyjc=[],tblylx=[];
-                for(var i=0;i<this.trendOfAcceptingCasesList.length;i++){
-                    cityname.push(this.trendOfAcceptingCasesList[i].year);
-                    jsxz.push(this.trendOfAcceptingCasesList[i].jsxz);
-                    jsxzjsc.push(this.trendOfAcceptingCasesList[i].jsxzjsc);
-                    jyjd.push(this.trendOfAcceptingCasesList[i].jyjd);
-                    kyjc.push(this.trendOfAcceptingCasesList[i].kyjc);
-                    tblylx.push(this.trendOfAcceptingCasesList[i].tblylx);
+                for(var i=0;i<this.analysisBySynthesisList.length;i++){
+                    cityname.push(this.analysisBySynthesisList[i].city_name);
+                    jsxz.push(this.analysisBySynthesisList[i].jsxz);
+                    jsxzjsc.push(this.analysisBySynthesisList[i].jsxzjsc);
+                    jyjd.push(this.analysisBySynthesisList[i].jyjd);
+                    kyjc.push(this.analysisBySynthesisList[i].kyjc);
+                    tblylx.push(this.analysisBySynthesisList[i].tblylx);
                 }
                 this.dialogBarChart.setOption({
                     tooltip: {

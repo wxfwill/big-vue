@@ -56,7 +56,8 @@
                                 <p>使用经费：{{ performanceInfo.syjf }}元</p>
                             </div>
                             <div class="staff-img">
-                                <img :src="staffImg" alt="...">
+                                <img v-if='performanceInfo.sex=="女"' :src="staffImgwoman" alt="...">
+								<img v-else :src="staffImgman" alt="...">
                             </div>
                             <div class="shade-img">
                                 <img :src="shadeBg" alt="...">
@@ -80,7 +81,8 @@
 			return {
 				bottomStageBg  : require('@/public/img/team-management/bottomStageBg.png'),
 				shadeBg        : require('@/public/img/team-management/shadeBg.png'),
-				staffImg       : require('@/public/img/team-management/staff.png'),
+				staffImgman       : require('@/public/img/team-management/man.png'),
+				staffImgwoman:require('@/public/img/team-management/staff.png'),
 				topBorderBg    : require('@/public/img/team-management/topBorderBg.png'),
 				sideBorderBg   : require('@/public/img/team-management/sideBorderBg.png'),
 				structureIcon  : require('@/public/img/team-management/structureIcon.png'),
@@ -271,13 +273,16 @@
 			putOneDecimal(num) {
 				return (num * 100).toFixed(1);
 			},
-			async getStaffInfo({ name, company }, callback) {
+			async getStaffInfo({ name, company ,sex}, callback) {
 				const res = await getPersonInfo({
 					name,
 					company
 				});
 				if(res.code === 200) {
-					this.performanceInfo = res.data;
+					this.performanceInfo = {
+						...res.data,
+						sex
+					};
 					callback();
 				} else {
 					this.$message.error(res.msg);
@@ -402,6 +407,7 @@
                     z-index: 2;
                     img {
                         width: 100%;
+						height:100%;
                     }
                 }
                 .shade-img {
