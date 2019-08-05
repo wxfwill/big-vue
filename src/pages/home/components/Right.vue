@@ -5,10 +5,7 @@
                 <!-- 民事 -->
                 <!-- 行政 -->
                 <div class="civil-box">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>民事</i>
-                    </div>
+                    <box-head title="民事"></box-head>
                     <ul class="civil-content">
                         <li v-for="(item,index) in civilList" :key="index">
                             <p class="civil-num">
@@ -19,10 +16,7 @@
                     </ul>
                 </div>
                 <div class="administration">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>行政</i>
-                    </div>
+                    <box-head title="行政"></box-head>
                     <div class="admin-box">
                         <water-polo
                                 v-for="item in xzList"
@@ -33,19 +27,13 @@
                 </div>
                 <!-- 公益诉讼 -->
                 <div class="lawsuitBox">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>公益诉讼</i>
-                    </div>
+                    <box-head title="公益诉讼"></box-head>
                     <div ref="lawsuitContent" class="law-chart"></div>
                 </div>
                 <div class="bottomPortion">
                     <!-- 人均办结数 -->
                     <div class="perCapita">
-                        <div class="chart-box-title">
-                            <span class="chart-label-dot"></span>
-                            <i>人均办结数</i>
-                        </div>
+                        <box-head title="人均办结数"></box-head>
                         <ul class="dom-line-chart">
                             <li v-for="item in rjList" :key="item.id">
                                 <i>{{item.title}}</i>
@@ -57,10 +45,7 @@
                     </div>
                     <!-- 案均办办理天数 -->
                     <div class="fileCapita">
-                        <div class="chart-box-title">
-                            <span class="chart-label-dot"></span>
-                            <i>案均办理天数</i>
-                        </div>
+                        <box-head title="案均办理天数"></box-head>
                         <ul class="dom-line-chart">
                             <li v-for="item in ajList" :key="item.id">
                                 <i>{{item.title}}</i>
@@ -73,18 +58,12 @@
             </div>
             <div class="right-view">
                 <div class="team-construction">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>队伍建设</i>
-                    </div>
+                    <box-head title="队伍建设"></box-head>
                     <p>总数：{{ teamPeopleTotal }}</p>
                     <div ref="dougBox" :style="{width: '436px', height: '340px'}"></div>
                 </div>
                 <div class="analyze-box">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>实证分析</i>
-                    </div>
+                    <box-head title="实证分析"></box-head>
                     <div class="analyze-content">
                         <el-carousel
                                 :autoplay=true
@@ -117,8 +96,9 @@
 	import ECharts                               from 'echarts';
 	import { mapGetters }                        from 'vuex';
 	import { verifyTriggerState, numberInteger } from '@/utlis/helper';
-	import waterPolo                             from '@/components/common/water-polo.vue'
+	import WaterPolo                             from '@/components/common/water-polo.vue'
 	import * as services                         from '../service';
+	import BoxHead                               from '@/components/common/box-head';
 	import {
 		administrativeConfig,
 		publicInterestLitigationConfig,
@@ -243,8 +223,8 @@
 			this.requestAdministration(params);
 			this.requestPublicInterestLitigation(params);
 			this.requestTroopAdministration({
-                name : this.mapName
-            });
+				name : this.mapName
+			});
 
 			// 实证分析监听窗口
 			this.lawWorksWin = {
@@ -259,8 +239,8 @@
 				this.requestAdministration(params);
 				this.requestPublicInterestLitigation(params);
 				this.requestTroopAdministration({
-                    name : this.mapName
-                });
+					name : this.mapName
+				});
 			}
 		},
 		methods   : {
@@ -469,15 +449,15 @@
 			dougHandle(chartData) {
 				const { rAxisData, seriesData } = this.convertTeamChartData(chartData);
 				this.dougBoxChart.setOption({
-                    tooltip : {
-                    	trigger : 'item',
+					tooltip : {
+						trigger : 'item',
 						axisPointer: {
-                    		type: 'shadow'
-                        },
-                        formatter(params){
-                    		return `${params.marker} ${params.name} <br />      ${params.data.number}人  ${params.value}%`
-                        }
-                    },
+							type: 'shadow'
+						},
+						formatter(params){
+							return `${params.marker} ${params.name} <br />      ${params.data.number}人  ${params.value}%`
+						}
+					},
 					legend: {
 						left     : 'center',
 						bottom   : '20',
@@ -880,7 +860,8 @@
 
 		},
 		components: {
-			waterPolo
+			WaterPolo,
+			BoxHead
 		},
 	}
 </script>

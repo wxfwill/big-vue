@@ -6,18 +6,12 @@
             <div class="right-box">
                 <!-- 未检 -->
                 <div class="notCheck-box">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>未检</i>
-                    </div>
+                    <box-head title="未检"></box-head>
                     <div ref="wjBox" :style="{width: '700px', height: '220px', margin: '0 auto'}"></div>
                 </div>
                 <!-- 控申 -->
                 <div class="control-box">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>控申</i>
-                    </div>
+                    <box-head title="控申"></box-head>
                     <ul>
                         <li v-for="item in ksList" :key="item.id">
                             <p class="control-title">{{item.title}}</p>
@@ -27,13 +21,10 @@
                 </div>
                 <!--受理案件趋势分析-->
                 <div class="accept-box">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>受理案件趋势分析</i>
-                    </div>
+                    <box-head title="受理案件趋势分析"></box-head>
                     <year-selector
-                        :selectYear="acceptCaseSelectYear"
-                        :handleChange="changeAcceptCaseYear"
+                            :selectYear="acceptCaseSelectYear"
+                            :handleChange="changeAcceptCaseYear"
                     ></year-selector>
                     <div class="accept-chart" ref="qstjContent"></div>
                 </div>
@@ -41,19 +32,13 @@
         </div>
         <div class="left-right">
             <div class="criminal-box">
-                <div class="chart-box-title">
-                    <span class="chart-label-dot"></span>
-                    <i>刑事案件概览</i>
-                </div>
+                <box-head title="刑事案件概览"></box-head>
                 <div class="overview-box">
                     <penal-gauge v-for="(item, index) in xsList" :key="index" :chartConfig="item"></penal-gauge>
                 </div>
             </div>
             <div class="top-box">
-                <div class="chart-box-title">
-                    <span class="chart-label-dot"></span>
-                    <i>起诉罪名TOP10</i>
-                </div>
+                <box-head title="起诉罪名TOP10"></box-head>
                 <ul class="list-group">
                     <li v-for="(item,index) in topList" :key="index">
                         <i>{{index + 1}}</i>
@@ -77,6 +62,7 @@
 	import PenalGauge                                                       from '@/components/common/penal-gauge';
 	import { undetectedChartConfig, criminalCaseConfig, prosecutionConfig } from '../constant/index';
 	import YearSelector                                                     from '@/components/common/year-selector';
+	import BoxHead                                                          from '@/components/common/box-head';
 
 	export default {
 		data() {
@@ -445,7 +431,8 @@
 		},
 		components: {
 			PenalGauge,
-			YearSelector
+			YearSelector,
+			BoxHead,
 		}
 	};
 </script>

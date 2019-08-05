@@ -15,7 +15,7 @@
             <date-time></date-time>
         </div>
         <div class="container">
-            <router-view ref="sfba"></router-view>
+            <router-view></router-view>
         </div>
     </div>
 </template>

@@ -12,6 +12,7 @@
                 :leftDataConfig="leftSideList"
                 :leftData={}
                 :extraCityColumn="mapTableConfig"
+                highProcuratorCode="0001001"
         ></bj-map>
     </div>
 </template>

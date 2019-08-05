@@ -32,7 +32,7 @@
                 </ul>
             </div>
         </div>
-		<div class="sumBox" v-show="mapConfig.numIsshow1">
+        <div class="sumBox" v-show="mapConfig.numIsshow1">
             <div class="num-block">
                 受理总数：
                 <ul>
@@ -61,8 +61,10 @@
                 <i class="now-data-icon el-icon-coin" @click="dialogVisible = true"></i>
             </h4>
             <p class="nd-accept-text">受理数：{{ ~~sls }}</p>
-            <p class="nd-conclude-text"><span v-if='mapConfig.numIsshow==true'>办结数</span><span v-else>完成数</span>：{{ ~~bjs }}</p>
-            <p class="nd-office-text"><span v-if='mapConfig.numIsshow==true'>在办数</span><span v-else>未完成数</span>：{{ ~~zbs }}</p>
+            <p class="nd-conclude-text"><span v-if='mapConfig.numIsshow==true'>办结数</span><span v-else>完成数</span>：{{
+                ~~bjs }}</p>
+            <p class="nd-office-text"><span v-if='mapConfig.numIsshow==true'>在办数</span><span v-else>未完成数</span>：{{ ~~zbs
+                }}</p>
             <el-popover
                     popper-class="map-extra-table"
                     v-show="extendData.length !== 0"
@@ -108,9 +110,9 @@
 </template>
 
 <script>
-	import ECharts         from 'echarts';
+	import ECharts                     from 'echarts';
 	import { geoCoordMap, geoMapName } from './config';
-
+	import { textFormatter } from '@/utlis/helper';
 	export default {
 		data() {
 			return {
@@ -145,12 +147,12 @@
 				loadingMap        : false,
 			}
 		},
-        computed: {
-            nowAreaName(){
-            	const name = this.cityCrumbsList[this.mapLevel].name;
-            	return geoMapName[name] || name;
-            }
-        },
+		computed: {
+			nowAreaName() {
+				const name = this.cityCrumbsList[this.mapLevel].name;
+				return geoMapName[name] || name;
+			}
+		},
 		mounted() {
 			const myChart        = ECharts.init(this.$refs.mapRef);
 			this.mapJsonData     = [];
@@ -193,7 +195,7 @@
 					this.mapLevel++;
 				} else {
 					return false;
-                }
+				}
 				this.cityCrumbsList[this.mapLevel] = {
 					id,
 					code,
@@ -214,7 +216,7 @@
 			this.loadMapGraphJson();
 			this.myChart = myChart;
 		},
-		methods: {
+		methods : {
 			/**
 			 * 加载地图json离线数据包
 			 * */
@@ -443,9 +445,9 @@
 			 * 地图返回顶级
 			 * */
 			showChinaMap() {
-				if(this.loadingMap || this.mapLevel === 0){
+				if(this.loadingMap || this.mapLevel === 0) {
 					return false;
-                }
+				}
 				this.mapLevel           = 0;
 				this.mapJsonData.length = 1;
 				this.cityCrumbsList     = [{
@@ -536,7 +538,8 @@
 							color     : '#00ffff',
 							fontSize  : 21,
 							lineHeight: 25,
-							interval  : 0
+							interval  : 0,
+							formatter : (name) => textFormatter(name, 5),
 						}
 					},
 					yAxis     : {
@@ -600,39 +603,39 @@
 
 			handleMapStateChange() {
 				const { name, code } = this.cityCrumbsList[this.mapLevel];
-				this.loadingMap = true;
+				this.loadingMap      = true;
 				this.getNewRegionInfo && this.getNewRegionInfo({
 					code,
 					lev: this.mapLevel + 1,
-                    name,
+					name,
 				});
 			}
 		},
-		props  :{
-			mapData:{},
-			getNewRegionInfo:{},
-			tooltipConfig:{},
-			totalSls:{},
-			totalBjs:{},
-			totalZbs:{},
-			sls:{},
-			bjs:{},
-			zbs:{},
-			lev:{},
-			nowSelectDate:{},
-			mapConfig:{
-				type:Object,
-				default(){
+		props   : {
+			mapData         : {},
+			getNewRegionInfo: {},
+			tooltipConfig   : {},
+			totalSls        : {},
+			totalBjs        : {},
+			totalZbs        : {},
+			sls             : {},
+			bjs             : {},
+			zbs             : {},
+			lev             : {},
+			nowSelectDate   : {},
+			mapConfig       : {
+				type: Object,
+				default() {
 					return {
-						numIsshow:true,
-						leftIsshow:true,
-						tooltipIsshow:true,
-						numIsshow1:false
+						numIsshow    : true,
+						leftIsshow   : true,
+						tooltipIsshow: true,
+						numIsshow1   : false
 					}
 				}
 			}
 		},
-		watch  : {
+		watch   : {
 			mapData() {
 				if(this.mapGeoLoadFaily) {
 					this.mapGeoLoadFaily = false;

@@ -154,12 +154,12 @@
 	import * as services                                   from './service';
 	import { verifyTriggerState, fillZero, textFormatter } from '@/utlis/helper';
 	import BjMap                                           from '@/components/common/map/index';
-	import { triggerMixin }                                from '@/components/mixin/trigger';
+	import { triggerMixin, mapComponentState }             from '@/components/mixin/trigger';
+	import YearSelector                                    from '@/components/common/year-selector';
 	import {
 		mapTooltipConfig, territoryConfig,
 		CHART_COLOR_LIST, statisticsConfig,
 	}                                                      from './constant';
-	import YearSelector                                    from '@/components/common/year-selector';
 
 	export default {
 		data() {
@@ -178,13 +178,6 @@
 					tcjcjys: 0,
 					zs     : 0,
 				},
-				totalSls                      : [0, 0, 0, 0],
-				totalBjs                      : [0, 0, 0, 0],
-				totalZbs                      : [0, 0, 0, 0],
-				sls                           : 0,
-				bjs                           : 0,
-				zbs                           : 0,
-				mapList                       : [],
 				mapTooltipConfig,
 				dialogVisible                 : false,
 				dialogContext                 : {
@@ -219,6 +212,12 @@
 			this.capitaChart      = ECharts.init(this.$refs.capitaChart);
 
 			this.requestPublicLitigationData(params);
+			this.requestTopSlBjZb(params);
+			this.requestPerCapitaHandlingList(params);
+			this.requestCivilPublicLitigation(params);
+			this.requestCivilInvolvedField(params);
+			this.requestCasesAreHandledList(params);
+			this.requestAdministrationPublicLitigation(params);
 			this.requestTrendsInAcceptingCasesList({
 				year: this.trendsAcceptingCaseYear,
 				code: params.code,
@@ -237,7 +236,12 @@
 				}
 				this.oldTriggerState = params;
 				this.requestPublicLitigationData(params);
-
+				this.requestTopSlBjZb(params);
+				this.requestPerCapitaHandlingList(params);
+				this.requestCivilPublicLitigation(params);
+				this.requestCivilInvolvedField(params);
+				this.requestCasesAreHandledList(params);
+				this.requestAdministrationPublicLitigation(params);
 			}
 		},
 		methods   : {
@@ -245,33 +249,15 @@
 				const res = await services.getPublicLitigationData(params);
 				if(res.code === 200) {
 					const {
-							  civilPublicLitigation, administrationPublicLitigation,
-							  administrationInvolvedField, civilInvolvedField,
 							  theMapList,
-							  topSlBjZb: { bjzs, slzs, zbzs },
-							  mapSlBjZb: { bjs, sls, zbs },
+							  mapSlBjZb,
 							  natureOfTheCaseList, reviewTheSituationList,
 							  civilTheCaseCategory, administrationTheCaseCategory,
-							  perCapitaHandlingList, casesAreHandledList
-						  }                             = res.data;
-					this.civilPublicLitigation          = civilPublicLitigation;
-					this.administrationPublicLitigation = administrationPublicLitigation;
-					this.sls                            = sls;
-					this.bjs                            = bjs;
-					this.zbs                            = zbs;
-					this.mapList                        = theMapList;
-					this.totalSls                       = `${fillZero(slzs, 4)}`.split('');
-					this.totalBjs                       = `${fillZero(bjzs, 4)}`.split('');
-					this.totalZbs                       = `${fillZero(zbzs, 4)}`.split('');
-					this.casesAreHandledList            = casesAreHandledList;
-					this.perCapitaHandlingList          = perCapitaHandlingList;
-
-					this.loadTerritoryChart(civilInvolvedField, administrationInvolvedField);
+						  }      = res.data;
+					this.loadMapContent({ ...mapSlBjZb, theMapList });
 					this.loadNatureChart(natureOfTheCaseList);
 					this.loadInvestigateChart(reviewTheSituationList);
 					this.loadStatisticsChart(civilTheCaseCategory, administrationTheCaseCategory);
-					this.loadFileChart(casesAreHandledList.slice(0, 5));
-					this.loadPerCapitaSettlementChart(perCapitaHandlingList.slice(0, 6));
 				} else {
 					this.$message.error(res.msg);
 				}
@@ -284,11 +270,71 @@
 					this.$message.error(res.msg);
 				}
 			},
+			async requestTopSlBjZb(params) {
+				const res = await services.getTopSlBjZb(params);
+				if(res.code === 200) {
+					this.convertMapHeadData(res.data);
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			async requestPerCapitaHandlingList(params) {
+				const res = await services.getPerCapitaHandlingList(params);
+				if(res.code === 200) {
+					const data                 = res.data;
+					this.perCapitaHandlingList = data;
+					this.loadPerCapitaSettlementChart(data.slice(0, 6));
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			async requestCivilPublicLitigation(params) {
+				const res = await services.getCivilPublicLitigation(params);
+				if(res.code === 200) {
+					this.civilPublicLitigation = res.data;
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			async requestCivilInvolvedField(params) {
+				const res = await services.getCivilInvolvedField(params);
+				if(res.code === 200) {
+					this.requestAdministrationInvolvedField(params, res.data)
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			async requestCasesAreHandledList(params) {
+				const res = await services.getCasesAreHandledList(params);
+				if(res.code === 200) {
+					this.casesAreHandledList = res.data;
+					this.loadFileChart(res.data.slice(0, 5));
+
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			async requestAdministrationPublicLitigation(params) {
+				const res = await services.getAdministrationPublicLitigation(params);
+				if(res.code === 200) {
+					this.administrationPublicLitigation = res.data;
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			async requestAdministrationInvolvedField(params, civilInvolvedFieldData) {
+				const res = await services.getAdministrationInvolvedField(params);
+				if(res.code === 200) {
+					this.loadTerritoryChart(civilInvolvedFieldData, res.data);
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
 			changetrendsAcceptingCaseYear(year) {
 				this.requestTrendsInAcceptingCasesList({
-                    ...this.mapCode,
-                    year,
-                })
+					...this.mapCode,
+					year,
+				})
 			},
 			// 涉案领域统计分析
 			loadTerritoryChart(civilInvolvedData, administrationData) {
@@ -357,8 +403,7 @@
 						}
 					}]
 				})
-			}
-			,
+			},
 			// 受理案件趋势分析
 			loadTendencyChart(chartData = []) {
 				const civilData          = [],
@@ -469,8 +514,7 @@
 						data     : civilData
 					}]
 				});
-			}
-			,
+			},
 			// 案件性质分类
 			loadNatureChart(chartData) {
 				this.natureChart.setOption({
@@ -504,8 +548,7 @@
 					}
 					]
 				});
-			}
-			,
+			},
 			// 审查情况
 			loadInvestigateChart(chartData) {
 				this.investigateChart.setOption({
@@ -546,8 +589,7 @@
 					}
 					]
 				});
-			}
-			,
+			},
 			// 受理数分类情况统计
 			loadStatisticsChart(civilData, administrationData) {
 				const civilChartData          = [],
@@ -677,8 +719,7 @@
 						data     : administrationChartData
 					}]
 				});
-			}
-			,
+			},
 			// 案均办结数
 			loadFileChart(chartData) {
 				const { axisData, seriesData } = this.convertBarData(chartData, 'ajblts');
@@ -835,8 +876,7 @@
 						}
 					]
 				})
-			}
-			,
+			},
 			setDialogVisible(name) {
 				let data = [],
 					key  = '';
@@ -857,8 +897,7 @@
 				};
 
 				this.dialogVisible = true;
-			}
-			,
+			},
 			loadDialogChart() {
 				const { data: chartData, key } = this.dialogContext,
 					  { axisData, seriesData } = this.convertBarData(chartData, key);
@@ -940,12 +979,10 @@
 						}
 					]
 				});
-			}
-			,
+			},
 			closeBarDialog() {
 				this.dialogBarChart && this.dialogBarChart.clear();
-			}
-			,
+			},
 			convertBarData(chartData, key) {
 				const axisData   = [],
 					  seriesData = chartData.map((i) => {
@@ -959,20 +996,15 @@
 					axisData,
 					seriesData
 				};
-			}
-			,
-			...
-				mapActions('publicLitigation', ['initMapState']),
-			...
-				mapActions('publicLitigation', ['setMapData']),
+			},
+			...mapActions('publicLitigation', ['initMapState']),
+			...mapActions('publicLitigation', ['setMapData']),
 		},
-		mixins    : [triggerMixin],
-		components:
-			{
-				BjMap,
-				YearSelector,
-			}
-		,
+		mixins    : [triggerMixin, mapComponentState],
+		components: {
+			BjMap,
+			YearSelector,
+		},
 	}
 </script>
 <style lang="scss" scoped>
