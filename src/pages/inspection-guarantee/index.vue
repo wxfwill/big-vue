@@ -1,16 +1,23 @@
 <template>
     <div class="outer-home-page">
-        <left-box 
+        <left-box
             ref='leftBox'
             :income=income
             :expenditure=expenditure
             :financialAllocationList=financialAllocationList
             :jingfeiqingkuang=jingfeiqingkuang
             :trendsProcuratorialBusinessList=trendsProcuratorialBusinessList
-            
+
         >
         </left-box>
-        <center-box :nationalProvinceRankList=nationalProvinceRankList></center-box>
+        <center-box
+                ref="centerBox"
+                :nationalProvinceRankList=nationalProvinceRankList
+                :code="code"
+                :lev="lev"
+                :psGuaranteeMapList="psGuaranteeMapList"
+                :requestPSGuaranteeData="getPSGuaranteeData"
+        ></center-box>
         <right-box
             ref='rightBox'
             :assetsSituation=assetsSituation
@@ -34,6 +41,8 @@
 	export default {
         data(){
             return{
+            	lev : 1,
+            	code : 203,
                 income:{},
                 expenditure:{},
                 financialAllocationList:[],
@@ -54,18 +63,16 @@
                 numberOfEmployees:{},
                 financialInstitutions:{},
                 inspectionServiceEquipment:{},
-                inspectionServiceEquipmentDetails:{}
+                inspectionServiceEquipmentDetails:{},
+				psGuaranteeMapList:[],
             }
         },
         mounted(){
-            let params={
-                code:203,
-                lev:1
-            }
-            this.getPSGuaranteeData(params);
+
         },
 		methods: {
             async getPSGuaranteeData(params) {
+            	console.log(params);
 				const res = await services.getPSGuaranteeData(params);
 				if(res.code === 200) {
                     const data   = res.data;
@@ -109,7 +116,8 @@
                     this.inspectionServiceEquipmentDetails=data.inspectionServiceEquipmentDetails
                     //计财机构及人员情况
                     this.financialInstitutions=data.financialInstitutions
-                    console.log(data)
+                    this.psGuaranteeMapList = data.psGuaranteeMapList;
+                    this.$refs.centerBox.loadSortChart((data.nationalProvinceRankList || []).slice(0, 15));
 				} else {
 					// this.$message.error(res.msg);
 				}

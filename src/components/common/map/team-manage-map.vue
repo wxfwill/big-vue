@@ -284,7 +284,7 @@
 							}
 						},
 						layoutCenter: name === 'china' ? ['50%', '50%'] : undefined,
-						layoutSize  : name === 'china' ? 950 : undefined,
+						layoutSize  : name === 'china' ? this.mapDefaultWidth : undefined,
 					},
 					series : [{
 						name            : 'extend',
@@ -543,14 +543,10 @@
 			},
 
 			handleMapStateChange(code) {
-				const strList   = this.mapJsonData[this.mapLevel].data.features.map(i => {
-					return i.properties.name;
-				});
 				this.loadingMap = true;
 				this.getNewRegionInfo && this.getNewRegionInfo({
 					code,
 					lev   : this.mapLevel + 1,
-					strList,
 				});
 			},
 
@@ -560,13 +556,17 @@
 			getNewRegionInfo: {},
 			tooltipConfig   : {},
 			leftDataConfig  : {
-				default: []
+				default: function() {
+                    return [];
+				}
 			},
 			leftData        : {
-				default: {},
+				default: function() {
+					return {};
+				},
 			},
 			topDataConfig   : {
-				default: []
+				default: () => []
 			},
 			topData         : {},
 			lev             : {},
@@ -589,7 +589,9 @@
 				type   : Array,
 				default: extraCityColumnConfig
 			},
-
+			mapDefaultWidth :{
+				default: 950
+            }
 		},
 		watch   : {
 			mapData() {
@@ -771,7 +773,6 @@
                 top: 400px;
                 right: 47px;
                 min-width: 200px;
-                min-height: 200px;
                 padding-bottom: 10px;
                 box-shadow: 0 0 1px rgba(1, 1, 1, 1);
                 border-radius: 5px;
@@ -788,16 +789,16 @@
                     color: rgba(255, 255, 255, 1);
                 }
                 ul {
+
                     li {
+                        display: flex;
+                        justify-content: space-evenly;
                         font-size: 14px;
                         color: rgba(255, 255, 255, 1);
                         line-height: 14px;
-                        display: flex;
                         padding: 10px 7px;
                         span {
                             display: inline-block;
-                            width: 110px;
-                            text-align: right;
                             margin-right: 5px;
                         }
                     }
