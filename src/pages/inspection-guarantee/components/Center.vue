@@ -144,6 +144,9 @@
 								lineStyle: {
 									color: "#fff",
 								}
+							},
+							axisLabel:{
+								formatter : (name) => textFormatter(name, 4),
 							}
 						}
 					],

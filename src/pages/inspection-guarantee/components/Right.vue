@@ -347,24 +347,24 @@
 				var rich = {
 					yellow: {
 						color: "#ffc72b",
-						fontSize: 22 * scale,
+						fontSize: 14 * scale,
 						padding: [5, 4],
 						align: 'center'
 					},
 					total: {
 						color: "#ffc72b",
-						fontSize: 30 * scale,
+						fontSize: 14 * scale,
 						align: 'center',
 					},
 					white: {
 						color: "#fff",
 						align: 'center',
-						fontSize: 18 * scale,
+						fontSize: 14 * scale,
 						padding: [10, 0]
 					},
 					blue: {
 						color: '#49dff0',
-						fontSize: 20 * scale,
+						fontSize: 14 * scale,
 						align: 'center'
 					},
 					hr: {
@@ -381,7 +381,7 @@
 							padding: [0, 0],
 							textStyle: {
 								color: '#fff',
-								fontSize: 18 * scale,
+								fontSize: 14 * scale,
 								align: 'center'
 							}
 						},
@@ -406,7 +406,7 @@
 							padding: [10, 0],
 							textStyle: {
 								color: "#ffc72b",
-								fontSize: 20 * scale
+								fontSize: 12 * scale
 							},
 						},
 						series: [{
@@ -433,8 +433,9 @@
 							},
 							labelLine: {
 								normal: {
-									length: 30 * scale,
-									length2: 20,
+									length: 12 * scale,
+									length2: 12,
+									length3:30,
 									lineStyle: {
 										color: '#fff'
 									}
@@ -449,7 +450,7 @@
 					color: ['#FBBA18', '#0CADE8', '#1BC85D'],
 					tooltip: {
 							trigger: 'item',
-							formatter: "{b}\n金额{c}占比\n {d}%",
+							formatter: "{b}<br/>\n金额:{c}<br/>\n占比:\n {d}%",
 							itemStyle:{
 								fontSize:'14'
 							},
@@ -469,7 +470,7 @@
 					series: [{
 							type: 'pie',
 							selectedMode: 'single',
-							radius: [0, '58%'],
+							radius: [0, '56%'],
 							label: {
 								normal: {
 									show: true,
@@ -477,7 +478,7 @@
 									textStyle: {
 										color: '#fff',
 										fontWeight: 'normal',
-										fontSize: 12
+										fontSize: 10
 									}
 								}
 							},
@@ -502,11 +503,11 @@
 						},
 						{
 							type: 'pie',
-							radius: ['60%', '62%'],
+							radius: ['58%', '60%'],
 							label: {
 								normal: {
 									formatter:function(params){
-										return ''+params.name+'\n\n金额:'+params.value+'\n\n占比'+params.percent+''
+										return ''+params.name+'\n金额:'+params.value+'\n占比'+params.percent+''
 									}
 								}
 							},

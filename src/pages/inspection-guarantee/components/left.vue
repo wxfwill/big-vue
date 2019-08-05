@@ -87,7 +87,7 @@
 <script>
 	import ECharts                               from 'echarts';
 	import * as services                         from '../service/index';
-	import { verifyTriggerState, numberInteger } from '@/utlis/helper';
+	import { verifyTriggerState, numberInteger ,textFormatter} from '@/utlis/helper';
 	import {incomeChartConfig,caizhengChartConfig }                 from '../constant/index';
 
 	export default {
@@ -189,7 +189,7 @@
 			},
 			loadCaizhengChart(data) {
 				console.log(this.financialAllocationList)
-	  			const { xAxisData, seriesData } = this.convertChartConfigczs(data);
+	  			const { xAxisData, seriesData } = this.convertChartConfigczs(data.slice(0,10));
 				this.caizhengChart.setOption({
 					color: ['#3398DB'],
 					tooltip : {
@@ -210,6 +210,14 @@
 							data : xAxisData,
 							axisTick: {
 								show:false
+							},
+							axisLabel: {
+								show: true,
+								interval:'0',
+								textStyle: {
+									color: '#ffffff'
+								},
+								formatter : (name) => textFormatter(name, 4),
 							},
 							axisLine:{
 								lineStyle: {
@@ -509,7 +517,8 @@
 							color     : '#00ffff',
 							fontSize  : 21,
 							lineHeight: 25,
-							interval  : 0
+							interval  : 0,
+							formatter : (name) => textFormatter(name, 4),
 						}
 					},
 					yAxis     : {
