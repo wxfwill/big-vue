@@ -453,6 +453,7 @@
 						axisTick   : {
 							show: false,
 						},
+						interval   : 0,
 						data       : axisData,
 					},
 					yAxis  : {
@@ -696,6 +697,7 @@
             background: rgba(17, 198, 255, 1);
         }
     }
+
     .outer-control-page {
         width: 100%;
         height: 100%;
@@ -834,14 +836,14 @@
                             line-height: 22px;
                             text-align: right;
                         }
-                        .pl-line{
+                        .pl-line {
                             width: 280px;
                             height: 10px;
                             margin: 0 20px;
                             border-radius: 10px;
-                            .full-line{
+                            .full-line {
                                 border-radius: 10px;
-                                background:linear-gradient(to left ,rgba(65,243,253,1),rgba(0,159,232,1));
+                                background: linear-gradient(to left, rgba(65, 243, 253, 1), rgba(0, 159, 232, 1));
                             }
                         }
                         span {

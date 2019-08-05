@@ -23,20 +23,12 @@
 	import { verifyTriggerState, fillZero } from '@/utlis/helper';
 	import { mapTooltipConfig }             from '../constant';
 	import BjMap                            from '@/components/common/map/index';
+	import { mapComponentState }            from '@/components/mixin/trigger';
 
 	export default {
 		data() {
 			return {
-				totalSls   : [0, 0, 0, 0],
-				totalBjs   : [0, 0, 0, 0],
-				totalZbs   : [0, 0, 0, 0],
-				sls        : 0,
-				bjs        : 0,
-				zbs        : 0,
-				mapList    : [],
 				mapTooltipConfig,
-				dialogTitle: '全国数据统计表',
-				showMapData: false,
 			}
 		},
 		computed  : {
@@ -64,11 +56,9 @@
 			async loadMapData(params) {
 				const res = await services.getMapTopData(params);
 				if(res.code === 200) {
-					const data   = res.data;
-					this.sls     = data.sls;
-					this.bjs     = data.bjs;
-					this.zbs     = data.zbs;
-					this.mapList = data.homePageMapDataList;
+					const data = res.data;
+					data.theMapList = data.homePageMapDataList;
+					this.loadMapContent({ ...data });
 				} else {
 					this.sls     = 0;
 					this.bjs     = 0;
@@ -80,9 +70,7 @@
 			async loadHeadTotalData(params) {
 				const res = await services.getTopSlBjZb(params);
 				if(res.code === 200) {
-					this.totalSls = `${fillZero(res.data.slzs, 4)}`.split('');
-					this.totalBjs = `${fillZero(res.data.bjzs, 4)}`.split('');
-					this.totalZbs = `${fillZero(res.data.zbzs, 4)}`.split('');
+					this.convertMapHeadData(res.data);
 				} else {
 					this.$message.error(res.msg);
 				}
@@ -92,6 +80,7 @@
 		components: {
 			BjMap,
 		},
+		mixins    : [mapComponentState]
 	}
 </script>
 

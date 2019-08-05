@@ -229,7 +229,7 @@
 
 					if(name === 'china') {
 						extendData.some((i) => {
-							if(i.code === this.defaultCode) {
+							if(i.code === this.highProcuratorCode) {
 								this.highProcuratorInfo = i;
 								return true;
 							}
@@ -593,6 +593,9 @@
 			},
 			mapDefaultWidth :{
 				default: 950
+            },
+			highProcuratorCode : {
+				default: 100000
             }
 		},
 		watch   : {

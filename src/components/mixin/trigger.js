@@ -1,4 +1,5 @@
 import { fillZero } from '@/utlis/helper';
+
 export const triggerMixin = {
 	beforeCreate() {
 		this.trigger         = ['startdate', 'enddate', 'code', 'lev'];
