@@ -177,7 +177,7 @@
 					let region;
 					switch(this.lev) {
 						case 1:
-							region = '全国检察机关';
+							region = '';
 							break;
 						case 2:
 							region = this.selectProvince;

@@ -23,7 +23,7 @@
 	import Left                             from './components/left.vue';
 	import CenterBox                        from './components/Center.vue';
 	import Right                            from './components/Right.vue';
-	import { getTeamManagement,getIncumbency,getWorkingLife,getEducationSituation,getPersonnelStatusQuoList,getPersonnelEducation,getAgeDistribution }            from './service/index';
+	import { getTeamManagement,getIncumbency,getWorkingLife,getEducationSituation,getPersonnelStatusQuoList,getPersonnelEducation,getAgeDistribution,getPersonnelCategory}            from './service/index';
 	import { fillZero, verifyTriggerState } from '@/utlis/helper';
 
 	export default {
@@ -172,6 +172,23 @@
 					this.$message.error(res.msg);
 				}
 			},
+			async getPersonnelCategory(){//年龄分布
+				let res = await getPersonnelCategory({
+					pindex: this.pindex,
+					lev   : this.lev
+				});
+				if(res.code === 200) {
+					const data                  = res.data;
+					//最上方的
+					this.personnelCategory = {
+						jcgzl : fillZero(data.jcgzl, 4).split(''),
+						sfxzry: fillZero(data.sfxzry, 4).split(''),
+						yenjcg: fillZero(data.yenjcg, 4).split('')
+					};
+				}else {
+					this.$message.error(res.msg);
+				}
+			},
             changeMapState({ pindex, lev }){
 				this.pindex = pindex;
 				this.lev = lev;
@@ -181,7 +198,8 @@
 				this.getWorkingLife();
 				this.getPersonnelStatusQuoList();
 				this.getPersonnelEducation();
-				this.getAgeDistribution();            
+				this.getAgeDistribution();  
+				this.getPersonnelCategory();          
 			},
 		},
 		components: {

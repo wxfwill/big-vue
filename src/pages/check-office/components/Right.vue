@@ -30,6 +30,7 @@
 <script>
 	import EChart    from 'echarts';
 	import InfoTable from './info-table';
+	import { textFormatter } from "@/utlis/helper";
 
 	export default {
 		mounted() {

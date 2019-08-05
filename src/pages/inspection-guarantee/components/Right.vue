@@ -109,40 +109,40 @@
 								<p>检察业务装备</p>
 								<span>数量</span>
 								<span>{{inspectionServiceEquipment.jcywzbsl}}</span>
-								<span>23%</span>
+								<span>0%</span>
 								<b>金额</b>
 								<b>{{inspectionServiceEquipment.jcywzbje}}</b>
-								<b>23%</b>
+								<b>0%</b>
 							</li>
 							<li @click="righttableIsshowfn">
 								<i class='el-icon-tickets'></i>
 								<p>技术装备</p>
 								<span>数量</span>
 								<span>{{inspectionServiceEquipment.jszbsl}}</span>
-								<span>23%</span>
+								<span>0%</span>
 								<b>金额</b>
 								<b>{{inspectionServiceEquipment.jszbje}}</b>
-								<b>23%</b>
+								<b>0%</b>
 							</li>
 							<li @click="righttableIsshowfn">
 								<i class='el-icon-tickets'></i>
 								<p>综合保障装备</p>
 								<span>数量</span>
 								<span>{{inspectionServiceEquipment.zhbzzbsl}}</span>
-								<span>23%</span>
+								<span>0%</span>
 								<b>金额</b>
 								<b>{{inspectionServiceEquipment.zhbzzbje}}</b>
-								<b>23%</b>
+								<b>0%</b>
 							</li>
 							<li @click="righttableIsshowfn">
 								<i class='el-icon-tickets'></i>
 								<p>司法警察装备</p>
 								<span>数量</span>
 								<span>{{inspectionServiceEquipment.sfjczbzb}}</span>
-								<span>23%</span>
+								<span>0%</span>
 								<b>金额</b>
 								<b>{{inspectionServiceEquipment.sfjczbje}}</b>
-								<b>23%</b>
+								<b>0%</b>
 							</li>
 					 	</ul>
 					</div>
@@ -233,28 +233,28 @@
 											<td>{{inspectionServiceEquipmentDetails.jcywzbsl}}</td>
 											<td>{{inspectionServiceEquipmentDetails.jcywzbje}}</td>
 											<td>{{inspectionServiceEquipmentDetails.snzcljcywzbsl}}%</td>
-											<td>{{inspectionServiceEquipmentDetails.snzcljcywzbje}}</td>
+											<td>{{inspectionServiceEquipmentDetails.snzcljcywzbje}}%</td>
 										</tr>
 										<tr>
 											<td>检察业务技术装备</td>
 											<td>{{inspectionServiceEquipmentDetails.jcywjzzbsl}}</td>
 											<td>{{inspectionServiceEquipmentDetails.jcywjzzbje}}</td>
-											<td>{{inspectionServiceEquipmentDetails.snzcljcywjzzbsl}}</td>
-											<td>{{inspectionServiceEquipmentDetails.snzcljcywjzzbje}}</td>
+											<td>{{inspectionServiceEquipmentDetails.snzcljcywjzzbsl}}%</td>
+											<td>{{inspectionServiceEquipmentDetails.snzcljcywjzzbje}}%</td>
 										</tr>
 										<tr>
 											<td>检察业务综合保障装备</td>
 											<td>{{inspectionServiceEquipmentDetails.jcywzhbzzbsl}}</td>
 											<td>{{inspectionServiceEquipmentDetails.jcywzhbzzbje}}</td>
-											<td>{{inspectionServiceEquipmentDetails.snzcljcywzhbzzbsl}}</td>
-											<td>{{inspectionServiceEquipmentDetails.snzcljcywzhbzzbje}}</td>
+											<td>{{inspectionServiceEquipmentDetails.snzcljcywzhbzzbsl}}%</td>
+											<td>{{inspectionServiceEquipmentDetails.snzcljcywzhbzzbje}}%</td>
 										</tr>
 										<tr>
 											<td>司法干警装备</td>
 											<td>{{inspectionServiceEquipmentDetails.sfgjzbsl}}</td>
 											<td>{{inspectionServiceEquipmentDetails.sfgjzbje}}</td>
-											<td>{{inspectionServiceEquipmentDetails.snzclsfgjzbsl}}</td>
-											<td>{{inspectionServiceEquipmentDetails.snzclsfgjzbje}}</td>
+											<td>{{inspectionServiceEquipmentDetails.snzclsfgjzbsl}}%</td>
+											<td>{{inspectionServiceEquipmentDetails.snzclsfgjzbje}}%</td>
 										</tr>
 									</thead>
 								</table>
@@ -550,14 +550,12 @@
 						},
 						extraCssText:'background:#03C4C3'
 					},
-					grid:{
-						top:'0'
-					},
 					color:['#009FE8'],
 					series: [
 						{
 							type:'pie',
-							radius: ['30%', '40%'],
+							radius: ['35%', '45%'],
+							center:['50%','70%'],
 							avoidLabelOverlap: false,
 							label: {
 								normal: {

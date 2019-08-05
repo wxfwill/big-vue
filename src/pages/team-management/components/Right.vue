@@ -274,7 +274,7 @@
 				return (num * 100).toFixed(1);
 			},
 			async getStaffInfo({ name, company ,sex}, callback) {
-				const res = await getPersonInfo({
+				const res = await getPersonnelPerformance({
 					name,
 					company
 				});
