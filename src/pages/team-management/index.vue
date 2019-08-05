@@ -49,7 +49,6 @@
 			}
 		},
 		mounted() {
-			this.requestTeamData();
 		},
 		methods   : {
 			async requestTeamData() {
@@ -90,6 +89,7 @@
             changeMapState({ pindex, lev }){
 				this.pindex = pindex;
 				this.lev = lev;
+				this.requestTeamData();
             },
 		},
 		components: {
