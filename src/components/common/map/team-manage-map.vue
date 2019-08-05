@@ -20,17 +20,19 @@
                 </ul>
             </div>
         </div>
-        <div class="now-data" v-show='mapConfig.leftIsshow'>
-            <h4 class="now-date-text" v-if="nowSelectDate">
-                {{ nowSelectDate.startdate }} ~ {{ nowSelectDate.enddate }}
-            </h4>
-            <h4 class="now-area">
-                <span>{{ nowAreaName }}</span>
-                <i class="now-data-icon el-icon-coin" @click="dialogVisible = true"></i>
-            </h4>
-            <p class="nd-accept-text" v-for="item in leftDataConfig" :key="item.id">
-                {{ item.name }} {{ ~~leftData[item.id] }}
-            </p>
+        <div class="now-data">
+			<div v-if='mapConfig.leftIsshow'>
+				<h4 class="now-date-text" v-if="nowSelectDate">
+					{{ nowSelectDate.startdate }} ~ {{ nowSelectDate.enddate }}
+				</h4>
+				<h4 class="now-area">
+					<span>{{ nowAreaName }}</span>
+					<i class="now-data-icon el-icon-coin" @click="dialogVisible = true"></i>
+				</h4>
+				<p class="nd-accept-text" v-for="item in leftDataConfig" :key="item.id">
+					{{ item.name }} {{ ~~leftData[item.id] }}
+				</p>
+			</div>
             <el-popover
                     popper-class="map-extra-table"
                     v-show="extendData.length !== 0"
