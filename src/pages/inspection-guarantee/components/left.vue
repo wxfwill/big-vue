@@ -113,10 +113,6 @@
 			this.caizhengChart   = ECharts.init(this.$refs.caizhengChart);
 			this.jingfeiChart    = ECharts.init(this.$refs.jingfeiChart);
 			this.jianchaChart    = ECharts.init(this.$refs.jianchaChart);
-			this.loadIncomeChart(params);
-			this.loadCaizhengChart();
-			this.loadJingfeiChart();
-			this.loadJianchaChart();
 		},
 		updated() {
 			const params = { ...this.getSelectDateSection, ...this.getMapCode };
@@ -126,15 +122,7 @@
 		},
 		methods   : {
 			loadIncomeChart(chartData) {
-				chartData = {
-					czbk  : 122,
-					sjbz  : 123,
-					sysr  : 92,
-					jysr  : 222,
-					fsdwsj: 321,
-					qtsr  : 122,
-				};
-				const { xAxisData, seriesData } = this.convertChartConfig(incomeChartConfig, this.income);
+				const { xAxisData, seriesData } = this.convertChartConfig(incomeChartConfig, chartData);
 				this.incomeChart.setOption({
 					color  : ['#4F79E2', '#1BC85D', '#009FE8', '#FF6C40', '#FF6C40', '#0BD7AA'],
 					tooltip: {
@@ -190,8 +178,18 @@
 					  });
 				return { xAxisData, seriesData };
 			},
-			loadCaizhengChart() {
-	  			const { xAxisData, seriesData } = this.convertChartConfigcz(this.financialAllocationList);
+			convertChartConfigczs(configList = []) {
+				const xAxisData  = [],
+					  seriesData = [];
+					  configList.map((config) => {
+						  xAxisData.push(config.city_name);
+						  seriesData.push(config.sl)
+					  });
+				return { xAxisData, seriesData };
+			},
+			loadCaizhengChart(data) {
+				console.log(this.financialAllocationList)
+	  			const { xAxisData, seriesData } = this.convertChartConfigczs(data);
 				this.caizhengChart.setOption({
 					color: ['#3398DB'],
 					tooltip : {
@@ -268,7 +266,7 @@
 					grid: {
 						left: '3%',
 						right: '22%',
-						bottom: '3%',
+						bottom: '15%',
 						containLabel: true
 					},
 					xAxis : [
@@ -340,14 +338,14 @@
 					]
 				})
 			},
-			loadJianchaChart(){
+			loadJianchaChart(data){
 				let ncjzjy=[],sr=[],zc=[],nmjzjy=[],year=[];
-				for(var i=0;i<this.trendsProcuratorialBusinessList.length;i++){
-					ncjzjy.push(this.trendsProcuratorialBusinessList[i].ncjzjy);
-					sr.push(this.trendsProcuratorialBusinessList[i].sr);
-					zc.push(this.trendsProcuratorialBusinessList[i].zc);
-					nmjzjy.push(this.trendsProcuratorialBusinessList[i].nmjzjy);
-					year.push(this.trendsProcuratorialBusinessList[i].year);
+				for(var i=0;i<data.length;i++){
+					ncjzjy.push(data[i].ncjzjy);
+					sr.push(data[i].sr);
+					zc.push(data[i].zc);
+					nmjzjy.push(data[i].nmjzjy);
+					year.push(data[i].year);
 				}
 				this.jianchaChart.setOption({
 					tooltip : {
@@ -363,7 +361,7 @@
 					grid: {
 						left: '3%',
 						right: '4%',
-						bottom: '3%',
+						bottom: '15%',
 						containLabel: true
 					},
 					xAxis : [
@@ -480,7 +478,7 @@
 			},
 			loadDialogChart(){
 				const { data: chartData, key } = this.dialogContext,
-					  { xAxisData, seriesData } = this.convertChartConfigcz(chartData, key);
+					  { xAxisData, seriesData } = this.convertChartConfigczs(chartData, key);
 				this.dialogBarChart            = ECharts.init(this.$refs.dialogChart);
 				const color=
 				this.dialogBarChart.setOption({
@@ -568,15 +566,15 @@
 				default:{}
 			},
 			financialAllocationList:{
-				default:{}
+				default:[]
 			},
 			jingfeiqingkuang:{
 				default:{}
 			},
 			trendsProcuratorialBusinessList:{
-				default:{}
+				default:[]
 			}
-		}
+		},
 	};
 </script>
 

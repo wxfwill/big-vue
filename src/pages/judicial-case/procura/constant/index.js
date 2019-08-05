@@ -98,7 +98,7 @@ const administrativeConfig = [{
 }, {
 	id    : 'kyjc',
 	rateId: '50',
-	title : '勘验检察',
+	title : '勘验检察',			
 	col1  : '#005EFF',
 	col2  : '#4FB8FF'
 }, {

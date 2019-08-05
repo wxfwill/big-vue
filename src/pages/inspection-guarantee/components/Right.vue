@@ -39,48 +39,48 @@
 						<div class="personnel-top">
 							<p class='title'>机构情况</p>
 							<div class='agencytotal'>
-								<span class='totalnum'>{{theProcuratorialAgency.count}}</span>
+								<span class='totalnum'>{{theProcuratorialAgency.zs}}</span>
 								<i class='el-icon-top'></i><span>{{theProcuratorialAgency.tbss}}</span><b>{{theProcuratorialAgency.tbssbfb}}</b>
 							</div>
 							<div class='agencylist'>
 								<p>年末机构数</p>
-								<p>{{theProcuratorialAgency.nmjgs}}</p>
+								<p>{{theProcuratorialAgency.ynmjgs}}</p>
 							</div>
 							<div class='agencylist'>
 								<p>省级院个数</p>
-								<p>{{theProcuratorialAgency.sjygs}}</p>
+								<p>{{theProcuratorialAgency.sjy}}</p>
 							</div>
 							<div class='agencylist'>
 								<p>地市级个数</p>
-								<p>{{theProcuratorialAgency.dsjgs}}</p>
+								<p>{{theProcuratorialAgency.dsy}}</p>
 							</div>
 							<div class='agencylist'>
 								<p>县区级个数</p>
-								<p>{{theProcuratorialAgency.xqjgs}}</p>
+								<p>{{theProcuratorialAgency.xjy}}</p>
 							</div>
 							<div class='agencylist'>
 								<p>派出院个数</p>
-								<p>{{theProcuratorialAgency.pcygs}}</p>
+								<p>{{theProcuratorialAgency.pcy}}</p>
 							</div>
 							<div class='agencylist'>
 								<p>铁检院个数</p>
-								<p>{{theProcuratorialAgency.tjygs}}</p>
+								<p>{{theProcuratorialAgency.tjy}}</p>
 							</div>
 							<div class='agencylist'>
 								<p>林区院个数</p>
-								<p>{{theProcuratorialAgency.lqygs}}</p>
+								<p>{{theProcuratorialAgency.lqy}}</p>
 							</div>
 							<div class='agencylist'>
 								<p>油田院个数</p>
-								<p>{{theProcuratorialAgency.ytygs}}</p>
+								<p>{{theProcuratorialAgency.yty}}</p>
 							</div>
 							<div class='agencylist'>
 								<p>矿区院个数</p>
-								<p>{{theProcuratorialAgency.kqygs}}</p>
+								<p>{{theProcuratorialAgency.kqy}}</p>
 							</div>
 							<div class='agencylist'>
 								<p>事业单位个数</p>
-								<p>{{theProcuratorialAgency.sydwgs}}</p>
+								<p>{{theProcuratorialAgency.sydw}}</p>
 							</div>
 						</div>
 						<div class="personnel-bottom-left">
@@ -108,40 +108,40 @@
 								<i class='el-icon-tickets'></i>
 								<p>检察业务装备</p>
 								<span>数量</span>
-								<span>23,345,567</span>
+								<span>{{inspectionServiceEquipment.jcywzbsl}}</span>
 								<span>23%</span>
 								<b>金额</b>
-								<b>23,345,567</b>
+								<b>{{inspectionServiceEquipment.jcywzbje}}</b>
 								<b>23%</b>
 							</li>
 							<li @click="righttableIsshowfn">
 								<i class='el-icon-tickets'></i>
 								<p>技术装备</p>
 								<span>数量</span>
-								<span>23,345,567</span>
+								<span>{{inspectionServiceEquipment.jszbsl}}</span>
 								<span>23%</span>
 								<b>金额</b>
-								<b>23,345,567</b>
+								<b>{{inspectionServiceEquipment.jszbje}}</b>
 								<b>23%</b>
 							</li>
 							<li @click="righttableIsshowfn">
 								<i class='el-icon-tickets'></i>
 								<p>综合保障装备</p>
 								<span>数量</span>
-								<span>23,345,567</span>
+								<span>{{inspectionServiceEquipment.zhbzzbsl}}</span>
 								<span>23%</span>
 								<b>金额</b>
-								<b>23,345,567</b>
+								<b>{{inspectionServiceEquipment.zhbzzbje}}</b>
 								<b>23%</b>
 							</li>
 							<li @click="righttableIsshowfn">
 								<i class='el-icon-tickets'></i>
 								<p>司法警察装备</p>
 								<span>数量</span>
-								<span>23,345,567</span>
+								<span>{{inspectionServiceEquipment.sfjczbzb}}</span>
 								<span>23%</span>
 								<b>金额</b>
-								<b>23,345,567</b>
+								<b>{{inspectionServiceEquipment.sfjczbje}}</b>
 								<b>23%</b>
 							</li>
 					 	</ul>
@@ -158,8 +158,10 @@
 							<p>计财部门设置情况</p>
 							<p>{{financialInstitutions.jcbmszqk}}</p>
 							<ul>
-								<li :style="{width:`${financialInstitutions.yszjcbm}%`}">{{financialInstitutions.yszjcbm}}</li>
-								<li :style="{width:`${financialInstitutions.wszjcbm}%`}">{{financialInstitutions.wszjcbm}}</li>
+								<!-- <li :style="{width:`${financialInstitutions.yszjcbm}%`}">{{financialInstitutions.yszjcbm}}</li>
+								<li :style="{width:`${financialInstitutions.wszjcbm}%`}">{{financialInstitutions.wszjcbm}}</li> -->
+								<li :style="{width:`(${financialInstitutions.yszjcbm}/(${financialInstitutions.wszjcbm}+${financialInstitutions.yszjcbm}))%`}">{{financialInstitutions.yszjcbm}}</li>
+								<li :style="{width:`(${financialInstitutions.wszjcbm}/(${financialInstitutions.wszjcbm}+${financialInstitutions.yszjcbm}))%`}">{{financialInstitutions.wszjcbm}}</li>
 							</ul>
 							<ol>
 								<li>已设置计财部门的单位</li>
@@ -203,8 +205,8 @@
 									</div>
 								</div>
 								<div class='three'>
-									<p>{{financialInstitutions.kjdlhs}}</p>	
-									<p>会计独立核算</p>	
+									<p>{{financialInstitutions.qtxs}}</p>	
+									<p>其他形式</p>	
 								</div>
 							</div>
 						</div>
@@ -228,45 +230,31 @@
 										</tr>
 										<tr>
 											<td>检察业务装备</td>
-											<td>17,083</td>
-											<td>4947</td>
-											<td>64%</td>
-											<td>4%</td>
+											<td>{{inspectionServiceEquipmentDetails.jcywzbsl}}</td>
+											<td>{{inspectionServiceEquipmentDetails.jcywzbje}}</td>
+											<td>{{inspectionServiceEquipmentDetails.snzcljcywzbsl}}%</td>
+											<td>{{inspectionServiceEquipmentDetails.snzcljcywzbje}}</td>
 										</tr>
 										<tr>
-											<td>A、检察业务技术装备</td>
-											<td>7275</td>
-											<td>7150</td>
-											<td>83%</td>
-											<td>48%</td>
+											<td>检察业务技术装备</td>
+											<td>{{inspectionServiceEquipmentDetails.jcywjzzbsl}}</td>
+											<td>{{inspectionServiceEquipmentDetails.jcywjzzbje}}</td>
+											<td>{{inspectionServiceEquipmentDetails.snzcljcywjzzbsl}}</td>
+											<td>{{inspectionServiceEquipmentDetails.snzcljcywjzzbje}}</td>
 										</tr>
 										<tr>
-											<td>1、查办和预防职务犯罪装备</td>
-											<td>7275</td>
-											<td>7150</td>
-											<td>83%</td>
-											<td>48%</td>
+											<td>检察业务综合保障装备</td>
+											<td>{{inspectionServiceEquipmentDetails.jcywzhbzzbsl}}</td>
+											<td>{{inspectionServiceEquipmentDetails.jcywzhbzzbje}}</td>
+											<td>{{inspectionServiceEquipmentDetails.snzcljcywzhbzzbsl}}</td>
+											<td>{{inspectionServiceEquipmentDetails.snzcljcywzhbzzbje}}</td>
 										</tr>
 										<tr>
-											<td>2、查办和预防职务犯罪装备</td>
-											<td>7275</td>
-											<td>7150</td>
-											<td>83%</td>
-											<td>48%</td>
-										</tr>
-										<tr>
-											<td>3、查办和预防职务犯罪装备</td>
-											<td>7275</td>
-											<td>7150</td>
-											<td>83%</td>
-											<td>48%</td>
-										</tr>
-										<tr>
-											<td>4、查办和预防职务犯罪装备</td>
-											<td>7275</td>
-											<td>7150</td>
-											<td>83%</td>
-											<td>48%</td>
+											<td>司法干警装备</td>
+											<td>{{inspectionServiceEquipmentDetails.sfgjzbsl}}</td>
+											<td>{{inspectionServiceEquipmentDetails.sfgjzbje}}</td>
+											<td>{{inspectionServiceEquipmentDetails.snzclsfgjzbsl}}</td>
+											<td>{{inspectionServiceEquipmentDetails.snzclsfgjzbje}}</td>
 										</tr>
 									</thead>
 								</table>
@@ -315,6 +303,12 @@
 			},
 			financialInstitutions:{
 				default:{}
+			},
+			inspectionServiceEquipment:{
+				default:{}
+			},
+			inspectionServiceEquipmentDetails:{
+				default:{}
 			}
 		},
 		computed  : {
@@ -330,9 +324,6 @@
 			this.jobChart   = ECharts.init(this.$refs.jobChart);
 			this.serviceChart= ECharts.init(this.$refs.serviceChart);
 			this.agencyChart=ECharts.init(this.$refs.agencyChart);
-			this.loadjobChart();
-			this.loadserviceChart();
-			this.loadagencyChart();
 		},
 		updated() {
 			const params = { ...this.getSelectDateSection, ...this.getMapCode };
@@ -341,15 +332,15 @@
 			}
 		},
 		methods   : {
-			loadjobChart() {
+			loadjobChart(data) {
 				var datas = [{
-					value: this.numberOfEmployees.zyjsry,
+					value: data.zyjsry,
 					name: '专业技术人员'
 				}, {
-					value: this.numberOfEmployees.gqry,
+					value: data.gqry,
 					name: '工勤人员'
 				}, {
-					value: this.numberOfEmployees.gbxzzw,
+					value: data.gbxzzw,
 					name: '干部行政职务'
 				}];
 				var scale = 1;
@@ -395,7 +386,7 @@
 							}
 						},
 						grid:{
-							bottom:'10%'
+							bottom:'15%'
 						},
 						legend: {
 							selectedMode: false,
@@ -453,12 +444,12 @@
 						}]
 					})
 			},
-			loadserviceChart(){
+			loadserviceChart(data){
 				this.serviceChart.setOption({
 					color: ['#FBBA18', '#0CADE8', '#1BC85D'],
 					tooltip: {
 							trigger: 'item',
-							formatter: "{b}<br/>\n金额{c} <br/>占比\n {d}%",
+							formatter: "{b}\n金额{c}占比\n {d}%",
 							itemStyle:{
 								fontSize:'14'
 							},
@@ -468,7 +459,7 @@
 						show:false,
 						orient: 'horizontal',
 						icon: 'circle',
-						bottom: 20,
+						bottom:10,
 						x: 'center',
 						textStyle: {
 							color: '#fff'
@@ -479,7 +470,6 @@
 							type: 'pie',
 							selectedMode: 'single',
 							radius: [0, '58%'],
-
 							label: {
 								normal: {
 									show: true,
@@ -532,15 +522,15 @@
 								}
 							},
 							data: [{
-									value: 100,
+									value: data.sfjczbje,
 									name: '司法警察装备'
 								},
 								{
-									value: 100,
+									value: data.zhbzzbje,
 									name: '综合保障装备'
 								},
 								{
-									value: 100,
+									value: data.jszbje,
 									name: '技术装备'
 								}
 
@@ -549,7 +539,7 @@
 					]	
 				})
 			},
-			loadagencyChart(){
+			loadagencyChart(data){
 				this.agencyChart.setOption({
 					tooltip: {
 						trigger: 'item',
@@ -597,9 +587,9 @@
 								borderColor:'#020309',
 							},
 							data:[
-								{value:this.prosecutionPersonnel.rybzs, name:'人员编制数'},
-								{value:this.prosecutionPersonnel.zzry, name:'着装人员'},
-								{value:this.prosecutionPersonnel.qtry, name:'其他人员'}
+								{value:data.rybzs, name:'人员编制数'},
+								{value:data.zzry, name:'着装人员'},
+								{value:data.qtry, name:'其他人员'}
 							]
 						}
 					]
