@@ -66,13 +66,13 @@ export const topDataConfig = [{
 // 地图tooltip内容
 export const mapTooltipConfig = [{
 	id  : 'yenjcg',
-	name: '员额检察官:',
+	name: '员额检察官',
 }, {
 	id  : 'jcgzl',
-	name: '检察官助理:',
+	name: '检察官助理',
 }, {
 	id  : 'sfxzry',
-	name: '司法行政人员:',
+	name: '司法行政人员',
 }];
 
 export const mapTableConfig = [{
