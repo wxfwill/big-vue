@@ -48,7 +48,11 @@
             </div>
         </div>
         <div class="search-group">
-            <input type="text" class="search-input" placeholder="请输入人员姓名" v-model.trim="officeName" @keyup.enter="remoteMethod">
+            <input type="text"
+                   class="search-input"
+                   placeholder="请输入人员姓名"
+                   v-model.trim="officeName"
+                   @keyup.enter="remoteMethod">
             <button type="button" class="search-btn" @click="remoteMethod">搜索</button>
         </div>
         <div class="staff-model">
@@ -270,7 +274,7 @@
                 width: 182px;
                 height: 40px;
                 padding: 10px;
-                background: #0e84da;
+                background-color: rgba(14, 132, 218, .5);
                 color: #fff!important;
                 border: 1px solid #000;
                 border-radius: 5px;
