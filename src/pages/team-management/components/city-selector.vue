@@ -6,6 +6,7 @@
                         v-model="selectProvince"
                         placeholder="请选择省"
                         @change="getCityList"
+                        clearable
                 >
                     <el-option
                             v-for="item in provinceList"
@@ -20,6 +21,7 @@
                         v-model="selectCity"
                         placeholder="请选择市"
                         @change="getCountyList"
+                        clearable
                 >
                     <el-option
                             v-for="item in cityList"
@@ -34,6 +36,7 @@
                         v-model="selectCounty"
                         placeholder="请选择区县"
                         @change="selectCountyChange"
+                        clearable
                 >
                     <el-option
                             v-for="item in countyList"
@@ -161,12 +164,15 @@
 				this.lev = 4;
 			},
 			requestList(lev, name, observeKey) {
+				if(!name){
+					return '';
+                }
 				getAreas({
 					lev,
 					name
 				}).then((resolve) => {
 					if(resolve.code === 200) {
-						this[observeKey] = resolve.data;
+						this[observeKey] = ['北京市', '天津市'];
 					} else {
 						this.$message.error(`code:${resolve.code}`);
 					}
@@ -177,7 +183,7 @@
 					let region;
 					switch(this.lev) {
 						case 1:
-							region = '';
+							region = '全国检察机关';
 							break;
 						case 2:
 							region = this.selectProvince;
@@ -195,7 +201,7 @@
 						city_name: region,
 					}).then((resolve) => {
 						if(resolve.code === 200) {
-                            if(resolve.data.length!=0){
+                            if(resolve.data.length!==0){
                                 this.staffTableDialog = true;
                                 const data = resolve.data;
                                 this.nowPageIndex = 1;
@@ -203,7 +209,6 @@
                             }else{
                                 this.$message.warning('无数据');
                             }
-                            
 						} else {
 							this.$message.error(`code:${resolve.code}`);
 						}
