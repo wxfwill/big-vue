@@ -7,6 +7,7 @@
                         placeholder="请选择省"
                         @change="getCityList"
                         clearable
+                        @clear="clearSelector(1)"
                 >
                     <el-option
                             v-for="item in provinceList"
@@ -22,6 +23,7 @@
                         placeholder="请选择市"
                         @change="getCountyList"
                         clearable
+                        @clear="clearSelector(2)"
                 >
                     <el-option
                             v-for="item in cityList"
@@ -37,6 +39,7 @@
                         placeholder="请选择区县"
                         @change="selectCountyChange"
                         clearable
+                        @clear="clearSelector(3)"
                 >
                     <el-option
                             v-for="item in countyList"
@@ -233,7 +236,10 @@
 			},
 			currentPageChange(index) {
 				this.nowPageIndex = index;
-			}
+			},
+			clearSelector(lev){
+                this.lev = lev;
+            }
 		},
 		props   : ['getStaffInfo']
 	}
