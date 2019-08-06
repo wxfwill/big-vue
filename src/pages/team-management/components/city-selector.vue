@@ -176,7 +176,7 @@
 					name
 				}).then((resolve) => {
 					if(resolve.code === 200) {
-						this[observeKey] = ['北京市', '天津市'];
+						this[observeKey] = resolve.data;
 					} else {
 						this.$message.error(`code:${resolve.code}`);
 					}
