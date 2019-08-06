@@ -160,9 +160,9 @@
 					series   : [{
 						name     : "教育情况",
 						type     : "pie",
-						radius   : "80%",
+						radius   : "75%",
 						center   : ["50%", "45%"],
-						color    : ["#61e0c1", "#1c98f0", "#33c6f4", "#33d1f8"],
+						color    : ['#FBBA18', '#F18126', '#1BC85D', '#2AB3EB'],
 						data     : seriesData.sort((a, b) => a.value - b.value),
 						label    : {
 							color : "#fff",
@@ -196,8 +196,7 @@
 								shadowBlur : 50
 							}
 						}
-					}
-					]
+					}]
 				});
 			},
 			personnelStatusQuosConfig(configList = []) {

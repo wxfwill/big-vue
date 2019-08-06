@@ -314,9 +314,9 @@
 					}],
 				});
 			},
-
+            // 下钻到第四级
 			highlightCountyArea() {
-				const { name }               = this.cityCrumbsList[this.mapLevel],
+				const { name, code }               = this.cityCrumbsList[this.mapLevel],
 					  { data: upMapGeoJson } = this.mapJsonData[this.mapLevel - 1];
 				const nowSelectedMap         = {
 					"type"  : "FeatureCollection",
@@ -328,6 +328,7 @@
 					name,
 					data: nowSelectedMap
 				});
+				this.handleMapStateChange(code);
 				this.loadMapChart(name, nowSelectedMap, false);
 			},
 
@@ -402,7 +403,7 @@
 			 * 地图返回顶级
 			 * */
 			showChinaMap() {
-				if(this.loadingMap) {
+				if(this.loadingMap || this.mapLevel === 0) {
 					return false;
 				}
 				this.mapLevel           = 0;
@@ -448,7 +449,7 @@
 
 			// 验证当前层级是否为最后一级
 			verifyMapIsEnd(id) {
-				return id.length === 6 && id.substr(4) !== '00'
+				return id.length === 6 && id.substr(4) !== '00';
 			},
 
 			/**
