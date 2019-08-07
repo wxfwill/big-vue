@@ -68,11 +68,10 @@
             }
         },
         mounted(){
-
+			window.scrollTo(1200, 0);
         },
 		methods: {
             async getPSGuaranteeData(params) {
-            	console.log(params);
 				const res = await services.getPSGuaranteeData(params);
 				if(res.code === 200) {
                     const data   = res.data;

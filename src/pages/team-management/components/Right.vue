@@ -33,7 +33,7 @@
                     <div class="performance-detail-box white-text">
                         <div class="staff-portrayal">
                             <div class="info-box top-block" :style="{backgroundImage: `url(${topBorderBg})`}">
-                                <h3 class="detail-title white-text">检察官</h3>
+                                <h3 class="detail-title white-text">{{ performanceInfo.xm }}</h3>
                                 <p>工作年限：{{ performanceInfo.gznx }}年</p>
                                 <p>职务：{{ performanceInfo.zw }}</p>
                                 <p>地区：{{ performanceInfo.dq }}</p>

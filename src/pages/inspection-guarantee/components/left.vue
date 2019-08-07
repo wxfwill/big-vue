@@ -189,7 +189,6 @@
 				return { xAxisData, seriesData };
 			},
 			loadCaizhengChart(data) {
-				console.log(this.financialAllocationList)
 	  			const { xAxisData, seriesData } = this.convertChartConfigczs(data.slice(0,10));
 				this.caizhengChart.setOption({
 					color: ['#3398DB'],

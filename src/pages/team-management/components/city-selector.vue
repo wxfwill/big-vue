@@ -6,6 +6,8 @@
                         v-model="selectProvince"
                         placeholder="请选择省"
                         @change="getCityList"
+                        clearable
+                        @clear="clearSelector(1)"
                 >
                     <el-option
                             v-for="item in provinceList"
@@ -20,6 +22,8 @@
                         v-model="selectCity"
                         placeholder="请选择市"
                         @change="getCountyList"
+                        clearable
+                        @clear="clearSelector(2)"
                 >
                     <el-option
                             v-for="item in cityList"
@@ -34,6 +38,8 @@
                         v-model="selectCounty"
                         placeholder="请选择区县"
                         @change="selectCountyChange"
+                        clearable
+                        @clear="clearSelector(3)"
                 >
                     <el-option
                             v-for="item in countyList"
@@ -45,7 +51,11 @@
             </div>
         </div>
         <div class="search-group">
-            <input type="text" class="search-input" placeholder="请输入人员姓名" v-model.trim="officeName" @keyup.enter="remoteMethod">
+            <input type="text"
+                   class="search-input"
+                   placeholder="请输入人员姓名"
+                   v-model.trim="officeName"
+                   @keyup.enter="remoteMethod">
             <button type="button" class="search-btn" @click="remoteMethod">搜索</button>
         </div>
         <div class="staff-model">
@@ -161,6 +171,9 @@
 				this.lev = 4;
 			},
 			requestList(lev, name, observeKey) {
+				if(!name){
+					return '';
+                }
 				getAreas({
 					lev,
 					name
@@ -177,7 +190,7 @@
 					let region;
 					switch(this.lev) {
 						case 1:
-							region = '';
+							region = '全国检察机关';
 							break;
 						case 2:
 							region = this.selectProvince;
@@ -195,7 +208,7 @@
 						city_name: region,
 					}).then((resolve) => {
 						if(resolve.code === 200) {
-                            if(resolve.data.length!=0){
+                            if(resolve.data.length!==0){
                                 this.staffTableDialog = true;
                                 const data = resolve.data;
                                 this.nowPageIndex = 1;
@@ -203,7 +216,6 @@
                             }else{
                                 this.$message.warning('无数据');
                             }
-                            
 						} else {
 							this.$message.error(`code:${resolve.code}`);
 						}
@@ -224,7 +236,10 @@
 			},
 			currentPageChange(index) {
 				this.nowPageIndex = index;
-			}
+			},
+			clearSelector(lev){
+                this.lev = lev;
+            }
 		},
 		props   : ['getStaffInfo']
 	}
@@ -265,7 +280,7 @@
                 width: 182px;
                 height: 40px;
                 padding: 10px;
-                background: #0e84da;
+                background-color: rgba(14, 132, 218, .5);
                 color: #fff!important;
                 border: 1px solid #000;
                 border-radius: 5px;
