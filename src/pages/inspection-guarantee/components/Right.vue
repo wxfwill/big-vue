@@ -10,7 +10,7 @@
                     </div>
 					<div class="propertyBox">
 						<div class="propertyContent">
-							<p>总资产<br/><span>{{assetsSituation.zzc}}</span><b></b></p>
+							<p>总资产<br/><span>￥{{assetsSituation.zzc}}万元</span><b></b></p>
 							<ol>
 								<li></li>
 								<li></li>
@@ -19,12 +19,12 @@
 								<li></li>
 							</ol>
 							<ul>
-								<li>长期投资资产<br/><span>{{assetsSituation.cqtzzc}}</span></li>
-								<li>固定资产<br/><span>{{assetsSituation.gdzc}}</span></li>
-								<li>流动资产<br/><span>{{assetsSituation.ldzc}}</span></li>
-								<li>其他资产<br/><span>{{assetsSituation.qtzc}}</span></li>
-								<li>无形资产<br/><span>{{assetsSituation.wxzc}}</span></li>
-								<li>在建工程资产<br/><span>{{assetsSituation.zjgczc}}</span></li>
+								<li>长期投资资产<br/><span>￥{{assetsSituation.cqtzzc}}万元</span></li>
+								<li>固定资产<br/><span>￥{{assetsSituation.gdzc}}万元</span></li>
+								<li>流动资产<br/><span>￥{{assetsSituation.ldzc}}万元</span></li>
+								<li>其他资产<br/><span>￥{{assetsSituation.qtzc}}万元</span></li>
+								<li>无形资产<br/><span>￥{{assetsSituation.wxzc}}万元</span></li>
+								<li>在建工程资产<br/><span>￥{{assetsSituation.zjgczc}}万元</span></li>
 							</ul>
 						</div>
 					</div>
@@ -109,40 +109,40 @@
 								<p>检察业务装备</p>
 								<span>数量</span>
 								<span>{{inspectionServiceEquipment.jcywzbsl}}</span>
-								<span>0%</span>
+								<span>%</span>
 								<b>金额</b>
 								<b>{{inspectionServiceEquipment.jcywzbje}}</b>
-								<b>0%</b>
+								<b>%</b>
 							</li>
 							<li @click="righttableIsshowfn">
 								<i class='el-icon-tickets'></i>
 								<p>技术装备</p>
 								<span>数量</span>
 								<span>{{inspectionServiceEquipment.jszbsl}}</span>
-								<span>0%</span>
+								<span>%</span>
 								<b>金额</b>
 								<b>{{inspectionServiceEquipment.jszbje}}</b>
-								<b>0%</b>
+								<b>%</b>
 							</li>
 							<li @click="righttableIsshowfn">
 								<i class='el-icon-tickets'></i>
 								<p>综合保障装备</p>
 								<span>数量</span>
 								<span>{{inspectionServiceEquipment.zhbzzbsl}}</span>
-								<span>0%</span>
+								<span>%</span>
 								<b>金额</b>
 								<b>{{inspectionServiceEquipment.zhbzzbje}}</b>
-								<b>0%</b>
+								<b>%</b>
 							</li>
 							<li @click="righttableIsshowfn">
 								<i class='el-icon-tickets'></i>
 								<p>司法警察装备</p>
 								<span>数量</span>
 								<span>{{inspectionServiceEquipment.sfjczbzb}}</span>
-								<span>0%</span>
+								<span>%</span>
 								<b>金额</b>
 								<b>{{inspectionServiceEquipment.sfjczbje}}</b>
-								<b>0%</b>
+								<b>%</b>
 							</li>
 					 	</ul>
 					</div>
@@ -488,15 +488,15 @@
 								}
 							},
 							data: [{
-									value: 100,
+									value: data.sfjczbje,
 									name: '司法警察装备'
 								},
 								{
-									value: 100,
+									value: data.zhbzzbje,
 									name: '综合保障装备'
 								},
 								{
-									value: 100,
+									value:  data.jszbje,
 									name: '技术装备'
 								}
 							]

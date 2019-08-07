@@ -16,8 +16,8 @@
 				<div class="payBox">
 					<div class="boxborder">
 						<div class='payBox-top'>
-							<p>{{expenditure.zzcs}}</p>
-							<p>同比<i class="el-icon-top"></i>{{expenditure.zzc_tb}}<br><span>{{expenditure.zzc_bfb}}</span></p>
+							<p>￥{{expenditure.zzcs}}</p>
+							<p>同比<i class="el-icon-top"></i>{{expenditure.zzc_tb}}<br><span>{{expenditure.zzc_bfb}}%</span></p>
 						</div>
 					</div>
 					<div class='payBox-bottom'>总支出</div>
@@ -25,8 +25,8 @@
 				<div class="payBox">
 					<div class="boxborder">
 						<div class='payBox-top'>
-							<p>{{expenditure.gnflzcs}}</p>
-							<p>同比<i class="el-icon-top"></i>{{expenditure.gnflzc_tb}}<br><span>{{expenditure.gnflzc_bfb}}</span></p>
+							<p>￥{{expenditure.gnflzcs}}</p>
+							<p>同比<i class="el-icon-top"></i>{{expenditure.gnflzc_tb}}<br><span>{{expenditure.gnflzc_bfb}}%</span></p>
 						</div>
 					</div>
 					<div class='payBox-bottom'>功能分类支出</div>
@@ -34,8 +34,8 @@
 				<div class="payBox">
 					<div class="boxborder">
 						<div class='payBox-top'>
-							<p>{{expenditure.zcxzs}}</p>
-							<p>同比<i class="el-icon-top"></i>{{expenditure.zcxz_tb}}<br><span>{{expenditure.zcxz_bfb}}</span></p>
+							<p>￥{{expenditure.zcxzs}}</p>
+							<p>同比<i class="el-icon-top"></i>{{expenditure.zcxz_tb}}<br><span>{{expenditure.zcxz_bfb}}%</span></p>
 						</div>
 					</div>
 					<div class='payBox-bottom'>支出性质</div>
@@ -43,8 +43,8 @@
 				<div class="payBox">
 					<div class="boxborder">
 						<div class='payBox-top'>
-							<p>{{expenditure.zcjjfls}}</p>
-							<p>同比<i class="el-icon-top"></i>{{expenditure.zcjjfl_tb}}<br><span>{{expenditure.zcjjfl_bfb}}</span></p>
+							<p>￥{{expenditure.zcjjfls}}</p>
+							<p>同比<i class="el-icon-top"></i>{{expenditure.zcjjfl_tb}}<br><span>{{expenditure.zcjjfl_bfb}}%</span></p>
 						</div>
 					</div>
 					<div class='payBox-bottom'>支出经济分类</div>
@@ -87,7 +87,7 @@
 <script>
 	import ECharts                               from 'echarts';
 	import * as services                         from '../service/index';
-	import { verifyTriggerState, numberInteger ,textFormatter} from '@/utlis/helper';
+	import { verifyTriggerState, numberInteger ,textFormatter,formatNum} from '@/utlis/helper';
 	import {incomeChartConfig,caizhengChartConfig }                 from '../constant/index';
 
 	export default {
@@ -124,7 +124,7 @@
 			loadIncomeChart(chartData) {
 				const { xAxisData, seriesData } = this.convertChartConfig(incomeChartConfig, chartData);
 				this.incomeChart.setOption({
-					color  : ['#4F79E2', '#1BC85D', '#009FE8', '#FF6C40', '#FF6C40', '#0BD7AA'],
+					color  : ['#4F79E2', '#1BC85D', '#009FE8', '#FF6C40', '#FBBA18', '#0BD7AA'],
 					tooltip: {
 						trigger  : 'item',
 						formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -138,15 +138,16 @@
 							color : 'white'
 						},
 						icon:"circle",
+						data:xAxisData
 					},
 					series : {
 						name     : '收入',
 						type     : 'pie',
 						radius   : '65%',
-						center   : ['25%', '50%'],
+						center   : ['35%', '60%'],
 						data     : seriesData,
 						label: {
-            				show:false
+            				show:true
                 		},
 						itemStyle: {
 							emphasis: {
@@ -161,7 +162,7 @@
 			convertChartConfig(configList = [], data) {
 				const xAxisData  = [],
 					  seriesData = configList.map((config) => {
-						  xAxisData.push(config.id);
+						  xAxisData.push(config.name);
 						  return {
 							  name : config.name,
 							  value: data[config.id],
@@ -239,7 +240,6 @@
 					],
 					series : [
 						{
-							name:'直接访问',
 							type:'bar',
 							barWidth: '60%',
 							data:seriesData,
@@ -253,6 +253,7 @@
 				})
 			},
 			loadJingfeiChart(){
+				console.log(this.jingfeiqingkuang)
 				this.jingfeiChart.setOption({
 					tooltip : {
 						trigger: 'axis',
@@ -312,7 +313,11 @@
 							type:'bar',
 							stack: '哈哈',
 							color:'#3687F6',
-							data:this.jingfeiqingkuang.jcywf_qzczbk
+							data:this.jingfeiqingkuang.jcyw_czbk,
+							itemStyle:{
+								left:100,
+							}
+
 						},
 						{
 							name:'办案（业务）经费',
@@ -469,7 +474,7 @@
 				switch(name) {
 					case '财政拨款收入分布' :
 						key  = '财政拨款收入分布';
-						data = this.financialAllocationList;
+						data = this.financialAllocationList.slice(1);
 						break;
 					case '全国省份排名':
 						key  = '全国省份排名';
@@ -595,7 +600,7 @@
         .income-box {
             width: 466px;
             .income-content {
-                width: 80%;
+                width: 100%;
                 height: 261px;
                 margin: 0 auto;
             }
