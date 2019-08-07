@@ -67,7 +67,6 @@
 		},
 		methods   : {
 			loadMapData(params) {
-				console.log(this.checkCharterTheMapList)
 				this.sls                                           = this.checkCharterMapData.sls;
 				this.bjs                                           = this.checkCharterMapData.wcs;
 				this.zbs                                           = this.checkCharterMapData.wwcs;

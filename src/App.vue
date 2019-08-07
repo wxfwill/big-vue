@@ -14,7 +14,8 @@ export default {
 @import './public/css/reset.css';
 @import 'public/css/common';
 #app {
-  width:100%;
-  height:100%;
+  width:3840px;
+  height:1080px;
+    overflow: hidden;
 }
 </style>
