@@ -16,7 +16,7 @@
 				<div class="payBox">
 					<div class="boxborder">
 						<div class='payBox-top'>
-							<p>￥{{expenditure.zzcs}}</p>
+							<p>￥{{formatNum(expenditure.zzcs)}}</p>
 							<p>同比<i class="el-icon-top"></i>{{expenditure.zzc_tb}}<br><span>{{expenditure.zzc_bfb}}%</span></p>
 						</div>
 					</div>
@@ -25,7 +25,7 @@
 				<div class="payBox">
 					<div class="boxborder">
 						<div class='payBox-top'>
-							<p>￥{{expenditure.gnflzcs}}</p>
+							<p>￥{{formatNum(expenditure.gnflzcs)}}</p>
 							<p>同比<i class="el-icon-top"></i>{{expenditure.gnflzc_tb}}<br><span>{{expenditure.gnflzc_bfb}}%</span></p>
 						</div>
 					</div>
@@ -34,7 +34,7 @@
 				<div class="payBox">
 					<div class="boxborder">
 						<div class='payBox-top'>
-							<p>￥{{expenditure.zcxzs}}</p>
+							<p>￥{{formatNum(expenditure.zcxzs)}}</p>
 							<p>同比<i class="el-icon-top"></i>{{expenditure.zcxz_tb}}<br><span>{{expenditure.zcxz_bfb}}%</span></p>
 						</div>
 					</div>
@@ -43,7 +43,7 @@
 				<div class="payBox">
 					<div class="boxborder">
 						<div class='payBox-top'>
-							<p>￥{{expenditure.zcjjfls}}</p>
+							<p>￥{{formatNum(expenditure.zcjjfls)}}</p>
 							<p>同比<i class="el-icon-top"></i>{{expenditure.zcjjfl_tb}}<br><span>{{expenditure.zcjjfl_bfb}}%</span></p>
 						</div>
 					</div>
@@ -65,6 +65,8 @@
                 <i>经费情况</i>
             </div>
             <div class="jingfei-content" ref="jingfeiChart"></div>
+			<div class="jingfei-content" ref="jingfeiChart1"></div>
+			<div class="jingfei-content" ref="jingfeiChart2"></div>
         </div>
 		<div class="jiancha-box">
             <div class="chart-box-title">
@@ -87,7 +89,7 @@
 <script>
 	import ECharts                               from 'echarts';
 	import * as services                         from '../service/index';
-	import { verifyTriggerState, numberInteger ,textFormatter,formatNum} from '@/utlis/helper';
+	import { verifyTriggerState, numberInteger ,textFormatter} from '@/utlis/helper';
 	import {incomeChartConfig,caizhengChartConfig }                 from '../constant/index';
 
 	export default {
@@ -112,6 +114,8 @@
 			this.incomeChart     = ECharts.init(this.$refs.incomeChart);
 			this.caizhengChart   = ECharts.init(this.$refs.caizhengChart);
 			this.jingfeiChart    = ECharts.init(this.$refs.jingfeiChart);
+			this.jingfeiChart1    = ECharts.init(this.$refs.jingfeiChart1);
+			this.jingfeiChart2    = ECharts.init(this.$refs.jingfeiChart2);
 			this.jianchaChart    = ECharts.init(this.$refs.jianchaChart);
 		},
 		updated() {
@@ -253,99 +257,614 @@
 			},
 			loadJingfeiChart(){
 				console.log(this.jingfeiqingkuang)
+	 			let max = this.jingfeiqingkuang.jcywfhj.reduce(function(a , b){ 
+				return b > a ? b : a; 
+				});
+				let max1 = this.jingfeiqingkuang.bajf.reduce(function(a , b){ 
+				return b > a ? b : a; 
+				});
+				let max2 =this.jingfeiqingkuang.ywzbjf.reduce(function(a , b){ 
+				return b > a ? b : a; 
+				});
+
+				console.log(max); 
 				this.jingfeiChart.setOption({
-					tooltip : {
-						trigger: 'axis',
-						axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-							type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-						}
+					color: ["#0BB0FB", "rgba(86,199,60, 1)"],
+					tooltip: {
+						show: true,
+						trigger: "item"
 					},
 					legend: {
-						data:['检察业务费合计','检察业务-其中财政拨款','办案（业务）经费','办案经费-其中财政拨款','业务装备经费','业务装备-其中财政拨款'],
-						icon:"square",
-						orient:'vertical',
-						y: 'center',    //延Y轴居中
-						x: 'right' ,//居右显示
-						align:'left',
 						textStyle:{
 							color:'#fff'
-						}
-					},
-					grid: {
-						left: '3%',
-						right: '22%',
-						bottom: '15%',
-						containLabel: true
-					},
-					xAxis : [
-						{
-							type : 'category',
-							data : ['年初结转结余','收入合计','支出合计','年末结转结余'],
-							axisLine:{
-								show:false,
-								lineStyle: {
-									color: "#fff",
-								}
-							}
-						}
-					],
-					yAxis : [
-						{
-							type : 'value',
-							axisLine:{
-								lineStyle: {
-									color: "#fff",
-								}
-							}
-						}
-					],
-					series : [
-						{
-							name:'检察业务费合计',
-							type:'bar',
-							stack:'哈哈',
-							color:'#0BB0FB',
-							data:this.jingfeiqingkuang.jcywfhj
 						},
-						{
-							name:'检察业务-其中财政拨款',
-							type:'bar',
-							stack: '哈哈',
-							color:'#3687F6',
-							data:this.jingfeiqingkuang.jcyw_czbk
+						data: ['检察业务费合计', '其中财政拨款']
+					},
+					radar: {
+						center: ["50%", "50%"],
+						radius: "40%",
+						startAngle: 90,
+						splitNumber: 4,
+						shape: "circle",
+						splitArea: {
+							areaStyle: {
+								color: ["transparent"]
+							}
+						},
+						axisLabel: {
+							show: false,
+							fontSize: 20,
+							color: "#000",
+							fontStyle: "normal",
+							fontWeight: "normal"
+						},
+						axisLine: {
+							show: true,
+							lineStyle: {
+								type: "dashed",
+								color: "#999"
+							}
+						},
+						splitLine: {
+							show: true,
+							lineStyle: {
+								type: "dashed",
+								color: "#999"
+							}
+						},
+						// shape: 'circle',
+						name: {
+							// formatter: '{a|{value}}{abg|}\n{hr|}\n{b|1234}',
+							// backgroundColor: '#eee',
+							// borderColor: '#aaa',
+							borderWidth: 1,
+							borderRadius: 0,
+
+							rich: {
+
+								a: {
+									color: '#00b7ee',
+
+									lineHeight: 25,
+									padding: [0, 0, 0, 8],
+									height: 25,
+									backgroundColor: '#fff',
+
+									borderRadius: 0
+								},
+
+								hr: {
+									borderColor: '#aaa',
+									width: '100%',
+									borderWidth: 0.1,
+									align: 'left',
+									height: 1
+								},
+								b: {
+									color: '#333',
+									lineHeight: 25,
+									padding: [0, 0, 0, 8],
+									height: 25,
+									backgroundColor: '#fff',
+									width: '100%',
+									align: 'left',
+									borderRadius: 0
+								},
+								per: {
+									color: '#eee',
+									backgroundColor: '#ffffff',
+									borderWidth: 0.5,
+									borderRadius: 0,
+									borderColor: '#fff',
+								}
+							}
 
 						},
-						{
-							name:'办案（业务）经费',
-							type:'bar',
-							stack: '广告',
-							color:'#1BC85D',
-							data:this.jingfeiqingkuang.bajf
+						indicator: [{
+								name: '年初结转结余',
+								max:max ,
+								aaa: 'assdfasdf',
+								
+							},
+							{
+								name: '收入合计',
+								max: max,
+								aaa: 'assdfasdf'
+							},
+							{
+								name: '支出合计',
+								max: max,
+								aaa: 'assdfasdf'
+							},
+							{
+								name: '年末结转\n结余',
+								max: max,
+								aaa: 'assdfasdf'
+							},
+						]
+					},
+
+					series: [{
+						name: "检察业务费合计",
+						type: "radar",
+						symbol: "circle",
+						symbolSize: 2,
+						areaStyle: {
+							normal: {
+								color: "#0BB0FB"
+							}
 						},
-						{
-							name:'办案经费-其中财政拨款',
-							type:'bar',
-							stack: '广告',
-							color:'#0FA940',
-							data:this.jingfeiqingkuang.bajf_qzczbk
+						itemStyle: {
+							color: '#0BB0FB',
+							borderColor: '#0BB0FB',
+							borderWidth: 2,
 						},
-						
-						{
-							name:'业务装备经费',
-							type:'bar',
-							stack: '搜索引擎',
-							color:'#FBBA18',
-							data:this.jingfeiqingkuang.ywzbjf
+						lineStyle: {
+							normal: {
+								color: "#0BB0FB",
+								width: 0.1
+							}
 						},
-						{
-							name:'业务装备-其中财政拨款',
-							type:'bar',
-							stack: '搜索引擎',
-							color:'#F68C3B',
-							data:this.jingfeiqingkuang.ywzbjf_qzczbk
-						}
-					]
+						data: [
+							this.jingfeiqingkuang.jcywfhj
+						]
+					}, {
+						name: "其中财政拨款",
+						type: "radar",
+						symbol: "circle",
+						symbolSize: 2,
+						itemStyle: {
+							normal: {
+								color: '#00ffff',
+								borderColor: "#00ffff",
+								borderWidth: 2
+							}
+						},
+						areaStyle: {
+							normal: {
+								"color": "#00ffff"
+							}
+						},
+						lineStyle: {
+							normal: {
+								color: "#00ffff",
+								width: 0.1,
+							}
+						},
+						data: [
+							this.jingfeiqingkuang.jcyw_czbk
+						]
+					}]
 				})
+				this.jingfeiChart1.setOption({
+					color: ["rgba(0,183,238, 1)", "rgba(86,199,60, 1)"],
+					tooltip: {
+						show: true,
+						trigger: "item"
+					},
+					legend: {
+						textStyle:{
+							color:'#fff'
+						},
+						data: ['办案（业务）经费', '其中财政拨款']
+					},
+					radar: {
+						center: ["50%", "50%"],
+						radius: "40%",
+						startAngle: 90,
+						splitNumber: 4,
+						shape: "circle",
+						splitArea: {
+							areaStyle: {
+								color: ["transparent"]
+							}
+						},
+						axisLabel: {
+							show: false,
+							fontSize: 20,
+							color: "#000",
+							fontStyle: "normal",
+							fontWeight: "normal"
+						},
+						axisLine: {
+							show: true,
+							lineStyle: {
+								type: "dashed",
+								color: "#999"
+							}
+						},
+						splitLine: {
+							show: true,
+							lineStyle: {
+								type: "dashed",
+								color: "#999"
+							}
+						},
+						// shape: 'circle',
+						name: {
+							// formatter: '{a|{value}}{abg|}\n{hr|}\n{b|1234}',
+							// backgroundColor: '#eee',
+							// borderColor: '#aaa',
+							borderWidth: 1,
+							borderRadius: 0,
+
+							rich: {
+
+								a: {
+									color: '#00b7ee',
+
+									lineHeight: 25,
+									padding: [0, 0, 0, 8],
+									height: 25,
+									backgroundColor: '#fff',
+
+									borderRadius: 0
+								},
+
+								hr: {
+									borderColor: '#aaa',
+									width: '100%',
+									borderWidth: 0.1,
+									align: 'left',
+									height: 1
+								},
+								b: {
+									color: '#333',
+									lineHeight: 25,
+									padding: [0, 0, 0, 8],
+									height: 25,
+									backgroundColor: '#fff',
+									width: '100%',
+									align: 'left',
+									borderRadius: 0
+								},
+								per: {
+									color: '#eee',
+									backgroundColor: '#ffffff',
+									borderWidth: 0.5,
+									borderRadius: 0,
+									borderColor: '#fff',
+								}
+							}
+
+						},
+						indicator: [{
+								name: '年初结转结余',
+								max: max1,
+								aaa: 'assdfasdf',
+								
+							},
+							{
+								name: '收入合计',
+								max: max1,
+								aaa: 'assdfasdf'
+							},
+							{
+								name: '支出合计',
+								max: max1,
+								aaa: 'assdfasdf'
+							},
+							{
+								name: '年末结转\n结余',
+								max: max1,
+								aaa: 'assdfasdf'
+							},
+						]
+					},
+
+					series: [{
+						name: "办案（业务）经费",
+						type: "radar",
+						symbol: "circle",
+						symbolSize: 2,
+						areaStyle: {
+							normal: {
+								color: "#1BC85D"
+							}
+						},
+						itemStyle: {
+							color: '#1BC85D',
+							borderColor: '#1BC85D',
+							borderWidth: 2,
+						},
+						lineStyle: {
+							normal: {
+								color: "#1BC85D",
+								width: 0.1
+							}
+						},
+						data: [
+							this.jingfeiqingkuang.bajf
+						]
+					}, {
+						name: "其中财政拨款",
+						type: "radar",
+						symbol: "circle",
+						symbolSize: 2,
+						itemStyle: {
+							normal: {
+								color: '#048B25',
+								borderColor: "#048B25",
+								borderWidth: 2
+							}
+						},
+						areaStyle: {
+							normal: {
+								"color": "#048B25"
+							}
+						},
+						lineStyle: {
+							normal: {
+								color: "#048B25",
+								width: 0.1,
+							}
+						},
+						data: [
+							this.jingfeiqingkuang.bajf_qzczbk
+						]
+					}]
+				})
+				this.jingfeiChart2.setOption({
+					color: ["rgba(0,183,238, 1)", "rgba(86,199,60, 1)"],
+					tooltip: {
+						show: true,
+						trigger: "item"
+					},
+					legend: {
+						textStyle:{
+							color:'#fff'
+						},
+						data: ['业务装备经费', '其中财政拨款']
+					},
+					radar: {
+						center: ["50%", "50%"],
+						radius: "40%",
+						startAngle: 90,
+						splitNumber: 4,
+						shape: "circle",
+						splitArea: {
+							areaStyle: {
+								color: ["transparent"]
+							}
+						},
+						axisLabel: {
+							show: false,
+							fontSize: 20,
+							color: "#000",
+							fontStyle: "normal",
+							fontWeight: "normal"
+						},
+						axisLine: {
+							show: true,
+							lineStyle: {
+								type: "dashed",
+								color: "#999"
+							}
+						},
+						splitLine: {
+							show: true,
+							lineStyle: {
+								type: "dashed",
+								color: "#999"
+							}
+						},
+						// shape: 'circle',
+						name: {
+							// formatter: '{a|{value}}{abg|}\n{hr|}\n{b|1234}',
+							// backgroundColor: '#eee',
+							// borderColor: '#aaa',
+							borderWidth: 1,
+							borderRadius: 0,
+
+							rich: {
+
+								a: {
+									color: '#00b7ee',
+
+									lineHeight: 25,
+									padding: [0, 0, 0, 8],
+									height: 25,
+									backgroundColor: '#fff',
+
+									borderRadius: 0
+								},
+
+								hr: {
+									borderColor: '#aaa',
+									width: '100%',
+									borderWidth: 0.1,
+									align: 'left',
+									height: 1
+								},
+								b: {
+									color: '#333',
+									lineHeight: 25,
+									padding: [0, 0, 0, 8],
+									height: 25,
+									backgroundColor: '#fff',
+									width: '100%',
+									align: 'left',
+									borderRadius: 0
+								},
+								per: {
+									color: '#eee',
+									backgroundColor: '#ffffff',
+									borderWidth: 0.5,
+									borderRadius: 0,
+									borderColor: '#fff',
+								}
+							}
+
+						},
+						indicator: [{
+								name: '年初结转结余',
+								max: max2,
+								aaa: 'assdfasdf',
+								
+							},
+							{
+								name: '收入合计',
+								max: max2,
+								aaa: 'assdfasdf'
+							},
+							{
+								name: '支出合计',
+								max: max2,
+								aaa: 'assdfasdf'
+							},
+							{
+								name: '年末结转\n结余',
+								max: max2,
+								aaa: 'assdfasdf'
+							},
+						]
+					},
+
+					series: [{
+						name: "业务装备经费",
+						type: "radar",
+						symbol: "circle",
+						symbolSize: 2,
+						areaStyle: {
+							normal: {
+								color: "#FBBA18"
+							}
+						},
+						itemStyle: {
+							color: '#FBBA18',
+							borderColor: '#FBBA18)',
+							borderWidth: 2,
+						},
+						lineStyle: {
+							normal: {
+								color: "#FBBA18",
+								width: 0.1
+							}
+						},
+						data: [
+							this.jingfeiqingkuang.ywzbjf
+						]
+					}, {
+						name: "其中财政拨款",
+						type: "radar",
+						symbol: "circle",
+						symbolSize: 2,
+						itemStyle: {
+							normal: {
+								color: '#F25F5F',
+								borderColor: "#F25F5F",
+								borderWidth: 2
+							}
+						},
+						areaStyle: {
+							normal: {
+								"color": "#F25F5F"
+							}
+						},
+						lineStyle: {
+							normal: {
+								color: "#F25F5F",
+								width: 0.1,
+							}
+						},
+						data: [
+							this.jingfeiqingkuang.ywzbjf_qzczbk
+						]
+					}]
+				})
+				// this.jingfeiChart.setOption({
+				// 	tooltip : {
+				// 		trigger: 'axis',
+				// 		axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+				// 			type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+				// 		}
+				// 	},
+				// 	legend: {
+				// 		data:['检察业务费合计','检察业务-其中财政拨款','办案（业务）经费','办案经费-其中财政拨款','业务装备经费','业务装备-其中财政拨款'],
+				// 		icon:"square",
+				// 		orient:'vertical',
+				// 		y: 'center',    //延Y轴居中
+				// 		x: 'right' ,//居右显示
+				// 		align:'left',
+				// 		textStyle:{
+				// 			color:'#fff'
+				// 		}
+				// 	},
+				// 	grid: {
+				// 		left: '3%',
+				// 		right: '22%',
+				// 		bottom: '15%',
+				// 		containLabel: true
+				// 	},
+				// 	xAxis : [
+				// 		{
+				// 			type : 'category',
+				// 			data : ['年初结转结余','收入合计','支出合计','年末结转结余'],
+				// 			axisLine:{
+				// 				show:false,
+				// 				lineStyle: {
+				// 					color: "#fff",
+				// 				}
+				// 			}
+				// 		}
+				// 	],
+				// 	yAxis : [
+				// 		{
+				// 			type : 'value',
+				// 			axisLine:{
+				// 				lineStyle: {
+				// 					color: "#fff",
+				// 				}
+				// 			}
+				// 		}
+				// 	],
+				// 	series : [
+				// 		{
+				// 			name:'检察业务费合计',
+				// 			type:'bar',
+				// 			stack:'哈哈',
+				// 			color:'#0BB0FB',
+				// 			data:this.jingfeiqingkuang.jcywfhj
+				// 		},
+				// 		{
+				// 			name:'检察业务-其中财政拨款',
+				// 			type:'bar',
+				// 			stack: '哈哈',
+				// 			color:'#3687F6',
+				// 			data:this.jingfeiqingkuang.jcyw_czbk
+
+				// 		},
+				// 		{
+				// 			name:'办案（业务）经费',
+				// 			type:'bar',
+				// 			stack: '广告',
+				// 			color:'#1BC85D',
+				// 			data:this.jingfeiqingkuang.bajf
+				// 		},
+				// 		{
+				// 			name:'办案经费-其中财政拨款',
+				// 			type:'bar',
+				// 			stack: '广告',
+				// 			color:'#0FA940',
+				// 			data:this.jingfeiqingkuang.bajf_qzczbk
+				// 		},
+						
+				// 		{
+				// 			name:'业务装备经费',
+				// 			type:'bar',
+				// 			stack: '搜索引擎',
+				// 			color:'#FBBA18',
+				// 			data:this.jingfeiqingkuang.ywzbjf
+				// 		},
+				// 		{
+				// 			name:'业务装备-其中财政拨款',
+				// 			type:'bar',
+				// 			stack: '搜索引擎',
+				// 			color:'#F68C3B',
+				// 			data:this.jingfeiqingkuang.ywzbjf_qzczbk
+				// 		}
+				// 	]
+				// })
 			},
 			loadJianchaChart(data){
 				let ncjzjy=[],sr=[],zc=[],nmjzjy=[],year=[];
@@ -564,6 +1083,19 @@
 			},
 			closeBarDialog(){
 				this.dialogBarChart && this.dialogBarChart.clear();
+			},
+			formatNum(money){
+				if(money && money!=null){
+					money = String(money);
+					var left=money.split('.')[0],right=money.split('.')[1];
+					right = right ? (right.length>=2 ? '.'+right.substr(0,2) : '.'+right+'0') : '';
+					var temp = left.split('').reverse().join('').match(/(\d{1,3})/g);
+					return (Number(money)<0?"-":"") + temp.join(',').split('').reverse().join('')+right;
+				}else if(money===0){   //注意===在这里的使用，如果传入的money为0,if中会将其判定为boolean类型，故而要另外做===判断
+					return '0.00';
+				}else{
+					return "";
+				}
 			}
 
 		},
@@ -678,8 +1210,9 @@
 		.jingfei-box{
 			width:739px;
 			.jingfei-content {
-                width: 100%;
+                width: 30%;
                 height: 292px;
+				float:left;
             }
 		}
 		.jiancha-box{

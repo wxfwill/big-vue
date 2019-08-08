@@ -10,7 +10,7 @@
                     </div>
 					<div class="propertyBox">
 						<div class="propertyContent">
-							<p>总资产<br/><span>￥{{assetsSituation.zzc}}万元</span><b></b></p>
+							<p>总资产<br/><span>￥{{formatNum(assetsSituation.zzc)}}万元</span><b></b></p>
 							<ol>
 								<li></li>
 								<li></li>
@@ -19,12 +19,12 @@
 								<li></li>
 							</ol>
 							<ul>
-								<li>长期投资资产<br/><span>￥{{assetsSituation.cqtzzc}}万元</span></li>
-								<li>固定资产<br/><span>￥{{assetsSituation.gdzc}}万元</span></li>
-								<li>流动资产<br/><span>￥{{assetsSituation.ldzc}}万元</span></li>
-								<li>其他资产<br/><span>￥{{assetsSituation.qtzc}}万元</span></li>
-								<li>无形资产<br/><span>￥{{assetsSituation.wxzc}}万元</span></li>
-								<li>在建工程资产<br/><span>￥{{assetsSituation.zjgczc}}万元</span></li>
+								<li>长期投资资产<br/><span>￥{{formatNum(assetsSituation.cqtzzc)}}万元</span></li>
+								<li>固定资产<br/><span>￥{{formatNum(assetsSituation.gdzc)}}万元</span></li>
+								<li>流动资产<br/><span>￥{{formatNum(assetsSituation.ldzc)}}万元</span></li>
+								<li>其他资产<br/><span>￥{{formatNum(assetsSituation.qtzc)}}万元</span></li>
+								<li>无形资产<br/><span>￥{{formatNum(assetsSituation.wxzc)}}万元</span></li>
+								<li>在建工程资产<br/><span>￥{{formatNum(assetsSituation.zjgczc)}}万元</span></li>
 							</ul>
 						</div>
 					</div>
@@ -111,7 +111,7 @@
 								<span>{{inspectionServiceEquipment.jcywzbsl}}</span>
 								<span>%</span>
 								<b>金额</b>
-								<b>{{inspectionServiceEquipment.jcywzbje}}</b>
+								<b>{{formatNum(inspectionServiceEquipment.jcywzbje)}}</b>
 								<b>%</b>
 							</li>
 							<li @click="righttableIsshowfn">
@@ -121,7 +121,7 @@
 								<span>{{inspectionServiceEquipment.jszbsl}}</span>
 								<span>%</span>
 								<b>金额</b>
-								<b>{{inspectionServiceEquipment.jszbje}}</b>
+								<b>{{formatNum(inspectionServiceEquipment.jszbje)}}</b>
 								<b>%</b>
 							</li>
 							<li @click="righttableIsshowfn">
@@ -131,7 +131,7 @@
 								<span>{{inspectionServiceEquipment.zhbzzbsl}}</span>
 								<span>%</span>
 								<b>金额</b>
-								<b>{{inspectionServiceEquipment.zhbzzbje}}</b>
+								<b>{{formatNum(inspectionServiceEquipment.zhbzzbje)}}</b>
 								<b>%</b>
 							</li>
 							<li @click="righttableIsshowfn">
@@ -141,7 +141,7 @@
 								<span>{{inspectionServiceEquipment.sfjczbzb}}</span>
 								<span>%</span>
 								<b>金额</b>
-								<b>{{inspectionServiceEquipment.sfjczbje}}</b>
+								<b>{{formatNum(inspectionServiceEquipment.sfjczbje)}}</b>
 								<b>%</b>
 							</li>
 					 	</ul>
@@ -599,6 +599,19 @@
 			},
 			hidefn(){
 				this.righttableIsshow=false
+			},
+			formatNum(money){
+				if(money && money!=null){
+					money = String(money);
+					var left=money.split('.')[0],right=money.split('.')[1];
+					right = right ? (right.length>=2 ? '.'+right.substr(0,2) : '.'+right+'0') : '';
+					var temp = left.split('').reverse().join('').match(/(\d{1,3})/g);
+					return (Number(money)<0?"-":"") + temp.join(',').split('').reverse().join('')+right;
+				}else if(money===0){   //注意===在这里的使用，如果传入的money为0,if中会将其判定为boolean类型，故而要另外做===判断
+					return '0.00';
+				}else{
+					return "";
+				}
 			}
 		},
 		components: {
