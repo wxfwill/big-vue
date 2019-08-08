@@ -312,10 +312,7 @@
 							type:'bar',
 							stack: '哈哈',
 							color:'#3687F6',
-							data:this.jingfeiqingkuang.jcyw_czbk,
-							itemStyle:{
-								left:100,
-							}
+							data:this.jingfeiqingkuang.jcyw_czbk
 
 						},
 						{
