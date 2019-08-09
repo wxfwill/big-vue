@@ -8,9 +8,10 @@
                         <span class="chart-label-dot"></span>
                         <i>资产情况</i>
                     </div>
+					<p class='unit'>金额单位:万元</p>
 					<div class="propertyBox">
 						<div class="propertyContent">
-							<p>总资产<br/><span>￥{{formatNum(assetsSituation.zzc)}}万元</span><b></b></p>
+							<p>总资产<br/><span>￥{{formatNum(assetsSituation.zzc)}}</span><b></b></p>
 							<ol>
 								<li></li>
 								<li></li>
@@ -19,12 +20,12 @@
 								<li></li>
 							</ol>
 							<ul>
-								<li>长期投资资产<br/><span>￥{{formatNum(assetsSituation.cqtzzc)}}万元</span></li>
-								<li>固定资产<br/><span>￥{{formatNum(assetsSituation.gdzc)}}万元</span></li>
-								<li>流动资产<br/><span>￥{{formatNum(assetsSituation.ldzc)}}万元</span></li>
-								<li>其他资产<br/><span>￥{{formatNum(assetsSituation.qtzc)}}万元</span></li>
-								<li>无形资产<br/><span>￥{{formatNum(assetsSituation.wxzc)}}万元</span></li>
-								<li>在建工程资产<br/><span>￥{{formatNum(assetsSituation.zjgczc)}}万元</span></li>
+								<li>长期投资资产<br/><span>￥{{formatNum(assetsSituation.cqtzzc)}}</span></li>
+								<li>固定资产<br/><span>￥{{formatNum(assetsSituation.gdzc)}}</span></li>
+								<li>流动资产<br/><span>￥{{formatNum(assetsSituation.ldzc)}}</span></li>
+								<li>其他资产<br/><span>￥{{formatNum(assetsSituation.qtzc)}}</span></li>
+								<li>无形资产<br/><span>￥{{formatNum(assetsSituation.wxzc)}}</span></li>
+								<li>在建工程资产<br/><span>￥{{formatNum(assetsSituation.zjgczc)}}</span></li>
 							</ul>
 						</div>
 					</div>
@@ -37,10 +38,11 @@
                     </div>
                     <div class="personnel-content">
 						<div class="personnel-top">
+							<p class='unit'>单位:个</p>
 							<p class='title'>机构情况</p>
 							<div class='agencytotal'>
 								<span class='totalnum'>{{theProcuratorialAgency.zs}}</span>
-								<i class='el-icon-top'></i><span>{{theProcuratorialAgency.tbss}}</span><b>{{theProcuratorialAgency.tbssbfb}}</b>
+								<!-- <i class='el-icon-top'></i><span>{{theProcuratorialAgency.tbss}}</span><b>{{theProcuratorialAgency.tbssbfb}}</b> -->
 							</div>
 							<div class='agencylist'>
 								<p>年末机构数</p>
@@ -100,6 +102,7 @@
                         <span class="chart-label-dot"></span>
                         <i>检察业务装备</i>
                     </div>
+					<p class='unit'>金额单位:万元</p>
                     <div class='service-content' ref="serviceChart"></div>
 					<div class="putinto">
 						<p>三年投入</p>
@@ -629,6 +632,13 @@
             .left-view {
                 .property-box {
                     width: 739px;
+					position:relative;
+					.unit{
+						position:absolute;
+						right:10px;
+						top:45px;
+						color:#FBBA18;
+					}
 					.propertyBox{			
 						height:301px;
 						.propertyContent{
@@ -704,6 +714,12 @@
 							height:307px;
 							padding:10px 27px;
 							overflow:hidden;
+							position:relative;
+							.unit{
+								position:absolute;
+								right:10px;
+								top:10px;
+							}
 							.agencytotal{
 								.totalnum{
 									color:#00FFF8;
@@ -882,6 +898,12 @@
                     margin-left: 22px;
                     width: 464px;
                     height: 522px;
+					.unit{
+						position:absolute;
+						right:10px;
+						top:45px;
+						color:#FBBA18;
+					}
 					.service-content{
 						width:464px;
 						height:205px;

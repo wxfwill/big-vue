@@ -13,6 +13,7 @@
                 <i>支出</i>
             </div>
             <div class="pay-content">
+				<p class='unit'>单位:万元</p>
 				<div class="payBox">
 					<div class="boxborder">
 						<div class='payBox-top'>
@@ -56,6 +57,7 @@
                 <span class="chart-label-dot"></span>
                 <i>财政拨款收入分布</i>
             </div>
+			<p class='unit'>单位:万元</p>
 			<p class='more-btn' @click="setDialogVisible('财政拨款收入分布')">更多>></p>
             <div class="caizheng-content" ref="caizhengChart"></div>
         </div>
@@ -64,6 +66,7 @@
                 <span class="chart-label-dot"></span>
                 <i>经费情况</i>
             </div>
+			<p class='unit'>单位:万元</p>
             <div class="jingfei-content" ref="jingfeiChart"></div>
 			<div class="jingfei-content" ref="jingfeiChart1"></div>
 			<div class="jingfei-content" ref="jingfeiChart2"></div>
@@ -73,6 +76,7 @@
                 <span class="chart-label-dot"></span>
                 <i>检察业务费趋势</i>
             </div>
+			<p class="unit">单位:万元</p>
             <div class="jiancha-content" ref="jianchaChart"></div>
         </div>
 		 <el-dialog
@@ -256,7 +260,6 @@
 				})
 			},
 			loadJingfeiChart(){
-				console.log(this.jingfeiqingkuang)
 	 			let max = this.jingfeiqingkuang.jcywfhj.reduce(function(a , b){ 
 				return b > a ? b : a; 
 				});
@@ -266,8 +269,6 @@
 				let max2 =this.jingfeiqingkuang.ywzbjf.reduce(function(a , b){ 
 				return b > a ? b : a; 
 				});
-
-				console.log(max); 
 				this.jingfeiChart.setOption({
 					color: ["#0BB0FB", "rgba(86,199,60, 1)"],
 					tooltip: {
@@ -884,7 +885,8 @@
 						icon: "line",
 						textStyle: {
 							color: "#fff"
-						}
+						},
+						top:'5%'
 					},
 					grid: {
 						left: '3%',
@@ -1141,6 +1143,13 @@
                 margin: 0 auto;
 				display: flex;
         		flex-wrap: wrap;
+				position:relative;
+				.unit{
+					position:absolute;
+					right:0;
+					top:10px;
+					color:#FBBA18;
+				}
 				.payBox{
 					width:160px;
 					margin-top:29px;
@@ -1192,6 +1201,12 @@
                 height: 247px;
                 margin: 0 auto;
             }
+			.unit{
+				position:absolute;
+				right:10px;
+				top:30px;
+				color:#FBBA18;
+			}
 			.more-btn{
 				color:#FBBA18;
 				position:absolute;
@@ -1209,6 +1224,13 @@
 		}
 		.jingfei-box{
 			width:739px;
+			position:relative;
+			.unit{
+				position:absolute;
+				right:10px;
+				top:45px;
+				color:#FBBA18;
+			}
 			.jingfei-content {
                 width: 30%;
                 height: 292px;
@@ -1217,6 +1239,13 @@
 		}
 		.jiancha-box{
 			width:544px;
+			position:relative;
+			.unit{
+				position:absolute;
+				right:10px;
+				top:45px;
+				color:#FBBA18;
+			}
 			.jiancha-content {
                 width: 80%;
                 height: 292px;
