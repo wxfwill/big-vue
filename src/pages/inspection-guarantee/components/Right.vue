@@ -8,7 +8,7 @@
                         <span class="chart-label-dot"></span>
                         <i>资产情况</i>
                     </div>
-					<p class='unit'>金额单位:万元</p>
+					<p class='unit'>单位:万元</p>
 					<div class="propertyBox">
 						<div class="propertyContent">
 							<p>总资产<br/><span>￥{{formatNum(assetsSituation.zzc)}}</span><b></b></p>
@@ -109,7 +109,7 @@
                         <span class="chart-label-dot"></span>
                         <i>检察业务装备</i>
                     </div>
-					<p class='unit'>金额单位:万元</p>
+					<p class='unit'>单位:万元</p>
                     <div class='service-content' ref="serviceChart"></div>
 					<div class="putinto">
 						<p>三年投入</p>
