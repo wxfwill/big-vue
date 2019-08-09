@@ -21,7 +21,14 @@
 							</ol>
 							<ul>
 								<li>长期投资资产<br/><span>￥{{formatNum(assetsSituation.cqtzzc)}}</span></li>
-								<li>固定资产<br/><span>￥{{formatNum(assetsSituation.gdzc)}}</span></li>
+								<li @mouseover="changeMask(true)" @mouseout="changeMask(false)">固定资产<br/><span>￥{{formatNum(assetsSituation.gdzc)}}</span>
+									<div class="hoverdiv" v-show='hoverdivisshow'>
+										<span>房屋:1234m²</span>
+										<span>车辆:1234辆</span>
+										<span>单价在50万元以上的设备:2341</span>
+										<span>其他固定设备:1211233</span>
+									</div>
+								</li>
 								<li>流动资产<br/><span>￥{{formatNum(assetsSituation.ldzc)}}</span></li>
 								<li>其他资产<br/><span>￥{{formatNum(assetsSituation.qtzc)}}</span></li>
 								<li>无形资产<br/><span>￥{{formatNum(assetsSituation.wxzc)}}</span></li>
@@ -175,15 +182,24 @@
 							<div class="totalfiscal-bottom-left">
 								<p class='title'>人员情况</p>
 								<ul>
-									<li>
+									<li @mouseover="changeMask1(true)" @mouseout="changeMask1(false)">
 										<i class='el-icon-s-custom'></i>
 										<span>{{financialInstitutions.jcrysys}}</span>
 										<p>计财人员 实有数</p>
+										<div class="hoverdiv" v-show='hoverdivisshow1'>
+											<span>专职人员:12345人</span>
+											<span>兼职人员:12345人</span>
+										</div>
 									</li>
-									<li>
+									<li @mouseover="changeMask2(true)" @mouseout="changeMask2(false)">
 										<i class='el-icon-s-custom'></i>
 										<span>{{financialInstitutions.kjryqk}}</span>
 										<p>会计人员 情况</p>
+										<div class="hoverdiv" v-show='hoverdivisshow2'>
+											<span>在编不在岗位:12,234人</span>
+											<span>在编在岗:12,234人</span>
+											<span>在岗不在编:12,234人</span>
+										</div>
 									</li>
 								</ul>
 							</div>
@@ -288,7 +304,10 @@
 				empiricaIcon    : require('@/public/img/home/empirica-icon.png'),
 				propertyConfig:propertyConfig,
 				agencyConfig:agencyConfig,
-				righttableIsshow:false
+				righttableIsshow:false,
+				hoverdivisshow:false,
+				hoverdivisshow1:false,
+				hoverdivisshow2:false
 			};
 		},
 		props:{
@@ -547,7 +566,18 @@
 				this.agencyChart.setOption({
 					tooltip: {
 						trigger: 'item',
-						formatter: "{b}:{c}",
+						// formatter: "{b}:{c}",
+						formatter:function(data){
+							if(data.name=='着装人员'){
+								return '着检察服人数：12,234人'+ '<br/>' +'着法服人数：12,234人'; 
+							}
+							if(data.name=='人员编制数'){
+								return '政法专项编制：12,234人'+ '<br/>' +'事业编制：12,234人'+ '<br/>' +'工勤编制：12,234人'+ '<br/>' +'其他编制：12,234人';
+							}
+							if(data.name=='其他人员'){
+								return '政府购买服务聘用人员： 12,234人'+ '<br/>' +'其他聘用人员：12,234人'+ '<br/>' +'临时工：12,234人';
+							}
+						},
 						itemStyle:{
 							fontSize:'16'
 						},
@@ -615,6 +645,15 @@
 				}else{
 					return "";
 				}
+			},
+			changeMask(value){
+				this.hoverdivisshow=value
+			},
+			changeMask1(value){
+				this.hoverdivisshow1=value
+			},
+			changeMask2(value){
+				this.hoverdivisshow2=value
 			}
 		},
 		components: {
@@ -694,6 +733,25 @@
 									margin-top:13px;
 									padding-top:8px;
 									font-size: 12px;
+								}
+								li:nth-child(2){
+									position: relative;
+									.hoverdiv{
+										position:absolute;
+										width:150px;
+										height:99px;
+										background:rgba(3,196,195,0.9);
+										box-shadow:0px 2px 4px 0px rgba(13,61,137,0.5);
+										border-radius:4px;
+										left:50%;
+										text-align:left;
+										padding-left:5px;
+										span{
+											display:block;
+											color:#fff;
+											margin:2px 0px;
+										}
+									}
 								}
 								li:last-child{
 									margin-right:0px;
@@ -1031,6 +1089,7 @@
 										width:64px;
 										margin-right:29px;
 										float:left;
+										position:relative;
 										i{
 											color:#1BC85D;
 											font-size:26px;
@@ -1038,6 +1097,24 @@
 										span{
 											color:#1BC85D;
 											display:block;
+										}
+										.hoverdiv{
+											position:absolute;
+											width:150px;
+											height:56px;
+											background:rgba(3,196,195,1);
+											box-shadow:0px 2px 4px 0px rgba(13,61,137,0.5);
+											border-radius:4px;
+											left:50%;
+											bottom:3%;
+											text-align:left;
+											padding-left:5px;
+											z-index:999;
+												span{
+													display:block;
+													color:#fff;
+													margin:2px 0px;
+												}
 										}
 									}
 									li:last-child{
@@ -1047,6 +1124,22 @@
 										}
 										span{
 											color:#0CADE8;
+										}
+										.hoverdiv{
+											position:absolute;
+											width:150px;
+											height:auto;
+											background:rgba(3,196,195,1);
+											box-shadow:0px 2px 4px 0px rgba(13,61,137,0.5);
+											border-radius:4px;
+											left:50%;
+											text-align:left;
+											padding-left:5px;
+												span{
+													display:block;
+													color:#fff;
+													margin:2px 0px;
+												}
 										}
 									}
 								}
