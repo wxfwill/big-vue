@@ -105,7 +105,6 @@
                     //机构情况
                     this.prosecutionPersonnel=data.prosecutionPersonnel
                     rightBox.loadagencyChart(data.prosecutionPersonnel);
-                    console.log(this.theProcuratorialAgency)
                     //单位在职人数
                     this.numberOfEmployees=data.numberOfEmployees
                     rightBox.loadjobChart(data.numberOfEmployees)

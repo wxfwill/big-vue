@@ -23,10 +23,15 @@
 								<li>长期投资资产<br/><span>￥{{formatNum(assetsSituation.cqtzzc)}}</span></li>
 								<li @mouseover="changeMask(true)" @mouseout="changeMask(false)">固定资产<br/><span>￥{{formatNum(assetsSituation.gdzc)}}</span>
 									<div class="hoverdiv" v-show='hoverdivisshow'>
-										<span>房屋:1234m²</span>
-										<span>车辆:1234辆</span>
-										<span>单价在50万元以上的设备:2341</span>
-										<span>其他固定设备:1211233</span>
+										<span>房屋(平方米)数量：{{assetsSituation.fwsl}}</span>
+										<span>房屋(平方米)价值：{{assetsSituation.fwjz}}</span>
+										<span>汽车(台辆)数量：{{assetsSituation.qcsl}}</span>
+										<span>汽车(台辆)价值：{{assetsSituation.qcjz}}</span>
+										<span>单价在50万元以上的设备数量：{{assetsSituation.djwswyssbsl}}</span>
+										<span>单价在50万元以上的设备价值：{{assetsSituation.djwswyssbjz}}</span>
+										<span>其他固定资产价值：{{assetsSituation.qtgdzcjz}}</span>
+										<span>单价100万元(含)以上的专业设备数量——年末数[本期数]：{{assetsSituation.djybwyssbsl}}</span>
+										<span>单价100万元(含)以上的专业设备价值——年末数[本期数]：{{assetsSituation.djybwyssbjz}}</span>
 									</div>
 								</li>
 								<li>流动资产<br/><span>￥{{formatNum(assetsSituation.ldzc)}}</span></li>
@@ -148,7 +153,7 @@
 								<i class='el-icon-tickets'></i>
 								<p>司法警察装备</p>
 								<span>数量</span>
-								<span>{{inspectionServiceEquipment.sfjczbzb}}</span>
+								<span>{{inspectionServiceEquipment.sfjczbsl}}</span>
 								<span>%</span>
 								<b>金额</b>
 								<b>{{formatNum(inspectionServiceEquipment.sfjczbje)}}</b>
@@ -187,8 +192,8 @@
 										<span>{{financialInstitutions.jcrysys}}</span>
 										<p>计财人员 实有数</p>
 										<div class="hoverdiv" v-show='hoverdivisshow1'>
-											<span>专职人员:12345人</span>
-											<span>兼职人员:12345人</span>
+											<span>专职人员:{{financialInstitutions.zzry}}人</span>
+											<span>兼职人员:{{financialInstitutions.jzry}}人</span>
 										</div>
 									</li>
 									<li @mouseover="changeMask2(true)" @mouseout="changeMask2(false)">
@@ -196,9 +201,9 @@
 										<span>{{financialInstitutions.kjryqk}}</span>
 										<p>会计人员 情况</p>
 										<div class="hoverdiv" v-show='hoverdivisshow2'>
-											<span>在编不在岗位:12,234人</span>
-											<span>在编在岗:12,234人</span>
-											<span>在岗不在编:12,234人</span>
+											<span>在编不在岗位:{{financialInstitutions.zbbzghjryssl}}人</span>
+											<span>在编在岗:{{financialInstitutions.zbzghjryssl}}人</span>
+											<span>在岗不在编:{{financialInstitutions.zgbzbhjryssl}}人</span>
 										</div>
 									</li>
 								</ul>
@@ -563,23 +568,27 @@
 				})
 			},
 			loadagencyChart(data){
+				console.log(data)
+				let str='着检察服人数：'+data.zjcfrs+'人'+ '<br/>' +'着法服人数：'+data.zfjfrs+'人';
+				let str1='政法专项编制：'+data.zfzxbz+'人'+ '<br/>' +'事业编制：'+data.sybz+'人'+ '<br/>' +'工勤编制：'+data.gqbz+'人'+ '<br/>' +'其他编制：'+data.qtbz+'人';
+				let str2='政府购买服务聘用人员：'+data.zfgmfwpyry+'人'+ '<br/>' +'其他聘用人员：'+data.qtpyry+'人'+ '<br/>' +'临时工：'+data.lsg+'人';
 				this.agencyChart.setOption({
 					tooltip: {
 						trigger: 'item',
 						// formatter: "{b}:{c}",
 						formatter:function(data){
 							if(data.name=='着装人员'){
-								return '着检察服人数：12,234人'+ '<br/>' +'着法服人数：12,234人'; 
+								return str 
 							}
 							if(data.name=='人员编制数'){
-								return '政法专项编制：12,234人'+ '<br/>' +'事业编制：12,234人'+ '<br/>' +'工勤编制：12,234人'+ '<br/>' +'其他编制：12,234人';
+								return str1
 							}
 							if(data.name=='其他人员'){
-								return '政府购买服务聘用人员： 12,234人'+ '<br/>' +'其他聘用人员：12,234人'+ '<br/>' +'临时工：12,234人';
+								return str2
 							}
 						},
 						itemStyle:{
-							fontSize:'16'
+							fontSize:'14'
 						},
 						extraCssText:'background:#03C4C3'
 					},
@@ -595,11 +604,12 @@
 									show: true,
 									formatter:'{b}\n{c}人',
 									rich:{
-										c:{
-											align:'center',
+										b:{
+											align:'left',
 											color:'yellow'
 										}
-									}
+									},
+									padding:'5px'
 								},
 								emphasis: {
 									show: true,
@@ -738,14 +748,15 @@
 									position: relative;
 									.hoverdiv{
 										position:absolute;
-										width:150px;
-										height:99px;
+										width:400px;
+										height:200px;
 										background:rgba(3,196,195,0.9);
 										box-shadow:0px 2px 4px 0px rgba(13,61,137,0.5);
 										border-radius:4px;
 										left:50%;
 										text-align:left;
 										padding-left:5px;
+										line-height:20px;
 										span{
 											display:block;
 											color:#fff;
@@ -998,6 +1009,7 @@
 										display:block;
 									}
 									b{
+										display:block;
 										color:#FF6C40;
 									}
 								}

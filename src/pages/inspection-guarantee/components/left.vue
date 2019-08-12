@@ -29,6 +29,31 @@
 							<p>￥{{formatNum(expenditure.gnflzcs)}}</p>
 							<p>同比<i class="el-icon-top"></i>{{expenditure.gnflzc_tb}}<br><span>{{expenditure.gnflzc_bfb}}%</span></p>
 						</div>
+						<div class='boxtooltip' v-show='boxtooltip1'>
+							<p>一一般公共服务支出：</p>
+							<p>二外交支出：</p>
+							<p>三国防支出：</p>
+							<p>公共安全支出：</p>
+							<p>教育支出：</p>
+							<p>科学技术支出：</p>
+							<p>文化体育与传媒支出：</p>
+							<p>社会保障和就业支出：</p>
+							<p>医疗卫生与计划生育支出：</p>
+							<p>节能环保支出：</p>
+							<p>城乡社区支出：</p>
+							<p>农林水支出：</p>
+							<p>交通运输支出：</p>
+							<p>资源勘探信息等支出：</p>
+							<p>商业服务业等支出：</p>
+							<p>金融支出：</p>
+							<p>援助其他地区支出：</p>
+							<p>国土海洋气象等支出：</p>
+							<p>住房保障支出：</p>
+							<p>粮油物资储备支出：</p>
+							<p>其他支出：</p>
+							<p>债务还本支出：</p>
+							<p>债务付息支出：</p>
+						</div>
 					</div>
 					<div class='payBox-bottom'>功能分类支出</div>
 				</div>
@@ -38,6 +63,17 @@
 							<p>￥{{formatNum(expenditure.zcxzs)}}</p>
 							<p>同比<i class="el-icon-top"></i>{{expenditure.zcxz_tb}}<br><span>{{expenditure.zcxz_bfb}}%</span></p>
 						</div>
+						<div class='boxtooltip' v-show='boxtooltip2'>
+							<p>基本支出：</p>
+							<p>人员经费：</p>
+							<p>日常公用经费：</p>
+							<p>项目支出：</p>
+							<p>基本建设类项目：</p>
+							<p>行政事业类项目：</p>
+							<p>上缴上级支出：</p>
+							<p>经营支出：</p>
+							<p>对附属单位补助支出：</p>
+						</div>
 					</div>
 					<div class='payBox-bottom'>支出性质</div>
 				</div>
@@ -46,6 +82,19 @@
 						<div class='payBox-top'>
 							<p>￥{{formatNum(expenditure.zcjjfls)}}</p>
 							<p>同比<i class="el-icon-top"></i>{{expenditure.zcjjfl_tb}}<br><span>{{expenditure.zcjjfl_bfb}}%</span></p>
+						</div>
+						<div class="boxtooltip" v-show='boxtooltip3'>
+							<p>基本支出和项目支出合计：</p>
+							<p>工资福利支出：</p>
+							<p>商品和服务支出：</p>
+							<p>对个人和家庭的补助：</p>
+							<p>债务利息及费用支出：</p>
+							<p>资本性支出（基本建设）：</p>
+							<p>资本性支出：</p>
+							<p>对企业补助（基本建设）：</p>
+							<p>对企业补助：</p>
+							<p>对社会保障基金补助：</p>
+							<p>其他支出：</p>
 						</div>
 					</div>
 					<div class='payBox-bottom'>支出经济分类</div>
@@ -106,6 +155,9 @@
 					data: []
 				},
 				// caizhengChartConfig:caizhengChartConfig
+				boxtooltip1:false,
+				boxtooltip2:false,
+				boxtooltip3:false,
 			}
 		},
 		beforeCreate() {
@@ -1161,6 +1213,22 @@
 						box-sizing: border-box; 
     					padding: 14px;
 						background-image: -webkit-linear-gradient(top,#01AFFF,#005FE8);
+						position:relative;
+						.boxtooltip{
+							position:absolute;
+							width:400px;
+							height:auto;
+							color:#fff;
+							background:rgba(3,196,195,0.9);
+							box-shadow:0px 2px 4px 0px rgba(13,61,137,0.5);
+							border-radius:4px;
+							left:50%;
+							top:50%;
+							text-align:left;
+							padding:8px;
+							line-height:20px;
+							z-index:999;
+						}
 					}
 					.payBox-top{
 						width:100%;
