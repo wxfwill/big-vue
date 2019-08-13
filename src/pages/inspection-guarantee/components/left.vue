@@ -25,76 +25,76 @@
 				</div>
 				<div class="payBox">
 					<div class="boxborder">
-						<div class='payBox-top'>
+						<div class='payBox-top' @mouseover="changeMask('boxtooltip1',true)" @mouseout="changeMask('boxtooltip1',false)">
 							<p>￥{{formatNum(expenditure.gnflzcs)}}</p>
 							<p>同比<i class="el-icon-top"></i>{{expenditure.gnflzc_tb}}<br><span>{{expenditure.gnflzc_bfb}}%</span></p>
 						</div>
 						<div class='boxtooltip' v-show='boxtooltip1'>
-							<p>一一般公共服务支出：</p>
-							<p>二外交支出：</p>
-							<p>三国防支出：</p>
-							<p>公共安全支出：</p>
-							<p>教育支出：</p>
-							<p>科学技术支出：</p>
-							<p>文化体育与传媒支出：</p>
-							<p>社会保障和就业支出：</p>
-							<p>医疗卫生与计划生育支出：</p>
-							<p>节能环保支出：</p>
-							<p>城乡社区支出：</p>
-							<p>农林水支出：</p>
-							<p>交通运输支出：</p>
-							<p>资源勘探信息等支出：</p>
-							<p>商业服务业等支出：</p>
-							<p>金融支出：</p>
-							<p>援助其他地区支出：</p>
-							<p>国土海洋气象等支出：</p>
-							<p>住房保障支出：</p>
-							<p>粮油物资储备支出：</p>
-							<p>其他支出：</p>
-							<p>债务还本支出：</p>
-							<p>债务付息支出：</p>
+							<p>一般公共服务支出：{{spendingDetail.yybggfwzc}}</p>
+							<p>外交支出：{{spendingDetail.ewjzc}}</p>
+							<p>国防支出：{{spendingDetail.sgfzc}}</p>
+							<p>公共安全支出：{{spendingDetail.sggaqzc}}</p>
+							<p>教育支出：{{spendingDetail.wjyzc}}</p>
+							<p>科学技术支出：{{spendingDetail.lkxjzzc}}</p>
+							<p>文化体育与传媒支出：{{spendingDetail.qwhtyycmzc}}</p>
+							<p>社会保障和就业支出：{{spendingDetail.bshbzhjyzc}}</p>
+							<p>医疗卫生与计划生育支出：{{spendingDetail.jylwsyjhsyzc}}</p>
+							<p>节能环保支出：{{spendingDetail.sjnhbzc}}</p>
+							<p>城乡社区支出：{{spendingDetail.sycxsqzc}}</p>
+							<p>农林水支出：{{spendingDetail.senlszc}}</p>
+							<p>交通运输支出：{{spendingDetail.ssjtyszc}}</p>
+							<p>资源勘探信息等支出：{{spendingDetail.sszyktxxdzc}}</p>
+							<p>商业服务业等支出：{{spendingDetail.swsyfwydzc}}</p>
+							<p>金融支出：{{spendingDetail.sljrzc}}</p>
+							<p>援助其他地区支出：{{spendingDetail.sqyzqtdqzc}}</p>
+							<p>国土海洋气象等支出：{{spendingDetail.sbgthyqxdzc}}</p>
+							<p>住房保障支出：{{spendingDetail.sjzfbzzc}}</p>
+							<p>粮油物资储备支出：{{spendingDetail.eslywzcbzc}}</p>
+							<p>其他支出：{{spendingDetail.esyqtzc}}</p>
+							<p>债务还本支出：{{spendingDetail.esezwhbzc}}</p>
+							<p>债务付息支出：{{spendingDetail.esszwfxzc}}</p>
 						</div>
 					</div>
 					<div class='payBox-bottom'>功能分类支出</div>
 				</div>
 				<div class="payBox">
 					<div class="boxborder">
-						<div class='payBox-top'>
+						<div class='payBox-top' @mouseover="changeMask('boxtooltip2',true)" @mouseout="changeMask('boxtooltip2',false)">
 							<p>￥{{formatNum(expenditure.zcxzs)}}</p>
 							<p>同比<i class="el-icon-top"></i>{{expenditure.zcxz_tb}}<br><span>{{expenditure.zcxz_bfb}}%</span></p>
 						</div>
 						<div class='boxtooltip' v-show='boxtooltip2'>
-							<p>基本支出：</p>
-							<p>人员经费：</p>
-							<p>日常公用经费：</p>
-							<p>项目支出：</p>
-							<p>基本建设类项目：</p>
-							<p>行政事业类项目：</p>
-							<p>上缴上级支出：</p>
-							<p>经营支出：</p>
-							<p>对附属单位补助支出：</p>
+							<p>基本支出：{{spendingDetail.yjbzc}}</p>
+							<p>人员经费：{{spendingDetail.ryjf}}</p>
+							<p>日常公用经费：{{spendingDetail.rcgyjf}}</p>
+							<p>项目支出：{{spendingDetail.exmzc}}</p>
+							<p>基本建设类项目：{{spendingDetail.jbjslxm}}</p>
+							<p>行政事业类项目：{{spendingDetail.xzsylxm}}</p>
+							<p>上缴上级支出：{{spendingDetail.ssjsjzc}}</p>
+							<p>经营支出：{{spendingDetail.sjyzc}}</p>
+							<p>对附属单位补助支出：{{spendingDetail.wdfsdwbzzc}}</p>
 						</div>
 					</div>
 					<div class='payBox-bottom'>支出性质</div>
 				</div>
 				<div class="payBox">
 					<div class="boxborder">
-						<div class='payBox-top'>
+						<div class='payBox-top' @mouseover="changeMask('boxtooltip3',true)" @mouseout="changeMask('boxtooltip3',false)">
 							<p>￥{{formatNum(expenditure.zcjjfls)}}</p>
 							<p>同比<i class="el-icon-top"></i>{{expenditure.zcjjfl_tb}}<br><span>{{expenditure.zcjjfl_bfb}}%</span></p>
 						</div>
 						<div class="boxtooltip" v-show='boxtooltip3'>
-							<p>基本支出和项目支出合计：</p>
-							<p>工资福利支出：</p>
-							<p>商品和服务支出：</p>
-							<p>对个人和家庭的补助：</p>
-							<p>债务利息及费用支出：</p>
-							<p>资本性支出（基本建设）：</p>
-							<p>资本性支出：</p>
-							<p>对企业补助（基本建设）：</p>
-							<p>对企业补助：</p>
-							<p>对社会保障基金补助：</p>
-							<p>其他支出：</p>
+							<p>基本支出和项目支出合计：{{spendingDetail.jbzchxmzchj}}</p>
+							<p>工资福利支出：{{spendingDetail.gzflzc}}</p>
+							<p>商品和服务支出：{{spendingDetail.sphfwzc}}</p>
+							<p>对个人和家庭的补助：{{spendingDetail.dgrhjtdbz}}</p>
+							<p>债务利息及费用支出：{{spendingDetail.zwlxjfyzc}}</p>
+							<p>资本性支出（基本建设）：{{spendingDetail.zbxzcJbjs}}</p>
+							<p>资本性支出：{{spendingDetail.zbxzc}}</p>
+							<p>对企业补助（基本建设）：{{spendingDetail.dqybzJbjs}}</p>
+							<p>对企业补助：{{spendingDetail.dqybz}}</p>
+							<p>对社会保障基金补助：{{spendingDetail.dshbzjjbz}}</p>
+							<p>其他支出：{{spendingDetail.qtzc}}</p>
 						</div>
 					</div>
 					<div class='payBox-bottom'>支出经济分类</div>
@@ -825,99 +825,6 @@
 						]
 					}]
 				})
-				// this.jingfeiChart.setOption({
-				// 	tooltip : {
-				// 		trigger: 'axis',
-				// 		axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-				// 			type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-				// 		}
-				// 	},
-				// 	legend: {
-				// 		data:['检察业务费合计','检察业务-其中财政拨款','办案（业务）经费','办案经费-其中财政拨款','业务装备经费','业务装备-其中财政拨款'],
-				// 		icon:"square",
-				// 		orient:'vertical',
-				// 		y: 'center',    //延Y轴居中
-				// 		x: 'right' ,//居右显示
-				// 		align:'left',
-				// 		textStyle:{
-				// 			color:'#fff'
-				// 		}
-				// 	},
-				// 	grid: {
-				// 		left: '3%',
-				// 		right: '22%',
-				// 		bottom: '15%',
-				// 		containLabel: true
-				// 	},
-				// 	xAxis : [
-				// 		{
-				// 			type : 'category',
-				// 			data : ['年初结转结余','收入合计','支出合计','年末结转结余'],
-				// 			axisLine:{
-				// 				show:false,
-				// 				lineStyle: {
-				// 					color: "#fff",
-				// 				}
-				// 			}
-				// 		}
-				// 	],
-				// 	yAxis : [
-				// 		{
-				// 			type : 'value',
-				// 			axisLine:{
-				// 				lineStyle: {
-				// 					color: "#fff",
-				// 				}
-				// 			}
-				// 		}
-				// 	],
-				// 	series : [
-				// 		{
-				// 			name:'检察业务费合计',
-				// 			type:'bar',
-				// 			stack:'哈哈',
-				// 			color:'#0BB0FB',
-				// 			data:this.jingfeiqingkuang.jcywfhj
-				// 		},
-				// 		{
-				// 			name:'检察业务-其中财政拨款',
-				// 			type:'bar',
-				// 			stack: '哈哈',
-				// 			color:'#3687F6',
-				// 			data:this.jingfeiqingkuang.jcyw_czbk
-
-				// 		},
-				// 		{
-				// 			name:'办案（业务）经费',
-				// 			type:'bar',
-				// 			stack: '广告',
-				// 			color:'#1BC85D',
-				// 			data:this.jingfeiqingkuang.bajf
-				// 		},
-				// 		{
-				// 			name:'办案经费-其中财政拨款',
-				// 			type:'bar',
-				// 			stack: '广告',
-				// 			color:'#0FA940',
-				// 			data:this.jingfeiqingkuang.bajf_qzczbk
-				// 		},
-						
-				// 		{
-				// 			name:'业务装备经费',
-				// 			type:'bar',
-				// 			stack: '搜索引擎',
-				// 			color:'#FBBA18',
-				// 			data:this.jingfeiqingkuang.ywzbjf
-				// 		},
-				// 		{
-				// 			name:'业务装备-其中财政拨款',
-				// 			type:'bar',
-				// 			stack: '搜索引擎',
-				// 			color:'#F68C3B',
-				// 			data:this.jingfeiqingkuang.ywzbjf_qzczbk
-				// 		}
-				// 	]
-				// })
 			},
 			loadJianchaChart(data){
 				let ncjzjy=[],sr=[],zc=[],nmjzjy=[],year=[];
@@ -1150,6 +1057,16 @@
 				}else{
 					return "";
 				}
+			},
+			changeMask(target,status){
+				if(target=='boxtooltip1'){
+					this.boxtooltip1=status
+				}else if(target=='boxtooltip2'){
+					this.boxtooltip2=status
+				}else if(target=='boxtooltip3'){
+					this.boxtooltip3=status
+				}
+				
 			}
 
 		},
@@ -1169,6 +1086,9 @@
 			},
 			trendsProcuratorialBusinessList:{
 				default:[]
+			},
+			spendingDetail:{
+				default:{}
 			}
 		},
 	};
@@ -1222,8 +1142,8 @@
 							background:rgba(3,196,195,0.9);
 							box-shadow:0px 2px 4px 0px rgba(13,61,137,0.5);
 							border-radius:4px;
-							left:50%;
-							top:50%;
+							left:70%;
+							top:70%;
 							text-align:left;
 							padding:8px;
 							line-height:20px;

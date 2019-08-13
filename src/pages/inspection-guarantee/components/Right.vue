@@ -568,7 +568,6 @@
 				})
 			},
 			loadagencyChart(data){
-				console.log(data)
 				let str='着检察服人数：'+data.zjcfrs+'人'+ '<br/>' +'着法服人数：'+data.zfjfrs+'人';
 				let str1='政法专项编制：'+data.zfzxbz+'人'+ '<br/>' +'事业编制：'+data.sybz+'人'+ '<br/>' +'工勤编制：'+data.gqbz+'人'+ '<br/>' +'其他编制：'+data.qtbz+'人';
 				let str2='政府购买服务聘用人员：'+data.zfgmfwpyry+'人'+ '<br/>' +'其他聘用人员：'+data.qtpyry+'人'+ '<br/>' +'临时工：'+data.lsg+'人';
@@ -608,8 +607,7 @@
 											align:'left',
 											color:'yellow'
 										}
-									},
-									padding:'5px'
+									}
 								},
 								emphasis: {
 									show: true,

@@ -7,7 +7,7 @@
             :financialAllocationList=financialAllocationList
             :jingfeiqingkuang=jingfeiqingkuang
             :trendsProcuratorialBusinessList=trendsProcuratorialBusinessList
-
+            :spendingDetail=spendingDetail
         >
         </left-box>
         <center-box
@@ -64,7 +64,8 @@
                 financialInstitutions:{},
                 inspectionServiceEquipment:{},
                 inspectionServiceEquipmentDetails:{},
-				psGuaranteeMapList:[],
+                psGuaranteeMapList:[],
+                spendingDetail:{}
             }
         },
         mounted(){
@@ -81,6 +82,8 @@
                     leftBox.loadIncomeChart(data.income);
                     //支出
                     this.expenditure=data.expenditure
+                    //支出里面的每项的明细
+                    this.spendingDetail=data.spendingDetail
                     //财政拨款收入分布
                     this.financialAllocationList=data.financialAllocationList
                     leftBox.loadCaizhengChart(data.financialAllocationList);
