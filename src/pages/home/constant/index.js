@@ -50,7 +50,7 @@ export const prosecutionConfig = [{
 }];
 
 // 刑事概览
-export const criminalCaseConfig = [{
+export const criminalCaseConfig   = [{
 	id   : 'xs_bjjs',
 	name : '办结件数',
 	color: '#1BC85D',
@@ -75,28 +75,6 @@ export const criminalCaseConfig = [{
 	name : '起诉案件数',
 	color: '#FBBA18',
 }];
-
-// 地图tooltip内容
-export const mapTooltipConfig = [{
-	id    : 'sls',
-	name  : '受理数',
-	regExp: '{sls}&nbsp;&nbsp;&nbsp; {sls_zb}%',
-}, {
-	id    : 'bjs',
-	name  : '办结数',
-	regExp: '{bjs}&nbsp;&nbsp;&nbsp; {bjs_zb}%',
-}, {
-	id    : 'zbs',
-	name  : '在办数',
-	regExp: '{zbs}&nbsp;&nbsp;&nbsp; {zbs_zb}%',
-}/*, {
-	id  : 'yejcg',
-	name: '员额检察官',
-}, {
-	id  : 'syjf',
-	name: '使用经费',
-}*/];
-
 // 行政
 export const administrativeConfig = [{
 	id    : 'xz_sljs',
@@ -218,4 +196,62 @@ export const eduDegreeConfig = [{
 }, {
 	id  : 'dxjysrs',
 	name: '大学及以上'
+}];
+
+
+// 地图tooltip内容
+export const mapTooltipConfig = [{
+	id    : 'sls',
+	name  : '受理数',
+	regExp: '{sls}&nbsp;&nbsp;&nbsp; {sls_zb}%',
+}, {
+	id    : 'bjs',
+	name  : '办结数',
+	regExp: '{bjs}&nbsp;&nbsp;&nbsp; {bjs_zb}%',
+}, {
+	id    : 'zbs',
+	name  : '在办数',
+	regExp: '{zbs}&nbsp;&nbsp;&nbsp; {zbs_zb}%',
+}/*, {
+ id  : 'yejcg',
+ name: '员额检察官',
+ }, {
+ id  : 'syjf',
+ name: '使用经费',
+ }*/];
+export const topDataConfig    = [{
+	id  : 'totalSls',
+	name: '受理总数',
+}, {
+	id  : 'totalBjs',
+	name: '办结总数',
+}, {
+	id  : 'totalZbs',
+	name: '在办总数',
+}];
+
+export const leftSideList = [{
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
+}];
+
+
+export const mapTableConfig = [{
+	id  : 'name',
+	name: '名称',
+}, {
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
 }];

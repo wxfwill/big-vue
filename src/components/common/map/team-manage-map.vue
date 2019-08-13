@@ -21,18 +21,21 @@
             </div>
         </div>
         <div class="now-data">
-			<div v-if='mapConfig.leftIsshow'>
-				<h4 class="now-date-text" v-if="nowSelectDate">
-					{{ nowSelectDate.startdate }} ~ {{ nowSelectDate.enddate }}
-				</h4>
-				<h4 class="now-area">
-					<span>{{ nowAreaName }}</span>
-					<i class="now-data-icon el-icon-coin" @click="dialogVisible = true"></i>
-				</h4>
-				<p class="nd-accept-text" v-for="item in leftDataConfig" :key="item.id">
-					{{ item.name }} {{ ~~leftData[item.id] }}
-				</p>
-			</div>
+            <div v-if='mapConfig.leftIsshow'>
+                <h4 class="now-date-text" v-if="nowSelectDate">
+                    {{ nowSelectDate.startdate }} ~ {{ nowSelectDate.enddate }}
+                </h4>
+                <h4 class="now-area">
+                    <span>{{ nowAreaName }}</span>
+                    <i class="now-data-icon el-icon-coin" @click="dialogVisible = true"></i>
+                </h4>
+                <ul class="nd-text-list">
+                    <li v-for="(item, index) in leftDataConfig" :key="item.id"
+                        :style="{ color: `${leftSideColorList[index]}` }">
+                        {{ item.name }}: {{ ~~leftData[item.id] }}
+                    </li>
+                </ul>
+            </div>
             <el-popover
                     popper-class="map-extra-table"
                     v-show="extendData.length !== 0"
@@ -104,11 +107,12 @@
 			}
 		},
 		created() {
-			this.cityCrumbsList = [{
+			this.cityCrumbsList    = [{
 				id  : 0,
 				code: this.defaultCode,
 				name: 'china'
 			}];
+			this.leftSideColorList = ['#FBBA18', '#0BC1F4', '#FF6C40'];
 		},
 		mounted() {
 			const myChart        = ECharts.init(this.$refs.mapRef);
@@ -177,8 +181,8 @@
 			 * 加载地图json离线数据包
 			 * */
 			async loadMapGraphJson() {
-				const { id, name, extendMap, code } = this.cityCrumbsList[this.mapLevel];
-				let url                             = 'public/map-json';
+				const { id, name, extendMap } = this.cityCrumbsList[this.mapLevel];
+				let url                       = 'public/map-json';
 				if(extendMap) {
 					url += `/extendProvince/${id}`;
 				} else {
@@ -201,7 +205,7 @@
 						name,
 						data: mapGeoJson
 					});
-					this.handleMapStateChange(code);
+					this.handleMapStateChange();
 					this.loadMapChart(name, mapGeoJson, false);
 				} catch(e) {
 					this.mapGeoLoadFaily = true;
@@ -314,9 +318,9 @@
 					}],
 				});
 			},
-            // 下钻到第四级
+			// 下钻到第四级
 			highlightCountyArea() {
-				const { name, code }               = this.cityCrumbsList[this.mapLevel],
+				const { name }               = this.cityCrumbsList[this.mapLevel],
 					  { data: upMapGeoJson } = this.mapJsonData[this.mapLevel - 1];
 				const nowSelectedMap         = {
 					"type"  : "FeatureCollection",
@@ -328,7 +332,7 @@
 					name,
 					data: nowSelectedMap
 				});
-				this.handleMapStateChange(code);
+				this.handleMapStateChange();
 				this.loadMapChart(name, nowSelectedMap, false);
 			},
 
@@ -418,7 +422,7 @@
 				this.extendData         = [];
 				this.loadMapChart(name, data, false);
 
-				this.handleMapStateChange(this.defaultCode);
+				this.handleMapStateChange();
 			},
 
 			/**
@@ -428,13 +432,11 @@
 				if(this.mapLevel === 0 || this.loadingMap) {
 					return false;
 				}
-				let code;
 				this.extendData = [];
 				this.cityCrumbsList.pop();
 				this.mapLevel--;
-				code = this.cityCrumbsList[this.mapLevel].code;
 				this.mapJsonData.pop();
-				this.handleMapStateChange(code);
+				this.handleMapStateChange();
 			},
 
 			/**
@@ -545,40 +547,42 @@
 				}
 			},
 
-			handleMapStateChange(code) {
+			handleMapStateChange() {
+				const { name, code } = this.cityCrumbsList[this.mapLevel];
+
 				this.loadingMap = true;
 				this.getNewRegionInfo && this.getNewRegionInfo({
 					code,
-					lev   : this.mapLevel + 1,
+					lev: this.mapLevel + 1,
+					name,
 				});
 			},
-
 		},
 		props   : {
-			mapData         : {},
-			getNewRegionInfo: {},
-			tooltipConfig   : {},
-			leftDataConfig  : {
+			mapData           : {},
+			getNewRegionInfo  : {},
+			tooltipConfig     : {},
+			leftDataConfig    : {
 				default: function() {
-                    return [];
+					return [];
 				}
 			},
-			leftData        : {
+			leftData          : {
 				default: function() {
 					return {};
 				},
 			},
-			topDataConfig   : {
+			topDataConfig     : {
 				default: () => []
 			},
-			topData         : {},
-			lev             : {},
-			code            : {},
-			defaultCode     : {
+			topData           : {},
+			lev               : {},
+			code              : {},
+			defaultCode       : {
 				type: String
 			},
-			nowSelectDate   : {},
-			mapConfig       : {
+			nowSelectDate     : {},
+			mapConfig         : {
 				type: Object,
 				default() {
 					return {
@@ -588,16 +592,16 @@
 					}
 				}
 			},
-			extraCityColumn : {
+			extraCityColumn   : {
 				type   : Array,
 				default: extraCityColumnConfig
 			},
-			mapDefaultWidth :{
+			mapDefaultWidth   : {
 				default: 950
-            },
-			highProcuratorCode : {
+			},
+			highProcuratorCode: {
 				default: 100000
-            }
+			}
 		},
 		watch   : {
 			mapData() {
@@ -844,16 +848,13 @@
                     font-size: 16px;
                 }
             }
-            .nd-accept-text {
-                margin-bottom: 21px;
-                color: #FBBA18;
-            }
-            .nd-conclude-text {
-                margin-bottom: 21px;
-                color: #0BC1F4;
-            }
-            .nd-office-text {
-                color: #FF6C40;
+            .nd-text-list {
+                li {
+                    margin-bottom: 21px;
+                    &:last-of-type {
+                        margin-bottom: 0;
+                    }
+                }
             }
             .extra-btn {
                 display: inline-block;
