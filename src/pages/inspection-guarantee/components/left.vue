@@ -249,7 +249,7 @@
 				return { xAxisData, seriesData };
 			},
 			loadCaizhengChart(data) {
-	  			const { xAxisData, seriesData } = this.convertChartConfigczs(data.slice(1,10));
+	  			const { xAxisData, seriesData } = this.convertChartConfigczs(data.slice(0,10));
 				this.caizhengChart.setOption({
 					color: ['#3398DB'],
 					tooltip : {

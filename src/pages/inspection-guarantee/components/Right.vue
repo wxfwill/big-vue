@@ -52,10 +52,10 @@
 						<div class="personnel-top">
 							<p class='unit'>单位:个</p>
 							<p class='title'>机构情况</p>
-							<div class='agencytotal'>
-								<span class='totalnum'>{{theProcuratorialAgency.zs}}</span>
+							<!-- <div class='agencytotal'> -->
+								<!-- <span class='totalnum'>{{theProcuratorialAgency.zs}}</span> -->
 								<!-- <i class='el-icon-top'></i><span>{{theProcuratorialAgency.tbss}}</span><b>{{theProcuratorialAgency.tbssbfb}}</b> -->
-							</div>
+							<!-- </div> -->
 							<div class='agencylist'>
 								<p>年末机构数</p>
 								<p>{{theProcuratorialAgency.ynmjgs}}</p>
@@ -119,45 +119,45 @@
 					<div class="putinto">
 						<p>三年投入</p>
 						<ul>
-							<li @click="righttableIsshowfn(0)" :class='{active:0==activeIndex}'>
+							<li @mouseover="righttableIsshowfn(0)" :class='{active:0==activeIndex}'>
 								<i class='el-icon-tickets'></i>
 								<p>检察业务装备</p>
 								<span>数量</span>
-								<span>{{inspectionServiceEquipment.jcywzbsl}}</span>
-								<span>%</span>
+								<span>{{inspectionServiceEquipmentDetails.jcywzbsl}}</span>
+								<span>{{inspectionServiceEquipmentDetails.snzcljcywzbsl}}%</span>
 								<b>金额</b>
-								<b>{{formatNum(inspectionServiceEquipment.jcywzbje)}}</b>
-								<b>%</b>
+								<b>{{formatNum(inspectionServiceEquipmentDetails.jcywzbje)}}</b>
+								<b>{{inspectionServiceEquipmentDetails.snzcljcywzbje}}%</b>
 							</li>
-							<li @click="righttableIsshowfn(1)" :class='{active:1==activeIndex}'>
+							<li @mouseover="righttableIsshowfn(1)" :class='{active:1==activeIndex}'>
 								<i class='el-icon-tickets'></i>
 								<p>技术装备</p>
 								<span>数量</span>
-								<span>{{inspectionServiceEquipment.jszbsl}}</span>
-								<span>%</span>
+								<span>{{inspectionServiceEquipmentDetails.jcywjzzbsl}}</span>
+								<span>{{inspectionServiceEquipmentDetails.snzcljcywjzzbsl}}%</span>
 								<b>金额</b>
-								<b>{{formatNum(inspectionServiceEquipment.jszbje)}}</b>
-								<b>%</b>
+								<b>{{formatNum(inspectionServiceEquipmentDetails.jcywjzzbje)}}</b>
+								<b>{{inspectionServiceEquipmentDetails.snzcljcywjzzbje}}%</b>
 							</li>
-							<li @click="righttableIsshowfn(2)" :class='{active:2==activeIndex}'>
+							<li @mouseover="righttableIsshowfn(2)" :class='{active:2==activeIndex}'>
 								<i class='el-icon-tickets'></i>
 								<p>综合保障装备</p>
 								<span>数量</span>
-								<span>{{inspectionServiceEquipment.zhbzzbsl}}</span>
-								<span>%</span>
+								<span>{{inspectionServiceEquipmentDetails.jcywzhbzzbsl}}</span>
+								<span>{{inspectionServiceEquipmentDetails.snzcljcywzhbzzbsl}}%</span>
 								<b>金额</b>
-								<b>{{formatNum(inspectionServiceEquipment.zhbzzbje)}}</b>
-								<b>%</b>
+								<b>{{formatNum(inspectionServiceEquipmentDetails.jcywzhbzzbje)}}</b>
+								<b>{{inspectionServiceEquipmentDetails.snzcljcywzhbzzbje}}%</b>
 							</li>
-							<li @click="righttableIsshowfn(3)" :class='{active:3==activeIndex}'>
+							<li @mouseover="righttableIsshowfn(3)" :class='{active:3==activeIndex}'>
 								<i class='el-icon-tickets'></i>
 								<p>司法警察装备</p>
 								<span>数量</span>
-								<span>{{inspectionServiceEquipment.sfjczbsl}}</span>
-								<span>%</span>
+								<span>{{inspectionServiceEquipmentDetails.sfgjzbsl}}</span>
+								<span>{{inspectionServiceEquipmentDetails.snzclsfgjzbsl}}%</span>
 								<b>金额</b>
-								<b>{{formatNum(inspectionServiceEquipment.sfjczbje)}}</b>
-								<b>%</b>
+								<b>{{formatNum(inspectionServiceEquipmentDetails.sfgjzbje)}}</b>
+								<b>{{inspectionServiceEquipmentDetails.snzclsfgjzbje}}%</b>
 							</li>
 					 	</ul>
 					</div>
@@ -254,29 +254,29 @@
 										</tr>
 										<tr>
 											<td>检察业务装备</td>
-											<td>{{inspectionServiceEquipmentDetails.jcywzbsl}}</td>
-											<td>{{inspectionServiceEquipmentDetails.jcywzbje}}</td>
+											<td>{{formatNum(inspectionServiceEquipmentDetails.jcywzbsl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipmentDetails.jcywzbje)}}</td>
 											<td>{{inspectionServiceEquipmentDetails.snzcljcywzbsl}}%</td>
 											<td>{{inspectionServiceEquipmentDetails.snzcljcywzbje}}%</td>
 										</tr>
 										<tr>
 											<td>检察业务技术装备</td>
-											<td>{{inspectionServiceEquipmentDetails.jcywjzzbsl}}</td>
-											<td>{{inspectionServiceEquipmentDetails.jcywjzzbje}}</td>
+											<td>{{formatNum(inspectionServiceEquipmentDetails.jcywjzzbsl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipmentDetails.jcywjzzbje)}}</td>
 											<td>{{inspectionServiceEquipmentDetails.snzcljcywjzzbsl}}%</td>
 											<td>{{inspectionServiceEquipmentDetails.snzcljcywjzzbje}}%</td>
 										</tr>
 										<tr>
 											<td>检察业务综合保障装备</td>
-											<td>{{inspectionServiceEquipmentDetails.jcywzhbzzbsl}}</td>
-											<td>{{inspectionServiceEquipmentDetails.jcywzhbzzbje}}</td>
+											<td>{{formatNum(inspectionServiceEquipmentDetails.jcywzhbzzbsl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipmentDetails.jcywzhbzzbje)}}</td>
 											<td>{{inspectionServiceEquipmentDetails.snzcljcywzhbzzbsl}}%</td>
 											<td>{{inspectionServiceEquipmentDetails.snzcljcywzhbzzbje}}%</td>
 										</tr>
 										<tr>
 											<td>司法干警装备</td>
-											<td>{{inspectionServiceEquipmentDetails.sfgjzbsl}}</td>
-											<td>{{inspectionServiceEquipmentDetails.sfgjzbje}}</td>
+											<td>{{formatNum(inspectionServiceEquipmentDetails.sfgjzbsl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipmentDetails.sfgjzbje)}}</td>
 											<td>{{inspectionServiceEquipmentDetails.snzclsfgjzbsl}}%</td>
 											<td>{{inspectionServiceEquipmentDetails.snzclsfgjzbje}}%</td>
 										</tr>
@@ -640,7 +640,7 @@
 			},
 			righttableIsshowfn(num){
 				this.activeIndex=num
-				this.righttableIsshow=true
+				// this.righttableIsshow=true
 			},
 			hidefn(){
 				this.righttableIsshow=false
