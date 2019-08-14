@@ -27,7 +27,7 @@
                 </h4>
                 <h4 class="now-area">
                     <span>{{ nowAreaName }}</span>
-                    <i class="now-data-icon el-icon-coin" @click="dialogVisible = true"></i>
+                    <i class="now-data-icon el-icon-coin" v-if="mapConfig.jianwu" @click="dialogVisible = true"></i>
                 </h4>
                 <ul class="nd-text-list">
                     <li v-for="(item, index) in leftDataConfig" :key="item.id"
@@ -588,7 +588,8 @@
 					return {
 						numIsshow    : true,
 						leftIsshow   : true,
-						tooltipIsshow: true
+						tooltipIsshow: true,
+						jianwu:true
 					}
 				}
 			},

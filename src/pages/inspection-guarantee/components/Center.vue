@@ -12,7 +12,7 @@
                     mapDefaultWidth="800"
                     :mapConfig='{
                         numIsshow:false,
-                        leftIsshow:false,
+                        leftIsshow:true,
                         tooltipIsshow:false
 				    }'
             ></bj-map>

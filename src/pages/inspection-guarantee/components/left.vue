@@ -249,7 +249,7 @@
 				return { xAxisData, seriesData };
 			},
 			loadCaizhengChart(data) {
-	  			const { xAxisData, seriesData } = this.convertChartConfigczs(data.slice(0,10));
+	  			const { xAxisData, seriesData } = this.convertChartConfigczs(data.slice(1,10));
 				this.caizhengChart.setOption({
 					color: ['#3398DB'],
 					tooltip : {
@@ -325,17 +325,18 @@
 					color: ["#0BB0FB", "rgba(86,199,60, 1)"],
 					tooltip: {
 						show: true,
-						trigger: "item"
+						trigger: "item",
+						position: ['50%', '30%']
 					},
-					legend: {
-						textStyle:{
-							color:'#fff'
-						},
-						data: ['检察业务费合计', '其中财政拨款']
-					},
+					// legend: {
+					// 	textStyle:{
+					// 		color:'#fff'
+					// 	},
+					// 	data: ['检察业务费合计', '其中财政拨款']
+					// },
 					radar: {
 						center: ["50%", "50%"],
-						radius: "40%",
+						radius: "50%",
 						startAngle: 90,
 						splitNumber: 4,
 						shape: "circle",
@@ -372,7 +373,9 @@
 							// borderColor: '#aaa',
 							borderWidth: 1,
 							borderRadius: 0,
-
+							textStyle: {
+								color: '#fff' // 文字颜色
+							},
 							rich: {
 
 								a: {
@@ -420,7 +423,7 @@
 								
 							},
 							{
-								name: '收入合计',
+								name: '收入\n合计',
 								max: max,
 								aaa: 'assdfasdf'
 							},
@@ -430,7 +433,7 @@
 								aaa: 'assdfasdf'
 							},
 							{
-								name: '年末结转\n结余',
+								name: '年末结\n转结余',
 								max: max,
 								aaa: 'assdfasdf'
 							},
@@ -493,17 +496,18 @@
 					color: ["rgba(0,183,238, 1)", "rgba(86,199,60, 1)"],
 					tooltip: {
 						show: true,
-						trigger: "item"
+						trigger: "item",
+          				position: ['50%', '30%']
 					},
-					legend: {
-						textStyle:{
-							color:'#fff'
-						},
-						data: ['办案（业务）经费', '其中财政拨款']
-					},
+					// legend: {
+					// 	textStyle:{
+					// 		color:'#fff'
+					// 	},
+					// 	data: ['办案（业务）经费', '其中财政拨款']
+					// },
 					radar: {
 						center: ["50%", "50%"],
-						radius: "40%",
+						radius: "50%",
 						startAngle: 90,
 						splitNumber: 4,
 						shape: "circle",
@@ -540,7 +544,9 @@
 							// borderColor: '#aaa',
 							borderWidth: 1,
 							borderRadius: 0,
-
+							textStyle: {
+								color: '#fff' // 文字颜色
+							},
 							rich: {
 
 								a: {
@@ -588,7 +594,7 @@
 								
 							},
 							{
-								name: '收入合计',
+								name: '收入\n合计',
 								max: max1,
 								aaa: 'assdfasdf'
 							},
@@ -598,7 +604,7 @@
 								aaa: 'assdfasdf'
 							},
 							{
-								name: '年末结转\n结余',
+								name: '年末结\n转结余',
 								max: max1,
 								aaa: 'assdfasdf'
 							},
@@ -661,17 +667,18 @@
 					color: ["rgba(0,183,238, 1)", "rgba(86,199,60, 1)"],
 					tooltip: {
 						show: true,
-						trigger: "item"
+						trigger: "item",
+						position: ['50%', '30%']
 					},
-					legend: {
-						textStyle:{
-							color:'#fff'
-						},
-						data: ['业务装备经费', '其中财政拨款']
-					},
+					// legend: {
+					// 	textStyle:{
+					// 		color:'#fff'
+					// 	},
+					// 	data: ['业务装备经费', '其中财政拨款']
+					// },
 					radar: {
 						center: ["50%", "50%"],
-						radius: "40%",
+						radius: "50%",
 						startAngle: 90,
 						splitNumber: 4,
 						shape: "circle",
@@ -708,7 +715,9 @@
 							// borderColor: '#aaa',
 							borderWidth: 1,
 							borderRadius: 0,
-
+							textStyle: {
+								color: '#fff' // 文字颜色
+							},
 							rich: {
 
 								a: {
@@ -756,7 +765,7 @@
 								
 							},
 							{
-								name: '收入合计',
+								name: '收入\n合计',
 								max: max2,
 								aaa: 'assdfasdf'
 							},
@@ -766,7 +775,7 @@
 								aaa: 'assdfasdf'
 							},
 							{
-								name: '年末结转\n结余',
+								name: '年末结\n转结余',
 								max: max2,
 								aaa: 'assdfasdf'
 							},

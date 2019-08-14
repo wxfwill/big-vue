@@ -99,12 +99,16 @@
                     this.trendsProcuratorialBusinessList=data.trendsProcuratorialBusinessList
                     leftBox.loadJianchaChart(data.trendsProcuratorialBusinessList)
                     //全国省份排名（数据还没返回）
-                    this.nationalProvinceRankList=data.nationalProvinceRankList
+                    if(data.nationalProvinceRankList!=null){
+                        this.nationalProvinceRankList=data.nationalProvinceRankList
+                    }
 
                     //资产情况
                     this.assetsSituation=data.assetsSituation
                     //检察机关机构机构人员情况
-                    this.theProcuratorialAgency=data.theProcuratorialAgency
+                    if(data.theProcuratorialAgency!=null){
+                        this.theProcuratorialAgency=data.theProcuratorialAgency
+                    }
                     //机构情况
                     this.prosecutionPersonnel=data.prosecutionPersonnel
                     rightBox.loadagencyChart(data.prosecutionPersonnel);
@@ -115,7 +119,9 @@
                     this.inspectionServiceEquipment=data.inspectionServiceEquipment
                     rightBox.loadserviceChart(data.inspectionServiceEquipment)
                     //检查业务装备详情
-                    this.inspectionServiceEquipmentDetails=data.inspectionServiceEquipmentDetails
+                    if(data.inspectionServiceEquipmentDetails!=null){
+                        this.inspectionServiceEquipmentDetails=data.inspectionServiceEquipmentDetails
+                    }
                     //计财机构及人员情况
                     this.financialInstitutions=data.financialInstitutions
                     this.psGuaranteeMapList = data.psGuaranteeMapList;

@@ -119,7 +119,7 @@
 					<div class="putinto">
 						<p>三年投入</p>
 						<ul>
-							<li @click="righttableIsshowfn">
+							<li @click="righttableIsshowfn(0)" :class='{active:0==activeIndex}'>
 								<i class='el-icon-tickets'></i>
 								<p>检察业务装备</p>
 								<span>数量</span>
@@ -129,7 +129,7 @@
 								<b>{{formatNum(inspectionServiceEquipment.jcywzbje)}}</b>
 								<b>%</b>
 							</li>
-							<li @click="righttableIsshowfn">
+							<li @click="righttableIsshowfn(1)" :class='{active:1==activeIndex}'>
 								<i class='el-icon-tickets'></i>
 								<p>技术装备</p>
 								<span>数量</span>
@@ -139,7 +139,7 @@
 								<b>{{formatNum(inspectionServiceEquipment.jszbje)}}</b>
 								<b>%</b>
 							</li>
-							<li @click="righttableIsshowfn">
+							<li @click="righttableIsshowfn(2)" :class='{active:2==activeIndex}'>
 								<i class='el-icon-tickets'></i>
 								<p>综合保障装备</p>
 								<span>数量</span>
@@ -149,7 +149,7 @@
 								<b>{{formatNum(inspectionServiceEquipment.zhbzzbje)}}</b>
 								<b>%</b>
 							</li>
-							<li @click="righttableIsshowfn">
+							<li @click="righttableIsshowfn(3)" :class='{active:3==activeIndex}'>
 								<i class='el-icon-tickets'></i>
 								<p>司法警察装备</p>
 								<span>数量</span>
@@ -236,8 +236,8 @@
 						</div>
                     </div>
                 </div>
-				<transition name="el-fade-in-linear">
-					<div class="righttable" v-show="righttableIsshow">
+				<transition name='slide-fade'>
+					<div class="righttable" v-if="righttableIsshow">
 						<div class="left" @click="hidefn">》</div>
 							<div class="right">
 								<table>
@@ -312,7 +312,8 @@
 				righttableIsshow:false,
 				hoverdivisshow:false,
 				hoverdivisshow1:false,
-				hoverdivisshow2:false
+				hoverdivisshow2:false,
+				activeIndex:0
 			};
 		},
 		props:{
@@ -418,8 +419,8 @@
 						legend: {
 							selectedMode: false,
 							formatter: function(name) {
-								var total = 0; //各科正确率总和
-								var averagePercent; //综合正确率
+								var total = 0; 
+								var averagePercent; 
 								datas.forEach(function(value, index, array) {
 									total += value.value;
 								});
@@ -453,7 +454,7 @@
 											total += value.value;
 										});
 										percent = ((params.value / total) * 100).toFixed(1);
-										return '{white|' + params.name + '}\n{hr|}\n{yellow|' + params.value + '}\n{blue|' + percent + '%}';
+										return '{white|' + params.name + '}{yellow|' + params.value + '}{blue|' + percent + '%}';
 									},
 									rich: rich
 								},
@@ -497,7 +498,8 @@
 					series: [{
 							type: 'pie',
 							selectedMode: 'single',
-							radius: [0, '56%'],
+							radius: [0, '50%'],
+							center: ['50%', '70%'],
 							label: {
 								normal: {
 									show: true,
@@ -530,7 +532,8 @@
 						},
 						{
 							type: 'pie',
-							radius: ['58%', '60%'],
+							radius: ['53%', '55%'],
+							center: ['50%', '70%'],
 							label: {
 								normal: {
 									formatter:function(params){
@@ -635,7 +638,8 @@
 					]
 				})
 			},
-			righttableIsshowfn(){
+			righttableIsshowfn(num){
+				this.activeIndex=num
 				this.righttableIsshow=true
 			},
 			hidefn(){
@@ -1013,10 +1017,12 @@
 								}
 								
 								li:first-child{
-									background:linear-gradient(180deg,rgba(23,213,191,0.6) 0%,rgba(12,143,226,0.6) 100%);
 									i{
 										color:#0BAEFF;
 									}
+								}
+								.active{
+									background:linear-gradient(180deg,rgba(23,213,191,0.6) 0%,rgba(12,143,226,0.6) 100%);
 								}
 								li:nth-child(2){
 									i{
@@ -1282,14 +1288,19 @@
 							}
 						}
 					}
-					.fade-enter-active, .fade-leave-active {
-						transition: opacity .5s
-					}
-					.fade-enter, .fade-leave-active {
-						opacity: 0
-					}
 				}
-            }
+				.slide-fade-enter-active {
+						transition: all .3s linear;
+						}
+						.slide-fade-leave-active {
+						transition: all .5s linear;
+						}
+						.slide-fade-enter, .slide-fade-leave-to
+						/* .slide-fade-leave-active for below version 2.1.8 */ {
+						transform: translateX(1045px);
+						opacity: 0;
+						}
+			}
         }
     }
 </style>
