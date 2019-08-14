@@ -53,7 +53,7 @@
                         :topDataConfig="topDataConfig"
                         :topData="{ totalSls, totalBjs, totalZbs }"
                         :leftDataConfig="leftSideList"
-                        :leftData='{ sls, bjs, zbs }'
+                        :leftData='checkCharterMapData'
                         :extraCityColumn="mapTableConfig"
                         highProcuratorCode="100000"
                 ></bj-map>
@@ -130,6 +130,7 @@ export default {
             checkCharterTopData:{},
             checkCharterMapData:{},
             checkCharterTheMapList:[],
+            checkCharterMapData:{}
         }
     },
     beforeCreate(){
@@ -179,21 +180,9 @@ export default {
                 this.toAcceptTheNumberList=data.toAcceptTheNumberList
                 this.loadtoAcceptTheNumberList();
                 const { slzs, wczs: bjzs, wwczs: zbzs } = data.checkCharterTopData || {};
-                const { sls, wcs: bjs, wwcs: zbs } =data.checkCharterMapData || {}
-                const theMapList = (data.checkCharterTheMapList || []).map(i => {
-					return {
-						code : i.code,
-						name : i.name,
-						sls: i.sls,
-						sls_zb:i.sls_zb,
-						bjs : i.wcs,
-						bjs_zb: i.wcs_zb,
-						zbs:  i.wwcs,
-						zbs_zb:i.wwcs_zb
-					}
-                });
+                this.checkCharterMapData=data.checkCharterMapData || {}
                 this.convertMapHeadData({ slzs, bjzs, zbzs });
-				this.loadMapContent({ theMapList, sls,bjs ,zbs});
+                this.mapList=data.checkCharterTheMapList
             } else {
                 this.$message.error(res.msg);
             }

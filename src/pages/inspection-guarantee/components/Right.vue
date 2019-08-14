@@ -478,7 +478,9 @@
 					color: ['#FBBA18', '#0CADE8', '#1BC85D'],
 					tooltip: {
 							trigger: 'item',
-							formatter: "{b}<br/>\n金额:{c}<br/>\n占比:\n {d}%",
+							formatter:function(params){
+										return ''+params.name+'\n金额:'+params.value+'\n数量'+params.data.num+''
+									},
 							itemStyle:{
 								fontSize:'14'
 							},
@@ -517,16 +519,19 @@
 								}
 							},
 							data: [{
-									value: data.sfjczbje,
-									name: '司法警察装备'
+									value: data.sfjczb_je,
+									name: '司法警察装备',
+									num:data.sfjczb_sl
 								},
 								{
-									value: data.zhbzzbje,
-									name: '综合保障装备'
+									value: data.jcywzhbzzb_je,
+									name: '综合保障装备',
+									num: data.jcywzhbzzb_sl
 								},
 								{
-									value:  data.jszbje,
-									name: '技术装备'
+									value:  data.jcywjszb_je,
+									name: '技术装备',
+									num: data.jcywjszb_sl
 								}
 							]
 						},
@@ -537,7 +542,7 @@
 							label: {
 								normal: {
 									formatter:function(params){
-										return ''+params.name+'\n金额:'+params.value+'\n占比'+params.percent+''
+										return ''+params.name+'\n金额:'+params.value+'\n数量'+params.data.num+''
 									}
 								}
 							},
@@ -552,19 +557,21 @@
 									}
 								}
 							},
-							data: [{
-									value: data.sfjczbje,
-									name: '司法警察装备'
+							data:[{
+									value: data.sfjczb_je,
+									name: '司法警察装备',
+									num:data.sfjczb_sl
 								},
 								{
-									value: data.zhbzzbje,
-									name: '综合保障装备'
+									value: data.jcywzhbzzb_je,
+									name: '综合保障装备',
+									num: data.jcywzhbzzb_sl
 								},
 								{
-									value: data.jszbje,
-									name: '技术装备'
+									value:  data.jcywjszb_je,
+									name: '技术装备',
+									num: data.jcywjszb_sl
 								}
-
 							]
 						}
 					]	
@@ -666,6 +673,9 @@
 			},
 			changeMask2(value){
 				this.hoverdivisshow2=value
+			},
+			clickecharts(params){
+				console.log(params)
 			}
 		},
 		components: {
