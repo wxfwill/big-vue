@@ -73,21 +73,8 @@ const caseNumberAnalysiscongif=[{
 },{
 	sls:'250',
 	year:'2008'
-}] 
-  // 地图tooltip内容
-  const mapTooltipConfig = [{
-	id    : 'sls',
-	name  : '受理数',
-	regExp: '{sls}&nbsp;&nbsp;&nbsp; {sls_zb}%',
-}, {
-	id    : 'bjs',
-	name  : '完成数',
-	regExp: '{bjs}&nbsp;&nbsp;&nbsp; {bjs_zb}%',
-}, {
-	id    : 'zbs',
-	name  : '未完成数',
-	regExp: '{zbs}&nbsp;&nbsp;&nbsp; {zbs_zb}%',
-}];
+}]
+
 // 案件分类分析
 const administrativeConfig = [{
 	id    : 'jyjd',
@@ -122,4 +109,54 @@ const administrativeConfig = [{
 	col1  : '#F35DC4',
 	col2  : '#FA3882'
 }];
-export{personnelChartConfig,caseNumberAnalysiscongif,mapTooltipConfig,administrativeConfig}
+// 地图tooltip内容
+export const mapTooltipConfig = [{
+	id    : 'sls',
+	name  : '受理数',
+	regExp: '{sls}&nbsp;&nbsp;&nbsp; {sls_zb}%',
+}, {
+	id    : 'wcs',
+	name  : '完成数',
+	regExp: '{wcs}&nbsp;&nbsp;&nbsp; {wcs_zb}%',
+}, {
+	id    : 'zbs',
+	name  : '未完成数',
+	regExp: '{wwcs}&nbsp;&nbsp;&nbsp; {wwcs_zb}%',
+}];
+export const topDataConfig    = [{
+	id  : 'totalSls',
+	name: '受理总数',
+}, {
+	id  : 'totalBjs',
+	name: '完成总数',
+}, {
+	id  : 'totalZbs',
+	name: '未完成总数',
+}];
+
+export const leftSideList = [{
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'wcs',
+	name: '完成数',
+}, {
+	id  : 'wwcs',
+	name: '未完成数',
+}];
+
+
+export const mapTableConfig = [{
+	id  : 'name',
+	name: '名称',
+}, {
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'wcs',
+	name: '完成数',
+}, {
+	id  : 'wwcs',
+	name: '未完成数',
+}];
+export{personnelChartConfig,caseNumberAnalysiscongif,administrativeConfig}

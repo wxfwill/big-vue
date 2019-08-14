@@ -47,14 +47,15 @@
                         :tooltipConfig="mapTooltipConfig"
                         :mapData="mapList"
                         :getNewRegionInfo="setMapData"
-                        :totalSls="totalSls"
-                        :totalBjs="totalBjs"
-                        :totalZbs="totalZbs"
-                        :sls="sls"
-                        :bjs="bjs"
-                        :zbs="zbs"
                         :lev="mapCode.lev"
-                        :nowSelectDate="dateSection"
+                        :code="mapCode.code"
+                        defaultCode="100000"
+                        :topDataConfig="topDataConfig"
+                        :topData="{ totalSls, totalBjs, totalZbs }"
+                        :leftDataConfig="leftSideList"
+                        :leftData='{ sls, bjs, zbs }'
+                        :extraCityColumn="mapTableConfig"
+                        highProcuratorCode="100000"
                 ></bj-map>
             </div>
             <div class="procuratorial-page-right">
@@ -99,9 +100,11 @@ import waterPolo from '@/components/common/water-polo.vue'
 import * as services                   from './service';
 import { triggerMixin,mapComponentState } from '@/components/mixin/trigger';
 //模拟数据
-import {administrativeConfig,mapTooltipConfig} from "./constant/index"
+
 import {verifyTriggerState,textFormatter} from '@/utlis/helper'
-import BjMap                               from '@/components/common/map/index';
+import BjMap                               from '@/components/common/map/team-manage-map';
+import {administrativeConfig,mapTooltipConfig, topDataConfig,
+	leftSideList, mapTableConfig} from "./constant/index";
 
 
 
@@ -127,8 +130,13 @@ export default {
             checkCharterTopData:{},
             checkCharterMapData:{},
             checkCharterTheMapList:[],
-            mapTooltipConfig
         }
+    },
+    beforeCreate(){
+		this.mapTooltipConfig = mapTooltipConfig;
+		this.topDataConfig = topDataConfig;
+		this.leftSideList = leftSideList;
+		this.mapTableConfig = mapTableConfig;
     },
     mounted() {
         const params                = { ...this.mapCode, ...this.dateSection };
