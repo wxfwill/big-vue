@@ -20,7 +20,7 @@
                         <ul class="box-content">
                             <li v-for="item in appealJunctionList" :key="item.id" :style="{ background: item.color }">
                                 <p>{{ item.value || 0 }}</p>
-                                <p>{{ item.name }}</p>
+                                <p class="text-center">{{ item.name }}</p>
                             </li>
                         </ul>
                     </div>
@@ -140,7 +140,7 @@
                             </tr>
                         </table>
                         <ul class="salvation-list">
-                            <li>生效任判决人数</li>
+                            <li>生效任判决数</li>
                             <li>{{ judicialReparation.sxrpjrs || 0 }}</li>
                             <li>发放救助金额</li>
                             <li>{{ judicialReparation.ffjzje || 0 }}</li>

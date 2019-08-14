@@ -1,28 +1,28 @@
 export const chargeJunctionConfig = [{
 	id   : 'kg_sls',
-	name : '控告检察案件受理数',
+	name : '受理数',
 	color: '#1BC85D',
 }, {
 	id   : 'kg_bjs',
-	name : '控告检察案件办结数',
+	name : '办结数',
 	color: '#FBBA18',
 }, {
 	id   : 'kg_zbs',
-	name : '控告检察案件在办数',
+	name : '在办数',
 	color: '#009FE8',
 }];
 
 export const appealJunctionConfig = [{
 	id   : 'ss_sls',
-	name : '申诉检察案件受理数',
+	name : '受理数',
 	color: 'linear-gradient(146deg,rgba(33,188,237, .5) 0%, rgba(15,113,232,.5) 100%)',
 }, {
 	id   : 'ss_bjs',
-	name : '申诉检察案件办结数',
+	name : '办结数',
 	color: 'linear-gradient(146deg,rgba(49,226,214, .5) 0%,rgba(34,177,228,.5) 100%)',
 }, {
 	id   : 'ss_zbs',
-	name : '申诉检察案件在办数',
+	name : '在办数',
 	color: 'linear-gradient(146deg,rgba(44,229,198,.5) 0%,rgba(23,217,191,.5) 100%)',
 }];
 

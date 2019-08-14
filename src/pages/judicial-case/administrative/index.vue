@@ -98,7 +98,7 @@
                     </div>
                     <div class="table-head">
                         <span>占比</span>
-                        <span>次数</span>
+                        <span>件数</span>
                     </div>
                     <ul class="nature-list">
                         <li v-for="(item, index) in classifyNowPageList" :key="index">
