@@ -51,10 +51,6 @@ export const prosecutionConfig = [{
 
 // 刑事概览
 export const criminalCaseConfig   = [{
-	id   : 'xs_bjjs',
-	name : '办结件数',
-	color: '#1BC85D',
-}, {
 	id   : 'xs_sljs',
 	name : '受理件数',
 	color: '#1BC85D',
@@ -63,12 +59,16 @@ export const criminalCaseConfig   = [{
 	name : '在办件数',
 	color: '#009FE8',
 }, {
-	id   : 'xs_jzlbrs',
-	name : '纠正漏捕人数',
-	color: '#009FE8',
+	id   : 'xs_bjjs',
+	name : '办结件数',
+	color: '#1BC85D',
 }, {
 	id   : 'xs_pbdbs',
 	name : '批捕逮捕数',
+	color: '#009FE8',
+}, {
+	id   : 'xs_jzlbrs',
+	name : '纠正漏捕人数',
 	color: '#009FE8',
 }, {
 	id   : 'xs_qsajs',
