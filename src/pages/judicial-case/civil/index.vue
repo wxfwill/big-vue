@@ -85,11 +85,11 @@
                 <div class="sort-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>民事案件案由发生次数排序</i>
+                        <i>民事案件各案由数量及占比排序</i>
                     </div>
                     <div class="table-head">
                         <span>占比</span>
-                        <span>次数</span>
+                        <span>件数</span>
                     </div>
                     <ul class="causes-list">
                         <li v-for="(item, index) in causesNowPageList" :key="index">
@@ -569,11 +569,11 @@
 					series : [{
 						name  : '受理案件数统计',
 						type  : 'pie',
-						radius: '80%',
+						radius: '65%',
 						center: ['50%', '51%'],
 						label : {
 							show     : true,
-							formatter: '{a|{b}\n{c}}',
+							formatter: '{c}',
 							rich     : {
 								a: {
 									align: 'center'
@@ -605,21 +605,17 @@
 					series : [{
 						name      : '提出检察建议数',
 						type      : 'pie',
-						radius    : '70%',
+						radius    : '65%',
 						center    : ['50%', '51%'],
 						startAngle: 310,
 						label     : {
 							show     : true,
-							formatter: '{a|{b}\n{c}}',
-							rich     : {
-								a: {
-									align: 'center'
-								}
-							}
+							formatter: '{c}',
+
 						},
 						data      : [{
 							value: cnjcjys,
-							name : '采纳建设数',
+							name : '采纳建议数',
 						}, {
 							value: tcjcjys - cnjcjys,
 							name : '未采纳建议数'

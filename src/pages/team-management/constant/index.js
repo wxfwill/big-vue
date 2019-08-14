@@ -1,9 +1,9 @@
 export const workLifeConfig = [
 	{
-		text       : "11-15年",
-		key        : "nx3",
-		strokeColor: "#21d8ba",
-		tintColor  : "#0b4468"
+		text       : "5年以下",
+		key        : "nx5",
+		strokeColor: "#8b22d6",
+		tintColor  : "#1c2474"
 	},
 	{
 		text       : "5-10年",
@@ -12,22 +12,22 @@ export const workLifeConfig = [
 		tintColor  : "#0b3e74"
 	},
 	{
-		text       : "5年以下",
-		key        : "nx5",
-		strokeColor: "#8b22d6",
-		tintColor  : "#1c2474"
-	},
-	{
-		text       : "30年以上",
-		key        : "nx1",
-		strokeColor: "#dda62c",
-		tintColor  : "#32374b"
+		text       : "11-15年",
+		key        : "nx3",
+		strokeColor: "#21d8ba",
+		tintColor  : "#0b4468"
 	},
 	{
 		text       : "16-30年",
 		key        : "nx2",
 		strokeColor: "#a4dd28",
 		tintColor  : "#0b4468"
+	},
+	{
+		text       : "30年以上",
+		key        : "nx1",
+		strokeColor: "#dda62c",
+		tintColor  : "#32374b"
 	}
 ];
 

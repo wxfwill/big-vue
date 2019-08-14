@@ -99,7 +99,7 @@ import waterPolo from '@/components/common/water-polo.vue'
 import * as services                   from './service';
 import { triggerMixin,mapComponentState } from '@/components/mixin/trigger';
 //模拟数据
-import {personnelChartConfig,caseNumberAnalysiscongif,administrativeConfig,mapTooltipConfig} from "./constant/index"
+import {administrativeConfig,mapTooltipConfig} from "./constant/index"
 import {verifyTriggerState,textFormatter} from '@/utlis/helper'
 import BjMap                               from '@/components/common/map/index';
 

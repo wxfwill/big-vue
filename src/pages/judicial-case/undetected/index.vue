@@ -70,7 +70,7 @@
                     <div class="charge-box">
                         <box-head title="罪名占比统计"></box-head>
                         <p class="title">起诉罪名TOP10</p>
-                        <p class="label">占比 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次数</p>
+                        <p class="label">占比 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;件数</p>
                         <ul class="charge-content">
                             <li v-for="(item,index) in prosecuteList" :key="index">
                                 <i :style="{ backgroundColor: index < 3 ? '#F7931E': '#00BEDD'  }">{{index+1}}</i>

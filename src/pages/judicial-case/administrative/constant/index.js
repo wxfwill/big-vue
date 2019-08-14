@@ -3,7 +3,7 @@ export const conditionConfig = [{
 	title: '受理件数',
 }, {
 	id   : 'bjjs',
-	title: '办结 件数',
+	title: '办结件数',
 }, {
 	id     : 'bjl',
 	title  : '办结率',
