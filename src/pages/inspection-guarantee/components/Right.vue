@@ -238,47 +238,152 @@
                 </div>
 				<transition name='slide-fade'>
 					<div class="righttable" v-if="righttableIsshow">
-						<div class="left" @click="hidefn">》</div>
+						<div class="left" @click="hidefn('righttableIsshow')">》</div>
 							<div class="right">
 								<table>
 									<thead>
 										<tr>
-											<th rowspan="2">项目</th>
-											<th rowspan="2">数量</th>
-											<th rowspan="2">金额（万元）</th>
-											<th colspan="2">三年投入</th>
+											<th>项目</th>
+											<th>数量</th>
+											<th>金额（万元）</th>
 										</tr>
 										<tr>
-											<th>数量增加</th>
-											<th>金额增长</th>
+											<td>（一）检察业务技术装备</td>
+											<td>{{formatNum(inspectionServiceEquipment.jcywjszb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.jcywjszb_je)}}</td>
 										</tr>
 										<tr>
-											<td>检察业务装备</td>
-											<td>{{formatNum(inspectionServiceEquipmentDetails.jcywzbsl)}}</td>
-											<td>{{formatNum(inspectionServiceEquipmentDetails.jcywzbje)}}</td>
-											<td>{{inspectionServiceEquipmentDetails.snzcljcywzbsl}}%</td>
-											<td>{{inspectionServiceEquipmentDetails.snzcljcywzbje}}%</td>
+											<td>1.查办和预防职务犯罪装备</td>
+											<td>{{formatNum(inspectionServiceEquipment.cbhyfzwfzzb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.cbhyfzwfzzb_je)}}</td>
 										</tr>
 										<tr>
-											<td>检察业务技术装备</td>
-											<td>{{formatNum(inspectionServiceEquipmentDetails.jcywjzzbsl)}}</td>
-											<td>{{formatNum(inspectionServiceEquipmentDetails.jcywjzzbje)}}</td>
-											<td>{{inspectionServiceEquipmentDetails.snzcljcywjzzbsl}}%</td>
-											<td>{{inspectionServiceEquipmentDetails.snzcljcywjzzbje}}%</td>
+											<td>2.公诉和民行装备</td>
+											<td>{{formatNum(inspectionServiceEquipment.gshmxzb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.gshmxzb_je)}}</td>
 										</tr>
 										<tr>
-											<td>检察业务综合保障装备</td>
-											<td>{{formatNum(inspectionServiceEquipmentDetails.jcywzhbzzbsl)}}</td>
-											<td>{{formatNum(inspectionServiceEquipmentDetails.jcywzhbzzbje)}}</td>
-											<td>{{inspectionServiceEquipmentDetails.snzcljcywzhbzzbsl}}%</td>
-											<td>{{inspectionServiceEquipmentDetails.snzcljcywzhbzzbje}}%</td>
+											<td>3.侦查监督装备</td>
+											<td>{{formatNum(inspectionServiceEquipment.zcjdzb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.zcjdzb_je)}}</td>
 										</tr>
 										<tr>
-											<td>司法干警装备</td>
-											<td>{{formatNum(inspectionServiceEquipmentDetails.sfgjzbsl)}}</td>
-											<td>{{formatNum(inspectionServiceEquipmentDetails.sfgjzbje)}}</td>
-											<td>{{inspectionServiceEquipmentDetails.snzclsfgjzbsl}}%</td>
-											<td>{{inspectionServiceEquipmentDetails.snzclsfgjzbje}}%</td>
+											<td>4.执行监督装备</td>
+											<td>{{formatNum(inspectionServiceEquipment.zxjdzb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.zxjdzb_je)}}</td>
+										</tr>
+										<tr>
+											<td>5.控告申诉装备</td>
+											<td>{{formatNum(inspectionServiceEquipment.kgsszb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.kgsszb_je)}}</td>
+										</tr>
+										<tr>
+											<td>6.办案工作区装备</td>
+											<td>{{formatNum(inspectionServiceEquipment.bagzqzb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.bagzqzb_je)}}</td>
+										</tr>
+										<tr>
+											<td>7.法医检验鉴定设备</td>
+											<td>{{formatNum(inspectionServiceEquipment.fyjyjdsb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.fyjyjdsb_je)}}</td>
+										</tr>
+										<tr>
+											<td>8.物证类检验鉴定设备</td>
+											<td>{{formatNum(inspectionServiceEquipment.wzljyjdsb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.wzljyjdsb_je)}}</td>
+										</tr>
+										<tr>
+											<td>9.图像声像处理和电子物证检验鉴定设备</td>
+											<td>{{formatNum(inspectionServiceEquipment.txsxclhdzwzjyjdsb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.txsxclhdzwzjyjdsb_je)}}</td>
+										</tr>
+										<tr>
+											<td>10.司法会计检验鉴定装备</td>
+											<td>{{formatNum(inspectionServiceEquipment.sfhjjyjdzb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.sfhjjyjdzb_je)}}</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+					</div>
+					<div class="righttable" v-if="righttableIsshow2">
+						<div class="left" @click="hidefn('righttableIsshow2')">》</div>
+							<div class="right">
+								<table>
+									<thead>
+										<tr>
+											<th>项目</th>
+											<th>数量</th>
+											<th>金额（万元）</th>
+										</tr>
+										<tr>
+											<td>（二）检察业务综合保障装备</td>
+											<td>{{formatNum(inspectionServiceEquipment.jcywzhbzzb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.jcywzhbzzb_je)}}</td>
+										</tr>
+										<tr>
+											<td>1.检察通信设备</td>
+											<td>{{formatNum(inspectionServiceEquipment.jctxsb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.jctxsb_je)}}</td>
+										</tr>
+										<tr>
+											<td>2.视频会议系统</td>
+											<td>{{formatNum(inspectionServiceEquipment.sphyxt_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.sphyxt_je)}}</td>
+										</tr>
+										<tr>
+											<td>3.信息网络设备</td>
+											<td>{{formatNum(inspectionServiceEquipment.xxwlsb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.xxwlsb_je)}}</td>
+										</tr>
+										<tr>
+											<td>4.交通设备</td>
+											<td>{{formatNum(inspectionServiceEquipment.jtsb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.jtsb_je)}}</td>
+										</tr>
+										<tr>
+											<td>5.档案管理设备</td>
+											<td>{{formatNum(inspectionServiceEquipment.daglsb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.daglsb_je)}}</td>
+										</tr>
+										<tr>
+											<td>6.检察业务常规设备</td>
+											<td>{{formatNum(inspectionServiceEquipment.jcywcgsb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.jcywcgsb_je)}}</td>
+										</tr>
+									</thead>
+								</table>
+							</div>
+					</div>
+					<div class="righttable" v-if="righttableIsshow3">
+						<div class="left" @click="hidefn('righttableIsshow3')">》</div>
+							<div class="right">
+								<table>
+									<thead>
+										<tr>
+											<th>项目</th>
+											<th>数量</th>
+											<th>金额（万元）</th>
+										</tr>
+										<tr>
+											<td>（三）司法警察装备</td>
+											<td>{{formatNum(inspectionServiceEquipment.sfjczb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.sfjczb_je)}}</td>
+										</tr>
+										<tr>
+											<td>1.单警装备</td>
+											<td>{{formatNum(inspectionServiceEquipment.djzb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.djzb_je)}}</td>
+										</tr>
+										<tr>
+											<td>2.警械专用柜</td>
+											<td>{{formatNum(inspectionServiceEquipment.jxzyg_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.jxzyg_je)}}</td>
+										</tr>
+										<tr>
+											<td>3.防暴处突装备</td>
+											<td>{{formatNum(inspectionServiceEquipment.fbctzb_sl)}}</td>
+											<td>{{formatNum(inspectionServiceEquipment.fbctzb_je)}}</td>
 										</tr>
 									</thead>
 								</table>
@@ -310,6 +415,8 @@
 				propertyConfig:propertyConfig,
 				agencyConfig:agencyConfig,
 				righttableIsshow:false,
+				righttableIsshow2:false,
+				righttableIsshow3:false,
 				hoverdivisshow:false,
 				hoverdivisshow1:false,
 				hoverdivisshow2:false,
@@ -351,6 +458,17 @@
 			this.oldTriggerState               = params;
 			this.jobChart   = ECharts.init(this.$refs.jobChart);
 			this.serviceChart= ECharts.init(this.$refs.serviceChart);
+			this.serviceChart.on('pieselectchanged', (params)=>{
+				console.log(params.name);
+				if(params.name=="技术装备"){
+					this.righttableIsshow=true
+				}else if(params.name=="综合保障装备"){
+					this.righttableIsshow2=true
+				}else if(params.name=='司法警察装备'){
+					this.righttableIsshow3=true
+				}
+				
+			});
 			this.agencyChart=ECharts.init(this.$refs.agencyChart);
 		},
 		updated() {
@@ -501,7 +619,7 @@
 							type: 'pie',
 							selectedMode: 'single',
 							radius: [0, '50%'],
-							center: ['50%', '70%'],
+							center: ['50%', '60%'],
 							label: {
 								normal: {
 									show: true,
@@ -538,7 +656,7 @@
 						{
 							type: 'pie',
 							radius: ['53%', '55%'],
-							center: ['50%', '70%'],
+							center: ['50%', '60%'],
 							label: {
 								normal: {
 									formatter:function(params){
@@ -647,10 +765,10 @@
 			},
 			righttableIsshowfn(num){
 				this.activeIndex=num
-				// this.righttableIsshow=true
 			},
-			hidefn(){
-				this.righttableIsshow=false
+			hidefn(val){
+				alert(val)
+				this[val]=false
 			},
 			formatNum(money){
 				if(money && money!=null){
@@ -673,9 +791,6 @@
 			},
 			changeMask2(value){
 				this.hoverdivisshow2=value
-			},
-			clickecharts(params){
-				console.log(params)
 			}
 		},
 		components: {
@@ -1246,6 +1361,7 @@
 					top:-110px;
 					background:rgba(0,0,0,0.31);
 					border:1px solid rgb(138, 250, 233);
+					z-index:99999;
 					.left{
 						width:97px;
 						height:1080px;

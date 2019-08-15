@@ -3,14 +3,14 @@
         <!-- <date-time moduleName="检委办/检察技术"></date-time> -->
          <div class="judicial-case-title">
             <i class="title-dot"></i>
-            检委办
+            检察技术/检委办
         </div>
         <div class="outer-procuratorial-page">
              <div class="procuratorial-page-left">
                 <div class="correlation-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>相关办案人员（各省市/人）</i>
+                        <i>检委办-办案人员数量</i>
                     </div>
                     <div>
                         <p class='more-btn' @click="setDialogVisible('相关办案人员（各省市/人）')">更多>></p>
@@ -20,7 +20,7 @@
                 <div class="accept-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>受理案件趋势分析</i>
+                        <i>检察技术-受理案件趋势分析</i>
                     </div>
                     <div>
                         <p class='more-btn' @click="setDialogVisible('受理案件趋势分析')">更多>></p>
@@ -30,7 +30,7 @@
                 <div class="case-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>案件分类分析</i>
+                        <i>检察技术-案件分类分析</i>
                     </div>
                     <div class="classify-box">
                         <water-polo
@@ -62,7 +62,7 @@
                 <div class="accept-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>综合分析</i>
+                        <i>检察技术-综合分析</i>
                     </div>
                     <div>
                         <p class='more-btn' @click="setDialogVisible('综合分析')">更多>></p>
@@ -72,7 +72,7 @@
                 <div class="correlation-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>检委办</i>
+                        <i>检委办-受理数</i>
                     </div>
                     <div>
                         <p class='more-btn' @click="setDialogVisible('检委办')">更多>></p>
@@ -760,7 +760,7 @@ export default {
 <style lang="scss" scoped>
 .box{
     .judicial-case-title {
-        width:100px;
+        width:200px;
         float: left;
         margin-top: -65px;
         margin-left: 20px;
