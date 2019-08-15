@@ -139,7 +139,7 @@
                             </li>
                             <li>
                                 <p>发放救助金额</p>
-                                <p class="number-text">{{ judicialReparation.ffjzje || 0 }}</p>
+                                <p class="number-text">{{ judicialReparation.ffjzje || 0 }}万元</p>
                             </li>
                         </ul>
                     </div>
