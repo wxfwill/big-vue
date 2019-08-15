@@ -298,7 +298,6 @@ function supage(divId, funName, params, curPage, total, pageSize){
                 param_str += params[key] + ',';
             }
         }
-        //alert(111);
     }
     //设置起始页码
     if (totalPage > 10) {

@@ -58,9 +58,6 @@
 </script>
 <style lang="scss" scoped>
     .header-time-page {
-        position: absolute;
-        left: 0;
-        top: -10px;
         width: 200px;
         font-size: 15px;
         color: #ffffff;

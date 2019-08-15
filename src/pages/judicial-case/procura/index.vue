@@ -1,10 +1,6 @@
 <template>
     <div class='box'>
-        <!-- <date-time moduleName="检委办/检察技术"></date-time> -->
-         <div class="judicial-case-title">
-            <i class="title-dot"></i>
-            检察技术/检委办
-        </div>
+        <judicial-title title="检察技术/检委办"></judicial-title>
         <div class="outer-procuratorial-page">
              <div class="procuratorial-page-left">
                 <div class="correlation-box">
@@ -95,6 +91,7 @@
 </template>
 <script>
 import { mapGetters, mapActions }                                           from 'vuex';
+import JudicialTitle from '@/components/judicial-case/judicial-case-title';
 import echarts from 'echarts';
 import waterPolo from '@/components/common/water-polo.vue'
 import * as services                   from './service';
@@ -112,6 +109,7 @@ export default {
     components:{
         waterPolo,
         BjMap,
+		JudicialTitle,
     },
     data() {
         return {
@@ -130,7 +128,6 @@ export default {
             checkCharterTopData:{},
             checkCharterMapData:{},
             checkCharterTheMapList:[],
-            checkCharterMapData:{}
         }
     },
     beforeCreate(){
@@ -758,27 +755,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.box{
-    .judicial-case-title {
-        width:200px;
-        float: left;
-        margin-top: -65px;
-        margin-left: 20px;
-        font-size: 22px;
-        font-family: PingFangSC-Regular;
-        font-weight: 400;
-        color: rgba(48, 226, 226, 1);
-        line-height: 30px;
-        .title-dot {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            background: rgba(48, 226, 226, 1);
-            border-radius: 50%;
-            vertical-align: middle;
-        }
-    }
-}
+
 
 .outer-procuratorial-page{
     width:100%;

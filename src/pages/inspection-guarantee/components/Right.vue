@@ -459,7 +459,6 @@
 			this.jobChart   = ECharts.init(this.$refs.jobChart);
 			this.serviceChart= ECharts.init(this.$refs.serviceChart);
 			this.serviceChart.on('pieselectchanged', (params)=>{
-				console.log(params.name);
 				if(params.name=="技术装备"){
 					this.righttableIsshow=true
 				}else if(params.name=="综合保障装备"){
@@ -1370,6 +1369,7 @@
 						text-align:center;
 						color:#09F4FF;
 						font-size:65px;
+                        cursor: pointer;
 					}
 					.right{
 						float:left;

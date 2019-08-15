@@ -42,7 +42,7 @@
                 <div class="verdict-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>判决生效人数</i>
+                        <i>捕后判决人数</i>
                     </div>
                     <div ref="judgmentChart" class="judgment-chart"></div>
                 </div>

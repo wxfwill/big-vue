@@ -1,9 +1,6 @@
 <template>
     <div>
-        <div class="judicial-case-title">
-            <i class="title-dot"></i>
-            行政
-        </div>
+        <judicial-title title="行政"></judicial-title>
         <div class="outer-administrative-page">
             <div class="administrative-page-left">
                 <div class="left-top">
@@ -157,6 +154,7 @@
 	import { mapGetters, mapActions } from 'vuex';
 	import ECharts                    from 'echarts';
 	import BjMap                      from '@/components/common/map/index';
+	import JudicialTitle from '@/components/judicial-case/judicial-case-title';
 	import * as services              from './service/index';
 	import { triggerMixin }           from '@/components/mixin/trigger';
 	import {
@@ -745,6 +743,7 @@
 		mixins    : [triggerMixin],
 		components: {
 			BjMap,
+			JudicialTitle,
 		},
 	}
 </script>

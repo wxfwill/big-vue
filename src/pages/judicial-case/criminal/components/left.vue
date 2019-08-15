@@ -153,14 +153,14 @@
 			},
 			loadAcceptCaseChart(chartData) {
 				this.caseStatistics.setOption({
-					color : ['#FBBA18', '#1BC85D', '#009FE8', '#2CDDC0'],
-                    tooltip: {
-						trigger: 'item',
-						axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-							type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+					color  : ['#FBBA18', '#1BC85D', '#009FE8', '#2CDDC0'],
+					tooltip: {
+						trigger    : 'item',
+						axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+							type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
 						}
-                    },
-					legend: {
+					},
+					legend : {
 						data     : acceptCaseChartConfig.map(i => i.name),
 						bottom   : 30,
 						width    : 300,
@@ -179,7 +179,7 @@
 							}
 						},
 					},
-					series: [{
+					series : [{
 						name     : '受理案件数',
 						type     : 'pie',
 						radius   : '55%',
@@ -440,7 +440,8 @@
 						}
 					},
 					grid   : {
-						top: '15%',
+						top         : '15%',
+						left        : 40,
 						containLabel: true,
 					},
 					legend : {

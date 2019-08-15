@@ -124,22 +124,19 @@ export const dutyCrimeConfig = [{
 	name: '省部级副职',
 }];
 
-// 判决生效人数
+// 捕后判决人数
 export const judgmentChartConfig = [{
 	id  : 'pj1',
-	name: '无罪',
+	name: '判无罪',
 }, {
 	id  : 'pj2',
-	name: '3年以下',
+	name: '判轻刑',
 }, {
 	id  : 'pj3',
-	name: '3-10年',
+	name: '判10年以上',
 }, {
 	id  : 'pj4',
-	name: '10年以上',
-}, {
-	id  : 'pj5',
-	name: '无期',
+	name: '判无期',
 }];
 
 // 受教育状况

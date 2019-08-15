@@ -1,9 +1,6 @@
 <template>
     <div>
-        <div class="judicial-case-title">
-            <i class="title-dot"></i>
-            未检
-        </div>
+        <judicial-title title="未检"></judicial-title>
         <div class="outer-inspect-page fraze-grid">
             <div class="inspect-page-left">
                 <div class="left-top">
@@ -154,6 +151,7 @@
 	import * as services                       from './service/index';
 	import { triggerMixin, mapComponentState } from '@/components/mixin/trigger';
 	import PieGroup                            from '@/components/common/pie-group';
+	import JudicialTitle from '@/components/judicial-case/judicial-case-title';
 	import {
 		verifyTriggerState, fillZero,
 		convertData, textFormatter,
@@ -666,6 +664,7 @@
 			TrendChart,
 			BoxHead,
 			PieGroup,
+			JudicialTitle,
 		},
 	}
 </script>

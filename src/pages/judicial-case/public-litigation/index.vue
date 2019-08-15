@@ -1,9 +1,6 @@
 <template>
     <div>
-        <div class="judicial-case-title">
-            <i class="title-dot"></i>
-            公益诉讼
-        </div>
+        <judicial-title title="公益诉讼"></judicial-title>
         <div class="outer-lawsuit-page fraze-grid">
             <div class="lawsuit-page-left">
                 <div class="left-top">
@@ -156,6 +153,7 @@
 	import BjMap                                           from '@/components/common/map/index';
 	import { triggerMixin, mapComponentState }             from '@/components/mixin/trigger';
 	import YearSelector                                    from '@/components/common/year-selector';
+	import JudicialTitle from '@/components/judicial-case/judicial-case-title';
 	import {
 		mapTooltipConfig, territoryConfig,
 		CHART_COLOR_LIST, statisticsConfig,
@@ -1004,6 +1002,7 @@
 		components: {
 			BjMap,
 			YearSelector,
+			JudicialTitle,
 		},
 	}
 </script>
