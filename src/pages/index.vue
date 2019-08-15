@@ -11,7 +11,7 @@
                 {{item.name}}
             </li>
         </ul>
-        <div class="time-box" :style="{ left: `${ dateTimeLeftOffset }px` }">
+        <div class="time-box" v-if="nowRoute !== 'judicialCase'" :style="{ left: `${ dateTimeLeftOffset }px` }">
             <date-time></date-time>
         </div>
         <div class="container">
@@ -54,11 +54,6 @@
 				buttonColorImg: require('@/public/img/home/home_07.png'),
 				clock         : null,
 				week          : null,
-			}
-		},
-		computed  : {
-			dateTimeLeftOffset() {
-				return this.nowRoute === 'judicialCase' ? 210 : 0;
 			}
 		},
 		created() {
