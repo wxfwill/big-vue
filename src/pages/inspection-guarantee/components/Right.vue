@@ -597,7 +597,7 @@
 					tooltip: {
 							trigger: 'item',
 							formatter:function(params){
-										return ''+params.name+'\n金额:'+params.value+'\n数量'+params.data.num+''
+										return ''+params.name+'\n金额:'+params.value+'\n数量'+params.data.num+'\n占比'+params.percent+''
 									},
 							itemStyle:{
 								fontSize:'14'
@@ -660,7 +660,7 @@
 							label: {
 								normal: {
 									formatter:function(params){
-										return ''+params.name+'\n金额:'+params.value+'\n数量'+params.data.num+''
+										return ''+params.name+'\n金额:'+params.value+'\n数量'+params.data.num+'\n占比'+params.percent+''
 									}
 								}
 							},
@@ -767,7 +767,6 @@
 				this.activeIndex=num
 			},
 			hidefn(val){
-				alert(val)
 				this[val]=false
 			},
 			formatNum(money){
@@ -1357,11 +1356,11 @@
 					width:1045px;
 					height: 1080px;
 					position:absolute;
-					right:0;
+					right:-100px;
 					top:-110px;
 					background:rgba(0,0,0,0.31);
 					border:1px solid rgb(138, 250, 233);
-					z-index:99999;
+					z-index:9999999999;
 					.left{
 						width:97px;
 						height:1080px;
