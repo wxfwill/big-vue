@@ -1,9 +1,6 @@
 <template>
     <div>
-        <div class="judicial-case-title">
-            <i class="title-dot"></i>
-            刑事
-        </div>
+        <judicial-title title="刑事"></judicial-title>
         <div class="outer-criminal-page">
             <left-box></left-box>
             <center-box></center-box>
@@ -16,7 +13,7 @@
 	import LeftBox                    from './components/left';
 	import CenterBox                  from './components/center';
 	import RightBox                   from './components/right';
-
+    import JudicialTitle from '@/components/judicial-case/judicial-case-title';
 	export default {
 		methods   : {
 			...mapActions('judicial', ['setSelectTime']),
@@ -29,6 +26,7 @@
 			LeftBox,
 			CenterBox,
 			RightBox,
+			JudicialTitle,
 		},
 	}
 </script>

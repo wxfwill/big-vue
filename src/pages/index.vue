@@ -11,7 +11,7 @@
                 {{item.name}}
             </li>
         </ul>
-        <div class="time-box" v-if="nowRoute !== 'judicialCase'" :style="{ left: `${ dateTimeLeftOffset }px` }">
+        <div class="time-box" v-if="nowRoute !== 'judicialCase'">
             <date-time></date-time>
         </div>
         <div class="container">
@@ -92,39 +92,6 @@
             width: 100%;
             margin-top: 49px;
         }
-        .popupBox {
-            z-index: 55;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 3840px;
-            height: 1080px;
-            background: rgba(0, 0, 0, 0.7);
-            .backColor {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 2490px;
-                height: 520px;
-                background-color: #062355;
-                border: 1px solid #12E9E9;
-                position: relative;
-                margin-left: 660px;
-                margin-top: 275px;
-                .popupClose {
-                    text-align: center;
-                    line-height: 38px;
-                    position: absolute;
-                    right: 50px;
-                    top: 35px;
-                    width: 38px;
-                    height: 38px;
-                    background: rgba(18, 175, 171, 1);
-                    border-radius: 50%;
-                    color: #FFFFFF;
-                }
-            }
-        }
         .bjt {
             position: absolute;
             left: 0;
@@ -160,7 +127,9 @@
             }
         }
         .time-box {
-            position: relative;
+            position: absolute;
+            left: 40px;
+            top: 50px;
         }
     }
 </style>

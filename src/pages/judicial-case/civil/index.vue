@@ -1,9 +1,6 @@
 <template>
     <div>
-        <div class="judicial-case-title">
-            <i class="title-dot"></i>
-            民事
-        </div>
+        <judicial-title title="民事"></judicial-title>
         <div class="outer-civil-page">
             <div class="civil-page-left">
                 <div class="business-box">
@@ -160,6 +157,7 @@
 	import { verifyTriggerState, fillZero, textFormatter }                      from '@/utlis/helper';
 	import BjMap                                                                from '@/components/common/map/index';
 	import { businessConfigList, effectiveSupervisionConfig, mapTooltipConfig } from './constant';
+	import JudicialTitle from '@/components/judicial-case/judicial-case-title';
 
 	export default {
 		data() {
@@ -888,6 +886,7 @@
 		},
 		components: {
 			BjMap,
+			JudicialTitle,
 		},
 	}
 </script>

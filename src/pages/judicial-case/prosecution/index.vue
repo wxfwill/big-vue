@@ -1,9 +1,6 @@
 <template>
     <div>
-        <div class="judicial-case-title">
-            <i class="title-dot"></i>
-            控申
-        </div>
+        <judicial-title title="控申"></judicial-title>
         <div class="outer-control-page fraze-grid">
             <div class="control-page-left">
                 <div class="left-left">
@@ -123,27 +120,27 @@
                     </div>
                     <div class="salvation-box">
                         <box-head title="司法救助案件办理情况"></box-head>
-                        <table class="salvation-table">
-                            <tr>
-                                <td>受理件数</td>
-                                <td>同意救助件数</td>
-                                <td>同意救助人数</td>
-                                <td>发放救助件数</td>
-                                <td>发放救助人数</td>
-                            </tr>
-                            <tr>
-                                <td>{{ judicialReparation.sljs || 0 }}</td>
-                                <td>{{ judicialReparation.tyjzjs || 0 }}</td>
-                                <td>{{ judicialReparation.tyjzrs || 0 }}</td>
-                                <td>{{ judicialReparation.ffjzjs || 0 }}</td>
-                                <td>{{ judicialReparation.ffjzrs || 0 }}</td>
-                            </tr>
-                        </table>
                         <ul class="salvation-list">
-                            <li>生效任判决数</li>
-                            <li>{{ judicialReparation.sxrpjrs || 0 }}</li>
-                            <li>发放救助金额</li>
-                            <li>{{ judicialReparation.ffjzje || 0 }}</li>
+                            <li>
+                                <p>受理件数</p>
+                                <p class="number-text">{{ judicialReparation.sljs || 0 }}</p>
+                            </li>
+                            <li>
+                                <p>同意救助件数</p>
+                                <p class="number-text">{{ judicialReparation.tyjzjs || 0 }}</p>
+                                <p>同意救助人数</p>
+                                <p class="number-text">{{ judicialReparation.tyjzrs || 0 }}</p>
+                            </li>
+                            <li>
+                                <p>发放救助件数</p>
+                                <p class="number-text">{{ judicialReparation.ffjzjs || 0 }}</p>
+                                <p>发放救助人数</p>
+                                <p class="number-text">{{ judicialReparation.ffjzrs || 0 }}</p>
+                            </li>
+                            <li>
+                                <p>发放救助金额</p>
+                                <p class="number-text">{{ judicialReparation.ffjzje || 0 }}</p>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -166,6 +163,7 @@
 	import ECharts                             from 'echarts';
 	import BoxHead                             from '@/components/common/box-head';
 	import BjMap                               from '@/components/common/map/index';
+	import JudicialTitle from '@/components/judicial-case/judicial-case-title';
 	import PenalGauge                          from '@/components/common/penal-gauge';
 	import * as services                       from './service/index';
 	import { triggerMixin, mapComponentState } from '@/components/mixin/trigger';
@@ -680,6 +678,7 @@
 			BjMap,
 			PenalGauge,
 			WaterPolo,
+			JudicialTitle,
 		},
 	}
 </script>
@@ -899,61 +898,23 @@
                     }
                 }
                 .salvation-box {
-                    height: 300px;
-                    .salvation-list, .salvation-table {
-                        width: 520px;
-                        margin: 30px auto 0;
-                    }
-                    .salvation-table {
-                        height: 87px;
-                        border-collapse: collapse;
-                        &, td, th {
-                            border: 1px solid #12F2FF;
-                            vertical-align: center;
-                            text-align: center;
-                        }
-                        th {
-                            font-size: 14px;
-                            color: rgba(255, 255, 255, 1);
-                        }
-                        td {
-                            font-size: 16px;
-                            color: #12F2FF;
+                    .salvation-list{
+                        width: 500px;
+                        margin: 20px auto 0;
+                        li{
+                            display: flex;
+                            p{
+                                flex: 1;
+                                height: 60px;
+                                line-height: 60px;
+                                text-align: center;
+                                color: #ffffff;
+                                border:1px solid rgba(65,243,253,1);
+                            }
                         }
                     }
-                    .salvation-list {
-                        display: flex;
-                        li:first-child {
-                            border-left: 1px solid #12F2FF;
-                        }
-                        li:nth-child(1), li:nth-child(3) {
-                            font-size: 14px;
-                            font-family: MicrosoftYaHei;
-                            color: rgba(255, 255, 255, 1);
-                            width: 110px;
-                        }
-                        li:nth-child(2) {
-                            font-size: 18px;
-                            font-family: PingFangSC-Semibold;
-                            font-weight: 600;
-                            color: rgba(255, 224, 19, 1);
-                            width: 162px;
-                        }
-                        li:nth-child(4) {
-                            font-size: 18px;
-                            font-family: PingFangSC-Semibold;
-                            font-weight: 600;
-                            color: rgba(255, 105, 14, 1);
-                            width: 162px;
-                        }
-                        li {
-                            border-top: 1px solid #12F2FF;
-                            border-right: 1px solid #12F2FF;
-                            border-bottom: 1px solid #12F2FF;
-                            height: 119px;
-                            text-align: center;
-                            line-height: 119px;
-                        }
+                    .number-text{
+                        color: #FF690E !important;
                     }
                 }
             }
