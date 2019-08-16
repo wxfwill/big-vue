@@ -56,7 +56,7 @@
 
                 },
                 trendsProcuratorialBusinessList:[],
-                nationalProvinceRankList:sortChartConfig,
+                nationalProvinceRankList:[],
                 assetsSituation:{},
                 theProcuratorialAgency:{},
                 prosecutionPersonnel:{},
