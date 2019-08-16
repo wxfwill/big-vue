@@ -459,6 +459,7 @@
 			this.jobChart   = ECharts.init(this.$refs.jobChart);
 			this.serviceChart= ECharts.init(this.$refs.serviceChart);
 			this.serviceChart.on('pieselectchanged', (params)=>{
+				console.log(params.name);
 				if(params.name=="技术装备"){
 					this.righttableIsshow=true
 				}else if(params.name=="综合保障装备"){
@@ -700,6 +701,7 @@
 				let str2='政府购买服务聘用人员：'+data.zfgmfwpyry+'人'+ '<br/>' +'其他聘用人员：'+data.qtpyry+'人'+ '<br/>' +'临时工：'+data.lsg+'人';
 				this.agencyChart.setOption({
 					tooltip: {
+						hoverAnimation:false,
 						trigger: 'item',
 						// formatter: "{b}:{c}",
 						formatter:function(data){
@@ -714,10 +716,13 @@
 							}
 						},
 						itemStyle:{
-							fontSize:'14'
+							fontSize:'14',
+							hoverAnimation:false,
 						},
-						extraCssText:'background:#03C4C3'
+						extraCssText:'background:#03C4C3',
+						hoverAnimation:false,
 					},
+					hoverAnimation:false,
 					color:['#009FE8'],
 					series: [
 						{
@@ -725,9 +730,13 @@
 							radius: ['35%', '45%'],
 							center:['50%','70%'],
 							avoidLabelOverlap: false,
+							hoverAnimation:false,
+							legendHoverLink:false,
 							label: {
 								normal: {
 									show: true,
+									padding:-8,
+									hoveyirAnimation:false,
 									formatter:'{b}\n{c}人',
 									rich:{
 										b:{
@@ -746,12 +755,14 @@
 							},
 							labelLine: {
 								normal: {
-									show: false
+									show: false,
+									length2:'1'
 								}
 							},
 							itemStyle:{
 								borderWidth:5, //设置border的宽度有多大
 								borderColor:'#020309',
+								hoverAnimation:false,
 							},
 							data:[
 								{value:data.rybzs, name:'人员编制数'},
@@ -1359,7 +1370,7 @@
 					top:-110px;
 					background:rgba(0,0,0,0.31);
 					border:1px solid rgb(138, 250, 233);
-					z-index:9999999999;
+					z-index:9999999999999;
 					.left{
 						width:97px;
 						height:1080px;
@@ -1369,7 +1380,6 @@
 						text-align:center;
 						color:#09F4FF;
 						font-size:65px;
-                        cursor: pointer;
 					}
 					.right{
 						float:left;
