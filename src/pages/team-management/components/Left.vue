@@ -23,13 +23,13 @@
                                 <div class="to-leave">
                                     <div class="to-block">
                                         <p class="white-text">
-                                            <img :src="jobToIcon" class="to-leave-icon"/>当年入院
+                                            当年入院
                                         </p>
                                         <span class="to-num">{{ incumbency.dnry }}</span>
                                     </div>
                                     <div class="leave-block">
                                         <p class="white-text">
-                                            <img :src="jobOutIcon" class="to-leave-icon"/>当年离院
+                                            当年离院
                                         </p>
                                         <span class="leave-num">{{ incumbency.dnly }}</span>
                                     </div>
@@ -64,7 +64,7 @@
                     <div class="education-box">
                         <div class="chart-box-title">
                             <span class="chart-label-dot"></span>
-                            <i>教育情况</i>
+                            <i>教育培训情况</i>
                         </div>
                         <div class="education-situation-box">
                             <h1 class="sub-title">检察人员参与培训情况</h1>
@@ -89,7 +89,7 @@
             </div>
         </div>
         <el-dialog
-                title="各级监察机关人员现状"
+                title="各级检察机关人员现状"
                 :visible.sync="dialogVisible"
                 @opened="loadDialogChart"
                 @closed="closeBarDialog"
@@ -618,11 +618,7 @@
                                 text-align: center;
                                 margin-top: -5px;
                                 margin-left: 27px;
-                                .to-leave-icon {
-                                    width: 15px;
-                                    height: 13px;
-                                    vertical-align: middle;
-                                }
+
                                 .leave-block {
                                     margin-left: 14px;
                                 }

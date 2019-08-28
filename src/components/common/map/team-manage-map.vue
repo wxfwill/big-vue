@@ -482,7 +482,7 @@
 						top   : '10%',
 						left  : '3%',
 						right : '3%',
-						bottom: '20%',
+						bottom: 40,
 					},
 					calculable: true,
 					xAxis     : {
@@ -499,7 +499,7 @@
 							color     : '#00ffff',
 							fontSize  : 21,
 							lineHeight: 25,
-							interval  : 0
+							interval  : 0,
 						}
 					},
 					yAxis     : {
@@ -525,12 +525,12 @@
 			convertMapChartData(chartData) {
 				const xAxisList  = [],
 					  legendData = [],
-					  seriesData = this.topDataConfig.map((i, index) => {
+					  seriesData = this.mapLineLegend.map((i, index) => {
 						  legendData.push(i.name);
 						  return {
 							  name       : i.name,
 							  type       : 'bar',
-							  barMaxWidth: 40,
+							  barMaxWidth: 30,
 							  data       : chartData.map(j => {
 								  if(index === 0) {
 									  xAxisList.push(j.name);
@@ -575,6 +575,9 @@
 			topDataConfig     : {
 				default: () => []
 			},
+			mapLineLegend     : {
+				default: () => []
+			},
 			topData           : {},
 			lev               : {},
 			code              : {},
@@ -589,7 +592,7 @@
 						numIsshow    : true,
 						leftIsshow   : true,
 						tooltipIsshow: true,
-						jianwu:true
+						jianwu       : true
 					}
 				}
 			},

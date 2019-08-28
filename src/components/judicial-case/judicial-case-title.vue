@@ -39,7 +39,7 @@
             vertical-align: middle;
         }
         .judicial-text {
-            margin-right: 10px;
+            margin-right: 20px;
         }
     }
 </style>

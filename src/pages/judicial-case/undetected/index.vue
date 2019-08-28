@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="percent-box">
-                    <box-head title="未成年人犯罪占总犯罪百分率"></box-head>
+                    <box-head title="未成年人犯罪百分率"></box-head>
                     <p class="more-text-btn" @click="setDialogVisible('未成年人犯罪占总犯罪百分比')">更多>></p>
                     <div ref="percentChart" class="percent-chart"></div>
                 </div>
@@ -65,8 +65,7 @@
             <div class="inspect-page-right">
                 <div class="right-left">
                     <div class="charge-box">
-                        <box-head title="罪名占比统计"></box-head>
-                        <p class="title">起诉罪名TOP10</p>
+                        <box-head title="起诉罪名Top  10"></box-head>
                         <p class="label">占比 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;件数</p>
                         <ul class="charge-content">
                             <li v-for="(item,index) in prosecuteList" :key="index">
@@ -82,7 +81,7 @@
                         </ul>
                     </div>
                     <div class="crime-age-box">
-                        <box-head title="作案年龄分布"></box-head>
+                        <box-head title="作案时年龄分布"></box-head>
                         <div class="crime-age-content">
                             <pie-group
                                     :pieConfigList="ageCrimeList"
@@ -95,7 +94,7 @@
                 </div>
                 <div class="right-right">
                     <div class="no-catch-box">
-                        <box-head title="不捕数"></box-head>
+                        <box-head title="不捕情况"></box-head>
                         <ul class="no-catch-list">
                             <li v-for="item in noCatchList" :key="item.id">
                                 <p class="nci-name">{{ item.name }}</p>
@@ -107,10 +106,10 @@
                         </ul>
                     </div>
                     <div class="sexual-assault-box">
-                        <box-head title="近几年未成年人性侵犯罪趋势"></box-head>
+                        <box-head title="未成年人性侵犯罪趋势"></box-head>
                         <div class="sexual-assault-chart">
                             <trend-chart
-                                    name="近几年未成年人性侵犯罪趋势"
+                                    name="未成年人性侵犯罪趋势"
                                     :dataIPS="crimeInvadingPropertyList"
                                     :chartConfig="{ axisKey: 'year', seriesKey: 'qcs' }"
                             ></trend-chart>
@@ -754,19 +753,13 @@
                 .charge-box {
                     position: relative;
                     height: 581px;
-                    .title {
-                        margin-top: 13px;
-                        text-align: center;
-                        font-size: 20px;
-                        font-family: MicrosoftYaHei;
-                        color: rgba(30, 239, 247, 1);
-                    }
                     .label {
                         display: flex;
                         justify-content: flex-end;
                         font-size: 12px;
                         color: rgba(0, 255, 255, 1);
                         margin-right: 50px;
+                        margin-top: 20px;
                     }
                     .charge-content {
                         width: 500px;

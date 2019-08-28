@@ -7,7 +7,7 @@
                     <div class="index-box">
                         <div class="chart-box-title">
                             <span class="chart-label-dot"></span>
-                            <i>民事公益诉讼基本情况</i>
+                            <i>民事公益诉讼情况</i>
                         </div>
                         <div class="index-content">
                             <ul class="index-block">
@@ -29,7 +29,7 @@
                     <div class="index-box">
                         <div class="chart-box-title">
                             <span class="chart-label-dot"></span>
-                            <i>行政公益诉讼基本情况</i>
+                            <i>行政公益诉讼情况</i>
                         </div>
                         <div class="index-content">
                             <ul class="index-block">
@@ -90,7 +90,7 @@
                     <div class="nature-box">
                         <div class="chart-box-title">
                             <span class="chart-label-dot"></span>
-                            <i>案件性质分类</i>
+                            <i>案件性质情况</i>
                         </div>
                         <div ref="natureChart" class="nature-chart"></div>
                     </div>
@@ -105,7 +105,7 @@
                 <div class="statistics-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>受理数分类情况统计</i>
+                        <i>受理案件情况</i>
                     </div>
                     <div ref="statisticsChart" class="statistics-chart"></div>
                 </div>

@@ -1,27 +1,27 @@
 export const businessConfigList = [{
-	id   : 'cnzsjcjys',
-	name : '采纳再审检察建议数',
-	color: '#fbbb19',
-}, {
-	id   : 'ksajgbycps',
-	name : '抗诉案件改变原裁判数',
-	color: '#37e3c4',
+	id   : 'tczsjcjys',
+	name : '提出再审检察建议数',
+	color: '#f79821',
 }, {
 	id   : 'spjdcnjcjys',
 	name : '审判监督采纳检察建议数',
 	color: '#00bff1',
-}, {
+},  {
 	id   : 'tckss',
 	name : '提出抗诉数',
 	color: '#2fdb81',
+}, {
+	id   : 'cnzsjcjys',
+	name : '采纳再审检察建议数',
+	color: '#fbbb19',
 }, {
 	id   : 'zxjdcnjcjys',
 	name : '执行监督采纳检察建议数',
 	color: '#25c1e6'
 }, {
-	id   : 'tczsjcjys',
-	name : '提出再审检察建议数',
-	color: '#f79821',
+	id   : 'ksajgbycps',
+	name : '抗诉案件改变原裁判数',
+	color: '#37e3c4',
 }];
 
 export const effectiveSupervisionConfig = [{

@@ -16,6 +16,7 @@
 		},
 		methods: {
 			loadGaugeChart() {
+				const { rate, value, color, name } = this.chartConfig;
 				this.myChart.setOption({
 					series: [{
 						"name"      : "指标",
@@ -27,7 +28,7 @@
 						"axisLine"  : {
 							"lineStyle": {
 								"width": 20, //柱子的宽度
-								"color": [[0.5, this.chartConfig.color], [1, "rgba(69, 93, 127, .5)"]] //0.298是百分比的比例值（小数），还有对应两个颜色值
+								"color": [[rate/100, color], [1, "rgba(69, 93, 127, .5)"]] //0.298是百分比的比例值（小数），还有对应两个颜色值
 							}
 						},
 						"axisTick"  : {
@@ -50,8 +51,9 @@
 							"show": false
 						},
 						"data"      : [{
-							"value": 50,
-							"name" : `${this.chartConfig.value}`
+							"value": rate,
+							name,
+                            data: value
 						}]
 					}]
 				});
@@ -59,7 +61,7 @@
 		},
 		props  : ['chartConfig'],
 		watch  : {
-			chartData() {
+			chartConfig() {
 				this.loadGaugeChart();
 			}
 		}
@@ -81,6 +83,8 @@
             padding: 4px 4px 2px;
             background:rgba(20,26,62,1);
             margin: 7px 0 5px;
+            font-size: 18px;
+            font-weight: 600;
         }
         .chart-label {
             text-align: center;

@@ -46,28 +46,28 @@ export const examineChartConfig = [{
 // 公诉各类业务受理情况
 export const prosecutionBusinessConfig = [{
 	id  : 'scqsaj',
-	name: '审查起诉案件'
+	name: '审查起诉'
 }, {
 	id  : 'bsfyaj',
-	name: '不诉复议案件'
+	name: '不诉复议'
 }, {
 	id  : 'esssaj',
-	name: '二审上诉案件'
+	name: '二审上诉'
 }, {
 	id  : 'bsfhaj',
-	name: '不诉复核案件'
+	name: '不诉复核'
 }, {
 	id  : 'esksaj',
-	name: '二审抗诉案件'
+	name: '二审抗诉'
 }, {
 	id  : 'sjksaj',
-	name: '审监抗诉案件'
+	name: '审监抗诉'
 }, {
 	id  : 'fhcsaj',
-	name: '发回重审案件'
+	name: '发回重审'
 }, {
 	id  : 'bascaj',
-	name: '备案审查案件'
+	name: '备案审查'
 }];
 
 // 地图tooltip内容

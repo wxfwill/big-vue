@@ -34,7 +34,7 @@ export function uuid() {
  *  验证是否需要更新
  * */
 export function verifyTriggerState(trigger = [], oldState, newState) {
-	return trigger.some(i => oldState[i] !== newState[i]);
+	return trigger.some(i => oldState[i] != newState[i]);
 }
 
 /**

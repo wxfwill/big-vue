@@ -15,6 +15,7 @@
                         leftIsshow:true,
                         tooltipIsshow:false
 				    }'
+                    :mapLineLegend="mapLineLegend"
             ></bj-map>
         </div>
         <div class="sortbox">
@@ -41,13 +42,14 @@
 	import * as services                        from '../service';
 	import { verifyTriggerState, fillZero }     from '@/utlis/helper';
 	import BjMap                                from '@/components/common/map/team-manage-map';
-	import { mapTableConfig, mapTooltipConfig } from '../constant/index';
+	import { mapTableConfig, mapTooltipConfig, mapLineLegend } from '../constant/index';
 
 	export default {
 		data() {
 			return {
 				mapTooltipConfig,
 				mapTableConfig,
+				mapLineLegend,
 				numIsshow    : false,
 				dialogVisible: false,
 				dialogContext: {

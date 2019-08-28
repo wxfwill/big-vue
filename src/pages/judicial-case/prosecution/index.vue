@@ -5,7 +5,7 @@
             <div class="control-page-left">
                 <div class="left-left">
                     <div class="sue-box">
-                        <box-head title="控告受结案数"></box-head>
+                        <box-head title="控告案件情况"></box-head>
                         <ul class="box-content">
                             <li v-for="item in chargeJunctionList" :key="item.id">
                                 <penal-gauge :chartConfig="item"></penal-gauge>
@@ -13,7 +13,7 @@
                         </ul>
                     </div>
                     <div class="appeal-box">
-                        <box-head title="申诉受结案数"></box-head>
+                        <box-head title="申诉案件情况"></box-head>
                         <ul class="box-content">
                             <li v-for="item in appealJunctionList" :key="item.id" :style="{ background: item.color }">
                                 <p>{{ item.value || 0 }}</p>
@@ -35,7 +35,7 @@
                                 <td>{{ performanceAnalysis.kg_ajbjts }}</td>
                             </tr>
                             <tr>
-                                <td>申控</td>
+                                <td>申诉</td>
                                 <td>{{ performanceAnalysis.ss_bjs }}</td>
                                 <td>{{ performanceAnalysis.ss_ajbjts }}</td>
                             </tr>
@@ -80,7 +80,7 @@
             </div>
             <div class="control-page-right">
                 <div class="petition-letter-box">
-                    <box-head title="信访"></box-head>
+                    <box-head title="信访案件分流办理情况"></box-head>
                     <p class="more-text-btn" @click="setDialogVisible('受理信访分流办理件数')">更多>></p>
                     <p class="pl-list-title">受理信访分流办理件数</p>
                     <ul class="pl-list">
@@ -101,7 +101,7 @@
                         <div ref="reportCluesChart" class="rc-chart"></div>
                     </div>
                     <div class="compensate-box">
-                        <box-head title="国家赔偿案件办理情况"></box-head>
+                        <box-head title="国家赔偿案件"></box-head>
                         <ul class="compensate-list">
                             <li v-for="item in compensationCaseList" :key="item.id">
                                 <water-polo
@@ -514,21 +514,6 @@
 						symbolMargin: 1,
 						z           : 10,
 						data        : seriesData
-					}, {
-						type          : 'pictorialBar',
-						name          : '举报线索',
-						symbol        : '',
-						z             : 10,
-						symbolPosition: 'end',
-						symbolOffset  : [0, '-120%'],
-						symbolSize    : [32, 6],
-						data          : seriesData,
-						itemStyle     : {
-							color: '#F7931E'
-						},
-						tooltip       : {
-							show: false
-						}
 					}]
 				})
 			},

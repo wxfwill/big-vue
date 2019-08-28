@@ -82,7 +82,7 @@
                 <div class="sort-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>民事案件各案由数量及占比排序</i>
+                        <i>民事各类案件情况</i>
                     </div>
                     <div class="table-head">
                         <span>占比</span>
@@ -132,7 +132,7 @@
                 <div class="civil-trend">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>受理案件趋势分析</i>
+                        <i>受理趋势</i>
                     </div>
                     <div ref="civilTrendChart" class="civil-trend-chart"></div>
                 </div>

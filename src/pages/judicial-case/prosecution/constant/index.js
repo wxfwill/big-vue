@@ -68,28 +68,28 @@ export const mapTooltipConfig = [{
 
 export const compensationCaseConfig = [{
 	id   : 'gjpcsljs',
-	title: '国家赔偿受理件数',
+	title: '受理数',
 	ratio: 'gjpcsljs_zb',
 	icon : 'water-polo',
 	col1 : '#009FE8',
 	col2 : '#2FE0BE',
 }, {
-	id   : 'jdgypcjs',
-	title: '决定给予赔偿件数',
-	ratio: 'jdgypcjs_zb',
-	icon : 'water-polo',
-	col1 : '#FBBA18',
-	col2 : '#EDC121',
-}, {
 	id   : 'lajs',
-	title: '立案件数',
+	title: '立案数',
 	ratio: 'lajs_zb',
 	icon : 'water-polo',
 	col1 : '#1BC85D',
 	col2 : '#31DCFF',
 }, {
+	id   : 'jdgypcjs',
+	title: '决定给予赔偿数',
+	ratio: 'jdgypcjs_zb',
+	icon : 'water-polo',
+	col1 : '#FBBA18',
+	col2 : '#EDC121',
+}, {
 	id   : 'jdzfpcje',
-	title: '决定支付赔偿金额',
+	title: '支付金额',
 	ratio: 'jdzfpcje_zb',
 	icon : 'pay-icon'
 }];

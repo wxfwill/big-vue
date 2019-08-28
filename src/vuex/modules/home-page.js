@@ -4,7 +4,7 @@ import { getNowYear, getNowDate }              from "@/utlis/helper";
 const defaultState = {
 	startDate: `${getNowYear()}-01-01`,
 	endDate  : getNowDate(),
-	code     : 100000,
+	code     : "100000",
 	lev      : 1,
 	name     : '全国检察机关'
 };

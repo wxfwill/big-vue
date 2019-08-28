@@ -175,6 +175,14 @@ const mapTableConfig = [{
 	name: '支出',
 }];
 
+export const mapLineLegend = [{
+	id  : 'sr',
+	name: '收入',
+}, {
+	id  : 'zc',
+	name: '支出',
+}];
+
 //资产情况
 const propertyConfig                  = {
 	'total': [{

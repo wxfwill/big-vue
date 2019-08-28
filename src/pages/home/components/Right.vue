@@ -6,54 +6,16 @@
                 <!-- 行政 -->
                 <div class="civil-box">
                     <box-head title="民事"></box-head>
-                    <ul class="civil-content">
-                        <li v-for="(item,index) in civilList" :key="index">
-                            <p class="civil-num">
-                                {{ item.value }}
-                            </p>
-                            <p class="civil-text">{{item.title}}</p>
-                        </li>
-                    </ul>
+                    <div class="civil-chart" ref="civilChart"></div>
                 </div>
                 <div class="administration">
                     <box-head title="行政"></box-head>
-                    <div class="admin-box">
-                        <water-polo
-                                v-for="item in xzList"
-                                :key="item.id"
-                                :chartConfig="item"
-                        ></water-polo>
-                    </div>
+                    <div class="admin-chart" ref="adminChart"></div>
                 </div>
                 <!-- 公益诉讼 -->
                 <div class="lawsuitBox">
                     <box-head title="公益诉讼"></box-head>
                     <div ref="lawsuitContent" class="law-chart"></div>
-                </div>
-                <div class="bottomPortion">
-                    <!-- 人均办结数 -->
-                    <div class="perCapita">
-                        <box-head title="人均办结数"></box-head>
-                        <ul class="dom-line-chart">
-                            <li v-for="item in rjList" :key="item.id">
-                                <i>{{item.title}}</i>
-                                <span :style="{ width:`${item.lineLen || 0}px` }"></span>
-                                {{item.value}}
-                            </li>
-                        </ul>
-
-                    </div>
-                    <!-- 案均办办理天数 -->
-                    <div class="fileCapita">
-                        <box-head title="案均办理天数"></box-head>
-                        <ul class="dom-line-chart">
-                            <li v-for="item in ajList" :key="item.id">
-                                <i>{{item.title}}</i>
-                                <span :style="{width:`${item.lineLen || 0}px`}"></span>
-                                {{item.value}}
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
             <div class="right-view">
@@ -95,8 +57,7 @@
 <script>
 	import ECharts                               from 'echarts';
 	import { mapGetters }                        from 'vuex';
-	import { verifyTriggerState, numberInteger } from '@/utlis/helper';
-	import WaterPolo                             from '@/components/common/water-polo.vue'
+	import { verifyTriggerState, numberInteger, textFormatter } from '@/utlis/helper';
 	import * as services                         from '../service';
 	import BoxHead                               from '@/components/common/box-head';
 	import {
@@ -105,6 +66,7 @@
 		troopAdministrationConfig,
 		ageStructureConfig,
 		eduDegreeConfig,
+		civilConfig,
 	}                                            from '../constant';
 
 	export default {
@@ -112,40 +74,6 @@
 			return {
 				analyzeItemBg   : require('@/public/img/home/analyze-item-bg.png'),
 				bookrackImg     : require('@/public/img/home/bookrack.png'),
-				civilList       : [
-					{
-						id   : 'ms_sljs',
-						title: '受理件数',
-						value: 0
-					}, {
-						id   : 'ms_bjjs',
-						title: '办结件数',
-						value: 0
-					}, {
-						id   : 'ms_tckss',
-						title: '提出抗诉数',
-						value: 0
-					}, {
-						id   : 'ms_ksajgbyps',
-						title: '抗诉案件改变原判数',
-						value: 0
-					}, {
-						id   : 'ms_tczsjcjys',
-						title: '提出再审检察建议数',
-						value: 0
-					}, {
-						id   : 'ms_cnzsjcjys',
-						title: '采纳再审检察建议数',
-						value: 0
-					}, {
-						id   : 'ms_spjdcnjcjys',
-						title: '审判监督采纳检察建议数',
-						value: 0
-					}, {
-						id   : 'ms_zxjdcnjcjys',
-						title: '执行监督采纳检察建议数',
-						value: 0
-					}],
 				xzList          : [],
 				rjList          : [
 					{
@@ -203,7 +131,7 @@
 					id  : 'vaccineCase',
 					name: '涉疫苗案件分析报告',
 					url : 'http://jczc.gj.pro:10080'
-				}]]
+				}]],
 			};
 		},
 		computed  : {
@@ -218,12 +146,14 @@
 			this.oldTriggerState               = params;
 			this.publicInterestLitigationChart = ECharts.init(this.$refs.lawsuitContent);
 			this.dougBoxChart                  = ECharts.init(this.$refs.dougBox);
+			this.civilChart                    = ECharts.init(this.$refs.civilChart);
+			this.adminChart                    = ECharts.init(this.$refs.adminChart);
 
 			this.requestCivilData(params);
 			this.requestAdministration(params);
 			this.requestPublicInterestLitigation(params);
 			this.requestTroopAdministration({
-				name : this.mapName
+				name: this.mapName
 			});
 
 			// 实证分析监听窗口
@@ -239,7 +169,7 @@
 				this.requestAdministration(params);
 				this.requestPublicInterestLitigation(params);
 				this.requestTroopAdministration({
-					name : this.mapName
+					name: this.mapName
 				});
 			}
 		},
@@ -247,10 +177,7 @@
 			async requestCivilData(params) {
 				const res = await services.getCivilCase(params);
 				if(res.code === 200) {
-					this.civilList = this.civilList.map(i => ({
-						...i,
-						value: res.data[i.id]
-					}))
+					this.loadCivilChart(res.data);
 				} else {
 					this.$message.error(res.msg);
 				}
@@ -258,11 +185,7 @@
 			async requestAdministration(params) {
 				const res = await services.getAdministration(params);
 				if(res.code === 200) {
-					this.xzList = administrativeConfig.map(i => ({
-						...i,
-						value: res.data[i.id],
-						rate : res.data[i.rateId],
-					}));
+					this.loadAdministrationChart(res.data);
 				} else {
 					this.$message.error(res.msg);
 				}
@@ -328,10 +251,161 @@
 					this.$message.error(res.msg);
 				}
 			},
+
+			// 民事
+			loadCivilChart(chartData) {
+				this.civilChart.setOption({
+					tooltip   : {
+						trigger  : 'item',
+						formatter: "{b} : {c} ({d}%)"
+					},
+					calculable: true,
+					xAxis     : {
+						max      : 10,
+						show     : false,
+						splitLine: {
+							show: false
+						}
+					},
+					yAxis     : {
+						max      : 10,
+						show     : false,
+						splitLine: {
+							show: false
+						}
+					},
+					series    : civilConfig.map((i, index) => {
+						let positionX  = 0;
+						const isEven   = !(index % 2),
+							firCirName = isEven ? i.title : civilConfig[index - 1].title,
+							secCirName = isEven ? civilConfig[index + 1].title : i.title,
+							firCirVal  = isEven ? chartData[i.id] : chartData[civilConfig[index - 1].id],
+							secCirVal  = isEven ? chartData[civilConfig[index + 1].id] : chartData[i.id];
+						switch(~~(index / 2)) {
+							case 0:
+								positionX = 15;
+								break;
+							case 1:
+								positionX = 47;
+								break;
+							case 2:
+								positionX = 80;
+								break;
+						}
+						return {
+							type  : 'pie',
+							radius: isEven ? [70, 100] : [80, 90],
+							center: [`${positionX}%`, '50%'],
+							data  : [
+								{
+									name     : firCirName,
+									value    : firCirVal,
+									itemStyle: {
+										color: isEven ? i.color : "transparent",
+									},
+									label    : {
+										show     : isEven,
+										position : 'center',
+										formatter: (params) => `${textFormatter(params.name, 5)} \n\n ${params.value}`,
+                                        color: '#dfdfdf',
+                                        fontSize: 16,
+									},
+									labelLine: {
+										show    : false,
+										emphasis: {
+											show: false
+										}
+									},
+								},
+								{
+									value    : secCirVal,
+									name     : secCirName,
+									itemStyle: {
+										color: isEven ? 'transparent' : i.color
+									},
+									label    : {
+										show: false
+									},
+									labelLine: {
+										show    : false,
+										emphasis: {
+											show: false
+										}
+									}
+								}
+							]
+						}
+					})
+				})
+			},
+
+			// 行政
+			loadAdministrationChart(chartData) {
+				this.adminChart.setOption({
+					tooltip: {
+						trigger  : 'axis',
+						formatter: '{b}：{c}'
+					},
+					grid   : {
+						top   : 30,
+						bottom: 40,
+					},
+					xAxis  : {
+						data     : administrativeConfig.map(i => i.title),
+						axisTick : { show: false },
+						axisLine : { show: false },
+						axisLabel: {
+							interval : 0,
+							textStyle: {
+								color: '#fff'
+							}
+						}
+					},
+					yAxis  : {
+						splitLine: { show: false },
+						axisTick : { show: false },
+						axisLine : { show: false },
+						axisLabel: { show: false }
+					},
+					series : [{
+						name          : '',
+						type          : 'pictorialBar',
+						barCategoryGap: '-80%',
+						// symbol: 'path://M0,10 L10,10 L5,0 L0,10 z',
+						symbol        : 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
+						label         : {
+							show    : true,
+							color   : '#fff',
+							position: 'top',
+						},
+						data          : administrativeConfig.map(i => ({
+							value    : chartData[i.id],
+							name     : i.title,
+							itemStyle: {
+								color: new ECharts.graphic.LinearGradient(
+									0, 0, 0, 1,
+									[
+										{
+											offset: 0,
+											color: i.col1
+										},
+										{
+											offset: 1,
+											color: i.col2
+										}
+									]
+								)
+							}
+						})),
+						z             : 10
+					}]
+				})
+			},
+
 			// 公益诉讼
 			gyssHandle(administrationLitigation, civilLitigation) {
 				this.publicInterestLitigationChart.setOption({
-					color  : ['rgba(11,229,241,1)', 'rgba(12,153,247,1)'],
+					color  : ['rgba(12,153,247,1)', 'rgba(11,229,241,1)'],
 					grid   : {
 						top         : 20,
 						left        : '3%',
@@ -407,24 +481,6 @@
 					},
 					series : [
 						{
-							name    : '民事公益诉讼',
-							type    : 'bar',
-							color   : 'rgba(11,229,241,1)',
-							stack   : 'pubLit',
-							barWidth: 40,
-							label   : {
-								normal: {
-									show     : true,
-									position : 'inside',
-									textStyle: {
-										color   : "#ffffff",
-										fontSize: 10
-									}
-								}
-							},
-							data    : publicInterestLitigationConfig[0].data.map(i => civilLitigation[i.id]),
-						},
-						{
 							name    : '行政公益诉讼',
 							type    : 'bar',
 							color   : 'rgba(12,153,247,1)',
@@ -440,8 +496,26 @@
 									}
 								}
 							},
-							data    : publicInterestLitigationConfig[1].data.map(i => administrationLitigation[i.id]),
+							data    : publicInterestLitigationConfig[0].data.map(i => administrationLitigation[i.id]),
 						},
+						{
+							name    : '民事公益诉讼',
+							type    : 'bar',
+							color   : 'rgba(11,229,241,1)',
+							stack   : 'pubLit',
+							barWidth: 40,
+							label   : {
+								normal: {
+									show     : true,
+									position : 'inside',
+									textStyle: {
+										color   : "#ffffff",
+										fontSize: 10
+									}
+								}
+							},
+							data    : publicInterestLitigationConfig[1].data.map(i => civilLitigation[i.id]),
+						}
 					]
 				});
 			},
@@ -449,16 +523,16 @@
 			dougHandle(chartData) {
 				const { rAxisData, seriesData } = this.convertTeamChartData(chartData);
 				this.dougBoxChart.setOption({
-					tooltip : {
-						trigger : 'item',
+					tooltip: {
+						trigger    : 'item',
 						axisPointer: {
 							type: 'shadow'
 						},
-						formatter(params){
+						formatter(params) {
 							return `${params.marker} ${params.name} <br />      ${params.data.number}人  ${params.value}%`
 						}
 					},
-					legend: {
+					legend : {
 						left     : 'center',
 						bottom   : '20',
 						itemGap  : 20,
@@ -467,7 +541,7 @@
 							color: '#fff'
 						}
 					},
-					series: seriesData.map((item, index) => {
+					series : seriesData.map((item, index) => {
 						let radius = [],
 							color  = [];
 						switch(index) {
@@ -499,7 +573,7 @@
 								show: false
 							},
 							labelLine     : {
-								show     : false,
+								show: false,
 							},
 							data          : [{
 								value    : item.value,
@@ -860,7 +934,6 @@
 
 		},
 		components: {
-			WaterPolo,
 			BoxHead
 		},
 	}
@@ -875,67 +948,25 @@
             .left-view {
                 .civil-box {
                     width: 739px;
-                    .civil-content {
-                        padding: 20px 0 10px;
-                        display: flex;
-                        flex-wrap: wrap;
-                        justify-content: space-around;
-                        color: #FFFFFF;
-                        li {
-                            text-align: center;
-                            margin-bottom: 10px;
-                            margin-right: 20px;
-                            .civil-num {
-                                height: 27px;
-                                display: inline-block;
-                                border: 1px solid #009FE8;
-                                background-size: 100% 100%;
-                                font-size: 14px;
-                                border-radius: 10px;
-                                padding: 4px 10px 2px;
-                            }
-                            .civil-text {
-                                width: 130px;
-                                margin-top: 11px;
-                                font-size: 18px;
-                                text-align: center;
-                            }
-                            &:nth-of-type(7), &:nth-of-type(8) {
-                                margin-bottom: 0;
-                            }
-                        }
+                    .civil-chart {
+                        width: 100%;
+                        height: 250px;
+                        margin: 20px 0;
                     }
                 }
                 .administration {
                     width: 739px;
-                    .admin-box {
-                        display: flex;
-                        justify-content: space-around;
-                        margin: 20px auto;
+                    .admin-chart {
+                        width: 100%;
+                        height: 280px;
                     }
                 }
                 .lawsuitBox {
                     width: 739px;
-                    .lawsuit-label {
-                        display: flex;
-                        align-items: center;
-                        i {
-                            margin: 0 0 0 10px;
-                            font-size: 24px;
-                            color: rgba(255, 255, 255, 1);
-                            line-height: 29px;
-                        }
-                        .lawsuit {
-                            width: 13px;
-                            height: 13px;
-                            border-radius: 50%;
-                            background: rgba(0, 178, 226, 1);
-                        }
-                    }
                     .law-chart {
                         width: 650px;
-                        height: 170px;
-                        margin: 20px auto 10px;
+                        height: 180px;
+                        margin: 20px auto;
                     }
                 }
                 .bottomPortion {
@@ -949,7 +980,7 @@
                             margin: 12px 0 0 10px;
                             font-size: 16px;
                             font-family: MicrosoftYaHei;
-                            color: rgba(43, 191, 226, 1);
+                            color: #d0d0d0;
                             line-height: 21px;
                             i {
                                 display: inline-block;

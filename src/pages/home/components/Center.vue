@@ -13,6 +13,8 @@
                 :leftData='{ sls, bjs, zbs }'
                 :extraCityColumn="mapTableConfig"
                 highProcuratorCode="100000"
+                :nowSelectDate="getSelectDateSection"
+                :mapLineLegend="mapLineLegend"
         ></bj-map>
     </div>
 </template>
@@ -25,7 +27,8 @@
 	import { mapComponentState }               from '@/components/mixin/trigger';
 	import {
 		mapTooltipConfig, topDataConfig,
-		leftSideList, mapTableConfig
+		leftSideList, mapTableConfig,
+		mapLineLegend,
     } from '../constant';
 
 	export default {
@@ -42,6 +45,7 @@
 			this.topDataConfig = topDataConfig;
 			this.leftSideList = leftSideList;
 			this.mapTableConfig = mapTableConfig;
+			this.mapLineLegend = mapLineLegend;
 		},
 		mounted() {
 			const params         = { ...this.getSelectDateSection, ...this.getMapCode };

@@ -12,16 +12,17 @@
                 <!-- 控申 -->
                 <div class="control-box">
                     <box-head title="控申"></box-head>
-                    <ul>
-                        <li v-for="item in ksList" :key="item.id">
-                            <p class="control-title">{{item.title}}</p>
-                            <p class="control-number">{{ item.num || 0 }}</p>
-                        </li>
-                    </ul>
+                    <div class="control-content">
+                        <div class="control-chart" ref="controlChart"></div>
+                        <div class="special-text">
+                            <p>初查移送立案件数</p>
+                            <p>{{ controlEvokeNum }}</p>
+                        </div>
+                    </div>
                 </div>
                 <!--受理案件趋势分析-->
                 <div class="accept-box">
-                    <box-head title="受理案件趋势分析"></box-head>
+                    <box-head title="案件受理趋势"></box-head>
                     <year-selector
                             :selectYear="acceptCaseSelectYear"
                             :handleChange="changeAcceptCaseYear"
@@ -32,7 +33,7 @@
         </div>
         <div class="left-right">
             <div class="criminal-box">
-                <box-head title="刑事案件概览"></box-head>
+                <box-head title="刑事"></box-head>
                 <div class="overview-box">
                     <penal-gauge v-for="(item, index) in xsList" :key="index" :chartConfig="item"></penal-gauge>
                 </div>
@@ -73,7 +74,8 @@
 				xsList              : [],
 				ksList              : prosecutionConfig,
 				topList             : [],
-				acceptCaseSelectYear: new Date().getFullYear()
+				acceptCaseSelectYear: new Date().getFullYear(),
+				controlEvokeNum     : 0,
 			}
 		},
 		computed  : {
@@ -88,6 +90,8 @@
 			this.oldTriggerState      = params;
 			this.undetectedChart      = ECharts.init(this.$refs.wjBox);
 			this.trendStatisticsChart = ECharts.init(this.$refs.qstjContent);
+			this.controlChart         = ECharts.init(this.$refs.controlChart);
+
 			this.loadXSData(params);
 			this.loadWJData(params);
 			this.loadProsecution(params);
@@ -127,10 +131,13 @@
 			async loadXSData(params) {
 				const res = await services.getCriminalCase(params);
 				if(res.code === 200) {
+					const data = res.data;
+
 					this.xsList = criminalCaseConfig.map(i => {
 						return {
 							...i,
-							value: Number(res.data[i.id]),
+							rate : ~~data[i.rateId],
+							value: Number(data[i.id]),
 						};
 					});
 				} else {
@@ -140,14 +147,132 @@
 			async loadProsecution(params) {
 				const res = await services.getProsecution(params);
 				if(res.code === 200) {
-					this.ksList = this.ksList.map(i => ({
-						...i,
-						num: res.data[i.id]
-					}));
+					this.controlEvokeNum = res.data.ks_ccyslajs;
+					this.loadProsecutionChart(res.data);
 				} else {
 					this.$message.error(res.msg);
 				}
 			},
+			loadProsecutionChart(chartData) {
+				const appealData   = [],
+					  prosecutData = [],
+					  xAxisData    = ['受理数', '办结数', '在办数'],
+					  color        = ['rgb(251, 186, 24)', 'rgb(11, 193, 244)', 'rgb(255, 108, 64)'];
+				
+				prosecutionConfig.forEach((i, index) => {
+					switch(~~(index / 3)) {
+						case 0:
+							appealData.push({
+								name     : xAxisData[index % 3],
+								value    : chartData[i.id],
+								itemStyle: {
+									color: color[index % 3]
+								}
+							});
+							break;
+						case 1:
+							prosecutData.push({
+								name     : xAxisData[index % 3],
+								value    : chartData[i.id],
+								itemStyle: {
+									color: color[index % 3]
+								}
+							});
+							break;
+					}
+				});
+				this.controlChart.setOption({
+					title  : [{
+						top      : 10,
+						left     : 10,
+						text     : '控告',
+						textStyle: {
+							fontSize: 14,
+							color   : '#dfdfdf'
+						}
+					}, {
+						text     : '申诉',
+						left     : '60%',
+						top      : 10,
+						textStyle: {
+							fontSize: 14,
+							color   : '#dfdfdf'
+						}
+					}],
+					tooltip: {
+						trigger    : 'axis',
+						axisPointer: {
+							type: 'shadow'
+						},
+						formatter  : (params) => {
+							const data = params[0];
+							return `${data.seriesName} <br /> ${data.marker}  ${data.name}: ${data.value}`;
+						}
+					},
+					grid   : [
+						{
+							width : '37%',
+							left  : 70,
+							top   : 50,
+							bottom: 20,
+						},
+						{
+							width : '37%',
+							right : 10,
+							top   : 50,
+							bottom: 20,
+						}],
+					xAxis  : [{
+						type     : 'category',
+						axisTick : { show: false },
+						axisLabel: {
+							color   : '#dfdfdf',
+							interval: 0,
+						},
+						gridIndex: 0,
+						data     : xAxisData
+					}, {
+						type     : 'category',
+						gridIndex: 1,
+						axisLabel: {
+							color   : '#dfdfdf',
+							interval: 0,
+						},
+						data     : xAxisData
+					}],
+					yAxis  : [{
+						type     : 'value',
+						axisLabel: {
+							color: '#dfdfdf',
+						},
+						gridIndex: 0,
+					}, {
+						type     : 'value',
+						axisLabel: {
+							color: '#dfdfdf',
+						},
+						gridIndex: 1
+					}],
+					series : [{
+						name      : '控告',
+						type      : 'bar',
+						barWidth  : 30,
+						data      : appealData,
+						xAxisIndex: 0,
+						yAxisIndex: 0,
+						barGap    : 0
+					}, {
+						name      : '申诉',
+						type      : 'bar',
+						barWidth  : 30,
+						data      : prosecutData,
+						xAxisIndex: 1,
+						yAxisIndex: 1,
+						barGap    : 0
+					}]
+				})
+			},
+
 			async loadProsecutionChargeList(params) {
 				const res = await services.getProsecutionChargeList(params);
 				if(res.code === 200) {
@@ -194,7 +319,15 @@
 						top   : 38,
 						bottom: 20,
 					},
-					tooltip: {},
+					tooltip: {
+						trigger    : 'axis',
+						axisPointer: {
+							type: 'shadow',
+						},
+						formatter  : (params) => {
+							return `${params[0].axisValue}:${params[0].value}`;
+						}
+					},
 					legend : { show: false },
 					xAxis  : {
 						data     : xAxisData,
@@ -206,6 +339,7 @@
 						},
 						axisLabel: {
 							show     : true,
+							interval : 0,
 							textStyle: {
 								color: "#ffffff" //X轴文字颜色
 							}
@@ -472,33 +606,26 @@
                     width: 730px;
                     height: 230px;
                     margin-bottom: 20px;
-                    ul {
+                    .control-content {
+                        height: 190px;
                         display: flex;
-                        flex-wrap: wrap;
-                        justify-content: space-around;
-                        width: 650px;
-                        height: 170px;
-                        margin: 33px auto 0;
-                        li {
+                        align-items: center;
+                        .control-chart {
+                            width: 600px;
+                            flex: 1;
+                            height: 100%;
+                        }
+                        .special-text {
                             width: 130px;
+                            color: #FBBA18;
                             text-align: center;
-                            margin-right: 20px;
-                            .control-title {
-                                font-size: 16px;
-                                color: rgba(255, 255, 255, 1);
-                                line-height: 21px;
-                                margin-bottom: 10px;
-                            }
-                            .control-number {
-                                display: inline;
-                                padding: 0 15px;
-                                color: rgba(0, 159, 232, 1);
-                                border: 1px solid rgba(0, 159, 232, 1);
-                                border-radius: 12px;
-                                color: #dfdfdf;
+                            line-height: 30px;
+                            p:last-of-type {
+                                color: #ffffff;
                             }
                         }
                     }
+
                 }
                 .accept-box {
 

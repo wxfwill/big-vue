@@ -3,10 +3,7 @@
         <div class="left-left">
             <div class="left-group">
                 <div class="accept-total-box">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>受理案件数统计</i>
-                    </div>
+                    <box-head title="案件受理数"></box-head>
                     <p class="accept-sub-title">案件总数</p>
                     <ul class="case-num-block">
                         <li v-for="(item,index) in caseList" :key="index">{{item}}</li>
@@ -14,10 +11,7 @@
                     <div ref="caseStatistics" class="case-chart"></div>
                 </div>
                 <div class="examine-box">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>审查逮捕各类犯罪不捕情况</i>
-                    </div>
+                    <box-head title="审查逮捕情况"></box-head>
                     <ul class="examine-list">
                         <li><label>批准逮捕人数：</label><i>{{ examineData.pzdbrs }}</i></li>
                         <li><label>不批准逮捕人数：</label><i>{{ examineData.bpzdbrs }}</i></li>
@@ -27,80 +21,63 @@
                 </div>
             </div>
             <div class="fchc-box">
-                <div class="chart-box-title">
-                    <span class="chart-label-dot"></span>
-                    <i>受理案件增长率最快的省市</i>
-                </div>
+                <box-head title="受理案件增长率最快的省市"></box-head>
+                <p class='more-btn' @click="setDialogVisible('受理案件增长率最快的省市')">更多>></p>
                 <div class="fchc-chart" ref="fchcChart"></div>
-                <div class="picker-btn-group">
-                    <i class="fchc-btn fchc-icon el-icon-arrow-left" @click="fchcPageChange('sub')"></i>
-                    <p class="fchc-btn fchc-block pagination">{{ fchcPageNumber }} / {{ fchcPageTotal }}</p>
-                    <i class="fchc-btn fchc-icon el-icon-arrow-right" @click="fchcPageChange('add')"></i>
-                </div>
             </div>
         </div>
         <div class="left-right">
-            <div class="public-pro-status">
-                <div class="chart-box-title">
-                    <span class="chart-label-dot"></span>
-                    <i>公诉各类业务受理情况</i>
-                </div>
-                <div class="public-pro-info">
-                    <p><span>公诉各类业务办结合计（件）:</span> <span>{{ publicProInfo.gsglyebjhj }}</span></p>
-                    <p><span>公诉办结比例（%）：</span> <span>{{ publicProInfo.gsbjbl }}%</span></p>
-                </div>
-                <div class="public-pro-chart" ref="publicProChart"></div>
+            <div class="per-capita-box">
+                <box-head title="不起诉人数"></box-head>
+                <p class="more-text-btn" @click="setDialogVisible('不起诉人数')">更多>></p>
+                <div ref="perCapitaChart" class="per-capita-chart"></div>
             </div>
-            <div class="prosecute-box">
-                <div class="chart-box-title">
-                    <span class="chart-label-dot"></span>
-                    <i>起诉案件罪名数量及占比</i>
-                </div>
-                <ul class="prosecute-list">
-                    <li v-for="(item,index) in prosecutionCaseList" :key="index">
-                        <div class="prosecute-title">
-                            <i class="numberical" :style="{ backgroundColor: index < 3 ? '#FBBA18' : '#00BEDD' }">{{index+1}}</i>
-                            <span class="prosecute-text text-ellipsis" :title="item.qszm">{{item.qszm}}</span>
-                        </div>
-                        <p :class="{ 'top-three-color': index < 3, 'general-color' : index >= 3 }">
-                            <span class="number">{{item.qssl}}</span>
-                            <span class="ratio-text text-interval">{{item.qszm_zb}}%</span>
-                        </p>
-                    </li>
-                </ul>
+            <div class="case-average-box">
+                <box-head title="不捕人数"></box-head>
+                <p class="more-text-btn" @click="setDialogVisible('不捕人数')">更多>></p>
+                <div ref="caseAverageChart" style="width: 100%; height: 500px"></div>
             </div>
         </div>
         <span v-show="false">{{ mapCode }}</span>
         <span v-show="false">{{ dateSection }}</span>
+        <el-dialog
+                :title="dialogContext.name"
+                :visible.sync="dialogVisible"
+                @opened="loadDialogChart"
+                @closed="closeBarDialog"
+                width="90%">
+            <div class="per-dialog-chart" ref="dialogChart"></div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-	import { mapGetters, mapActions }                                               from 'vuex';
-	import ECharts                                                                  from 'echarts';
-	import * as services                                                            from '../service';
-	import { fillZero, verifyTriggerState, convertData, textFormatter }             from "@/utlis/helper";
-	import { acceptCaseChartConfig, prosecutionBusinessConfig, reviewArrestConfig } from '../constant';
+	import { mapGetters, mapActions }                                   from 'vuex';
+	import ECharts                                                      from 'echarts';
+	import * as services                                                from '../service';
+	import { fillZero, verifyTriggerState, convertData, textFormatter } from "@/utlis/helper";
+	import { acceptCaseChartConfig, reviewArrestConfig }                from '../constant';
+	import BoxHead                                                      from '@/components/common/box-head';
 
 	export default {
 		data() {
 			return {
-				caseTotal          : 0,
-				examineData        : {
+				caseTotal    : 0,
+				examineData  : {
 					pzdbrs : 0,
 					bpzdbrs: 0,
 					bbrs   : 0,
 				},
-				publicProInfo      : {
-					gsglyebjhj: 0,
-					gsbjbl    : 0,
+				dialogVisible: false,
+				dialogContext: {
+					name  : '',
+					idKey : '',
+					valKey: '',
+					data  : []
 				},
-				prosecutionCaseList: [],
-				fchcPageNumber     : 1,
-				fchcPageTotal      : 0,
 			}
 		},
-		computed: {
+		computed  : {
 			caseList() {
 				return `${fillZero(this.caseTotal, 4)}`.split('');
 			},
@@ -108,24 +85,28 @@
 			...mapGetters('judicial', ['dateSection']),
 		},
 		beforeCreate() {
-			this.trigger         = ['startdate', 'enddate', 'code', 'lev'];
-			this.oldTriggerState = {};
-			this.fchcList        = [];
+			this.trigger              = ['startdate', 'enddate', 'code', 'lev'];
+			this.oldTriggerState      = {};
+			this.fchcList             = [];
+			this.capitaSettlementList = [];      // 不起诉人数
+			this.averageHandCasesList = [];      // 不捕人数
+			this.dialogBarChart       = null;
 		},
 		mounted() {
-			const params         = { ...this.mapCode, ...this.dateSection };
-			this.oldTriggerState = params;
-			this.caseStatistics  = ECharts.init(this.$refs.caseStatistics);
-			this.examineChart    = ECharts.init(this.$refs.examineChart);
-			this.publicProChart  = ECharts.init(this.$refs.publicProChart);
-			this.fchcChart       = ECharts.init(this.$refs.fchcChart);
+			const params          = { ...this.mapCode, ...this.dateSection };
+			this.oldTriggerState  = params;
+			this.caseStatistics   = ECharts.init(this.$refs.caseStatistics);
+			this.examineChart     = ECharts.init(this.$refs.examineChart);
+			this.fchcChart        = ECharts.init(this.$refs.fchcChart);
+			this.perCapitaChart   = ECharts.init(this.$refs.perCapitaChart);
+			this.caseAverageChart = ECharts.init(this.$refs.caseAverageChart);
 
 			this.requestReviewArrestCount(params);
 			this.requestAcceptCase(params);
-			this.requestPublicProsecutionBusiness(params);
-			this.requestProsecutionCaseList(params);
 			this.requestReviewArrest(params);
 			this.requestFastHandleCaseCity(params);
+			this.requesterCapitaSettlementList(params);
+			this.requestAverageHandlingOfCasesList(params);
 		},
 		updated() {
 			const params = { ...this.mapCode, ...this.dateSection };
@@ -133,13 +114,13 @@
 				this.oldTriggerState = params;
 				this.requestReviewArrestCount(params);
 				this.requestAcceptCase(params);
-				this.requestPublicProsecutionBusiness(params);
-				this.requestProsecutionCaseList(params);
 				this.requestReviewArrest(params);
 				this.requestFastHandleCaseCity(params);
+				this.requesterCapitaSettlementList(params);
+				this.requestAverageHandlingOfCasesList(params);
 			}
 		},
-		methods : {
+		methods   : {
 			// 受理案件统计
 			async requestAcceptCase(params) {
 				const res = await services.getAcceptingCases(params);
@@ -288,38 +269,347 @@
 			async requestFastHandleCaseCity(params) {
 				const res = await services.getIncreaseRateOfAdmissibilityList(params);
 				if(res.code === 200) {
-					const itemNum       = 6,
-						  data          = res.data;
-					this.fchcPageNumber = 1;
-					this.fchcList       = data;
-					this.fchcPageTotal  = Math.ceil(data.length / itemNum);
-					this.loadFastHandleCaseCityChart(this.fchcPageNumber);
+					this.fchcList = res.data;
+					this.loadFastHandleCaseCityChart(res.data.slice(0, 6));
 				} else {
 					this.$message.error(res.msg);
 				}
 			},
 
-			fchcPageChange(type) {
-				switch(type) {
-					case 'add' : {
-						if(this.fchcPageNumber < this.fchcPageTotal) {
-							this.loadFastHandleCaseCityChart(++this.fchcPageNumber);
-						}
-					}
-						break;
-					case 'sub' : {
-						if(this.fchcPageNumber > 1) {
-							this.loadFastHandleCaseCityChart(--this.fchcPageNumber);
-						}
-					}
-						break;
+			//不起诉人数
+			async requesterCapitaSettlementList(params) {
+				const res = await services.getPerCapitaSettlementList(params);
+				if(res.code === 200) {
+					this.capitaSettlementList = res.data;
+					this.loadPerCapitaSettlementChart(res.data.slice(0, 6));
+				} else {
+					this.$message.error(res.msg);
 				}
 			},
+			loadPerCapitaSettlementChart(chartData) {
+				const { axisData, seriesData } = this.convertBarData(chartData, 'city_name', 'bqsrs');
+				this.perCapitaChart.setOption({
+					color  : ['#05C2E2'],
+					tooltip: {
+						show       : true,
+						trigger    : 'axis',
+						axisPointer: {
+							type: 'shadow'
+						}
+					},
+					grid   : {
+						top   : '5%',
+						left  : '15%',
+						right : '4%',
+						bottom: '25%',
+					},
+					xAxis  : {
+						type     : 'category',
+						data     : axisData,
+						axisLine : {
+							show     : true,
+							lineStyle: {
+								color: '#aaa'
+							}
+						},
+						axisTick : {
+							show: false,
+						},
+						axisLabel: {
+							color     : '#fff',
+							interval  : 0,
+							width     : 20,
+							fontSize  : 14,
+							lineHeight: 21,
+							fontFamily: 'PingFangSC-Regular',
+							formatter : (name) => textFormatter(name, 4),
+						},
+						splitLine: {
+							show: false,
+						},
+					},
+					yAxis  : {
+						type     : 'value',
+						axisLine : {
+							show: false,
+						},
+						axisTick : {
+							show: false,
+						},
+						axisLabel: {
+							color: '#fff'
+						},
+						splitLine: {
+							show     : true,
+							interval : 0,
+							lineStyle: {
+								color: 'rgba(49, 219, 232, .2)',
+							}
+						}
+					},
+					series : [
+						{
+							name    : '不起诉人数',
+							type    : 'bar',
+							barWidth: 22,
+							data    : seriesData,
+						}
+					]
+				})
+			},
 
-			loadFastHandleCaseCityChart(pageNumber) {
-				const sliceIndex = (pageNumber - 1) * 6,
-					  chartData  = this.fchcList.slice(sliceIndex, sliceIndex + 6),
-					  axisData   = [],
+			//不捕人数
+			async requestAverageHandlingOfCasesList(params) {
+				const res = await services.getAverageHandlingOfCasesList(params);
+				if(res.code === 200) {
+					this.averageHandCasesList = res.data;
+					this.loadAverageHandlingOfCasesChart(res.data.slice(0, 7));
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			loadAverageHandlingOfCasesChart(chartData) {
+
+				const { axisData, seriesData } = this.convertBarData(chartData, 'city_name', 'bbrs');
+				this.caseAverageChart.setOption({
+					tooltip: {
+						trigger    : 'axis',
+						axisPointer: {
+							type: 'line'
+						}
+					},
+					grid   : {
+						left  : '20%',
+						right : '2%',
+						bottom: '2%',
+						top   : "2%",
+					},
+					legend : {
+						show: false
+					},
+					xAxis  : {
+						type     : 'value',
+						show     : true,
+						splitLine: {
+							show: false
+						},
+						axisLine : {
+							show: false
+						},
+						axisLabel: {
+							show: false,
+						},
+						axisTick : {
+							show: false
+						},
+					},
+					yAxis  : {
+						type     : 'category',
+						data     : axisData,
+						inverse  : true,
+						axisLabel: {
+							textStyle: {
+								fontSize: 12,
+								color   : '#D5CBE8'
+							},
+							formatter: (name) => textFormatter(name, 4),
+						},
+						axisLine : {
+							lineStyle: {
+								color: '#C4C6CF'
+							}
+						},
+						axisTick : {
+							show: false
+						}
+					},
+					series : [
+						{
+							name     : '不捕人数',
+							type     : 'bar',
+							barWidth : 22,
+							data     : seriesData,
+							label    : {
+								"normal": {
+									"show"    : true,
+									"position": "insideRight",
+								}
+							},
+							itemStyle: {
+								normal  : {
+									color: new ECharts.graphic.LinearGradient(
+										0, 0, 0, 1,
+										[
+											{
+												offset: 0,
+												color: '#06B5D7'
+											},                   //柱图渐变色
+											{
+												offset: 0.5,
+												color: '#44C0C1'
+											},                 //柱图渐变色
+											{
+												offset: 1,
+												color: '#71C8B1'
+											},                   //柱图渐变色
+										]
+									)
+								},
+								emphasis: {
+									color: new ECharts.graphic.LinearGradient(
+										0, 0, 0, 1,
+										[
+											{
+												offset: 0,
+												color: '#71C8B1'
+											},                  //柱图高亮渐变色
+											{
+												offset: 0.7,
+												color: '#44C0C1'
+											},                //柱图高亮渐变色
+											{
+												offset: 1,
+												color: '#06B5D7'
+											}                   //柱图高亮渐变色
+										]
+									)
+								}
+							},
+						}
+					]
+				})
+			},
+
+			setDialogVisible(name) {
+				let data   = [],
+					idKey  = '',
+					valKey = '';
+				switch(name) {
+					case '不起诉人数' :
+						idKey  = 'city_name';
+						valKey = 'bqsrs';
+						data   = this.capitaSettlementList;
+						break;
+					case '不捕人数':
+						idKey  = 'city_name';
+						valKey = 'bbrs';
+						data   = this.averageHandCasesList;
+						break;
+					case '受理案件增长率最快的省市':
+						idKey  = 'csmc';
+						valKey = 'slajzcl';
+						data   = this.fchcList;
+						break;
+				}
+				this.dialogContext = {
+					name,
+					idKey,
+					valKey,
+					data
+				};
+
+				this.dialogVisible = true;
+			},
+			loadDialogChart() {
+				const { data: chartData, idKey, valKey } = this.dialogContext,
+					  { axisData, seriesData }           = this.convertBarData(chartData, idKey, valKey);
+				this.dialogBarChart                      = ECharts.init(this.$refs.dialogChart);
+
+				this.dialogBarChart.setOption({
+					tooltip   : {
+						show: false
+					},
+					legend    : {
+						show: false
+					},
+					grid      : {
+						top   : '5%',
+						left  : '5%',
+						right : '5%',
+						bottom: '20%',
+					},
+					calculable: true,
+					xAxis     : {
+						type     : 'category',
+						axisTick : { show: false },
+						data     : axisData,
+						axisLine : {
+							lineStyle: {
+								width: 2,
+								color: '#31DBE8'
+							}
+						},
+						axisLabel: {
+							color     : '#00ffff',
+							fontSize  : 21,
+							lineHeight: 25,
+							interval  : 0
+						}
+					},
+					yAxis     : {
+						type     : 'value',
+						axisLine : {
+							lineStyle: {
+								width: 2,
+								color: '#31DBE8'
+							}
+						},
+						splitLine: {
+							lineStyle: {
+								color: 'rgba(216,216,216,0.4)'
+							}
+						},
+						axisLabel: {
+							color: '#0ff',
+						},
+					},
+					series    : [
+						{
+							name       : '地区',
+							type       : 'bar',
+							data       : seriesData,
+							barMaxWidth: 40,
+							itemStyle  : {
+								normal: {
+									color: new ECharts.graphic.LinearGradient(0, 0, 0, 1, [{
+										offset: 0,
+										color : "#32EEEB"
+									}, {
+										offset: 1,
+										color : "#0379DB"
+									}])
+								}
+							},
+							label      : {
+								normal: {
+									"show"    : true,
+									"position": "top",
+									color     : '#00FFFF',
+								}
+							},
+						}
+					]
+				});
+			},
+			closeBarDialog() {
+				this.dialogBarChart && this.dialogBarChart.clear();
+			},
+			convertBarData(chartData = [], idKey, valKey) {
+				const axisData   = [],
+					  seriesData = chartData.map((i) => {
+						  axisData.push(i[idKey]);
+						  return {
+							  name : i[idKey],
+							  value: i[valKey],
+						  }
+					  });
+				return {
+					axisData,
+					seriesData
+				};
+			},
+			loadFastHandleCaseCityChart(chartData) {
+				const axisData   = [],
 					  seriesData = chartData.map(i => {
 						  axisData.push(i.csmc);
 						  return {
@@ -416,138 +706,10 @@
 				})
 			},
 
-			//公诉各类业务受理情况
-			async requestPublicProsecutionBusiness(params) {
-				const res = await services.getPublicProsecutionBusiness(params);
-				if(res.code === 200) {
-					const data         = res.data;
-					this.publicProInfo = {
-						gsglyebjhj: data.gsglyebjhj,
-						gsbjbl    : data.gsbjbl,
-					};
-					this.loadPublicProsecutionBusiness(data);
-				} else {
-					this.$message.error(res.msg);
-				}
-			},
-			loadPublicProsecutionBusiness(chartData) {
-				const { axisData, seriesData } = convertData(prosecutionBusinessConfig, chartData);
-				this.publicProChart.setOption({
-					tooltip: {
-						trigger    : 'axis',
-						axisPointer: {
-							type: 'shadow'
-						}
-					},
-					grid   : {
-						top         : '15%',
-						left        : 40,
-						containLabel: true,
-					},
-					legend : {
-						show: false,
-					},
-					xAxis  : {
-						data     : axisData,
-						axisTick : {
-							show: false,
-						},
-						axisLabel: {
-							interval  : 0,
-							width     : 20,
-							color     : '#31DBE8',
-							fontSize  : 14,
-							lineHeight: 21,
-							fontFamily: 'PingFangSC-Regular',
-							formatter : (name) => textFormatter(name, 3),
-						},
-						axisLine : {
-							lineStyle: {
-								type : 'solid',
-								color: '#fff',
-								width: 1,                                                //坐标线的宽度
-							}
-						},
-					},
-					yAxis  : {
-						splitLine: {
-							show     : true,
-							lineStyle: {
-								color: '#40A1EA',                                         //网格横线颜色
-								width: 1,
-								type : 'solid'
-							}
-						},
-						axisLabel: {
-							textStyle: {
-								color   : '#ddd',
-								fontSize: 14,
-							}
-						},
-						axisLine : {
-							show: false,
-						},
-					},
-					series : [{
-						name     : '公诉各类业务受理情况',
-						type     : 'bar',
-						barWidth : 30,
-						data     : seriesData,
-						itemStyle: {
-							normal  : {
-								color: new ECharts.graphic.LinearGradient(
-									0, 0, 0, 1,
-									[
-										{
-											offset: 0,
-											color : '#06B5D7'
-										},                   //柱图渐变色
-										{
-											offset: 0.5,
-											color : '#44C0C1'
-										},                 //柱图渐变色
-										{
-											offset: 1,
-											color : '#71C8B1'
-										},                   //柱图渐变色
-									]
-								)
-							},
-							emphasis: {
-								color: new ECharts.graphic.LinearGradient(
-									0, 0, 0, 1,
-									[
-										{
-											offset: 0,
-											color : '#71C8B1'
-										},                  //柱图高亮渐变色
-										{
-											offset: 0.7,
-											color : '#44C0C1'
-										},                //柱图高亮渐变色
-										{
-											offset: 1,
-											color : '#06B5D7'
-										}                   //柱图高亮渐变色
-									]
-								)
-							}
-						},
-					}]
-				})
-			},
-
-
-			// 起诉案件罪名数量及占比
-			async requestProsecutionCaseList(params) {
-				const res = await services.getProsecutionCaseList(params);
-				if(res.code === 200) {
-					this.prosecutionCaseList = res.data;
-				} else {
-					this.$message.error(res.msg);
-				}
-			}
 		},
+		components: {
+			BoxHead
+		}
 	}
 </script>
 
@@ -557,7 +719,7 @@
         height: 100%;
         .left-left {
             width: 739px;
-            margin-right: 20px;
+            margin-right: 10px;
             position: relative;
             .left-group {
                 width: 740px;
@@ -624,6 +786,7 @@
         }
         .fchc-box {
             width: 739px;
+            position: relative;
             .fchc-chart {
                 width: 100%;
                 height: 370px;
@@ -657,71 +820,15 @@
         }
         .left-right {
             width: 544px;
-            .public-pro-status {
-                width: 544px;
-                .public-pro-info {
-                    display: flex;
-                    justify-content: center;
-                    margin-top: 14px;
-                    p {
-                        margin-right: 20px;
-                        span {
-                            &:nth-of-type(1) {
-                                color: #31DBE8;
-                            }
-                            &:nth-of-type(2) {
-                                color: #FBBA18;
-                            }
-                        }
-                    }
-                }
-                .public-pro-chart {
-                    width: 540px;
-                    height: 300px;
-                    margin: 0 auto;
+            .per-capita-box {
+                .per-capita-chart {
+                    width: 100%;
+                    height: 275px;
                 }
             }
-            .prosecute-box {
-                position: relative;
-                width: 544px;
-                padding: 10px 0;
-                .prosecute-list {
-                    overflow: auto;
-                    padding-right: 40px;
-                    li {
-                        width: 91%;
-                        height: 50px;
-                        float: right;
-                        display: flex;
-                        align-items: center;
-                        justify-content: space-between;
-                        border-bottom: 1px dashed #00A0E9;
-                        .prosecute-title {
-                            color: #dfdfdf;
-                            .numberical {
-                                display: inline-block;
-                                width: 19px;
-                                height: 19px;
-                                margin-left: -25px;
-                                margin-right: 5px;
-                                text-align: center;
-                                line-height: 20px;
-                                border-radius: 50%;
-                                font-size: 0.286vw;
-                                color: #fff;
-                            }
-                            .prosecute-text {
-                                display: inline-block;
-                                width: 250px;
-                            }
-                        }
-                        p {
-                            color: #FBBA18;
-                        }
-                    }
-                }
-            }
-
+            /*.case-average-box {
+                width: 464px;
+            }*/
         }
     }
 </style>

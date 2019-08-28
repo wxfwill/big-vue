@@ -89,6 +89,17 @@ export const mapTableConfig = [{
 	name: '司法行政人员',
 }];
 
+export const mapLineLegend = [{
+	id  : 'yenjcg',
+	name: '员额检察官',
+}, {
+	id  : 'jcgzl',
+	name: '检察官助理',
+}, {
+	id  : 'sfxzry',
+	name: '司法行政人员',
+}];
+
 export const eduStructureConfig = [{
 	key : 'dxzk',
 	name: '大学专科'

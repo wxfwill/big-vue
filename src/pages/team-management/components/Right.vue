@@ -167,7 +167,7 @@
 						  {
 							  num  : ageDistribution.nl7,
 							  value: this.putOneDecimal(ageDistribution.nl7 / dataTotal),
-							  name : '60岁'
+							  name : '60岁以上'
 						  }, {
 							  num  : ageDistribution.nl6,
 							  value: this.putOneDecimal(ageDistribution.nl6 / dataTotal),

@@ -13,6 +13,7 @@
                 :leftData={}
                 :extraCityColumn="mapTableConfig"
                 highProcuratorCode="0001001"
+                :mapLineLegend="mapLineLegend"
         ></bj-map>
     </div>
 </template>
@@ -24,7 +25,8 @@
 	import {
 		mapTooltipConfig,
 		topDataConfig,
-		leftSideList, mapTableConfig
+		leftSideList, mapTableConfig,
+		mapLineLegend,
 	}                                       from '../constant/index';
 
 	export default {
@@ -35,6 +37,7 @@
 				topDataConfig,
 				leftSideList,
 				mapTableConfig,
+				mapLineLegend,
 			}
 		},
 		mounted() {

@@ -18,12 +18,12 @@
                 </li>
             </ul>
         </div>
-        <span
-                class="bg_img shrink3j"
-                @mouseover="mouseOver"
-                v-show="shrink"
-                :style="{backgroundImage:'url('+threeImg+')'}">
-        </span>
+        <div class="shrink3j"
+             @mouseover="mouseOver"
+             v-show="shrink"
+        >
+            <div class="shrink3j-img" :style="{backgroundImage:'url('+threeImg+')'}"></div>
+        </div>
         <router-view></router-view>
     </div>
 </template>
@@ -208,11 +208,23 @@
             }
         }
         .shrink3j {
-            width: 22px;
-            height: 44px;
             position: absolute;
-            top: 50%;
-            left: -32px;
+            top: 0;
+            left: -52px;
+            width: 22px;
+            height: 100%;
+            .shrink3j-img{
+                position: absolute;
+                top:50%;
+                transform: translate(0, -50%);
+                width: 35px;
+                height: 50px;
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: 100%;
+                cursor: pointer;
+            }
         }
+
     }
 </style>

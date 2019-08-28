@@ -14,10 +14,10 @@ export const getAgeDistributionOfCrime = async (data) => await request({
 	params: data
 });
 
-// 获取刑事:案均办理天数
+// 不捕人数
 export const getAverageHandlingOfCasesList = async (data) => await request({
 	method: 'get',
-	url   : '/api/v1.0/criminal/getAverageHandlingOfCasesList',
+	url   : '/api/v1.0/criminal/getCriminalNoCatchNumberList',
 	params: data
 });
 
@@ -57,10 +57,10 @@ export const getIncreaseRateOfChargesList = async (data) => await request({
 	params: data
 });
 
-// 获取刑事:人均办结数
+// 不起诉数
 export const getPerCapitaSettlementList = async (data) => await request({
 	method: 'get',
-	url   : '/api/v1.0/criminal/getPerCapitaSettlementList',
+	url   : '/api/v1.0/criminal/getNonProsecutionNumberList',
 	params: data
 });
 

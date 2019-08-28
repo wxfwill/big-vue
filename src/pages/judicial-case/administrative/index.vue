@@ -7,7 +7,7 @@
                     <div class="condition-box">
                         <div class="chart-box-title">
                             <span class="chart-label-dot"></span>
-                            <i>受理情况</i>
+                            <i>受理数</i>
                         </div>
                         <ul class="condition-list">
                             <li v-for="item in conditionList" :key="item.id">
@@ -45,7 +45,7 @@
                 <div class="tendency-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>受理案件趋势分析</i>
+                        <i>案件受理趋势</i>
                     </div>
                     <div ref="trendencyChart" class="tendency-chart"></div>
                 </div>
@@ -83,7 +83,7 @@
                     <div class="classify-box">
                         <div class="chart-box-title">
                             <span class="chart-label-dot"></span>
-                            <i>受理数分类情况统计</i>
+                            <i>受理案件情况</i>
                         </div>
                         <div ref="classifyChart" class="classify-chart"></div>
                     </div>
@@ -91,7 +91,7 @@
                 <div class="nature-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i> 案件性质 </i>
+                        <i>行政各类案件情况</i>
                     </div>
                     <div class="table-head">
                         <span>占比</span>

@@ -26,7 +26,7 @@
                 <div class="case-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>检察技术-案件分类分析</i>
+                        <i>检察技术-各类案件情况</i>
                     </div>
                     <div class="classify-box">
                         <water-polo
@@ -52,13 +52,14 @@
                         :leftData='checkCharterMapData'
                         :extraCityColumn="mapTableConfig"
                         highProcuratorCode="100000"
+                        :mapLineLegend="mapLineLegend"
                 ></bj-map>
             </div>
             <div class="procuratorial-page-right">
                 <div class="accept-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>检察技术-综合分析</i>
+                        <i>检察技术-各省受理案件情况</i>
                     </div>
                     <div>
                         <p class='more-btn' @click="setDialogVisible('综合分析')">更多>></p>
@@ -101,9 +102,9 @@ import { triggerMixin,mapComponentState } from '@/components/mixin/trigger';
 import {verifyTriggerState,textFormatter} from '@/utlis/helper'
 import BjMap                               from '@/components/common/map/team-manage-map';
 import {administrativeConfig,mapTooltipConfig, topDataConfig,
-	leftSideList, mapTableConfig} from "./constant/index";
-
-
+	leftSideList, mapTableConfig,
+	mapLineLegend
+} from "./constant/index";
 
 export default {
     components:{
@@ -135,6 +136,7 @@ export default {
 		this.topDataConfig = topDataConfig;
 		this.leftSideList = leftSideList;
 		this.mapTableConfig = mapTableConfig;
+		this.mapLineLegend = mapLineLegend;
     },
     mounted() {
         const params                = { ...this.mapCode, ...this.dateSection };

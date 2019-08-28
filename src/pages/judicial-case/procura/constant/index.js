@@ -145,6 +145,16 @@ export const leftSideList = [{
 	name: '未完成数',
 }];
 
+export const mapLineLegend = [{
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'wcs',
+	name: '完成数',
+}, {
+	id  : 'wwcs',
+	name: '未完成数',
+}];
 
 export const mapTableConfig = [{
 	id  : 'name',

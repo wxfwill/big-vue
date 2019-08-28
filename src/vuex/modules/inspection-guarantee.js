@@ -4,7 +4,7 @@ import { fillZero }                from "@/utlis/helper";
 const state     = {
 	startDate: '',
 	endDate  : '',
-	code     : 100000,
+	code     : "100000",
 	lev      : 1,
 };
 const mutations = {

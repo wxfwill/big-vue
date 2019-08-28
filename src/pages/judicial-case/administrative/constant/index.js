@@ -1,9 +1,9 @@
 export const conditionConfig = [{
 	id   : 'slajs',
-	title: '受理件数',
+	title: '受理数',
 }, {
 	id   : 'bjjs',
-	title: '办结件数',
+	title: '办结数',
 }, {
 	id     : 'bjl',
 	title  : '办结率',
