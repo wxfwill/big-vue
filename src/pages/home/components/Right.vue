@@ -55,11 +55,11 @@
 </template>
 
 <script>
-	import ECharts                               from 'echarts';
-	import { mapGetters }                        from 'vuex';
+	import ECharts                                              from 'echarts';
+	import { mapGetters }                                       from 'vuex';
 	import { verifyTriggerState, numberInteger, textFormatter } from '@/utlis/helper';
-	import * as services                         from '../service';
-	import BoxHead                               from '@/components/common/box-head';
+	import * as services                                        from '../service';
+	import BoxHead                                              from '@/components/common/box-head';
 	import {
 		administrativeConfig,
 		publicInterestLitigationConfig,
@@ -67,7 +67,7 @@
 		ageStructureConfig,
 		eduDegreeConfig,
 		civilConfig,
-	}                                            from '../constant';
+	}                                                           from '../constant';
 
 	export default {
 		data() {
@@ -257,7 +257,7 @@
 				this.civilChart.setOption({
 					tooltip   : {
 						trigger  : 'item',
-						formatter: "{b} : {c} ({d}%)"
+						formatter: "{b} : {c}"
 					},
 					calculable: true,
 					xAxis     : {
@@ -283,18 +283,18 @@
 							secCirVal  = isEven ? chartData[civilConfig[index + 1].id] : chartData[i.id];
 						switch(~~(index / 2)) {
 							case 0:
-								positionX = 15;
+								positionX = 20;
 								break;
 							case 1:
-								positionX = 47;
+								positionX = 53;
 								break;
 							case 2:
-								positionX = 80;
+								positionX = 84;
 								break;
 						}
 						return {
 							type  : 'pie',
-							radius: isEven ? [70, 100] : [80, 90],
+							radius: isEven ? [50, 80] : [60, 70],
 							center: [`${positionX}%`, '50%'],
 							data  : [
 								{
@@ -307,8 +307,8 @@
 										show     : isEven,
 										position : 'center',
 										formatter: (params) => `${textFormatter(params.name, 5)} \n\n ${params.value}`,
-                                        color: '#dfdfdf',
-                                        fontSize: 16,
+										color    : '#dfdfdf',
+										fontSize : 14,
 									},
 									labelLine: {
 										show    : false,
@@ -324,10 +324,19 @@
 										color: isEven ? 'transparent' : i.color
 									},
 									label    : {
-										show: false
+										show: !isEven,
+										formatter: (params) => `{b|${textFormatter(params.name, 5)}\n${params.value}}`,
+										rich     : {
+											b: {
+												color   : "#dfdfdf",
+												fontSize: 14,
+                                                align: 'center',
+											}
+										}
 									},
 									labelLine: {
-										show    : false,
+										show    : !isEven,
+										length  : 1,
 										emphasis: {
 											show: false
 										}
@@ -387,11 +396,11 @@
 									[
 										{
 											offset: 0,
-											color: i.col1
+											color : i.col1
 										},
 										{
 											offset: 1,
-											color: i.col2
+											color : i.col2
 										}
 									]
 								)

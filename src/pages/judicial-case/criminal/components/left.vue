@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="fchc-box">
-                <box-head title="受理案件增长率最快的省市"></box-head>
+                <box-head title="案件受理数(同比)"></box-head>
                 <p class='more-btn' @click="setDialogVisible('受理案件增长率最快的省市')">更多>></p>
                 <div class="fchc-chart" ref="fchcChart"></div>
             </div>

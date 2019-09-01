@@ -100,6 +100,7 @@
             </div>
         </div>
         <el-dialog
+                custom-class="data-dialog"
                 :title="nowAreaName"
                 :visible.sync="dialogVisible"
                 @opened="loadMapLineChart"

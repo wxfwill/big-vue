@@ -116,7 +116,7 @@
                         </div>
                     </div>
                     <div class="against-property-box">
-                        <box-head title="近几年未成年人侵财犯罪趋势"></box-head>
+                        <box-head title="未成年人侵财犯罪趋势"></box-head>
                         <div class="against-property-chart">
                             <trend-chart
                                     name="近几年未成年人侵财犯罪趋势"

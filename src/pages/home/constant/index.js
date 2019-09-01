@@ -77,11 +77,11 @@ export const criminalCaseConfig   = [{
 // 民事
 export const civilConfig = [{
 	id   : 'ms_sljs',
-	title: '受理件数',
+	title: '受理数',
 	color: '#005EFF',
 }, {
 	id   : 'ms_bjjs',
-	title: '办结件数',
+	title: '办结数',
 	color: '#4FB8FF',
 }, {
 	id   : 'ms_tckss',
@@ -89,7 +89,7 @@ export const civilConfig = [{
 	color: '#b6a2de',
 }, {
 	id   : 'ms_ksajgbyps',
-	title: '抗诉案件改变原判数',
+	title: '改变原判数',
 	color: '#59678c',
 }, {
 	id   : 'ms_tczsjcjys',
@@ -97,7 +97,7 @@ export const civilConfig = [{
 	color: '#07a2a4',
 }, {
 	id   : 'ms_cnzsjcjys',
-	title: '采纳再审检察建议数',
+	title: '采纳数',
 	color: '#a4d8c2',
 }/*, {
  id   : 'ms_spjdcnjcjys',

@@ -490,6 +490,7 @@
 					yAxis  : {
 						type     : 'category',
 						data     : axisData,
+						inverse  : true,
 						axisLabel: {
 							textStyle: {
 								fontSize: 12,

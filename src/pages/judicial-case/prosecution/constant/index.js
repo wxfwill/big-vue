@@ -5,11 +5,11 @@ export const chargeJunctionConfig = [{
 }, {
 	id   : 'kg_bjs',
 	name : '办结数',
-	color: '#FBBA18',
+	color: '#009FE8',
 }, {
 	id   : 'kg_zbs',
 	name : '在办数',
-	color: '#009FE8',
+	color: '#FBBA18',
 }];
 
 export const appealJunctionConfig = [{

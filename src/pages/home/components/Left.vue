@@ -12,13 +12,7 @@
                 <!-- 控申 -->
                 <div class="control-box">
                     <box-head title="控申"></box-head>
-                    <div class="control-content">
-                        <div class="control-chart" ref="controlChart"></div>
-                        <div class="special-text">
-                            <p>初查移送立案件数</p>
-                            <p>{{ controlEvokeNum }}</p>
-                        </div>
-                    </div>
+                    <div class="control-chart" ref="controlChart"></div>
                 </div>
                 <!--受理案件趋势分析-->
                 <div class="accept-box">
@@ -184,7 +178,7 @@
 				this.controlChart.setOption({
 					title  : [{
 						top      : 10,
-						left     : 10,
+						left     : 40,
 						text     : '控告',
 						textStyle: {
 							fontSize: 14,
@@ -192,7 +186,7 @@
 						}
 					}, {
 						text     : '申诉',
-						left     : '60%',
+						left     : '58%',
 						top      : 10,
 						textStyle: {
 							fontSize: 14,
@@ -606,29 +600,12 @@
                     width: 730px;
                     height: 230px;
                     margin-bottom: 20px;
-                    .control-content {
+                    .control-chart {
+                        width: 730px;
                         height: 190px;
-                        display: flex;
-                        align-items: center;
-                        .control-chart {
-                            width: 600px;
-                            flex: 1;
-                            height: 100%;
-                        }
-                        .special-text {
-                            width: 130px;
-                            color: #FBBA18;
-                            text-align: center;
-                            line-height: 30px;
-                            p:last-of-type {
-                                color: #ffffff;
-                            }
-                        }
                     }
-
                 }
                 .accept-box {
-
                     .accept-chart {
                         width: 700px;
                         height: 260px;

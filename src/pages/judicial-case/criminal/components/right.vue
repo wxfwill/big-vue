@@ -2,7 +2,7 @@
     <div class="criminal-page-right">
         <div class="right-left">
             <div class="increase-top">
-                <box-head title="罪名变化趋势"></box-head>
+                <box-head title=" 起诉罪名TOP10变化情况(同比)"></box-head>
                 <ul class="increase-content">
                     <li v-for="(item,index) in increaseTopTenList" :key="index">
                         <p class="increase-title text-ellipsis" :title="item.zm">{{ item.zm }}</p>

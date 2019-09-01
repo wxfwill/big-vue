@@ -28,7 +28,7 @@
 						"axisLine"  : {
 							"lineStyle": {
 								"width": 20, //柱子的宽度
-								"color": [[rate/100, color], [1, "rgba(69, 93, 127, .5)"]] //0.298是百分比的比例值（小数），还有对应两个颜色值
+								"color": [[(rate || 50)/100, color], [1, "rgba(69, 93, 127, .5)"]] //0.298是百分比的比例值（小数），还有对应两个颜色值
 							}
 						},
 						"axisTick"  : {
@@ -51,7 +51,7 @@
 							"show": false
 						},
 						"data"      : [{
-							"value": rate,
+							"value": rate ||50,
 							name,
                             data: value
 						}]

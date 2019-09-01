@@ -167,9 +167,9 @@ iframe {
       font-family: PingFangSC-Regular;
       color: rgba(255, 255, 255, 1);
       line-height: 50px;
-      &:after {
+      /*&:after {
         content: '数据统计表';
-      }
+      }*/
       &:before {
         position: absolute;
         left: 0;
@@ -193,7 +193,13 @@ iframe {
       }
     }
   }
-
+  &.data-dialog{
+    .el-dialog__title {
+      &:after {
+        content: '数据统计表';
+      }
+    }
+  }
 }
 .per-dialog-chart {
   width: 100%;

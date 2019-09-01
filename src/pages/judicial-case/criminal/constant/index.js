@@ -142,7 +142,7 @@ export const judgmentChartConfig = [{
 // 受教育状况
 export const educationLevelConfig = [{
 	id  : 'bxrs',
-	name: '不祥',
+	name: '不详',
 }, {
 	id  : 'czrs',
 	name: '初中',

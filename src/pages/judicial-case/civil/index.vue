@@ -132,7 +132,7 @@
                 <div class="civil-trend">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>受理趋势</i>
+                        <i>案件受理趋势</i>
                     </div>
                     <div ref="civilTrendChart" class="civil-trend-chart"></div>
                 </div>
@@ -442,6 +442,7 @@
 					yAxis  : {
 						type     : 'category',
 						data     : axisData,
+						inverse  : true,
 						axisLabel: {
 							textStyle: {
 								fontSize: 12,
