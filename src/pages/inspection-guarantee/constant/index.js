@@ -12,9 +12,6 @@ const incomeChartConfig   = [{
 	id  : 'jysr',
 	name: '经营收入',
 }, {
-	id  : 'fsdwsj',
-	name: '附属单位上缴',
-}, {
 	id  : 'qtsr',
 	name: '其他收入',
 }];

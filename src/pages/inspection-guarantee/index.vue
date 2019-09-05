@@ -1,5 +1,18 @@
 <template>
     <div class="outer-home-page">
+        <el-select
+                size="small"
+                class="date-select"
+                v-model="nowDate"
+                @change="handleSelectDate"
+                placeholder="请选择">
+            <el-option
+                    v-for="item in yearList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+            </el-option>
+        </el-select>
         <left-box
             ref='leftBox'
             :income=income
@@ -8,6 +21,7 @@
             :jingfeiqingkuang=jingfeiqingkuang
             :trendsProcuratorialBusinessList=trendsProcuratorialBusinessList
             :spendingDetail=spendingDetail
+            :nowDate="nowDate"
         >
         </left-box>
         <center-box
@@ -65,14 +79,26 @@
                 inspectionServiceEquipment:{},
                 inspectionServiceEquipmentDetails:{},
                 psGuaranteeMapList:[],
-                spendingDetail:{}
+                spendingDetail:{},
+				yearList : [{
+					value : 2018,
+                    label : '2018年'
+                }],
+				nowDate : 2018
             }
         },
         mounted(){
 			window.scrollTo(1200, 0);
         },
 		methods: {
+			handleSelectDate(){
+				this.getPSGuaranteeData({
+                    ...this.mapParams,
+					date: this.nowDate,
+				});
+            },
             async getPSGuaranteeData(params) {
+				this.mapParams = params;
 				const res = await services.getPSGuaranteeData(params);
 				if(res.code === 200) {
                     const data   = res.data;
@@ -123,9 +149,8 @@
                         this.inspectionServiceEquipmentDetails=data.inspectionServiceEquipmentDetails
                     }
                     //计财机构及人员情况
-                    this.financialInstitutions=data.financialInstitutions
+                    this.financialInstitutions=data.financialInstitutions;
                     this.psGuaranteeMapList = data.psGuaranteeMapList;
-                    this.$refs.centerBox.loadSortChart((data.nationalProvinceRankList || []).slice(0, 15));
 				} else {
 					// this.$message.error(res.msg);
 				}
@@ -143,5 +168,15 @@
     .outer-home-page{
         position: relative;
         width: 100%;
+        .date-select{
+            position: absolute;
+            top:-65px;
+            right: 38px;
+            width: 200px;
+            /deep/ .el-input--suffix .el-input__inner{
+                background-color: transparent;
+                color: #fff;
+            }
+        }
     }
 </style>
