@@ -77,15 +77,13 @@
 
 <style lang="scss" scoped>
     .home-page {
+        width: 3840px;
+        height: 1080px;
+        overflow: hidden;
         display: flex;
         justify-content: flex-start;
         padding: 69px 20px 20px 32px;
         background: #143881;
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-        // height: 1080px;
-        // width:3840px;
         position: relative;
         background-size: 100% 100%;
         .container {

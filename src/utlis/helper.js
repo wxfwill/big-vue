@@ -97,15 +97,15 @@ export function textFormatter(text, interval = 3) {
 }
 
 
-export const formatNum = (money) => {
-	if(money && money != null) {
-		money     = String(money);
-		let left  = money.split('.')[0],
-			right = money.split('.')[1];
+export const formatNum = (number) => {
+	if(number && number != null && !isNaN(Number(number)) ) {
+		number     = String(number);
+		let left  = number.split('.')[0],
+			right = number.split('.')[1];
 		right     = right ? (right.length >= 2 ? '.' + right.substr(0, 2) : '.' + right + '0') : '';
 		let temp  = left.split('').reverse().join('').match(/(\d{1,3})/g);
-		return (Number(money) < 0 ? "-" : "") + temp.join(',').split('').reverse().join('') + right;
-	} else if(money === 0) {   //注意===在这里的使用，如果传入的money为0,if中会将其判定为boolean类型，故而要另外做===判断
+		return (Number(number) < 0 ? "-" : "") + temp.join(',').split('').reverse().join('') + right;
+	} else if(number === 0) {
 		return '0.00';
 	} else {
 		return "";

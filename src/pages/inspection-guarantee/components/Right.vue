@@ -1,5 +1,5 @@
 <template>
-    <div class="home-page-right">
+    <div class="jw-right-box">
         <div class="content-box">
             <div class="left-view">
                 <!-- 资产情况 -->
@@ -42,73 +42,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- 检察机关机构人员情况 -->
-                <div class="personnel-box">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>检察机关机构人员情况</i>
-                    </div>
-                    <div class="personnel-content">
-                        <div class="personnel-top">
-                            <p class='unit'>单位:个</p>
-                            <p class='title'>机构情况</p>
-                            <!-- <div class='agencytotal'> -->
-                            <!-- <span class='totalnum'>{{theProcuratorialAgency.zs}}</span> -->
-                            <!-- <i class='el-icon-top'></i><span>{{theProcuratorialAgency.tbss}}</span><b>{{theProcuratorialAgency.tbssbfb}}</b> -->
-                            <!-- </div> -->
-                            <div class='agencylist'>
-                                <p>年末机构数</p>
-                                <p>{{theProcuratorialAgency.ynmjgs}}</p>
-                            </div>
-                            <div class='agencylist'>
-                                <p>省级院个数</p>
-                                <p>{{theProcuratorialAgency.sjy}}</p>
-                            </div>
-                            <div class='agencylist'>
-                                <p>地市级个数</p>
-                                <p>{{theProcuratorialAgency.dsy}}</p>
-                            </div>
-                            <div class='agencylist'>
-                                <p>县区级个数</p>
-                                <p>{{theProcuratorialAgency.xjy}}</p>
-                            </div>
-                            <div class='agencylist'>
-                                <p>派出院个数</p>
-                                <p>{{theProcuratorialAgency.pcy}}</p>
-                            </div>
-                            <div class='agencylist'>
-                                <p>铁检院个数</p>
-                                <p>{{theProcuratorialAgency.tjy}}</p>
-                            </div>
-                            <div class='agencylist'>
-                                <p>林区院个数</p>
-                                <p>{{theProcuratorialAgency.lqy}}</p>
-                            </div>
-                            <div class='agencylist'>
-                                <p>油田院个数</p>
-                                <p>{{theProcuratorialAgency.yty}}</p>
-                            </div>
-                            <div class='agencylist'>
-                                <p>矿区院个数</p>
-                                <p>{{theProcuratorialAgency.kqy}}</p>
-                            </div>
-                            <div class='agencylist'>
-                                <p>事业单位个数</p>
-                                <p>{{theProcuratorialAgency.sydw}}</p>
-                            </div>
-                        </div>
-                        <div class="personnel-bottom-left">
-                            <p class='title'>人员情况</p>
-                            <div class="agency-content" ref="agencyChart" style='top:-30px;'></div>
-                        </div>
-                        <div class="personnel-bottom-right">
-                            <p class='title'>单位在职人数</p>
-                            <div class="job-content" ref="jobChart" style='top:-30px!important'></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="right-view">
                 <div class="procuratorial-work">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
@@ -117,7 +50,7 @@
                     <p class='unit'>单位:万元</p>
                     <div class='service-content' ref="serviceChart"></div>
                     <div class="putinto">
-                        <p>检察业务装备16、18年增长比例</p>
+                        <p class="putinto-title">检察业务装备16、18年增长比例</p>
                         <ul>
                             <li @mouseover="righttableIsshowfn(0)" :class='{active:0==activeIndex}'>
                                 <i class='el-icon-tickets'></i>
@@ -162,6 +95,69 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+            <div class="right-view">
+                <!-- 检察机关机构人员情况 -->
+                <div class="personnel-box">
+                    <div class="chart-box-title">
+                        <span class="chart-label-dot"></span>
+                        <i>检察机关机构人员情况</i>
+                    </div>
+                    <div class="personnel-content">
+                        <div class="personnel-top">
+                            <p class='unit'>单位:个</p>
+                            <p class='title'>机构情况</p>
+                            <div class="fraze-grid">
+                                <div class='agencylist'>
+                                    <p>年末机构数</p>
+                                    <p>{{theProcuratorialAgency.ynmjgs}}</p>
+                                </div>
+                                <div class='agencylist'>
+                                    <p>省级院</p>
+                                    <p>{{theProcuratorialAgency.sjy}}</p>
+                                </div>
+                                <div class='agencylist'>
+                                    <p>地市级</p>
+                                    <p>{{theProcuratorialAgency.dsy}}</p>
+                                </div>
+                                <div class='agencylist'>
+                                    <p>县区级</p>
+                                    <p>{{theProcuratorialAgency.xjy}}</p>
+                                </div>
+                                <div class='agencylist'>
+                                    <p>派出院</p>
+                                    <p>{{theProcuratorialAgency.pcy}}</p>
+                                </div>
+                            </div>
+                            <div class="fraze-grid">
+                                <div class='agencylist'>
+                                    <p>铁检院</p>
+                                    <p>{{theProcuratorialAgency.tjy}}</p>
+                                </div>
+                                <div class='agencylist'>
+                                    <p>林区院</p>
+                                    <p>{{theProcuratorialAgency.lqy}}</p>
+                                </div>
+                                <div class='agencylist'>
+                                    <p>油田院</p>
+                                    <p>{{theProcuratorialAgency.yty}}</p>
+                                </div>
+                                <div class='agencylist'>
+                                    <p>矿区院</p>
+                                    <p>{{theProcuratorialAgency.kqy}}</p>
+                                </div>
+                                <div class='agencylist'>
+                                    <p>事业单位</p>
+                                    <p>{{theProcuratorialAgency.sydw}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fraze-grid">
+                            <div class="agency-content" ref="agencyChart"></div>
+                            <div class="job-content" ref="jobChart"></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="totalfiscal-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
@@ -169,23 +165,22 @@
                     </div>
                     <div class="totalfiscal-content">
                         <div class="totalfiscal-top">
-                            <p class='title'>机构情况</p>
-                            <p>计财部门设置情况</p>
-                            <p>{{financialInstitutions.jcbmszqk}}</p>
+                            <p class='title'>计财部门设置情况</p>
+                            <p class="unit">单位：个</p>
+                            <p class="totalfiscal-text">
+                                <span>已设置计财部门</span>
+                                <span>{{financialInstitutions.jcbmszqk}}</span>
+                                <span>未设置计财部门</span>
+                            </p>
                             <ul>
-                                <!-- <li :style="{width:`${financialInstitutions.yszjcbm}%`}">{{financialInstitutions.yszjcbm}}</li>
-                                <li :style="{width:`${financialInstitutions.wszjcbm}%`}">{{financialInstitutions.wszjcbm}}</li> -->
-                                <li :style="{width:`(${financialInstitutions.yszjcbm}/(${financialInstitutions.wszjcbm}+${financialInstitutions.yszjcbm}))%`}">
+                                <li :style="{width:`${financialInstitutions.yszjcbm / (financialInstitutions.wszjcbm + financialInstitutions.yszjcbm) * 100}%`}">
                                     {{financialInstitutions.yszjcbm}}
                                 </li>
-                                <li :style="{width:`(${financialInstitutions.wszjcbm}/(${financialInstitutions.wszjcbm}+${financialInstitutions.yszjcbm}))%`}">
+                                <li :style="{width:`${financialInstitutions.wszjcbm /(financialInstitutions.wszjcbm + financialInstitutions.yszjcbm) * 100}%`}">
                                     {{financialInstitutions.wszjcbm}}
                                 </li>
                             </ul>
-                            <ol>
-                                <li>已设置计财部门的单位</li>
-                                <li>未设置计财部门的单位</li>
-                            </ol>
+
                         </div>
                         <div class="totalfiscal-bottom">
                             <div class="totalfiscal-bottom-left">
@@ -212,31 +207,8 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="totalfiscal-bottom-right">
-                                <div class='one'>
-                                    <p>{{financialInstitutions.kjhsxs}}</p>
-                                    <p>会计核算形式</p>
-                                </div>
-                                <div class='two'>
-                                    <p>{{financialInstitutions.kjdlhs}}</p>
-                                    <p>会计独立核算</p>
-                                </div>
+                            <div class="totalfiscal-bottom-right" ref="busAccChart"></div>
 
-                                <div class='four'>
-                                    <div>
-                                        <p>{{financialInstitutions.kjwpz}}</p>
-                                        <p>会计委派制</p>
-                                    </div>
-                                    <div>
-                                        <p>{{financialInstitutions.qzkjjzhs}}</p>
-                                        <p>其中会计集中核算</p>
-                                    </div>
-                                </div>
-                                <div class='three'>
-                                    <p>{{financialInstitutions.qtxs}}</p>
-                                    <p>其他形式</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -360,7 +332,7 @@
                         </div>
                     </div>
                     <div class="righttable" v-if="righttableIsshow3">
-                        <div class="left" @click="hidefn('righttableIsshow3')">》</div>
+                        <div class="left cur-pointer" @click="hidefn('righttableIsshow3')">》</div>
                         <div class="right">
                             <table>
                                 <thead>
@@ -462,12 +434,19 @@
 			this.oldTriggerState = params;
 			this.jobChart        = ECharts.init(this.$refs.jobChart);
 			this.serviceChart    = ECharts.init(this.$refs.serviceChart);
+			this.busAccChart     = ECharts.init(this.$refs.busAccChart);
 			this.serviceChart.on('pieselectchanged', (params) => {
 				if(params.name === "技术装备") {
-					this.righttableIsshow = true
+					this.righttableIsshow = true;
+					this.righttableIsshow2 = false;
+					this.righttableIsshow3 = false;
 				} else if(params.name === "综合保障装备") {
-					this.righttableIsshow2 = true
+					this.righttableIsshow = false;
+					this.righttableIsshow2 = true;
+					this.righttableIsshow3 = false;
 				} else if(params.name === '司法警察装备') {
+					this.righttableIsshow = false;
+					this.righttableIsshow2 = false;
 					this.righttableIsshow3 = true
 				}
 				
@@ -481,131 +460,12 @@
 			}
 		},
 		methods   : {
-			loadjobChart(data) {
-				var datas = [{
-					value: data.zyjsry,
-					name : '专业技术人员'
-				}, {
-					value: data.gqry,
-					name : '工勤人员'
-				}, {
-					value: data.gbxzzw,
-					name : '干部行政职务'
-				}];
-				var scale = 1;
-				var rich  = {
-					yellow: {
-						color   : "#ffc72b",
-						fontSize: 14 * scale,
-						padding : [5, 4],
-						align   : 'center'
-					},
-					total : {
-						color   : "#ffc72b",
-						fontSize: 14 * scale,
-						align   : 'center',
-					},
-					white : {
-						color   : "#fff",
-						align   : 'center',
-						fontSize: 14 * scale,
-						padding : [10, 0]
-					},
-					blue  : {
-						color   : '#49dff0',
-						fontSize: 14 * scale,
-						align   : 'center'
-					},
-					hr    : {
-						borderColor: '#0b5263',
-						width      : '100%',
-						borderWidth: 1,
-						height     : 0,
-					}
-				};
-
-				this.jobChart.setOption({
-					title : {
-						left     : 'center',
-						padding  : [0, 0],
-						textStyle: {
-							color   : '#fff',
-							fontSize: 14 * scale,
-							align   : 'center'
-						}
-					},
-					grid  : {
-						bottom: '15%'
-					},
-					legend: {
-						selectedMode: false,
-						formatter   : function(name) {
-							var total = 0;
-							var averagePercent;
-							datas.forEach(function(value, index, array) {
-								total += value.value;
-							});
-							return total;
-						},
-						data        : [datas[0].name],
-						left        : 'center',
-						top         : 'center',
-						icon        : 'none',
-						align       : 'center',
-						padding     : [10, 0],
-						textStyle   : {
-							color   : "#ffc72b",
-							fontSize: 12 * scale
-						},
-					},
-					series: [{
-						type          : 'pie',
-						radius        : ['32%', '40%'],
-						hoverAnimation: true,
-						color         : ['#FBBA18', '#0CADE8', '#1BC85D'],
-						label         : {
-							normal: {
-								textStyle: {
-									fontSize: 12 * scale,
-								},
-								formatter: function(params, ticket, callback) {
-									var total   = 0;
-									var percent = 0;
-									datas.forEach(function(value, index, array) {
-										total += value.value;
-									});
-									percent = ((params.value / total) * 100).toFixed(1);
-									return '{white|' + params.name + '}{yellow|' + params.value + '}{blue|' + percent + '%}';
-								},
-								rich     : rich
-							},
-						},
-						labelLine     : {
-							normal: {
-								length   : 12 * scale,
-								length2  : 12,
-								length3  : 30,
-								lineStyle: {
-									color: '#fff'
-								}
-							}
-						},
-						data          : datas
-					}]
-				})
-			},
 			loadserviceChart(data) {
+				const numTotal = data.sfjczb_sl + data.jcywzhbzzb_sl + data.jcywjszb_sl;
 				this.serviceChart.setOption({
 					color  : ['#FBBA18', '#0CADE8', '#1BC85D'],
 					tooltip: {
-						trigger     : 'item',
-						formatter   : function(params) {
-							return '' + params.name + '\n金额:' + params.value + '\n数量' + params.data.num + '\n占比' + params.percent + '%';
-						},
-						itemStyle   : {
-							fontSize: '14'
-						},
-						extraCssText: 'background:#03C4C3'
+						show: false
 					},
 					legend : {
 						show     : false,
@@ -619,6 +479,7 @@
 						data     : ['司法警察装备', '综合保障装备', '技术装备']
 					},
 					series : [{
+						name        : '数量',
 						type        : 'pie',
 						selectedMode: 'single',
 						radius      : [0, '50%'],
@@ -639,27 +500,33 @@
 								show: false
 							}
 						},
+						tooltip     : {
+							show     : true,
+							trigger  : 'item',
+							formatter: '{b} <br/> 数量 : {c} <br/> 数量占比： {d}%'
+						},
 						data        : [{
-							value: data.sfjczb_je,
+							value: data.sfjczb_sl,
 							name : '司法警察装备',
-							num  : data.sfjczb_sl
+							num  : data.sfjczb_je
 						}, {
-							value: data.jcywzhbzzb_je,
+							value: data.jcywzhbzzb_sl,
 							name : '综合保障装备',
-							num  : data.jcywzhbzzb_sl
+							num  : data.jcywzhbzzb_je
 						}, {
-							value: data.jcywjszb_je,
+							value: data.jcywjszb_sl,
 							name : '技术装备',
-							num  : data.jcywjszb_sl
+							num  : data.jcywjszb_je
 						}]
 					}, {
+						name     : '金额',
 						type     : 'pie',
-						radius   : ['53%', '55%'],
+						radius   : ['53%', '70%'],
 						center   : ['50%', '60%'],
 						label    : {
 							normal: {
 								formatter: function(params) {
-									return '' + params.name + '\n金额:' + params.value + '\n数量' + params.data.num + '\n占比' + params.percent + '%'
+									return `${params.name}\n金额：${ params.value}\n金额占比：${params.percent}%\n数量：${params.data.num}\n数量占比：${params.data.numPercent}%`;
 								}
 							}
 						},
@@ -674,18 +541,26 @@
 								}
 							}
 						},
+						tooltip  : {
+							show     : true,
+							trigger  : 'item',
+							formatter: '{b} <br/> 金额 : {c} <br/> 金额占比： {d}%'
+						},
 						data     : [{
-							value: data.sfjczb_je,
-							name : '司法警察装备',
-							num  : data.sfjczb_sl
+							value     : data.sfjczb_je,
+							name      : '司法警察装备',
+							num       : data.sfjczb_sl,
+							numPercent: (data.sfjczb_sl / numTotal * 10000).toFixed(0) / 100
 						}, {
-							value: data.jcywzhbzzb_je,
-							name : '综合保障装备',
-							num  : data.jcywzhbzzb_sl
+							value     : data.jcywzhbzzb_je,
+							name      : '综合保障装备',
+							num       : data.jcywzhbzzb_sl,
+							numPercent: (data.jcywzhbzzb_sl / numTotal * 10000).toFixed(0) / 100
 						}, {
-							value: data.jcywjszb_je,
-							name : '技术装备',
-							num  : data.jcywjszb_sl
+							value     : data.jcywjszb_je,
+							name      : '技术装备',
+							num       : data.jcywjszb_sl,
+							numPercent: (data.jcywjszb_sl / numTotal * 10000).toFixed(0) / 100
 						}]
 					}]
 				})
@@ -695,40 +570,42 @@
 				let str1 = '政法专项编制：' + data.zfzxbz + '人' + '<br/>' + '事业编制：' + data.sybz + '人' + '<br/>' + '工勤编制：' + data.gqbz + '人' + '<br/>' + '其他编制：' + data.qtbz + '人';
 				let str2 = '政府购买服务聘用人员：' + data.zfgmfwpyry + '人' + '<br/>' + '其他聘用人员：' + data.qtpyry + '人' + '<br/>' + '临时工：' + data.lsg + '人';
 				this.agencyChart.setOption({
-					tooltip       : {
+					title  : {
+						text     : '人员情况',
+						left     : 10,
+						top      : 10,
+						textStyle: {
+							color     : '#2fe0be',
+							fontSize  : 16,
+							fontWeight: 500
+						}
+					},
+					tooltip: {
 						hoverAnimation: false,
 						trigger       : 'item',
-						// formatter: "{b}:{c}",
 						formatter     : function(data) {
-							if(data.name == '着装人员') {
+							if(data.name === '着装人员') {
 								return str
 							}
-							if(data.name == '人员编制数') {
+							if(data.name === '人员编制数') {
 								return str1
 							}
-							if(data.name == '其他人员') {
+							if(data.name === '其他人员') {
 								return str2
 							}
 						},
-						itemStyle     : {
-							fontSize      : '14',
-							hoverAnimation: false,
-						},
-						extraCssText  : 'background:#03C4C3',
-						hoverAnimation: false,
 					},
-					hoverAnimation: false,
-					color         : ['#009FE8'],
-					series        : [
+					color  : ['#5C89FF', '#FF6C40', '#FBBA18'],
+					series : [
 						{
 							type             : 'pie',
 							radius           : ['35%', '45%'],
-							center           : ['50%', '70%'],
+							center           : ['50%', '55%'],
 							avoidLabelOverlap: false,
 							hoverAnimation   : false,
 							legendHoverLink  : false,
 							label            : {
-								normal  : {
+								normal: {
 									show            : true,
 									padding         : -8,
 									hoveyirAnimation: false,
@@ -739,25 +616,12 @@
 											color: 'yellow'
 										}
 									}
-								},
-								emphasis: {
-									show     : true,
-									textStyle: {
-										fontSize  : '14',
-										fontWeight: 'bold'
-									}
 								}
 							},
 							labelLine        : {
 								normal: {
-									show   : false,
-									length2: '1'
+									show: true,
 								}
-							},
-							itemStyle        : {
-								borderWidth   : 5, //设置border的宽度有多大
-								borderColor   : '#020309',
-								hoverAnimation: false,
 							},
 							data             : [
 								{
@@ -776,6 +640,124 @@
 						}
 					]
 				})
+			},
+			loadjobChart(data) {
+				var datas = [{
+					value: data.zyjsry,
+					name : '专业技术人员'
+				}, {
+					value: data.gqry,
+					name : '工勤人员'
+				}, {
+					value: data.gbxzzw,
+					name : '干部行政职务'
+				}];
+				var scale = 1;
+
+
+				this.jobChart.setOption({
+					tooltip: {},
+					series : [{
+						type          : 'pie',
+						radius        : ['35%', '45%'],
+						center        : ['50%', '55%'],
+						hoverAnimation: true,
+						color         : ['#FBBA18', '#0CADE8', '#1BC85D'],
+						label         : {
+							normal: {
+								align    : 'left',
+								formatter: function(params, ticket, callback) {
+									var total   = 0;
+									var percent = 0;
+									datas.forEach(function(value, index, array) {
+										total += value.value;
+									});
+									percent = ((params.value / total) * 100).toFixed(1);
+									return `${params.name}\n${params.value}\n${percent}%`;
+								},
+							},
+						},
+						labelLine     : {
+							normal: {
+								show: true,
+							}
+						},
+						data          : datas
+					}]
+				})
+			},
+			loadBusAccChart(data) {
+				const chartData = {
+					"name"    : "会计核算形式",
+					value     : data.kjhsxs,
+					"children": [{
+						"name": "会计独立核算",
+						value : data.kjdlhs,
+						label : {
+							offset: [0, -10]
+						},
+					}, {
+						"name"     : "会计委派制",
+						"collapsed": false,
+						value      : data.kjwpz,
+						"children" : [{
+							"name": "其中会计集中核算",
+							value : data.qzkjjzhs,
+							label : {
+								offset: [0, -10]
+							},
+						}]
+					}, {
+						"name": "其他形式",
+						value : data.qtxs,
+						label : {
+							offset: [10, -10]
+						},
+					}],
+				};
+				this.busAccChart.setOption({
+					tooltip: {
+						trigger  : 'item',
+						formatter: '{b}：{c}'
+					},
+					series : [{
+						type                   : 'tree',
+						data                   : [chartData],
+						top                    : '1%',
+						left                   : 100,
+						right                  : 30,
+						bottom                 : '1%',
+						symbolSize             : 10,
+						height                 : 270,
+						label                  : {
+							normal: {
+								position     : 'left',
+								verticalAlign: 'middle',
+								align        : 'right',
+								fontSize     : 14,
+								color        : '#dfdfdf',
+								formatter    : '{b}\n{c}',
+								offset       : [10, -20]
+							}
+						},
+						lineStyle              : {
+							color: '#04A9E6',
+							width: 3,
+						},
+						leaves                 : {
+							label: {
+								normal: {
+									position     : 'right',
+									verticalAlign: 'bottom',
+									align        : 'right',
+								}
+							}
+						},
+						expandAndCollapse      : true,
+						animationDuration      : 550,
+						animationDurationUpdate: 750
+					}]
+				});
 			},
 			righttableIsshowfn(num) {
 				this.activeIndex = num
@@ -799,22 +781,26 @@
 </script>
 
 <style lang="scss" scoped>
-    .home-page-right {
-        width: 1256px;
+    .jw-right-box {
+        width: 100%;
+        .hoverdiv {
+            z-index: 100;
+        }
         .content-box {
             display: flex;
             .left-view {
+                flex: 670;
                 .property-box {
-                    width: 739px;
+                    width: 100%;
                     position: relative;
                     .unit {
                         position: absolute;
-                        right: 10px;
+                        right: 20px;
                         top: 45px;
                         color: #FBBA18;
                     }
                     .propertyBox {
-                        height: 301px;
+                        height: 240px;
                         .propertyContent {
                             color: #fff;
                             text-align: center;
@@ -824,8 +810,7 @@
                                 border-radius: 2px;
                                 border: 1px solid rgba(0, 216, 233, 1);
                                 padding-top: 8px;
-                                margin-top: 39px;
-                                margin-left: 270px;
+                                margin: 40px auto 0;
                                 position: relative;
                                 b {
                                     width: 1px;
@@ -837,15 +822,15 @@
                                 }
                             }
                             ol {
-                                width: 636px;
+                                display: flex;
+                                width: 75%;
+                                margin: 31px auto 0;
                                 height: 29px;
                                 border: 1px solid #979797;
                                 border-bottom: none;
-                                margin-top: 31px;
-                                margin-left: 51px;
                                 overflow: hidden;
                                 li {
-                                    width: 131px;
+                                    flex: 1;
                                     height: 29px;
                                     float: left;
                                     border-right: 1px solid #979797;
@@ -858,14 +843,15 @@
                                 color: #FBBA18;
                             }
                             ul {
+                                width: 92%;
+                                display: flex;
+                                margin: 0 auto;
                                 li {
-                                    float: left;
-                                    width: 95px;
+                                    flex: 1;
                                     height: 59px;
                                     border-radius: 2px;
                                     border: 1px solid rgba(0, 216, 233, 1);
-                                    margin-right: 30px;
-                                    margin-top: 13px;
+                                    margin-right: 10px;
                                     padding-top: 8px;
                                     font-size: 12px;
                                 }
@@ -874,18 +860,17 @@
                                     .hoverdiv {
                                         position: absolute;
                                         width: 400px;
-                                        height: 200px;
-                                        background: rgba(3, 196, 195, 0.9);
-                                        box-shadow: 0px 2px 4px 0px rgba(13, 61, 137, 0.5);
+                                        background-image: linear-gradient(top,#091e5f,#01040b);
+                                        box-shadow: 0 2px 4px 0 rgba(13, 61, 137, 0.5);
                                         border-radius: 4px;
                                         left: 50%;
                                         text-align: left;
-                                        padding-left: 5px;
                                         line-height: 20px;
+                                        padding: 10px;
                                         span {
                                             display: block;
                                             color: #fff;
-                                            margin: 2px 0px;
+                                            margin: 2px 0;
                                         }
                                     }
                                 }
@@ -896,216 +881,26 @@
                         }
                     }
                 }
-                .personnel-box {
-                    width: 739px;
-                    height: 543px;
-                    .personnel-content {
-                        display: flex;
-                        flex-wrap: wrap;
-                        height: 543px;
-                        .personnel-top {
-                            width: 739px;
-                            height: 307px;
-                            padding: 10px 27px;
-                            overflow: hidden;
-                            position: relative;
-                            .unit {
-                                position: absolute;
-                                right: 10px;
-                                top: 10px;
-                            }
-                            .agencytotal {
-                                .totalnum {
-                                    color: #00FFF8;
-                                    width: 162px;
-                                    height: 55px;
-                                    line-height: 55px;
-                                    background: rgba(2, 119, 205, 0.21);
-                                    border-radius: 33px;
-                                    border: 1px solid rgba(4, 169, 230, 1);
-                                    text-align: center;
-                                    margin-left: 289px;
-                                    display: inline-block;
-                                    font-size: 20px;
-                                }
-                                span {
-                                    color: #00FFF8;
-                                }
-                                .el-icon-top {
-                                    color: #1BC85D;
-                                    margin-right: 7px;
-                                }
-                                b {
-                                    color: #FF6C40;
-                                    margin-left: 7px;
-                                }
-                            }
-                            .agencylist {
-                                float: left;
-                                margin-right: 37px;
-                                text-align: center;
-                                p:first-child {
-                                    color: #fff;
-                                    margin: 24px 0px 10px 0px;
-                                }
-                                p:last-child {
-                                    color: #04A9E6;
-                                    width: 100px;
-                                    height: 36px;
-                                    line-height: 36px;
-                                    background: rgba(2, 119, 205, 0.21);
-                                    border-radius: 28px;
-                                    border: 1px solid rgba(4, 169, 230, 1);
-                                }
-                            }
-                        }
-                        p {
-                            color: #2FE0BE;
-                        }
-                        .personnel-bottom-left {
-                            width: 296px;
-                            height: 200px;
-                            padding: 10px 27px;
-                            .agency-content {
-                                width: 267px;
-                                height: 200px;
-                            }
-                        }
-                        .personnel-bottom-right {
-                            width: 443px;
-                            height: 247px;
-                            padding: 10px 27px;
-                            .job-content {
-                                width: 443px;
-                                height: 200px;
-                                div {
-                                    width: 443px;
-                                    height: 200px;
-                                    canvas {
-                                        top: -30px !important;
-                                    }
-                                }
-
-                            }
-                        }
-                    }
-                }
-                .lawsuitBox {
-                    width: 739px;
-                    .lawsuit-label {
-                        display: flex;
-                        align-items: center;
-                        i {
-                            margin: 0 0 0 10px;
-                            font-size: 24px;
-                            color: rgba(255, 255, 255, 1);
-                            line-height: 29px;
-                        }
-                        .lawsuit {
-                            width: 13px;
-                            height: 13px;
-                            border-radius: 50%;
-                            background: rgba(0, 178, 226, 1);
-                        }
-                    }
-                    .law-chart {
-                        width: 650px;
-                        height: 170px;
-                        margin: 20px auto 10px;
-                    }
-                }
-                .bottomPortion {
-                    margin-top: 10px;
-                    display: flex;
-                    .dom-line-chart {
-                        margin-top: 20px;
-                        li {
-                            display: flex;
-                            align-items: center;
-                            margin: 12px 0 0 10px;
-                            font-size: 16px;
-                            font-family: MicrosoftYaHei;
-                            color: rgba(43, 191, 226, 1);
-                            line-height: 21px;
-                            i {
-                                display: inline-block;
-                                text-align: center;
-                                flex: 0 37;
-                                min-width: 37px;
-                                width: 37px;
-                                font-size: 18px;
-                                color: rgba(255, 255, 255, 1);
-                                line-height: 22px;
-                            }
-                            span {
-                                margin: 0 15px;
-                                height: 15px;
-                                display: inline-block;
-                                background: rgba(43, 191, 226, 1)
-                            }
-                        }
-                    }
-                    .perCapita {
-                        display: inline-block;
-                        width: 354px;
-                        p {
-                            display: flex;
-                            align-items: center;
-                            margin: 12px 0 0 10px;
-                            color: rgba(43, 191, 226, 1);
-                            i {
-                                display: inline-block;
-                                text-align: center;
-                                flex: 0 37;
-                                min-width: 37px;
-                                width: 37px;
-                                font-size: 18px;
-                                color: rgba(255, 255, 255, 1);
-                                line-height: 22px;
-                            }
-                            span {
-                                margin: 0 15px;
-                                height: 10px;
-                                border-radius: 20px;
-                                display: inline-block;
-
-                                background: linear-gradient(
-                                                to right,
-                                                #0C7FD8,
-                                                #25CBE9
-                                );
-                            }
-                        }
-                    }
-                    .fileCapita {
-                        display: inline-block;
-                        margin-left: 20px;
-                        width: 354px;
-                    }
-                }
-            }
-            .right-view {
-                width: 464px;
-                position: relative;
                 .procuratorial-work {
                     position: relative;
-                    margin-left: 22px;
-                    width: 464px;
-                    height: 522px;
+                    width: 100%;
                     .unit {
                         position: absolute;
-                        right: 10px;
+                        right: 20px;
                         top: 45px;
                         color: #FBBA18;
                     }
                     .service-content {
-                        width: 464px;
-                        height: 205px;
+                        width: 100%;
+                        height: 270px;
                         background: none !important;
                     }
                     .putinto {
-                        width: 464px;
-                        height: 264px;
+                        width: 100%;
+                        .putinto-title {
+                            font-size: 20px;
+                            margin-bottom: 30px;
+                        }
                         p {
                             color: #fff;
                             text-align: center;
@@ -1113,10 +908,13 @@
                             font-size: 16px;
                         }
                         ul {
-                            width: 464px;
+                            width: 80%;
+                            margin: 0 auto;
                             height: 215px;
+                            display: flex;
+                            justify-content: space-around;
                             li {
-                                width: 108px;
+                                width: 130px;
                                 height: 215px;
                                 float: left;
                                 border: 1px solid rgba(11, 184, 250, 1);
@@ -1158,7 +956,7 @@
                                 }
                             }
                             li:last-child {
-                                margin-right: 0px;
+                                margin-right: 0;
                                 i {
                                     color: #FBBA18;
                                 }
@@ -1166,9 +964,92 @@
                         }
                     }
                 }
+            }
+            .right-view {
+                flex: 580;
+                position: relative;
+                .personnel-box {
+                    width: 100%;
+                    .personnel-content {
+                        display: flex;
+                        flex-wrap: wrap;
+                        .personnel-top {
+                            width: 100%;
+                            padding: 10px 27px;
+                            overflow: hidden;
+                            position: relative;
+                            .title {
+                                margin-left: -10px;
+                            }
+                            .unit {
+                                position: absolute;
+                                right: 20px;
+                                top: 10px;
+                                color: #fbba18;
+                            }
+                            .agencytotal {
+                                .totalnum {
+                                    color: #00FFF8;
+                                    width: 162px;
+                                    height: 55px;
+                                    line-height: 55px;
+                                    background: rgba(2, 119, 205, 0.21);
+                                    border-radius: 33px;
+                                    border: 1px solid rgba(4, 169, 230, 1);
+                                    text-align: center;
+                                    margin-left: 289px;
+                                    display: inline-block;
+                                    font-size: 20px;
+                                }
+                                span {
+                                    color: #00FFF8;
+                                }
+                                .el-icon-top {
+                                    color: #1BC85D;
+                                    margin-right: 7px;
+                                }
+                                b {
+                                    color: #FF6C40;
+                                    margin-left: 7px;
+                                }
+                            }
+                            .agencylist {
+                                margin: 0 10px;
+                                text-align: center;
+                                p:first-child {
+                                    color: #fff;
+                                    margin: 24px 0px 10px 0px;
+                                }
+                                p:last-child {
+                                    color: #00FFF8;
+                                    width: 84px;
+                                    height: 36px;
+                                    line-height: 36px;
+                                    background: rgba(2, 119, 205, 0.21);
+                                    border-radius: 28px;
+                                    border: 1px solid rgba(4, 169, 230, 1);
+                                }
+                            }
+                        }
+                        p {
+                            color: #2FE0BE;
+                        }
+                        .fraze-grid {
+                            width: 100%;
+                            .agency-content {
+                                width: 50%;
+                                height: 250px;
+                            }
+                            .job-content {
+                                width: 50%;
+                                height: 250px;
+                            }
+                        }
+
+                    }
+                }
                 .totalfiscal-box {
-                    width: 464px;
-                    height: 420px;
+                    width: 100%;
                     .totalfiscal-content {
                         height: 376px;
                         p {
@@ -1178,57 +1059,55 @@
                         .title {
                             color: #2FE0BE;
                             text-align: left;
-                            margin: 13px 0px 0px 30px;
+                            margin: 13px 0 0 20px;
                         }
                         .totalfiscal-top {
+                            position: relative;
+                            font-size: 16px;
+                            .unit {
+                                position: absolute;
+                                top: 0;
+                                right: 20px;
+                                color: #fbba18;
+                            }
                             ul {
-                                width: 397px;
+                                width: 520px;
+                                margin: 6px auto 0;
                                 height: 21px;
-                                background: rgba(12, 173, 232, 1);
                                 border-radius: 11px;
-                                margin-left: 26px;
-                                margin-top: 6px;
+                                background: rgba(12, 173, 232, 1);
                                 li {
                                     text-align: center;
                                     float: left;
                                     color: #fff;
-                                }
-                                li:first-child {
-                                    width: 80%;
-                                }
-                                li:last-child {
-                                    width: 20%;
-                                    background: #FF6C40;
                                     border-radius: 11px;
                                 }
-                            }
-                            ol {
-                                width: 397px;
-                                height: 21px;
-                                margin-top: 13px;
-                                color: #fff;
-                                li {
-                                    float: left;
-                                    text-align: center;
-                                    width: 50%;
+
+                                li:last-child {
+                                    height: 22px;
+                                    background: #FF6C40;
                                 }
+                            }
+                            .totalfiscal-text {
+                                width: 520px;
+                                margin: 10px auto 0;
+                                display: flex;
+                                justify-content: space-between;
+                                font-size: 14px;
                             }
                         }
 
                         .totalfiscal-bottom {
                             margin-top: 21px;
+                            display: flex;
                             .totalfiscal-bottom-left {
-                                float: left;
                                 ul {
-                                    width: 158px;
-                                    height: 95px;
-                                    margin-top: 40px;
+                                    margin: 20px 20px 0 40px;
                                     li {
+                                        position: relative;
                                         text-align: center;
                                         width: 64px;
-                                        margin-right: 29px;
-                                        float: left;
-                                        position: relative;
+                                        margin-bottom: 20px;
                                         i {
                                             color: #1BC85D;
                                             font-size: 26px;
@@ -1284,100 +1163,42 @@
                                 }
                             }
                             .totalfiscal-bottom-right {
-                                float: left;
-                                width: 257px;
+                                flex: 1;
+                                max-width: 550px;
+                                height: 270px;
                                 color: #fff;
-                                margin-left: 36px;
-                                div.one {
-                                    height: 57px;
-                                    text-align: center;
-                                    p:first-child {
-                                        margin-left: 66px;
-                                        width: 116px;
-                                        height: 36px;
-                                        line-height: 36px;
-                                        background: rgba(2, 119, 205, 0.21);
-                                        border-radius: 4px;
-                                        border: 1px solid rgba(4, 169, 230, 1);
-                                    }
-                                }
-                                .two {
-                                    float: left;
-                                    margin-top: 6px;
-                                    p:first-child {
-                                        width: 116px;
-                                        height: 36px;
-                                        line-height: 36px;
-                                        background: rgba(2, 119, 205, 0.21);
-                                        border-radius: 4px;
-                                        border: 1px solid rgba(4, 169, 230, 1);
-                                        margin-bottom: 10px;
-                                    }
-                                }
-                                .three {
-                                    float: left;
-                                    margin-top: 11px;
-                                    p:first-child {
-                                        width: 116px;
-                                        height: 36px;
-                                        line-height: 36px;
-                                        background: rgba(2, 119, 205, 0.21);
-                                        border-radius: 4px;
-                                        border: 1px solid rgba(4, 169, 230, 1);
-                                        margin-bottom: 10px;
-                                    }
-                                }
-                                .four {
-                                    float: right;
-                                    width: 134px;
-                                    height: 133px;
-                                    border-radius: 4px;
-                                    border: 1px solid rgba(4, 169, 230, 1);
-                                    margin-top: 3px;
-                                    div:first-child {
-                                        width: 134px;
-                                        height: 64px;
-                                        background: rgba(2, 119, 205, 0.21);
-                                        border-radius: 4px;
-                                        border: 1px solid rgba(4, 169, 230, 1);
-                                    }
-                                    div {
-                                        p:first-child {
-                                            margin-top: 11px;
-                                        }
-                                    }
-                                }
                             }
                         }
                     }
                 }
                 .righttable {
-                    width: 1045px;
-                    height: 1080px;
-                    position: absolute;
+                    position: fixed;
                     right: -100px;
-                    top: -110px;
+                    top: 0;
+                    width: 1045px;
+                    height: 100%;
                     background: rgba(0, 0, 0, 0.31);
                     border: 1px solid rgb(138, 250, 233);
-                    z-index: 9999999999999;
+                    z-index: 99999;
                     .left {
                         width: 97px;
-                        height: 1080px;
+                        height: 100%;
                         float: left;
                         border-right: 1px solid rgb(138, 250, 233);
-                        line-height: 1080px;
+                        line-height: 100vh;
                         text-align: center;
                         color: #09F4FF;
                         font-size: 65px;
+                        cursor: pointer;
                     }
                     .right {
                         float: left;
                         width: 942px;
-                        height: 1080px;
+                        height: 100%;
                         background: rgba(0, 10, 19, 0.8);
                         table {
                             width: 942px;
-                            height: 1080px;
+                            height: 100%;
                             color: #fff;
                             text-align: center;
                             tr {

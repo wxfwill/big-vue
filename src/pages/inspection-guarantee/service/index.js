@@ -18,3 +18,9 @@ export const getPSGuaranteeData = async (data) => await request({
 	params: data
 });
 
+// 地区联动
+export const getAreasList = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/psguarantee/getAreas',
+	params: data
+});

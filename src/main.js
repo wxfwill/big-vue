@@ -11,6 +11,7 @@ import {
 	Message,
 	Dialog,
 	Button,
+	ButtonGroup,
 	Table,
 	TableColumn,
 	Popover,
@@ -26,6 +27,7 @@ const elementComponents = [
 		  Option,
 		  Dialog,
 		  Button,
+		  ButtonGroup,
 		  Table,
 		  TableColumn,
 		  Popover,
@@ -41,20 +43,6 @@ Vue.config.productionTip = false;
 router.beforeEach((to, from, next) => {
 	document.body.scrollTop = 0;
 	if(to.meta.checkLogin) {
-		if(store.getters.loginflag) {
-			//只有登录的情况下才能正常跳转
-			next();
-		} else {
-			vt.$message({
-				type    : "error",
-				message : "请先登录",
-				duration: 1000,
-				onClose : function() {
-					next("/login");
-				}
-			});
-			
-		}
 	} else {
 		next();
 	}

@@ -63,7 +63,7 @@
 
 <style lang="scss" scoped>
     .jwbzbox {
-        width: 1300px;
+        width: 100%;
         height: 970px;
     }
 </style>

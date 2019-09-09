@@ -1,5 +1,5 @@
 <template>
-    <div class="home-page-left">
+    <div class="JianWu-left-box">
         <div class="fraze-grid">
             <div class="income-box">
                 <div class="chart-box-title">
@@ -29,85 +29,103 @@
                     </div>
                     <div class="payBox">
                         <div class="boxborder">
-                            <div class='payBox-top' @mouseover="changeMask('boxtooltip1',true)"
-                                 @mouseout="changeMask('boxtooltip1',false)">
-                                <p>{{formatNum(expenditure.gnflzcs)}}</p>
-                                <p>同比<i class="el-icon-top"></i>{{expenditure.gnflzc_tb}}<br><span>{{expenditure.gnflzc_bfb}}%</span>
-                                </p>
-                            </div>
-                            <div class='boxtooltip' v-show='boxtooltip1'>
-                                <p>一般公共服务支出：{{formatNum(spendingDetail.yybggfwzc)}}</p>
-                                <p>外交支出：{{formatNum(spendingDetail.ewjzc)}}</p>
-                                <p>国防支出：{{formatNum(spendingDetail.sgfzc)}}</p>
-                                <p>公共安全支出：{{formatNum(spendingDetail.sggaqzc)}}</p>
-                                <p>教育支出：{{formatNum(spendingDetail.wjyzc)}}</p>
-                                <p>科学技术支出：{{formatNum(spendingDetail.lkxjzzc)}}</p>
-                                <p>文化体育与传媒支出：{{formatNum(spendingDetail.qwhtyycmzc)}}</p>
-                                <p>社会保障和就业支出：{{formatNum(spendingDetail.bshbzhjyzc)}}</p>
-                                <p>医疗卫生与计划生育支出：{{formatNum(spendingDetail.jylwsyjhsyzc)}}</p>
-                                <p>节能环保支出：{{formatNum(spendingDetail.sjnhbzc)}}</p>
-                                <p>城乡社区支出：{{formatNum(spendingDetail.sycxsqzc)}}</p>
-                                <p>农林水支出：{{formatNum(spendingDetail.senlszc)}}</p>
-                                <p>交通运输支出：{{formatNum(spendingDetail.ssjtyszc)}}</p>
-                                <p>资源勘探信息等支出：{{formatNum(spendingDetail.sszyktxxdzc)}}</p>
-                                <p>商业服务业等支出：{{formatNum(spendingDetail.swsyfwydzc)}}</p>
-                                <p>金融支出：{{formatNum(spendingDetail.sljrzc)}}</p>
-                                <p>援助其他地区支出：{{formatNum(spendingDetail.sqyzqtdqzc)}}</p>
-                                <p>国土海洋气象等支出：{{formatNum(spendingDetail.sbgthyqxdzc)}}</p>
-                                <p>住房保障支出：{{formatNum(spendingDetail.sjzfbzzc)}}</p>
-                                <p>粮油物资储备支出：{{formatNum(spendingDetail.eslywzcbzc)}}</p>
-                                <p>其他支出：{{formatNum(spendingDetail.esyqtzc)}}</p>
-                                <p>债务还本支出：{{formatNum(spendingDetail.esezwhbzc)}}</p>
-                                <p>债务付息支出：{{formatNum(spendingDetail.esszwfxzc)}}</p>
-                            </div>
+                            <el-popover
+                                    popper-class="payBox-popover"
+                                    placement="bottom"
+                                    width="400"
+                                    trigger="hover">
+                                <div slot="reference"
+                                     class='payBox-top cur-pointer'>
+                                    <p>{{formatNum(expenditure.gnflzcs)}}</p>
+                                    <p>同比<i class="el-icon-top"></i>{{expenditure.gnflzc_tb}}<br><span>{{expenditure.gnflzc_bfb}}%</span>
+                                    </p>
+                                </div>
+                                <div class='boxtooltip'>
+                                    <p>一般公共服务支出：{{formatNum(spendingDetail.yybggfwzc)}}</p>
+                                    <p>外交支出：{{formatNum(spendingDetail.ewjzc)}}</p>
+                                    <p>国防支出：{{formatNum(spendingDetail.sgfzc)}}</p>
+                                    <p>公共安全支出：{{formatNum(spendingDetail.sggaqzc)}}</p>
+                                    <p>教育支出：{{formatNum(spendingDetail.wjyzc)}}</p>
+                                    <p>科学技术支出：{{formatNum(spendingDetail.lkxjzzc)}}</p>
+                                    <p>文化体育与传媒支出：{{formatNum(spendingDetail.qwhtyycmzc)}}</p>
+                                    <p>社会保障和就业支出：{{formatNum(spendingDetail.bshbzhjyzc)}}</p>
+                                    <p>医疗卫生与计划生育支出：{{formatNum(spendingDetail.jylwsyjhsyzc)}}</p>
+                                    <p>节能环保支出：{{formatNum(spendingDetail.sjnhbzc)}}</p>
+                                    <p>城乡社区支出：{{formatNum(spendingDetail.sycxsqzc)}}</p>
+                                    <p>农林水支出：{{formatNum(spendingDetail.senlszc)}}</p>
+                                    <p>交通运输支出：{{formatNum(spendingDetail.ssjtyszc)}}</p>
+                                    <p>资源勘探信息等支出：{{formatNum(spendingDetail.sszyktxxdzc)}}</p>
+                                    <p>商业服务业等支出：{{formatNum(spendingDetail.swsyfwydzc)}}</p>
+                                    <p>金融支出：{{formatNum(spendingDetail.sljrzc)}}</p>
+                                    <p>援助其他地区支出：{{formatNum(spendingDetail.sqyzqtdqzc)}}</p>
+                                    <p>国土海洋气象等支出：{{formatNum(spendingDetail.sbgthyqxdzc)}}</p>
+                                    <p>住房保障支出：{{formatNum(spendingDetail.sjzfbzzc)}}</p>
+                                    <p>粮油物资储备支出：{{formatNum(spendingDetail.eslywzcbzc)}}</p>
+                                    <p>其他支出：{{formatNum(spendingDetail.esyqtzc)}}</p>
+                                    <p>债务还本支出：{{formatNum(spendingDetail.esezwhbzc)}}</p>
+                                    <p>债务付息支出：{{formatNum(spendingDetail.esszwfxzc)}}</p>
+                                </div>
+                            </el-popover>
                         </div>
                         <div class='payBox-bottom'>功能分类支出</div>
                     </div>
                     <div class="payBox">
                         <div class="boxborder">
-                            <div class='payBox-top' @mouseover="changeMask('boxtooltip2',true)"
-                                 @mouseout="changeMask('boxtooltip2',false)">
-                                <p>{{formatNum(expenditure.zcxzs)}}</p>
-                                <p>
-                                    同比<i
-                                        class="el-icon-top"></i>{{expenditure.zcxz_tb}}<br><span>{{expenditure.zcxz_bfb}}%</span>
-                                </p>
-                            </div>
-                            <div class='boxtooltip' v-show='boxtooltip2'>
-                                <p>基本支出：{{formatNum(spendingDetail.yjbzc)}}</p>
-                                <p>人员经费：{{formatNum(spendingDetail.ryjf)}}</p>
-                                <p>日常公用经费：{{formatNum(spendingDetail.rcgyjf)}}</p>
-                                <p>项目支出：{{formatNum(spendingDetail.exmzc)}}</p>
-                                <p>基本建设类项目：{{formatNum(spendingDetail.jbjslxm)}}</p>
-                                <p>行政事业类项目：{{formatNum(spendingDetail.xzsylxm)}}</p>
-                                <p>上缴上级支出：{{formatNum(spendingDetail.ssjsjzc)}}</p>
-                                <p>经营支出：{{formatNum(spendingDetail.sjyzc)}}</p>
-                                <p>对附属单位补助支出：{{formatNum(spendingDetail.wdfsdwbzzc)}}</p>
-                            </div>
+                            <el-popover
+                                    popper-class="payBox-popover"
+                                    placement="bottom"
+                                    width="400"
+                                    trigger="hover">
+                                <div slot="reference"
+                                     class='payBox-top cur-pointer'>
+                                    <p>{{formatNum(expenditure.zcxzs)}}</p>
+                                    <p>
+                                        同比
+                                        <i class="el-icon-top"></i>{{expenditure.zcxz_tb}}<br><span>{{expenditure.zcxz_bfb}}%</span>
+                                    </p>
+                                </div>
+                                <div class='boxtooltip'>
+                                    <p>基本支出：{{formatNum(spendingDetail.yjbzc)}}</p>
+                                    <p>人员经费：{{formatNum(spendingDetail.ryjf)}}</p>
+                                    <p>日常公用经费：{{formatNum(spendingDetail.rcgyjf)}}</p>
+                                    <p>项目支出：{{formatNum(spendingDetail.exmzc)}}</p>
+                                    <p>基本建设类项目：{{formatNum(spendingDetail.jbjslxm)}}</p>
+                                    <p>行政事业类项目：{{formatNum(spendingDetail.xzsylxm)}}</p>
+                                    <p>上缴上级支出：{{formatNum(spendingDetail.ssjsjzc)}}</p>
+                                    <p>经营支出：{{formatNum(spendingDetail.sjyzc)}}</p>
+                                    <p>对附属单位补助支出：{{formatNum(spendingDetail.wdfsdwbzzc)}}</p>
+                                </div>
+                            </el-popover>
                         </div>
                         <div class='payBox-bottom'>支出性质</div>
                     </div>
                     <div class="payBox">
                         <div class="boxborder">
-                            <div class='payBox-top' @mouseover="changeMask('boxtooltip3',true)"
-                                 @mouseout="changeMask('boxtooltip3',false)">
-                                <p>{{formatNum(expenditure.zcjjfls)}}</p>
-                                <p>同比<i class="el-icon-top"></i>{{expenditure.zcjjfl_tb}}<br><span>{{expenditure.zcjjfl_bfb}}%</span>
-                                </p>
-                            </div>
-                            <div class="boxtooltip" v-show='boxtooltip3'>
-                                <p>基本支出和项目支出合计：{{formatNum(spendingDetail.jbzchxmzchj)}}</p>
-                                <p>工资福利支出：{{formatNum(spendingDetail.gzflzc)}}</p>
-                                <p>商品和服务支出：{{formatNum(spendingDetail.sphfwzc)}}</p>
-                                <p>对个人和家庭的补助：{{formatNum(spendingDetail.dgrhjtdbz)}}</p>
-                                <p>债务利息及费用支出：{{formatNum(spendingDetail.zwlxjfyzc)}}</p>
-                                <p>资本性支出（基本建设）：{{formatNum(spendingDetail.zbxzcJbjs)}}</p>
-                                <p>资本性支出：{{formatNum(spendingDetail.zbxzc)}}</p>
-                                <p>对企业补助（基本建设）：{{formatNum(spendingDetail.dqybzJbjs)}}</p>
-                                <p>对企业补助：{{formatNum(spendingDetail.dqybz)}}</p>
-                                <p>对社会保障基金补助：{{formatNum(spendingDetail.dshbzjjbz)}}</p>
-                                <p>其他支出：{{formatNum(spendingDetail.qtzc)}}</p>
-                            </div>
+                            <el-popover
+                                    popper-class="payBox-popover"
+                                    placement="bottom"
+                                    width="400"
+                                    trigger="hover">
+                                <div slot="reference"
+                                     class='payBox-top cur-pointer'>
+                                    <p>{{formatNum(expenditure.zcjjfls)}}</p>
+                                    <p>同比<i class="el-icon-top"></i>{{expenditure.zcjjfl_tb}}<br><span>{{expenditure.zcjjfl_bfb}}%</span>
+                                    </p>
+                                </div>
+                                <div class="boxtooltip">
+                                    <p>基本支出和项目支出合计：{{formatNum(spendingDetail.jbzchxmzchj)}}</p>
+                                    <p>工资福利支出：{{formatNum(spendingDetail.gzflzc)}}</p>
+                                    <p>商品和服务支出：{{formatNum(spendingDetail.sphfwzc)}}</p>
+                                    <p>对个人和家庭的补助：{{formatNum(spendingDetail.dgrhjtdbz)}}</p>
+                                    <p>债务利息及费用支出：{{formatNum(spendingDetail.zwlxjfyzc)}}</p>
+                                    <p>资本性支出（基本建设）：{{formatNum(spendingDetail.zbxzcJbjs)}}</p>
+                                    <p>资本性支出：{{formatNum(spendingDetail.zbxzc)}}</p>
+                                    <p>对企业补助（基本建设）：{{formatNum(spendingDetail.dqybzJbjs)}}</p>
+                                    <p>对企业补助：{{formatNum(spendingDetail.dqybz)}}</p>
+                                    <p>对社会保障基金补助：{{formatNum(spendingDetail.dshbzjjbz)}}</p>
+                                    <p>其他支出：{{formatNum(spendingDetail.qtzc)}}</p>
+                                </div>
+                            </el-popover>
                         </div>
                         <div class='payBox-bottom'>支出经济分类</div>
                     </div>
@@ -126,7 +144,7 @@
             <div class="jingfei-box">
                 <div class="chart-box-title">
                     <span class="chart-label-dot"></span>
-                    <i>经费情况</i>
+                    <i>检察业务经费情况</i>
                 </div>
                 <p class='unit'>单位:万元</p>
                 <div class="jingfei-content" ref="jingfeiChart"></div>
@@ -139,6 +157,7 @@
                     <i>检察业务费趋势</i>
                 </div>
                 <el-popover
+                        popper-class="pro-trend-table"
                         placement="right-start"
                         width="400"
                         trigger="click">
@@ -167,7 +186,7 @@
 	import ECharts                                                         from 'echarts';
 	import * as services                                                   from '../service/index';
 	import { verifyTriggerState, numberInteger, textFormatter, formatNum } from '@/utlis/helper';
-	import { incomeChartConfig, caizhengChartConfig }                      from '../constant/index';
+	import { incomeChartConfig }                                           from '../constant/index';
 
 	export default {
 		data() {
@@ -210,7 +229,7 @@
 				const { xAxisData, seriesData } = this.convertChartConfig(incomeChartConfig, chartData);
 				this.incomeChart.setOption({
 					title  : {
-						right    : 0,
+						right    : 10,
 						text     : '单位：万元',
 						textStyle: {
 							color     : '#fbba18',
@@ -225,7 +244,7 @@
 					},
 					legend : {
 						orient   : 'vertical',
-						left     : 270,
+						right    : 0,
 						top      : 50,
 						bottom   : 20,
 						textStyle: {
@@ -242,7 +261,7 @@
 						name     : '收入',
 						type     : 'pie',
 						radius   : '65%',
-						center   : ['35%', '60%'],
+						center   : ['35%', '53%'],
 						data     : seriesData,
 						label    : {
 							show: true
@@ -307,8 +326,8 @@
 					},
 					grid   : {
 						left        : '3%',
-						right       : '10%',
-						bottom      : '3%',
+						right       : 50,
+						bottom      : 20,
 						containLabel: true
 					},
 					xAxis  : [
@@ -1036,6 +1055,25 @@
 							color: '#0ff',
 						},
 					},
+					dataZoom  : this.screenType === 'pc' ? [{
+						type          : 'slider',
+						start         : 0,
+						end           : 10 / xAxisData.length * 100 - 1,
+						minValueSpan  : 10,
+						maxValueSpan  : 10,
+						bottom        : 0,
+						dataBackground: {
+							areaStyle: {
+								color: '#5C89FF'
+							}
+						},
+						borderColor   : 'transparent',
+						textStyle     : {
+							color: '#dfdfdf'
+						}
+					}, {
+						type: 'inside'
+					}] : undefined,
 					series    : [
 						{
 							name       : '地区',
@@ -1097,110 +1135,159 @@
 			},
 			nowDate                        : {
 				default: 2018
+			},
+			screenType                     : {
+				default: 'pc'
 			}
 		},
 	};
 </script>
 
-<style lang="scss" scoped>
-    .home-page-left {
-        width: 1234px;
-        display: flex;
-        flex-wrap: wrap;
-        .income-box {
-            width: 466px;
-            .income-content {
-                width: 100%;
-                height: 261px;
-                margin: 0 auto;
+<style lang="scss">
+    .payBox-popover {
+        background-image: linear-gradient(top, #091e5f, #01040b);
+        color: #dfdfdf;
+        border: 0;
+        .popper__arrow {
+            &::after {
+                border-bottom-color: #091e5f !important;
             }
         }
-        .pay-box {
-            width: 806px;
-            .pay-content {
-                width: 90%;
-                height: 261px;
-                margin: 0 auto;
-                display: flex;
-                flex-wrap: wrap;
-                position: relative;
-                .unit {
-                    position: absolute;
-                    right: 0;
-                    top: 0;
-                    color: #FBBA18;
-                }
-                .payBox {
-                    width: 160px;
-                    margin-top: 29px;
-                    margin-right: 24px;
-                    .boxborder {
-                        width: 160px;
-                        height: 160px;
-                        border-radius: 50%;
-                        box-sizing: border-box;
-                        padding: 14px;
-                        background-image: -webkit-linear-gradient(top, #01AFFF, #005FE8);
-                        position: relative;
-                        .boxtooltip {
-                            position: absolute;
-                            width: 400px;
-                            height: auto;
-                            color: #fff;
-                            background: rgba(3, 196, 195, 0.9);
-                            box-shadow: 0px 2px 4px 0px rgba(13, 61, 137, 0.5);
-                            border-radius: 4px;
-                            left: 70%;
-                            top: 70%;
-                            text-align: left;
-                            padding: 8px;
-                            line-height: 20px;
-                            z-index: 999;
-                        }
+    }
+
+    .pro-trend-table {
+        background: rgba(0, 10, 19, 0.8);
+        border: 1px solid rgba(4, 225, 193, 1);
+        .el-table {
+            background-color: transparent;
+            &:before {
+                display: none;
+            }
+            th,
+            tr {
+                background-color: transparent;
+                color: #fff;
+            }
+            .el-table__row {
+                background-color: transparent;
+                color: #fff;
+                &:hover {
+                    & > td {
+                        background-color: transparent;
                     }
-                    .payBox-top {
-                        width: 100%;
-                        height: 100%;
-                        text-align: center;
-                        border-radius: 50%;
-                        padding-top: 30px;
-                        background: #04092A;
-                        p {
-                            color: #00FFF8;
-                            padding-bottom: 14px;
-                            span {
-                                color: #FF6C40;
-                                padding-left: 40px;
+                }
+            }
+            td {
+                border-bottom-color: #04E1C1;
+            }
+            th.is-leaf {
+                border-bottom-color: #04E1C1;
+            }
+        }
+    }
+
+    .JianWu-left-box {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        .fraze-grid {
+            width: 100%;
+            .income-box {
+                min-width: 466px;
+                flex: 1;
+                .income-content {
+                    width: 100%;
+                    height: 261px;
+                    margin: 0 auto;
+                }
+            }
+            .pay-box {
+                flex: 2;
+                position: relative;
+                .pay-content {
+                    width: 95%;
+                    height: 261px;
+                    margin: 0 auto;
+                    display: flex;
+                    justify-content: space-between;
+                    .unit {
+                        position: absolute;
+                        right: 20px;
+                        top: 40px;
+                        color: #FBBA18;
+                    }
+                    .payBox {
+                        width: 160px;
+                        margin-top: 29px;
+                        margin-right: 24px;
+                        .boxborder {
+                            width: 160px;
+                            height: 160px;
+                            border-radius: 50%;
+                            box-sizing: border-box;
+                            padding: 14px;
+                            background-image: -webkit-linear-gradient(top, #01AFFF, #005FE8);
+                            position: relative;
+                            .boxtooltip {
+                                position: absolute;
+                                width: 400px;
+                                height: auto;
+                                color: #fff;
+                                background: rgba(3, 196, 195, 0.9);
+                                box-shadow: 0px 2px 4px 0px rgba(13, 61, 137, 0.5);
+                                border-radius: 4px;
+                                left: 70%;
+                                top: 70%;
+                                text-align: left;
+                                padding: 8px;
+                                line-height: 20px;
+                                z-index: 999;
                             }
                         }
-                        p:first-child {
-                            font-size: 18px;
+                        .payBox-top {
+                            width: 100%;
+                            height: 100%;
+                            text-align: center;
+                            border-radius: 50%;
+                            padding-top: 30px;
+                            background: #04092A;
+                            p {
+                                color: #00FFF8;
+                                padding-bottom: 14px;
+                                span {
+                                    color: #FF6C40;
+                                    padding-left: 40px;
+                                }
+                            }
+                            p:first-child {
+                                font-size: 18px;
+                            }
+                        }
+                        .payBox-bottom {
+                            width: 160px;
+                            color: #fff;
+                            text-align: center;
+                            margin-top: 13px;
                         }
                     }
-                    .payBox-bottom {
-                        width: 160px;
-                        color: #fff;
-                        text-align: center;
-                        margin-top: 13px;
+                    .payBox:last-child {
+                        margin-right: 0;
                     }
-                }
-                .payBox:last-child {
-                    margin-right: 0px;
                 }
             }
         }
         .caizheng-box {
-            width: 1234px;
+            width: 100%;
             position: relative;
             .caizheng-content {
                 width: 100%;
-                height: 247px;
+                height: 280px;
                 margin: 0 auto;
             }
             .more-btn {
                 color: #FBBA18;
                 position: absolute;
-                right: 0;
+                right: 20px;
                 top: 30px;
                 margin-top: 17px;
                 text-align: right;
@@ -1211,40 +1298,43 @@
                 z-index: 1;
             }
         }
-        .jingfei-box {
-            width: 739px;
-            position: relative;
-            .unit {
-                position: absolute;
-                right: 20px;
-                top: 45px;
-                color: #FBBA18;
+        .fraze-grid {
+            width: 100%;
+            .jingfei-box {
+                flex: 739;
+                position: relative;
+                .unit {
+                    position: absolute;
+                    right: 20px;
+                    top: 45px;
+                    color: #FBBA18;
+                }
+                .jingfei-content {
+                    width: 30%;
+                    height: 292px;
+                    float: left;
+                }
             }
-            .jingfei-content {
-                width: 30%;
-                height: 292px;
-                float: left;
-            }
-        }
-        .jiancha-box {
-            width: 514px;
-            position: relative;
-            .unit {
-                position: absolute;
-                right: 10px;
-                top: 45px;
-                color: #FBBA18;
-                z-index: 10;
-            }
-            .jiancha-content {
-                width: 100%;
-                height: 292px;
-            }
-            .more-area {
-                position: absolute;
-                bottom: 20px;
-                right: 10px;
-                z-index: 10;
+            .jiancha-box {
+                flex: 514;
+                position: relative;
+                .unit {
+                    position: absolute;
+                    right: 20px;
+                    top: 45px;
+                    color: #FBBA18;
+                    z-index: 10;
+                }
+                .jiancha-content {
+                    width: 100%;
+                    height: 292px;
+                }
+                .more-area {
+                    position: absolute;
+                    bottom: 20px;
+                    right: 10px;
+                    z-index: 10;
+                }
             }
         }
         .per-dialog-chart {

@@ -1,5 +1,5 @@
 // 收入
-const incomeChartConfig   = [{
+const incomeChartConfig = [{
 	id  : 'czbk',
 	name: '财政拨款',
 }, {
@@ -15,141 +15,6 @@ const incomeChartConfig   = [{
 	id  : 'qtsr',
 	name: '其他收入',
 }];
-//财政拨款收入分布
-const caizhengChartConfig = [{
-	id  : '北京',
-	name: "2600"
-},
-							 {
-								 id  : '天津',
-								 name: "2300"
-							 },
-							 {
-								 id  : '河北',
-								 name: "7600"
-							 },
-							 {
-								 id  : '山西',
-								 name: "3600"
-							 },
-							 {
-								 id  : '内蒙古',
-								 name: "6600"
-							 },
-							 {
-								 id  : '山东',
-								 name: "7400"
-							 },
-							 {
-								 id  : '河南',
-								 name: "2600"
-							 }, {
-		id  : '北京',
-		name: "2600"
-	},
-							 {
-								 id  : '天津',
-								 name: "2300"
-							 },
-							 {
-								 id  : '河北',
-								 name: "7600"
-							 },
-							 {
-								 id  : '山西',
-								 name: "3600"
-							 },
-							 {
-								 id  : '内蒙古',
-								 name: "6600"
-							 },
-							 {
-								 id  : '山东',
-								 name: "7400"
-							 },
-							 {
-								 id  : '河南',
-								 name: "2600"
-							 }, {
-		id  : '山西',
-		name: "3600"
-	},
-							 {
-								 id  : '内蒙古',
-								 name: "6600"
-							 },
-							 {
-								 id  : '山东',
-								 name: "7400"
-							 }]
-
-//全国省份排名
-const sortChartConfig = [{
-	city_name: '北京',
-	sl       : "2600"
-},
-						 {
-							 city_name: '天津',
-							 sl       : "2300"
-						 },
-						 {
-							 city_name: '河北',
-							 sl       : "7600"
-						 },
-						 {
-							 city_name: '山西',
-							 sl       : "3600"
-						 },
-						 {
-							 city_name: '内蒙古',
-							 sl       : "6600"
-						 },
-						 {
-							 city_name: '山东',
-							 sl       : "7400"
-						 },
-						 {
-							 city_name: '河南',
-							 sl       : "2600"
-						 }, {
-		city_name: '北京',
-		sl       : "2600"
-	},
-						 {
-							 city_name: '天津',
-							 sl       : "2300"
-						 },
-						 {
-							 city_name: '河北',
-							 sl       : "7600"
-						 },
-						 {
-							 city_name: '山西',
-							 sl       : "3600"
-						 },
-						 {
-							 city_name: '内蒙古',
-							 sl       : "6600"
-						 },
-						 {
-							 city_name: '山东',
-							 sl       : "7400"
-						 },
-						 {
-							 city_name: '河南',
-							 sl       : "2600"
-						 }, {
-		city_name: '山西',
-		sl       : "3600"
-	},
-						 {
-							 city_name: '内蒙古',
-							 sl       : "6600"
-						 },
-						 {
-							 city_name: '山东',
-							 sl       : "7400"
-						 }]
 
 // 地图tooltip内容
 const mapTooltipConfig = [{
@@ -189,12 +54,10 @@ const propertyConfig                  = {
 	'list' : [{
 		name: '流动资产',
 		num : '123.45亿'
-	},
-			  {
-				  name: '流动资产',
-				  num : '123.45亿'
-			  },
-			  {
+	}, {
+		name: '流动资产',
+		num : '123.45亿'
+	},{
 				  name: '流动资产',
 				  num : '123.45亿'
 			  },
@@ -343,12 +206,10 @@ const financialInstitutions           = {
 	qtxs    : 1234,
 	kjwpz   : 1234,
 	qzkjjzhs: 1234
-}
+};
 
 export {
 	incomeChartConfig,
-	caizhengChartConfig,
-	sortChartConfig,
 	mapTooltipConfig,
 	mapTableConfig,
 	propertyConfig,
