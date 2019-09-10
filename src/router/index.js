@@ -105,7 +105,7 @@ export default new Router({
 					}
 				},
 				{
-					path     : 'inspectionGuarantee',
+					path     : 'inspectionGuarantee/:inspectionGuarantee',
 					name     : 'inspectionGuarantee',
 					component: resolve => require(['@/pages/inspection-guarantee/index'], resolve),
 					meta     : {

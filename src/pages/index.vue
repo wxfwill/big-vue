@@ -28,7 +28,19 @@
 		data() {
 			return {
 				nowRoute      : 'homePage',
-				menuList      : [{
+				menuList      : [],
+				buttonImg     : require('@/public/img/home/home_08.png'),
+				bjBg          : require('@/public/img/home/bj.png'),
+				buttonColorImg: require('@/public/img/home/home_07.png'),
+				clock         : null,
+				week          : null,
+			}
+		},
+		created() {
+			if(this.$route.params.inspectionGuarantee === 'jwfinancial') {
+				this.menuList = [];
+			} else {
+				const menuList  = [{
 					id  : 'homePage',
 					name: '首页',
 					url : '/',
@@ -47,20 +59,15 @@
 				}, {
 					id  : 'inspectionGuarantee',
 					name: '检务保障',
-					url : '/inspectionGuarantee',
-				}],
-				buttonImg     : require('@/public/img/home/home_08.png'),
-				bjBg          : require('@/public/img/home/bj.png'),
-				buttonColorImg: require('@/public/img/home/home_07.png'),
-				clock         : null,
-				week          : null,
+					url : '/inspectionGuarantee/largescreen',
+				}];
+				const hash      = location.hash.substr(1),
+					  parentUrl = hash.substring(0, hash.substr(1).indexOf('/') + 1) || hash,
+					  nowRoute  = menuList.find(i => parentUrl === i.url) || {};
+				this.menuList   = menuList;
+				this.nowRoute   = nowRoute.id;
 			}
-		},
-		created() {
-			const hash      = location.hash.substr(1),
-				  parentUrl = hash.substring(0, hash.substr(1).indexOf('/') + 1) || hash,
-				  nowRoute  = this.menuList.find(i => parentUrl === i.url) || {};
-			this.nowRoute   = nowRoute.id;
+
 		},
 		methods   : {
 			pageRouterChange(id, url) {
