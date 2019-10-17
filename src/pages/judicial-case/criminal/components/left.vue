@@ -22,7 +22,7 @@
             </div>
             <div class="fchc-box">
                 <box-head title="案件受理数(同比)"></box-head>
-                <p class='more-btn' @click="setDialogVisible('受理案件增长率最快的省市')">更多>></p>
+                <p class='more-btn' @click="setDialogVisible('案件受理数(同比)')">更多>></p>
                 <div class="fchc-chart" ref="fchcChart"></div>
             </div>
         </div>
@@ -270,7 +270,7 @@
 				const res = await services.getIncreaseRateOfAdmissibilityList(params);
 				if(res.code === 200) {
 					this.fchcList = res.data;
-					this.loadFastHandleCaseCityChart(res.data.slice(0, 6));
+					this.loadFastHandleCaseCityChart(res.data.slice(0, 10));
 				} else {
 					this.$message.error(res.msg);
 				}
@@ -363,7 +363,7 @@
 				const res = await services.getAverageHandlingOfCasesList(params);
 				if(res.code === 200) {
 					this.averageHandCasesList = res.data;
-					this.loadAverageHandlingOfCasesChart(res.data.slice(0, 7));
+					this.loadAverageHandlingOfCasesChart(res.data.slice(0, 10));
 				} else {
 					this.$message.error(res.msg);
 				}
@@ -495,7 +495,7 @@
 						valKey = 'bbrs';
 						data   = this.averageHandCasesList;
 						break;
-					case '受理案件增长率最快的省市':
+					case '案件受理数(同比)':
 						idKey  = 'csmc';
 						valKey = 'slajzcl';
 						data   = this.fchcList;

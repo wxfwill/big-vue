@@ -1,15 +1,18 @@
 export const chargeJunctionConfig = [{
-	id   : 'kg_sls',
-	name : '受理数',
-	color: '#1BC85D',
+	id     : 'kg_sls',
+	totalId: 'sls',
+	name   : '受理数',
+	color  : '#1BC85D',
 }, {
-	id   : 'kg_bjs',
-	name : '办结数',
-	color: '#009FE8',
+	id     : 'kg_bjs',
+	totalId: 'bjs',
+	name   : '办结数',
+	color  : '#009FE8',
 }, {
-	id   : 'kg_zbs',
-	name : '在办数',
-	color: '#FBBA18',
+	id     : 'kg_zbs',
+	totalId: 'zbs',
+	name   : '在办数',
+	color  : '#FBBA18',
 }];
 
 export const appealJunctionConfig = [{
@@ -64,6 +67,54 @@ export const mapTooltipConfig = [{
 	id    : 'zbs',
 	name  : '在办数',
 	regExp: '{zbs}&nbsp;&nbsp;&nbsp; {zbs_zb}%',
+}];
+
+export const topDataConfig = [{
+	id  : 'totalSls',
+	name: '受理总数',
+}, {
+	id  : 'totalBjs',
+	name: '办结总数',
+}, {
+	id  : 'totalZbs',
+	name: '在办总数',
+}];
+
+export const leftSideList = [{
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
+}];
+
+
+export const mapTableConfig = [{
+	id  : 'name',
+	name: '名称',
+}, {
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
+}];
+
+export const mapLineLegend = [{
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
 }];
 
 export const compensationCaseConfig = [{

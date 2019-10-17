@@ -22,7 +22,7 @@
 	import ECharts                              from 'echarts';
 	import * as services                        from '../service';
 	import { verifyTriggerState, fillZero }     from '@/utlis/helper';
-	import BjMap                                from '@/components/common/map/team-manage-map';
+	import BjMap                                from '@/components/common/map/index';
 	import { mapTableConfig, mapTooltipConfig, mapLineLegend } from '../constant/index';
 
 	export default {

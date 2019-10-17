@@ -1,7 +1,7 @@
 <template>
     <div class="water-box">
         <div ref='chartBox' :style="{width:`${width}px`, height: `${width}px`}"></div>
-        <p class="water-num">{{ chartConfig.value || 0 }}</p>
+        <p class="water-num" v-if="!chartConfig.noValue">{{ chartConfig.value || 0 }}</p>
         <p class="water-title">{{chartConfig.title}}</p>
     </div>
 </template>

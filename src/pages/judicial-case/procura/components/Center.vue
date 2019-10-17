@@ -4,31 +4,30 @@
                 :tooltipConfig="mapTooltipConfig"
                 :mapData="mapList"
                 :getNewRegionInfo="setMapData"
-                :totalSls="totalSls"
-                :totalBjs="totalBjs"
-                :totalZbs="totalZbs"
-                :sls="sls"
-                :bjs="bjs"
-                :zbs="zbs"
                 :lev="mapCode.lev"
+                :code="mapCode.code"
+                defaultCode="100000"
+                :topDataConfig="topDataConfig"
+                :topData="{ totalSls, totalBjs, totalZbs }"
+                :leftDataConfig="leftSideList"
+                :leftData='{ sls, bjs, zbs }'
+                :extraCityColumn="mapTableConfig"
+                highProcuratorCode="100000"
                 :nowSelectDate="dateSection"
-				:mapConfig='{
-					numIsshow:false,
-					leftIsshow:true,
-					tooltipIsshow:true,
-					numIsshow1:true
-				}'
+                :mapLineLegend="mapLineLegend"
         ></bj-map>
-        <span v-show="false">{{ mapCode }}</span>
     </div>
 </template>
 
 <script>
 	import { mapGetters, mapActions }       from 'vuex';
-	import * as services                   from '../service';
 	import { verifyTriggerState, fillZero } from '@/utlis/helper';
-	import { mapTooltipConfig }             from '../constant';
 	import BjMap                            from '@/components/common/map/index';
+	import {
+		mapTooltipConfig, topDataConfig,
+		leftSideList, mapTableConfig,
+		mapLineLegend,
+	}                                       from '../constant';
 
 	export default {
 		data() {
@@ -40,7 +39,6 @@
 				bjs        : 0,
 				zbs        : 0,
 				mapList    : [],
-				mapTooltipConfig,
 				dialogTitle: '全国数据统计表',
 				showMapData: false,
 			}
@@ -52,6 +50,11 @@
 		beforeCreate() {
 			this.trigger         = ['startdate', 'enddate', 'code', 'lev'];
 			this.oldTriggerState = {};
+			this.mapTooltipConfig = mapTooltipConfig;
+			this.topDataConfig    = topDataConfig;
+			this.leftSideList     = leftSideList;
+			this.mapTableConfig   = mapTableConfig;
+			this.mapLineLegend    = mapLineLegend;
 		},
 		mounted() {
 			const params         = { ...this.mapCode, ...this.dateSection };
@@ -67,19 +70,19 @@
 		},
 		methods   : {
 			loadMapData(params) {
-				this.sls                                           = this.checkCharterMapData.sls;
-				this.bjs                                           = this.checkCharterMapData.wcs;
-				this.zbs                                           = this.checkCharterMapData.wwcs;
-				this.mapList                                       = this.checkCharterTheMapList.map(i => {
+				this.sls      = this.checkCharterMapData.sls;
+				this.bjs      = this.checkCharterMapData.wcs;
+				this.zbs      = this.checkCharterMapData.wwcs;
+				this.mapList  = this.checkCharterTheMapList.map(i => {
 					return {
-						code : i.code,
-						name : i.name,
-						sls: i.sls,
-						sls_zb:i.sls_zb,
-						bjs : i.wcs,
+						code  : i.code,
+						name  : i.name,
+						sls   : i.sls,
+						sls_zb: i.sls_zb,
+						bjs   : i.wcs,
 						bjs_zb: i.wcs_zb,
-						zbs:  i.wwcs,
-						zbs_zb:i.wwcs_zb
+						zbs   : i.wwcs,
+						zbs_zb: i.wwcs_zb
 					}
 				});
 				this.totalSls = `${fillZero(this.checkCharterTopData.slzs, 4)}`.split('');
@@ -91,18 +94,18 @@
 		components: {
 			BjMap,
 		},
-		props:{
-			checkCharterData:{
-				default:{}
+		props     : {
+			checkCharterData      : {
+				default: {}
 			},
-			checkCharterTopData:{
-				default:{}
+			checkCharterTopData   : {
+				default: {}
 			},
-			checkCharterMapData:{
-				default:{}
+			checkCharterMapData   : {
+				default: {}
 			},
-			checkCharterTheMapList:{
-				default:{}
+			checkCharterTheMapList: {
+				default: {}
 			}
 		}
 	}

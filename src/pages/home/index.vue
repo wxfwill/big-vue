@@ -5,14 +5,14 @@
                 :dateChange="setHomeSelectTime"
         ></date-picker>
         <left/>
-        <center></center>
+        <center-box></center-box>
         <right/>
     </div>
 </template>
 <script>
 	import { mapActions, mapGetters } from 'vuex';
 	import Left                       from './components/Left.vue'
-	import Center                     from './components/Center.vue'
+	import CenterBox                     from './components/Center.vue'
 	import Right                      from './components/Right.vue'
 	import DatePicker                 from '@/components/common/date-picker';
 
@@ -28,7 +28,7 @@
 		},
 		components: {
 			Left,
-			Center,
+			CenterBox,
 			Right,
 			DatePicker,
 		},

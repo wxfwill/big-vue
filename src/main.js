@@ -16,6 +16,8 @@ import {
 	TableColumn,
 	Popover,
 	Pagination,
+	Breadcrumb,
+	BreadcrumbItem,
 }              from 'element-ui';
 
 
@@ -32,6 +34,8 @@ const elementComponents = [
 		  TableColumn,
 		  Popover,
 		  Pagination,
+		  Breadcrumb,
+		  BreadcrumbItem,
 	  ],
 	  vt                = new Vue();
 elementComponents.forEach(i => Vue.use(i));

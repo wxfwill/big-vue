@@ -1,5 +1,5 @@
 <template>
-    <div class="bj-map">
+    <div class="extend-bj-map">
         <div v-if="lev === 1" class="high-procurator" v-show='mapConfig.tooltipIsshow'>
             <div class="tooltip-bg bg_img" :style="{backgroundImage:`url(${this.mapTooltipTitleBg})`}"></div>
             <p class="tooltip-title">最高人民检察院</p>
@@ -13,58 +13,34 @@
             </ul>
         </div>
         <div class="sumBox" v-show="mapConfig.numIsshow">
-            <div class="num-block">
-                受理总数：
+            <div class="num-block" v-for="topDataItem in topDataConfig" :key="topDataItem.id">
+                {{ topDataItem.name }}
                 <ul>
-                    <li v-for="(item,index) in totalSls" :key="index">{{item}}</li>
-                </ul>
-            </div>
-            <div class="num-block">
-                办结总数：
-                <ul>
-                    <li v-for="(item,index) in totalBjs" :key="index">{{item}}</li>
-                </ul>
-            </div>
-            <div class="num-block">
-                在办总数：
-                <ul>
-                    <li v-for="(item, index) in totalZbs" :key="index">{{item}}</li>
+                    <li v-for="(item,index) in topData[topDataItem.id]" :key="index">{{item}}</li>
                 </ul>
             </div>
         </div>
-        <div class="sumBox" v-show="mapConfig.numIsshow1">
-            <div class="num-block">
-                受理总数：
-                <ul>
-                    <li v-for="(item,index) in totalSls" :key="index">{{item}}</li>
+        <div class="now-data">
+            <div v-if='mapConfig.leftIsshow'>
+                <h4 class="now-date-text" v-if="nowSelectDate">
+                    {{ nowSelectDate.startdate }} ~ {{ nowSelectDate.enddate }}
+                </h4>
+                <h4 class="now-area">
+                    <el-breadcrumb separator-class="el-icon-arrow-right">
+                        <el-breadcrumb-item v-for="item in cityCrumbsList" :key="item.code">
+                            {{ getAreaName(item.name) }}
+                        </el-breadcrumb-item>
+                    </el-breadcrumb>
+                    <span></span>
+                    <i class="now-data-icon el-icon-coin" v-if="mapConfig.jianwu" @click="dialogVisible = true"></i>
+                </h4>
+                <ul class="nd-text-list">
+                    <li v-for="(item, index) in leftDataConfig" :key="item.id"
+                        :style="{ color: `${leftSideColorList[index]}` }">
+                        {{ item.name }}: {{ ~~leftData[item.id] }}
+                    </li>
                 </ul>
             </div>
-            <div class="num-block">
-                完成总数：
-                <ul>
-                    <li v-for="(item,index) in totalBjs" :key="index">{{item}}</li>
-                </ul>
-            </div>
-            <div class="num-block">
-                未完成总数：
-                <ul>
-                    <li v-for="(item, index) in totalZbs" :key="index">{{item}}</li>
-                </ul>
-            </div>
-        </div>
-        <div class="now-data" v-show='mapConfig.leftIsshow'>
-            <h4 class="now-date-text">
-                {{ nowSelectDate.startdate }} ~ {{ nowSelectDate.enddate }}
-            </h4>
-            <h4 class="now-area">
-                <span>{{ nowAreaName }}</span>
-                <i class="now-data-icon el-icon-coin" @click="dialogVisible = true"></i>
-            </h4>
-            <p class="nd-accept-text">受理数：{{ ~~sls }}</p>
-            <p class="nd-conclude-text"><span v-if='mapConfig.numIsshow==true'>办结数</span><span v-else>完成数</span>：{{
-                ~~bjs }}</p>
-            <p class="nd-office-text"><span v-if='mapConfig.numIsshow==true'>在办数</span><span v-else>未完成数</span>：{{ ~~zbs
-                }}</p>
             <el-popover
                     popper-class="map-extra-table"
                     v-show="extendData.length !== 0"
@@ -73,6 +49,7 @@
                     trigger="click">
                 <el-table :data="extendData">
                     <el-table-column
+                            show-overflow-tooltip
                             v-for="item in extraCityColumn"
                             :key="item.id"
                             :property="item.id"
@@ -84,24 +61,14 @@
         <div class="map-chart-box">
             <div ref="mapRef" class="map-chart"></div>
             <div class="map-option">
-                <i class="map-btn map-icon el-icon-aim" @click="normotopiaMapCvs"></i>
-                <i class="map-btn map-icon el-icon-s-home" @click="showChinaMap"></i>
-                <img class="map-btn" :src="backIcon" alt="..." @click="backSuperiorMap">
-            </div>
-            <div v-if="showTooltip" class="area-box">
-                <p class="tooltip-bg bg_img" :style="{backgroundImage:`url(${this.mapTooltipTitleBg})`}"></p>
-                <h3 class="title">{{ tooltipData.name }}</h3>
-                <ul>
-                    <li v-for="item in tooltipConfig" :key="item.id">
-                        <span>{{ item.name }}：</span>
-                        <i v-html="item.regExp ? getTooltipText(item.regExp, tooltipData) : tooltipData[item.id] || '0'"></i>
-                    </li>
-                </ul>
+                <i class="map-btn map-icon el-icon-aim" @click="normotopiaMapCvs" title="定位"></i>
+                <i class="map-btn map-icon el-icon-s-home" @click="showChinaMap" title="回到首页"></i>
+                <img class="map-btn" :src="backIcon" alt="..." @click="backSuperiorMap" title="返回">
             </div>
         </div>
         <el-dialog
                 custom-class="data-dialog"
-                :title="nowAreaName"
+                :title="getAreaName(cityCrumbsList[mapLevel].name)"
                 :visible.sync="dialogVisible"
                 @opened="loadMapLineChart"
                 width="90%">
@@ -111,9 +78,14 @@
 </template>
 
 <script>
-	import ECharts                     from 'echarts';
-	import { geoCoordMap, geoMapName } from './config';
-	import { textFormatter } from '@/utlis/helper';
+	import ECharts           from 'echarts';
+	import 'echarts-gl';
+	import {
+		geoCoordMap, extraCityColumnConfig,
+		geoMapName
+	}                        from './config';
+	import { textFormatter } from "../../../utlis/helper";
+
 	export default {
 		data() {
 			return {
@@ -122,53 +94,26 @@
 				mapPositionImg    : require('@/public/img/home/position.png'),
 				showTooltip       : false,
 				dialogVisible     : false,
-				tooltipData       : {},
 				cityCrumbsList    : [{
 					id  : 0,
-					code: 100000,
+					code: this.defaultCode,
 					name: 'china'
 				}],
 				mapLevel          : 0,
 				highProcuratorInfo: {},
-				extraCityColumn   : [
-					{
-						id  : 'name',
-						name: '名称'
-					}, {
-						id  : 'sls',
-						name: '受理数'
-					}, {
-						id  : 'bjs',
-						name: '办结数'
-					}, {
-						id  : 'zbs',
-						name: '在办数'
-					}],
 				extendData        : [],
 				loadingMap        : false,
 			}
 		},
-		computed: {
-			nowAreaName() {
-				const name = this.cityCrumbsList[this.mapLevel].name;
-				return geoMapName[name] || name;
-			}
+		computed: {},
+		created() {
+			this.leftSideColorList = ['#FBBA18', '#0BC1F4', '#FF6C40'];
+			this.clickTimeFrame    = false;
 		},
 		mounted() {
 			const myChart        = ECharts.init(this.$refs.mapRef);
 			this.mapJsonData     = [];
 			this.mapGeoLoadFaily = false;
-			myChart.on('mouseover', (params) => {
-				if(params.name) {
-					this.tooltipData = params.data || { name: params.name };
-					this.showTooltip = true;
-				}
-			});
-
-			myChart.on('mouseout', () => {
-				this.tooltipData = {};
-				this.showTooltip = false;
-			});
 
 			/**
 			 * 地图下钻点击事件
@@ -179,12 +124,20 @@
 			 *     4、判断@params.data  做是下钻处理
 			 * */
 			myChart.on('click', (params) => {
+				if(this.clickTimeFrame) {
+					return false;
+				}
+				this.clickTimeFrame = true;
+				setTimeout(() => {
+					this.clickTimeFrame = false;
+				});
+
 				if(this.loadingMap) {
 					this.$message.warning('正在加载数据...');
 					return false;
 				}
 				// 判断沒有数据或者不能下钻则返回
-				if(!params.data || params.data.id.length > 6) {
+				if(!(params.data && params.data.id && params.data.id.length <= 6)) {
 					return false;
 				}
 				const { name, data: { id, code, extendMap } } = params,
@@ -211,7 +164,6 @@
 				} else {
 					this.highlightCountyArea();
 				}
-				this.handleMapStateChange();
 			});
 
 			this.loadMapGraphJson();
@@ -246,6 +198,7 @@
 						name,
 						data: mapGeoJson
 					});
+					this.handleMapStateChange();
 					this.loadMapChart(name, mapGeoJson, false);
 				} catch(e) {
 					this.mapGeoLoadFaily = true;
@@ -263,102 +216,122 @@
 			loadMapChart(name, data, isMatchExtra = true) {
 				this.myChart.clear();
 				ECharts.registerMap(name, data);
-				let mapData    = [],
-					extendData = [];
+				let mapData        = [],
+					extendData     = [],
+					scatterData    = [],
+					visualMaxValue = 0;
 				// mapDataClassify方法复杂度On2,减少调用次数
 				if(isMatchExtra) {
-					const classify = this.mapDataClassify(this.cityCrumbsList[this.mapLevel].publicName);
+					const classify = this.mapDataClassify(name, this.cityCrumbsList[this.mapLevel].publicName);
 					extendData     = classify.extendData;
 					mapData        = classify.mapData;
-
+					scatterData    = classify.scatterData;
+					visualMaxValue = classify.mapMaxValue;
 					if(name === 'china') {
-						extendData.some((i) => {
-							if(i.code === "100000") {
+						let highProcuratorIndex = -1;
+						extendData.some((i, index) => {
+							if(i.code === this.highProcuratorCode) {
+								highProcuratorIndex     = index;
 								this.highProcuratorInfo = i;
 								return true;
 							}
 							return false;
 						});
-					} else {
-						this.extendData = extendData;
+						if(highProcuratorIndex !== -1) {
+							extendData.splice(highProcuratorIndex, 1);
+						}
 					}
+					this.extendData = extendData;
 				}
+				const regionStyle = {
+					map              : name,
+					shading          : 'realistic',
+					realisticMaterial: {},
+					postEffect       : {},
+					viewControl      : {
+						alpha            : 45,
+						rotateSensitivity: 4,
+						bate             : -10,
+                        /*autoRotate       : true,
+                         minBeta          : -360,
+                         maxBeta          : 360*/
+					},
+					boxWidth         : name === 'china' ? 100 : 80,
+					regionHeight     : 4
+				};
 				this.myChart.setOption({
 					tooltip: {
+						backgroundColor: 'transparent',
+						position       : ['80%', '50%'],
+						formatter      : (params) => {
+							let str = `<div class="area-box">
+                                <p class="tooltip-bg bg_img" style="background-image:url(${this.mapTooltipTitleBg})"></p>
+                                <h3 class="title">${params.name}</h3>
+                                <ul>`;
+							this.tooltipConfig.forEach(item => str += `<li>
+								    <span>${item.name}：</span>
+							        <i>${item.regExp ? this.getTooltipText(item.regExp, params.data) : params.data[item.id] || '0'}</i>
+								</li>`);
+							str += "</ul></div>";
+							return str;
+						}
+					},
+					geo3D  : {
+						...regionStyle,
 						show: false,
+						map : name,
 					},
-					geo    : {
-						map         : name,
-						roam        : true,
-						scaleLimit  : {
-							min: .5,
-							max: 10
-						},
-						label       : {
-							normal  : {
-								show     : true,
-								textStyle: {
-									color: '#fff',
-								}
-							},
-							emphasis: {
-								textStyle: {
-									color: '#fff'
-								}
-							}
-						},
-						itemStyle   : {
-							normal  : {
-								borderColor: 'rgba(39, 297, 209, 1)',
-								color      : 'rgba(51,209,248,0.2)',
-								shadowColor: '#25c9d2',
-								shadowBlur : 1,
-							},
-							emphasis: {
-								areaColor    : new ECharts.graphic.LinearGradient(0, 0, 1, 0, [{
-									offset: 0,
-									color : 'rgba(7, 101,190, 1)'
-								}, {
-									offset: 1,
-									color : 'rgba(97, 229, 215, 1)'
-								}]),
-								shadowOffsetX: 0,
-								shadowOffsetY: 0,
-								shadowBlur   : 20,
-								borderWidth  : 0,
-								shadowColor  : 'rgba(0, 0, 0, 0.5)'
-							}
-						},
-						layoutCenter: name === 'china' ? ['50%', '50%'] : undefined,
-						layoutSize  : name === 'china' ? 950 : undefined,
-					},
+                    /*visualMap: {
+                     max    : visualMaxValue,
+                     min    : 0,
+                     inRange: {
+                     color: ['rgba(8,163,196, .2)', 'rgba(8,163,196, .9)'],
+                     }
+                     },*/
 					series : [{
-						name            : 'extend',
-						type            : 'scatter',
-						coordinateSystem: 'geo',
-						symbolSize      : 15,
-						data            : this.convertMapData(name, extendData),
+						type            : 'scatter3D',
+						coordinateSystem: 'geo3D',
+						symbol          : `pin`,
+                        symbolSize      : 30,
 						label           : {
-							normal: {
-								color    : '#fff',
-								formatter: '{b}',
-								position : 'right',
-								show     : true
+							show     : true,
+							formatter: '{b}',
+							position : 'bottom',
+							textStyle: {
+								color          : '#fff',
+								backgroundColor: 'transparent',
 							}
 						},
-						itemStyle       : {
-							color: '#00FFFF',
-						},
+						data            : scatterData,
+						zlevel          : 10,
 					}, {
-						name    : '人数',
-						type    : 'map',
-						mapType : name,
-						geoIndex: 0,
-						data    : mapData,
+						...regionStyle,
+						name     : '数量',
+						type     : 'map3D',
+						data     : mapData,
+						itemStyle: {
+							color      : 'rgba(51,209,248, .1)',
+							opacity    : 1,
+							borderColor: 'rgba(4,179,179, 1)',
+							borderWidth: 1,
+						},
+						label    : {
+							show     : true,
+							textStyle: {
+								color          : '#fff',
+								distance       : 10,
+								backgroundColor: 'transparent',
+								fontWeight     : 400,
+								fontSize       : 16,
+							}
+						},
+						shading  : 'realistic',
+						bate     : -10,
+						zlevel   : 0,
 					}],
 				});
 			},
-
+			// 下钻到第四级
 			highlightCountyArea() {
 				const { name }               = this.cityCrumbsList[this.mapLevel],
 					  { data: upMapGeoJson } = this.mapJsonData[this.mapLevel - 1];
@@ -372,6 +345,7 @@
 					name,
 					data: nowSelectedMap
 				});
+				this.handleMapStateChange();
 				this.loadMapChart(name, nowSelectedMap, false);
 			},
 
@@ -385,30 +359,60 @@
 
 			/**
 			 * 地图数据分类，对匹配不到的地图区域做特殊处理
+			 * @param name  地区名称
+			 * @param publicName 公共名称
 			 * */
-			mapDataClassify(publicName) {
-				let cityData               = this.mapData;
-				const mapData              = [],
-					{ data: { features } } = this.mapJsonData[this.mapLevel],
-					extendData             = cityData.filter((i) => {
-						if(publicName) {
-							i.name = i.name.replace(publicName, '');
-						}
-						const isExist = features.some(j => {
-							if(j.properties.name === i.name) {
-								i.id = j.properties.id;
-								return true;
-							}
-							return false;
-						});
-						if(isExist) {
-							mapData.push(i);
-						}
-						return !isExist
-					});
+			mapDataClassify(name, publicName) {
+				let cityData    = this.mapData,
+					mapMaxValue = 0,
+					valueKey    = '';
+				if(this.tooltipConfig.length) {
+					valueKey = this.tooltipConfig[0].id;
+				}
+				const mapData                = [],
+					  scatterData            = [],
+					  extraPosition          = this.getExtraPosition(name),
+					  { data: { features } } = this.mapJsonData[this.mapLevel],
+					  extendData             = cityData.filter((i) => {
+						  const areaInfo = extraPosition[i.name];
+						  if(areaInfo) {
+							  scatterData.push({
+								  ...areaInfo,
+								  ...i,
+								  value : areaInfo.coordinates,
+								  number: i.value || 0
+							  });
+							  return false;
+						  }
+						  if(valueKey) {
+							  i.value = i[valueKey];
+							  if(mapMaxValue < i[valueKey]) {
+								  mapMaxValue = i.value;
+							  }
+						  }
+						  if(publicName) {
+							  i.name = i.name.replace(publicName, '');
+						  }
+
+
+						  const isExist = features.some(j => {
+							  if(j.properties.name === i.name) {
+								  i.id = j.properties.id;
+								  i.cp = j.properties.cp;
+								  return true;
+							  }
+							  return false;
+						  });
+						  if(isExist) {
+							  mapData.push(i);
+						  }
+						  return !isExist
+					  });
 				return {
 					mapData,
-					extendData
+					extendData,
+					scatterData,
+					mapMaxValue
 				};
 			},
 
@@ -416,20 +420,8 @@
 				return geoCoordMap[name] || {};
 			},
 
-			convertMapData(areaName, extendData) {
-				const scatterData   = [],
-					  extraPosition = this.getExtraPosition(areaName);
-				extendData.forEach(i => {
-					const areaInfo = extraPosition[i.name];
-					if(areaInfo) {
-						scatterData.push({
-							...areaInfo,
-							...i,
-							value: areaInfo.coordinates.concat([i.value || 0])
-						})
-					}
-				});
-				return scatterData;
+			getAreaName(name) {
+				return geoMapName[name] || name;
 			},
 
 			/**
@@ -453,13 +445,13 @@
 				this.mapJsonData.length = 1;
 				this.cityCrumbsList     = [{
 					id            : 0,
-					code          : 100000,
+					code          : this.defaultCode,
 					name          : 'china',
 					nowMapHoleType: true,
 				}];
 				const { name, data }    = this.mapJsonData[0];
 				this.extendData         = [];
-				this.loadMapChart(name, data);
+				this.loadMapChart(name, data, false);
 
 				this.handleMapStateChange();
 			},
@@ -490,16 +482,16 @@
 
 			// 验证当前层级是否为最后一级
 			verifyMapIsEnd(id) {
-				return id.length === 6 && id.substr(4) !== '00'
+				return id.length === 6 && id.substr(4) !== '00';
 			},
 
 			/**
 			 * 加载地图数据柱状图
 			 * */
 			loadMapLineChart() {
-				const chartData                                = this.mapData,
-					  { xAxisList, bjsData, slsData, zbsData } = this.convertMapChartData(chartData),
-					  mapLineChart                             = ECharts.init(this.$refs.mapLineChart);
+				const chartData                             = this.mapData,
+					  { xAxisList, legendData, seriesData } = this.convertMapChartData(chartData),
+					  mapLineChart                          = ECharts.init(this.$refs.mapLineChart);
 				mapLineChart.setOption({
 					color     : ['#12E9E9', '#F7BD07', '#10E77E'],
 					tooltip   : {
@@ -509,20 +501,20 @@
 						}
 					},
 					legend    : {
-						data     : ['受理数', '在办数', '办结数'],
-						right    : 0,
-						top      : 20,
-						orient   : 'vertical',
+						data     : legendData,
+						left     : 'center',
+						top      : 0,
 						textStyle: {
 							color   : "#fff",
 							fontSize: 18
 						}
 					},
 					grid      : {
-						top   : '4%',
-						left  : '3%',
-						right : '3%',
-						bottom: '20%',
+						top         : '10%',
+						left        : '3%',
+						right       : '3%',
+						bottom      : 40,
+						containLabel: true
 					},
 					calculable: true,
 					xAxis     : {
@@ -540,7 +532,7 @@
 							fontSize  : 21,
 							lineHeight: 25,
 							interval  : 0,
-							formatter : (name) => textFormatter(name, 5),
+							formatter : name => textFormatter(name, 5)
 						}
 					},
 					yAxis     : {
@@ -560,80 +552,102 @@
 							color: '#0ff',
 						},
 					},
-					series    : [
-						{
-							name       : '受理数',
-							type       : 'bar',
-							barGap     : 0,
-							data       : slsData,
-							barMaxWidth: 40,
-						},
-						{
-							name       : '在办数',
-							type       : 'bar',
-							barMaxWidth: 40,
-							data       : zbsData
-						},
-						{
-							name       : '办结数',
-							type       : 'bar',
-							barMaxWidth: 40,
-							data       : bjsData
-						}
-					]
+					series    : seriesData
 				})
 			},
 			convertMapChartData(chartData) {
-				const xAxisList = [],
-					  bjsData   = [],
-					  slsData   = [],
-					  zbsData   = [];
-				chartData.forEach((i) => {
-					xAxisList.push(`${i.name}`);
-					bjsData.push(i.bjs);
-					slsData.push(i.sls);
-					zbsData.push(i.zbs);
-				});
+				const xAxisList  = [],
+					  legendData = [],
+					  seriesData = this.mapLineLegend.map((i, index) => {
+						  legendData.push(i.name);
+						  return {
+							  name       : i.name,
+							  type       : 'bar',
+							  barMaxWidth: 30,
+							  data       : chartData.map(j => {
+								  if(index === 0) {
+									  xAxisList.push(j.name);
+								  }
+								  return j[i.id];
+							  }),
+						  }
+					  });
+
 				return {
 					xAxisList,
-					bjsData,
-					slsData,
-					zbsData
+					seriesData,
+					legendData
 				}
 			},
 
 			handleMapStateChange() {
 				const { name, code } = this.cityCrumbsList[this.mapLevel];
-				this.loadingMap      = true;
+
+				this.loadingMap = true;
 				this.getNewRegionInfo && this.getNewRegionInfo({
 					code,
 					lev: this.mapLevel + 1,
 					name,
 				});
-			}
+			},
 		},
 		props   : {
-			mapData         : {},
-			getNewRegionInfo: {},
-			tooltipConfig   : {},
-			totalSls        : {},
-			totalBjs        : {},
-			totalZbs        : {},
-			sls             : {},
-			bjs             : {},
-			zbs             : {},
-			lev             : {},
-			nowSelectDate   : {},
-			mapConfig       : {
+			mapData           : {},
+			getNewRegionInfo  : {},
+			tooltipConfig     : {},
+			leftDataConfig    : {
+				default:
+
+					function() {
+						return [];
+					}
+			},
+			leftData          : {
+				default:
+					function() {
+						return {};
+					},
+			},
+			topDataConfig     : {
+				default:
+					() => []
+			}
+			,
+			mapLineLegend     : {
+				default:
+					() => []
+			},
+			topData           : {},
+			lev               : {},
+			code              : {},
+			defaultCode       : {
+				type: String
+			},
+			nowSelectDate     : {},
+			mapConfig         : {
 				type: Object,
-				default() {
+				default
+					() {
 					return {
 						numIsshow    : true,
 						leftIsshow   : true,
 						tooltipIsshow: true,
-						numIsshow1   : false
+						jianwu       : true
 					}
 				}
+			},
+			extraCityColumn   : {
+				type   : Array,
+				default:
+				extraCityColumnConfig
+			},
+			mapDefaultWidth   : {
+				default:
+					950
+			},
+			highProcuratorCode: {
+				default:
+					100000
 			}
 		},
 		watch   : {
@@ -653,7 +667,7 @@
 
 <style lang="scss">
     @mixin tooltipBg {
-        background: linear-gradient(90deg, rgba(19, 210, 220, .2) 0%, rgba(5, 138, 227, .4) 100%);
+        background: linear-gradient(90deg, rgba(19, 210, 220, .4) 0%, rgba(5, 138, 227, .7) 100%);
     }
 
     .map-extra-table {
@@ -665,6 +679,19 @@
                 max-height: 400px;
                 overflow: auto;
                 overflow-x: hidden;
+                &::-webkit-scrollbar {
+                    width: 5px;
+                    background-color: transparent;
+                }
+                &::-webkit-scrollbar-track {
+                    border-radius: 10px;
+                }
+                &::-webkit-scrollbar-thumb {
+                    border-radius: 10px;
+                    background: rgba(14, 132, 218, .4);
+                    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+                }
+
                 &:before {
                     display: none;
                 }
@@ -708,7 +735,7 @@
         }
     }
 
-    .bj-map {
+    .extend-bj-map {
         position: relative;
         width: 100%;
         height: 100%;
@@ -799,18 +826,16 @@
                 }
             }
             .area-box {
-                position: absolute;
-                top: 400px;
-                right: 47px;
+                position: relative;
                 min-width: 200px;
-                min-height: 230px;
+                padding-top: 10px;
                 padding-bottom: 10px;
                 box-shadow: 0 0 1px rgba(1, 1, 1, 1);
                 border-radius: 5px;
                 @include tooltipBg;
                 .title {
                     position: absolute;
-                    top: 20px;
+                    top: 30px;
                     width: 100%;
                     height: 40px;
                     line-height: 40px;
@@ -821,22 +846,25 @@
                 }
                 ul {
                     li {
+                        display: flex;
+                        justify-content: space-evenly;
                         font-size: 14px;
                         color: rgba(255, 255, 255, 1);
                         line-height: 14px;
-                        display: flex;
                         padding: 10px 7px;
                         span {
+                            width: 80px;
                             display: inline-block;
-                            width: 85px;
-                            text-align: right;
                             margin-right: 5px;
+                            text-align: right;
+                        }
+                        i {
+                            flex: 1;
                         }
                     }
                 }
             }
         }
-
         .now-data {
             position: absolute;
             top: 60px;
@@ -850,9 +878,10 @@
             }
             .now-area {
                 margin-bottom: 20px;
+                display: flex;
                 span {
                     color: #FFFFFF;
-                    font-size: 28px;
+                    font-size: 24px;
                     vertical-align: bottom;
                 }
                 .now-data-icon {
@@ -869,16 +898,13 @@
                     font-size: 16px;
                 }
             }
-            .nd-accept-text {
-                margin-bottom: 21px;
-                color: #FBBA18;
-            }
-            .nd-conclude-text {
-                margin-bottom: 21px;
-                color: #0BC1F4;
-            }
-            .nd-office-text {
-                color: #FF6C40;
+            .nd-text-list {
+                li {
+                    margin-bottom: 21px;
+                    &:last-of-type {
+                        margin-bottom: 0;
+                    }
+                }
             }
             .extra-btn {
                 display: inline-block;
@@ -919,7 +945,7 @@
                     display: flex;
                     color: #dfdfdf;
                     span {
-                        width: 100px;
+                        width: 120px;
                         text-align: right;
                     }
                 }
@@ -927,7 +953,7 @@
         }
         .map-data-list {
             width: 99%;
-            height: 400px;
+            height: 420px;
             margin: 0 auto 20px;
         }
     }

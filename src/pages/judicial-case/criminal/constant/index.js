@@ -85,6 +85,54 @@ export const mapTooltipConfig = [{
 	regExp: '{zbs}&nbsp;&nbsp;&nbsp; {zbs_zb}%',
 }];
 
+export const topDataConfig    = [{
+	id  : 'totalSls',
+	name: '受理总数',
+}, {
+	id  : 'totalBjs',
+	name: '办结总数',
+}, {
+	id  : 'totalZbs',
+	name: '在办总数',
+}];
+
+export const leftSideList = [{
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
+}];
+
+
+export const mapTableConfig = [{
+	id  : 'name',
+	name: '名称',
+}, {
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
+}];
+
+export const mapLineLegend = [{
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
+}];
+
 // 犯罪嫌疑人年龄分布
 export const crimeAgeConfig = [{
 	id  : 'nl1',
@@ -168,3 +216,4 @@ export const educationLevelConfig = [{
 	id  : 'zzrs',
 	name: '中专',
 }];
+

@@ -115,9 +115,8 @@ export default new Router({
 			]
 		},
 		{
-			path     : '/pc/inspectionGuarantee',
-			name     : 'pcInspectionGuarantee',
-			component: resolve => require(['@/pages/inspection-guarantee/pc/index'], resolve),
+			path   : '/pc/inspectionGuarantee',
+			mponent: resolve => require(['@/pages/inspection-guarantee/pc/index'], resolve),
 		}
 	]
 })

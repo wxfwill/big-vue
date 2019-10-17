@@ -20,3 +20,10 @@ export const getTopSlBjZb = async (data) => await request({
 	url   : '/api/v1.0/administration/getTopSlBjZb',
 	params: data
 });
+
+// 获取行政:跟进监督
+export const getFollowUpSupervision = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/administration/getFollowUpSupervision',
+	params: data
+});

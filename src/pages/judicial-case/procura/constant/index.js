@@ -76,7 +76,7 @@ const caseNumberAnalysiscongif=[{
 }]
 
 // 案件分类分析
-const administrativeConfig = [{
+export const administrativeConfig = [{
 	id    : 'jyjd',
 	rateId: '50',
 	title : '检验鉴定',
@@ -123,6 +123,7 @@ export const mapTooltipConfig = [{
 	name  : '未完成数',
 	regExp: '{wwcs}&nbsp;&nbsp;&nbsp; {wwcs_zb}%',
 }];
+
 export const topDataConfig    = [{
 	id  : 'totalSls',
 	name: '受理总数',
@@ -169,4 +170,3 @@ export const mapTableConfig = [{
 	id  : 'wwcs',
 	name: '未完成数',
 }];
-export{personnelChartConfig,caseNumberAnalysiscongif,administrativeConfig}

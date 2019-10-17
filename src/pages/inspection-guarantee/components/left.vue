@@ -209,8 +209,7 @@
 			this.oldTriggerState = {};
 		},
 		mounted() {
-			const params         = { ...this.getSelectDateSection, ...this.getMapCode };
-			this.oldTriggerState = params;
+			this.oldTriggerState = { ...this.getSelectDateSection, ...this.getMapCode };
 			this.incomeChart     = ECharts.init(this.$refs.incomeChart);
 			this.caizhengChart   = ECharts.init(this.$refs.caizhengChart);
 			this.jingfeiChart    = ECharts.init(this.$refs.jingfeiChart);
@@ -372,6 +371,7 @@
 							type       : 'bar',
 							barMaxWidth: 40,
 							data       : seriesData,
+							barCategoryGap     : 10,
 							itemStyle  : {
 								normal: {
 									color: '#5C89FF'
