@@ -24,3 +24,10 @@ export const getAreasList = async (data) => await request({
 	url   : '/api/v1.0/psguarantee/getAreas',
 	params: data
 });
+
+// 获取收支总表数据
+export const getIncomeAndPayCountList = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/psguarantee/getIncomeAndPayCountList',
+	params: data
+});

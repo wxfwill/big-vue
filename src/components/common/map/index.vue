@@ -32,7 +32,7 @@
                         </el-breadcrumb-item>
                     </el-breadcrumb>
                     <span></span>
-                    <i class="now-data-icon el-icon-coin" v-if="mapConfig.jianwu" @click="dialogVisible = true"></i>
+                    <i class="now-data-icon el-icon-coin" @click="dialogVisible = true"></i>
                 </h4>
                 <ul class="nd-text-list">
                     <li v-for="(item, index) in leftDataConfig" :key="item.id"
@@ -65,6 +65,7 @@
                 <i class="map-btn map-icon el-icon-s-home" @click="showChinaMap" title="回到首页"></i>
                 <img class="map-btn" :src="backIcon" alt="..." @click="backSuperiorMap" title="返回">
             </div>
+            <img :src="NanshaIslandsImg" class="nansha-islands-img" alt="...">
         </div>
         <el-dialog
                 custom-class="data-dialog"
@@ -92,6 +93,7 @@
 				backIcon          : require('@/public/img/team-management/back-icon.png'),
 				mapTooltipTitleBg : require('@/public/img/home/shengdata.png'),
 				mapPositionImg    : require('@/public/img/home/position.png'),
+				NanshaIslandsImg  : require('@/public/img/home/NanshaIslands.png'),
 				showTooltip       : false,
 				dialogVisible     : false,
 				cityCrumbsList    : [{
@@ -109,11 +111,40 @@
 		created() {
 			this.leftSideColorList = ['#FBBA18', '#0BC1F4', '#FF6C40'];
 			this.clickTimeFrame    = false;
+			this.mouseOverMap      = true;
+			this.mouseOverMapTimer = null;
 		},
 		mounted() {
 			const myChart        = ECharts.init(this.$refs.mapRef);
 			this.mapJsonData     = [];
 			this.mapGeoLoadFaily = false;
+
+			myChart.on('mouseover', () => {
+				if(this.mouseOverMap) {
+					this.mouseOverMap = false;
+					const mapOption   = this.myChart.getOption();
+
+					mapOption.geo3D[0].viewControl.autoRotate  = false;
+					mapOption.series[1].viewControl.autoRotate = false;
+					this.myChart.clear();
+					this.myChart.setOption({
+						...mapOption,
+					}, true);
+				} else {
+					clearTimeout(this.mouseOverMapTimer);
+					this.mouseOverMapTimer = setTimeout(() => {
+						this.mouseOverMap = true;
+						const mapOption   = this.myChart.getOption();
+
+						mapOption.geo3D[0].viewControl.autoRotate  = true;
+						mapOption.series[1].viewControl.autoRotate = true;
+						this.myChart.clear();
+						this.myChart.setOption({
+							...mapOption,
+						}, true);
+					}, 5000);
+				}
+			});
 
 			/**
 			 * 地图下钻点击事件
@@ -144,6 +175,7 @@
 					  { id: lastId }                          = this.cityCrumbsList[this.mapLevel],
 					  lastIsEndLev                            = this.verifyMapIsEnd(lastId),
 					  notEndLev                               = this.verifyMapIsEnd(id);
+
 				// 区分地图最后一级
 				if(!(notEndLev && lastIsEndLev)) {
 					this.mapLevel++;
@@ -249,14 +281,16 @@
 					realisticMaterial: {},
 					postEffect       : {},
 					viewControl      : {
-						alpha            : 45,
-						rotateSensitivity: 4,
-						bate             : -10,
-                        /*autoRotate       : true,
-                         minBeta          : -360,
-                         maxBeta          : 360*/
+						alpha               : 45,
+						rotateSensitivity   : 4,
+						bate                : -10,
+						autoRotate          : isMatchExtra,
+						minBeta             : -Infinity,
+						maxBeta             : Infinity,
+						autoRotateAfterStill: 5000
 					},
 					boxWidth         : name === 'china' ? 100 : 80,
+					boxHeight        : 8,
 					regionHeight     : 4
 				};
 				this.myChart.setOption({
@@ -285,14 +319,16 @@
                      max    : visualMaxValue,
                      min    : 0,
                      inRange: {
-                     color: ['rgba(8,163,196, .2)', 'rgba(8,163,196, .9)'],
+                     color: [
+                     'rgba(0,148,191, .9)',
+                     'rgba(0,148,191, .1)'],
                      }
                      },*/
 					series : [{
 						type            : 'scatter3D',
 						coordinateSystem: 'geo3D',
 						symbol          : `pin`,
-                        symbolSize      : 30,
+						symbolSize      : 30,
 						label           : {
 							show     : true,
 							formatter: '{b}',
@@ -301,6 +337,10 @@
 								color          : '#fff',
 								backgroundColor: 'transparent',
 							}
+						},
+						itemStyle       : {
+							color  : '#fbba18',
+							opacity: 1,
 						},
 						data            : scatterData,
 						zlevel          : 10,
@@ -322,7 +362,19 @@
 								distance       : 10,
 								backgroundColor: 'transparent',
 								fontWeight     : 400,
-								fontSize       : 16,
+								fontSize       : 14,
+							}
+						},
+						emphasis : {
+							label    : {
+								textStyle: {
+									color     : '#F7931E',
+									fontSize  : 16,
+									fontWeight: 800,
+								}
+							},
+							itemStyle: {
+								color: '#0FB4FF',
 							}
 						},
 						shading  : 'realistic',
@@ -382,7 +434,9 @@
 								  value : areaInfo.coordinates,
 								  number: i.value || 0
 							  });
-							  return false;
+							  if(areaInfo.showIcon) {
+								  return false;
+							  }
 						  }
 						  if(valueKey) {
 							  i.value = i[valueKey];
@@ -393,8 +447,6 @@
 						  if(publicName) {
 							  i.name = i.name.replace(publicName, '');
 						  }
-
-
 						  const isExist = features.some(j => {
 							  if(j.properties.name === i.name) {
 								  i.id = j.properties.id;
@@ -580,9 +632,15 @@
 				}
 			},
 
+			/**
+			 * 重置地图转动时的参数
+			 * */
+			resetRotateMapState() {
+				this.mouseOverMap = true;
+				clearTimeout(this.mouseOverMapTimer);
+			},
 			handleMapStateChange() {
 				const { name, code } = this.cityCrumbsList[this.mapLevel];
-
 				this.loadingMap = true;
 				this.getNewRegionInfo && this.getNewRegionInfo({
 					code,
@@ -655,6 +713,7 @@
 				if(this.mapGeoLoadFaily) {
 					this.mapGeoLoadFaily = false;
 				} else {
+					this.resetRotateMapState();
 					const index       = this.mapLevel,
 						  mapJsonData = this.mapJsonData;
 					this.loadingMap   = false;
@@ -864,6 +923,13 @@
                     }
                 }
             }
+            .nansha-islands-img {
+                position: absolute;
+                right: 150px;
+                bottom: 100px;
+                width: 79px;
+                height: 121px;
+            }
         }
         .now-data {
             position: absolute;
@@ -881,8 +947,11 @@
                 display: flex;
                 span {
                     color: #FFFFFF;
-                    font-size: 24px;
+                    font-size: 22px;
                     vertical-align: bottom;
+                    &.el-breadcrumb__item:last-child .el-breadcrumb__inner:hover{
+                        color: #fff !important;
+                    }
                 }
                 .now-data-icon {
                     display: inline-block;

@@ -9,7 +9,7 @@
             <ul class="menu">
                 <div class="shrink"></div>
                 <li v-for="item in menuList"
-                    :class="nowSelectMenu === item.id ? 'col':null"
+                    :class="selectMenu === item.url ? 'col':null"
                     :key="item.id"
                     @click="menuHandle(item)"
                 >
@@ -87,11 +87,7 @@
 		},
 		computed  : {
 			...mapGetters('judicial', ['dateSection']),
-		},
-		created() {
-			const hash         = location.hash.substr(1),
-				  nowRoute     = this.menuList.find(i => i.url === hash) || {};
-			this.nowSelectMenu = nowRoute.id;
+			...mapGetters('menuModules', ['userId', 'selectMenu']),
 		},
 		methods   : {
 			// 移入
@@ -106,7 +102,7 @@
 			},
 			menuHandle(menuInfo) {
 				this.nowSelectMenu = menuInfo.id;
-				this.$router.push(menuInfo.url);
+				this.$router.push(`${menuInfo.url}?${this.userId}`);
 			},
 			...mapActions('judicial', ['setSelectTime']),
 		},

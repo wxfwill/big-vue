@@ -6,15 +6,11 @@ Vue.use(Router);
 export default new Router({
 	routes: [
 		{
-			path    : "*",
-			redirect: "/"
-		},
-		{
 			path     : '/',
 			component: resolve => require(['@/pages/index'], resolve),
 			children : [
 				{
-					path     : '/',
+					path     : '/homePage',
 					name     : 'home',
 					component: resolve => require(['@/pages/home/index'], resolve),
 					meta     : {
@@ -105,7 +101,7 @@ export default new Router({
 					}
 				},
 				{
-					path     : 'inspectionGuarantee/:inspectionGuarantee',
+					path     : 'inspectionGuarantee',
 					name     : 'inspectionGuarantee',
 					component: resolve => require(['@/pages/inspection-guarantee/index'], resolve),
 					meta     : {
@@ -115,8 +111,13 @@ export default new Router({
 			]
 		},
 		{
-			path   : '/pc/inspectionGuarantee',
-			mponent: resolve => require(['@/pages/inspection-guarantee/pc/index'], resolve),
+			path     : '/pc/inspectionGuarantee',
+			component: resolve => require(['@/pages/inspection-guarantee/pc/index'], resolve),
+		},
+		{
+			name     : 'notAccess',
+			path     : '/notAccess',
+			component: resolve => require(['@/pages/not-access/index'], resolve),
 		}
 	]
 })

@@ -7,19 +7,21 @@ export const geoCoordMap = {
 		'新疆兵团': {
 			id         : '65',
 			extendMap  : true,
+			showIcon   : true,
 			coordinates: [87.56, 41.68, 70],
 			publicName : '新疆生产建设兵团院',
 			itemStyle  : {
-				color      : 'rgba(67,186,202, 1)',
-				opacity    : 1,
+				color  : '#fbba18',
+				opacity: 1,
 			},
-			label: {
+			label      : {
 				color: '#fff'
 			}
 		},
 		'北京市' : {
 			id         : '11',
 			extendMap  : false,
+			showIcon   : false,
 			coordinates: [116.4551, 40.1539, 100],
 			itemStyle  : {
 				color      : 'transparent',
