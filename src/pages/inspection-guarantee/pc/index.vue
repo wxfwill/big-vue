@@ -12,7 +12,7 @@
                     :defaultValue="nowDate"
                     :handleSelectDate="handleSelectDate"
             ></year-select>
-            <a :href="`#/inspectionGuarantee?${userId}`" class="lot-link">大屏</a>
+           <!-- <a :href="`#/inspectionGuarantee?${userId}`" class="lot-link">大屏</a>-->
         </div>
         <div class="container">
             <region-select
@@ -62,6 +62,7 @@
             <div :class="{ visibility : areaIndex === 3, hidden : areaIndex !== 3 }">
                 <general-table
                     screenType="pc"
+                    tableHeight="750"
                 ></general-table>
             </div>
         </div>

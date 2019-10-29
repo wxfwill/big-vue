@@ -32,7 +32,7 @@
             ></center-box>
         </div>
         <div class="JianWu-right-wrap">
-            <a class="iot-link" :href="`#/pc/inspectionGuarantee?${userId}`">PC端</a>
+           <!-- <a class="iot-link" :href="`#/pc/inspectionGuarantee?${userId}`">PC端</a>-->
             <right-box
                     ref='rightBox'
                     :assetsSituation=assetsSituation

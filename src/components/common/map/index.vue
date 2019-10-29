@@ -61,11 +61,11 @@
         <div class="map-chart-box">
             <div ref="mapRef" class="map-chart"></div>
             <div class="map-option">
-                <i class="map-btn map-icon el-icon-aim" @click="normotopiaMapCvs" title="定位"></i>
+                <i :class="mapRotateIcon" @click="normotopiaMapCvs" :title="mapRotate ? '转动': '停止'"></i>
                 <i class="map-btn map-icon el-icon-s-home" @click="showChinaMap" title="回到首页"></i>
                 <img class="map-btn" :src="backIcon" alt="..." @click="backSuperiorMap" title="返回">
             </div>
-            <img :src="NanshaIslandsImg" class="nansha-islands-img" alt="...">
+            <img v-if="lev === 1" :src="NanshaIslandsImg" class="nansha-islands-img" alt="...">
         </div>
         <el-dialog
                 custom-class="data-dialog"
@@ -105,9 +105,14 @@
 				highProcuratorInfo: {},
 				extendData        : [],
 				loadingMap        : false,
+                mapRotate         : false,
 			}
 		},
-		computed: {},
+		computed: {
+			mapRotateIcon(){
+				return this.mapRotate ? 'map-btn map-icon el-icon-caret-right' : 'map-btn map-icon el-icon-refresh-left';
+            }
+        },
 		created() {
 			this.leftSideColorList = ['#FBBA18', '#0BC1F4', '#FF6C40'];
 			this.clickTimeFrame    = false;
@@ -120,6 +125,9 @@
 			this.mapGeoLoadFaily = false;
 
 			myChart.on('mouseover', () => {
+				if(!this.mouseOverMapTimer){
+					return false;
+                }
 				if(this.mouseOverMap) {
 					this.mouseOverMap = false;
 					const mapOption   = this.myChart.getOption();
@@ -284,10 +292,11 @@
 						alpha               : 45,
 						rotateSensitivity   : 4,
 						bate                : -10,
-						autoRotate          : isMatchExtra,
+						autoRotate          : this.mapRotate && isMatchExtra,
 						minBeta             : -Infinity,
 						maxBeta             : Infinity,
-						autoRotateAfterStill: 5000
+						autoRotateAfterStill: 5000,
+						autoRotateDirection : 'ccw',
 					},
 					boxWidth         : name === 'china' ? 100 : 80,
 					boxHeight        : 8,
@@ -405,6 +414,7 @@
 			 * 地图正位
 			 * */
 			normotopiaMapCvs() {
+				this.mapRotate = !this.mapRotate;
 				const { name, data } = this.mapJsonData[this.mapLevel];
 				this.loadMapChart(name, data);
 			},
@@ -636,8 +646,10 @@
 			 * 重置地图转动时的参数
 			 * */
 			resetRotateMapState() {
-				this.mouseOverMap = true;
-				clearTimeout(this.mouseOverMapTimer);
+				if(this.mapRotate){
+					this.mouseOverMap = true;
+					clearTimeout(this.mouseOverMapTimer);
+				}
 			},
 			handleMapStateChange() {
 				const { name, code } = this.cityCrumbsList[this.mapLevel];

@@ -3,7 +3,7 @@
             class="general-table"
             :data="list"
             style="width: 100%;"
-            height="600">
+            :height="tableHeight || 600">
         <el-table-column
                 fixed
                 prop="dw"
@@ -137,7 +137,7 @@
                 }
             }
         },
-        props:['screenType']
+        props:['screenType', "tableHeight"]
 	}
 </script>
 
@@ -164,6 +164,10 @@
             td{
                 border-color: #cccccc;
             }
+        }
+        .el-table__empty-text{
+            color: #FFFFFF;
+            font-size: 20px;
         }
     }
 </style>

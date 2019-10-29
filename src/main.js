@@ -53,7 +53,11 @@ router.beforeEach(async (to, from, next) => {
 		if(firLoad) {
 			// 获取用户权限信息
 			const { userId: userid } = getURLParameters(location.hash);
-			const res                  = await services.loginJurisdiction({ userid });
+			/*const res                  = await services.loginJurisdiction({ userid });*/
+			const res = {
+				code: 200,
+				data: 1,
+			};
 			if(res.code === 200) {
 				const data       = res.data,
 					  powerIndex = USER_POWER[data];
@@ -72,17 +76,23 @@ router.beforeEach(async (to, from, next) => {
 				Message.error(res.msg);
 			}
 		} else {
-			const menuList = store.getters['menuModules/menuList'],
-				  toPath   = to.path,
-				  isPower  = menuList.some(i => toPath.indexOf(i.id) !== -1);
-			if(isPower) {
-				store.dispatch({
-					type      : 'menuModules/setSelectMenu',
-					selectMenu: toPath
-				});
-				next();
-				return false;
-			}
+			/*const menuList = store.getters['menuModules/menuList'],
+			 toPath   = to.path,
+			 isPower  = menuList.some(i => toPath.indexOf(i.id) !== -1);
+			 if(isPower) {
+			 store.dispatch({
+			 type      : 'menuModules/setSelectMenu',
+			 selectMenu: toPath
+			 });
+			 next();
+			 return false;
+			 }*/
+			store.dispatch({
+				type      : 'menuModules/setSelectMenu',
+				selectMenu: to.path
+			});
+			next();
+			return false;
 		}
 		// 跳转到无权限页面
 		next('/notAccess');

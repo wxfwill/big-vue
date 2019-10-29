@@ -622,12 +622,13 @@
                             margin-right: 41px;
                         }
                         .progress-bg {
-                            min-width: 450px;
+                            width: 450px;
                             height: 8px;
                             background: rgba(110, 110, 110, 0.4);
                             border-radius: 5px;
                             .progress {
                                 width: 0;
+                                max-width: 450px;
                                 height: 100%;
                                 background: linear-gradient(270deg, rgba(5, 194, 226, 1) 0%, rgba(6, 103, 209, 1) 100%);
                                 border-radius: 5px;
