@@ -107,14 +107,6 @@ export default new Router({
 					meta     : {
 						title: '检务保障'
 					}
-				},
-				{
-					path     : '/inspectionGuarantee/jwfinancial',
-					name     : 'inspectionGuaranteeJwfinancial',
-					component: resolve => require(['@/pages/inspection-guarantee/index'], resolve),
-					meta     : {
-						title: '检务保障-计财'
-					}
 				}
 			]
 		},

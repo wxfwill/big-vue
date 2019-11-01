@@ -61,16 +61,12 @@ const actions = {
 			  userIdParamsUrl = `userId=${userId}`;
 		let hasRoute          = false,
 			  selectMenu      = hashPath.slice(0, hashPath.indexOf('?'));
-		if(hashPath.indexOf('/inspectionGuarantee/jwfinancial') === -1){
-			menuIndex.forEach(i => {
-				if(hashPath.indexOf(defaultMenuList[i].id) !== -1) {
-					hasRoute = true;
-				}
-				menuList.push(defaultMenuList[i])
-			});
-		} else {
-			hasRoute = true;
-		}
+		menuIndex.forEach(i => {
+			if(hashPath.indexOf(defaultMenuList[i].id) !== -1) {
+				hasRoute = true;
+			}
+			menuList.push(defaultMenuList[i])
+		});
 		commit(SET_MENU_INDEX, {
 			menuList,
 			firLoad: false,
