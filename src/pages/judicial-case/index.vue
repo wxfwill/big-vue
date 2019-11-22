@@ -5,10 +5,13 @@
                 :nowSelectDate="dateSection"
         >
         </date-picker>
-        <div class="menuBox" :style="{ width: `${menuWidth}px` }" @mouseleave="mouseLeave">
+        <div v-if="judicialMenuList.length > 1"
+             class="menuBox"
+             :style="{ width: `${menuWidth}px` }"
+             @mouseleave="mouseLeave">
             <ul class="menu">
                 <div class="shrink"></div>
-                <li v-for="item in menuList"
+                <li v-for="item in judicialMenuList"
                     :class="selectMenu === item.url ? 'col':null"
                     :key="item.id"
                     @click="menuHandle(item)"
@@ -21,6 +24,7 @@
         <div class="shrink3j"
              @mouseover="mouseOver"
              v-show="shrink"
+             v-if="judicialMenuList.length > 1"
         >
             <div class="shrink3j-img" :style="{backgroundImage:'url('+threeImg+')'}"></div>
         </div>
@@ -35,59 +39,14 @@
 		data() {
 			return {
 				shrink       : true,
-				nowSelectMenu: 'criminal',
 				threeImg     : require('@/public/img/judicature/3j.png'),
 				shrinkImg    : require('@/public/img/judicature/shrink.png'),
-				menuList     : [
-					{
-						id   : 'criminal',
-						title: '刑事',
-						url  : '/judicial/criminal',
-						img  : require('@/public/img/judicature/jw.png')
-					},
-					{
-						id   : 'civil',
-						title: '民事',
-						url  : '/judicial/civil',
-						img  : require('@/public/img/judicature/ks.png')
-					},
-					{
-						id   : 'administrative',
-						title: '行政',
-						url  : '/judicial/administrative',
-						img  : require('@/public/img/judicature/ms.png')
-					},
-					{
-						id   : 'lawsuit',
-						title: '公益诉讼',
-						url  : '/judicial/lawsuit',
-						img  : require('@/public/img/judicature/ss.png')
-					},
-					{
-						id   : 'inspect',
-						title: '未检',
-						url  : '/judicial/undetected',
-						img  : require('@/public/img/judicature/wj.png')
-					},
-					{
-						id   : 'prosecution',
-						title: '控申',
-						url  : '/judicial/prosecution',
-						img  : require('@/public/img/judicature/xs.png')
-					},
-					{
-						id   : 'checkCharter',
-						title: '检委办/检察技术',
-						url  : '/judicial/checkCharter',
-						img  : require('@/public/img/judicature/xz.png')
-					}
-				],
 				menuWidth    : 0,
 			}
 		},
 		computed  : {
 			...mapGetters('judicial', ['dateSection']),
-			...mapGetters('menuModules', ['userId', 'selectMenu']),
+			...mapGetters('menuModules', ['userId', 'selectMenu', 'judicialMenuList']),
 		},
 		methods   : {
 			// 移入
@@ -101,7 +60,6 @@
 				this.shrink    = true
 			},
 			menuHandle(menuInfo) {
-				this.nowSelectMenu = menuInfo.id;
 				this.$router.push(`${menuInfo.url}?${this.userId}`);
 			},
 			...mapActions('judicial', ['setSelectTime']),

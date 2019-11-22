@@ -11,7 +11,7 @@ export default new Router({
 			children : [
 				{
 					path     : '/homePage',
-					name     : 'home',
+					name     : 'homePage',
 					component: resolve => require(['@/pages/home/index'], resolve),
 					meta     : {
 						title: '首页'
@@ -111,13 +111,20 @@ export default new Router({
 			]
 		},
 		{
+			name     : 'inspectionGuarantee',
 			path     : '/pc/inspectionGuarantee',
 			component: resolve => require(['@/pages/inspection-guarantee/pc/index'], resolve),
+			meta     : {
+				title: '检务保障'
+			}
 		},
 		{
 			name     : 'notAccess',
 			path     : '/notAccess',
 			component: resolve => require(['@/pages/not-access/index'], resolve),
+			meta     : {
+				title: '无权限'
+			}
 		}
 	]
 })

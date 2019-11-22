@@ -1,7 +1,7 @@
 <template>
     <div class="bg_img home-page" :style="{ backgroundImage: `url(${bjBg})` }">
         <div class="bg_img bjt">最高人民检察院大数据决策支持平台</div>
-        <ul class="ul-title">
+        <ul class="ul-title" v-if="menuList.length > 1">
             <li class="bg_img"
                 v-for="item in menuList"
                 :key="item.id"

@@ -45,6 +45,8 @@ Vue.prototype.$message   = Message;
 Vue.config.productionTip = false;
 
 router.beforeEach(async (to, from, next) => {
+	let { meta } = to,
+		metaName = meta && meta.title || '大屏';
 	// 无法访问页面所有人可以访问
 	if(to.name !== 'notAccess') {
 		// 判断是否是第一次进入系统
@@ -54,7 +56,6 @@ router.beforeEach(async (to, from, next) => {
 			// 获取用户权限信息
 			const { userId: userid } = getURLParameters(location.hash);
 			const res                = await services.loginJurisdiction({ userid: userid || '' });
-			
 			if(res.code === 200) {
 				const data       = res.data,
 					  powerIndex = USER_POWER[data];
@@ -62,9 +63,12 @@ router.beforeEach(async (to, from, next) => {
 				if(powerIndex.length > 0) {
 					// 将菜单信息和用户ID存入store
 					store.dispatch({
-						type     : 'menuModules/setMenuList',
-						menuIndex: powerIndex,
-						userId   : userid || '',
+						type      : 'menuModules/setMenuList',
+						menuIndex : powerIndex,
+						userId    : userid || '',
+						metaName,
+						path      : to.path,
+						routeName: to.name,
 						next
 					});
 					return false;
@@ -73,15 +77,17 @@ router.beforeEach(async (to, from, next) => {
 				Message.error(res.msg);
 			}
 		} else {
-			const menuList = store.getters['menuModules/menuList'],
-				  toPath   = to.path,
-				  isPower  = menuList.some(i => toPath.indexOf(i.id) !== -1);
+			const menuList                  = store.getters['menuModules/menuList'],
+				  judicialMenuList          = store.getters['menuModules/judicialMenuList'],
+				  { name: routeName, path } = to;
+			const isPower                   = menuList.some(i => routeName === i.id) || judicialMenuList.some(i => routeName === i.id);
 			if(isPower) {
 				store.dispatch({
 					type      : 'menuModules/setSelectMenu',
-					selectMenu: toPath
+					selectMenu: path
 				});
 				next();
+				document.title = metaName;
 				return false;
 			}
 		}
