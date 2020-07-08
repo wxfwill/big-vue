@@ -10,20 +10,20 @@
                             <i>民事公益诉讼情况</i>
                         </div>
                         <div class="index-content">
-                            <ul class="index-block">
-                                <li v-for="(item,index) in civilPublicList" :key="index">{{item}}</li>
-                                <span>件</span>
-                            </ul>
                             <div class="index-text">
-                                <p>
-                                    <span>受理件数：{{ civilPublicLitigation.sljs }}</span>
-                                    <span>办结件数：{{ civilPublicLitigation.bjjs }}</span>
-                                </p>
-                                <p>
-                                    <span>提出检察建议数：{{ civilPublicLitigation.tcjcjys }}</span>
-                                    <span>办结率：{{ civilPublicLitigation.bjl }}%</span>
-                                </p>
+                                <p>受理件数：{{ civilPublicLitigation.sljs }}</p>
+                                <p>办结件数：{{ civilPublicLitigation.bjjs }}</p>
+                                <p>提出检察建议数：{{ civilPublicLitigation.tcjcjys }}</p>
                             </div>
+                            <water-polo
+                                    :chartConfig="{
+                                        rate: civilPublicLitigation.bjl,
+                                        title:'办结率',
+                                        noValue:true,
+                                    }"
+                                    :width=100
+                                    :height=100
+                            ></water-polo>
                         </div>
                     </div>
                     <div class="index-box">
@@ -32,30 +32,21 @@
                             <i>行政公益诉讼情况</i>
                         </div>
                         <div class="index-content">
-                            <ul class="index-block">
-                                <li v-for="(item,index) in administrationList" :key="index">{{item}}</li>
-                                <span>件</span>
-                            </ul>
                             <div class="index-text">
-                                <p>
-                                    <span>受理件数：{{ administrationPublicLitigation.sljs }}</span>
-                                    <span>办结件数：{{ administrationPublicLitigation.bjjs }}</span>
-                                </p>
-                                <p>
-                                    <span>提出检察建议数：{{ administrationPublicLitigation.tcjcjys }}</span>
-                                    <span>办结率：{{ administrationPublicLitigation.bjl }}%</span>
-                                </p>
+                                <p>受理件数：{{ administrationPublicLitigation.sljs }}</p>
+                                <p>办结件数：{{ administrationPublicLitigation.bjjs }}</p>
+                                <p>提出检察建议数：{{ administrationPublicLitigation.tcjcjys }}</p>
                             </div>
+                            <water-polo
+                                    :chartConfig="{
+                                        rate: administrationPublicLitigation.bjl,
+                                        title:'办结率',
+                                        noValue:true,
+                              }"
+                                    :width=100
+                                    :height=100></water-polo>
                         </div>
                     </div>
-                </div>
-                <div class="territory-box">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>涉案领域统计分析</i>
-                    </div>
-                    <p class="civil-text">民事公益诉讼</p>
-                    <p class="administration-text">行政公益诉讼</p>
                     <div ref="territoryChart" class="territory-chart"></div>
                 </div>
                 <div class="tendency-box">
@@ -75,14 +66,17 @@
                         :tooltipConfig="mapTooltipConfig"
                         :mapData="mapList"
                         :getNewRegionInfo="setMapData"
-                        :totalSls="totalSls"
-                        :totalBjs="totalBjs"
-                        :totalZbs="totalZbs"
-                        :sls="sls"
-                        :bjs="bjs"
-                        :zbs="zbs"
                         :lev="mapCode.lev"
+                        :code="mapCode.code"
+                        defaultCode="100000"
+                        :topDataConfig="topDataConfig"
+                        :topData="{ totalSls, totalBjs, totalZbs }"
+                        :leftDataConfig="leftSideList"
+                        :leftData='{ sls, bjs, zbs }'
+                        :extraCityColumn="mapTableConfig"
+                        highProcuratorCode="100000"
                         :nowSelectDate="dateSection"
+                        :mapLineLegend="mapLineLegend"
                 ></bj-map>
             </div>
             <div class="lawsuit-page-right">
@@ -110,53 +104,41 @@
                     <div ref="statisticsChart" class="statistics-chart"></div>
                 </div>
                 <div class="right-bottom">
-                    <div class="capita-box">
+                    <div class="superviseReply-box">
                         <div class="chart-box-title">
                             <span class="chart-label-dot"></span>
-                            <i>人均办结数</i>
+                            <i>督促回复</i>
                         </div>
-                        <div class="capita-content">
-                            <div ref="capitaChart" :style="{width:'490px',height:'240px'}"></div>
-                            <p class="more-text-btn" @click="setDialogVisible('人均办结数')">更多>></p>
-                        </div>
+                        <div ref="superviseReplyChart" :style="{width:'100%',height:'240px'}"></div>
                     </div>
-                    <div class="file-box">
+                    <div class="sourceCase-box">
                         <div class="chart-box-title">
                             <span class="chart-label-dot"></span>
-                            <i>案均办理天数</i>
+                            <i>案件来源</i>
                         </div>
-                        <div class="file-content">
-                            <div ref="fileChart" :style="{width:'490px',height:'240px'}"></div>
-                            <p class="more-text-btn" @click="setDialogVisible('案均办结天数')">更多>></p>
-                        </div>
+                        <div ref="sourceOfCaseChart" :style="{width:'100%',height:'240px'}"></div>
                     </div>
                 </div>
             </div>
         </div>
-        <el-dialog
-                :title="dialogContext.name"
-                :visible.sync="dialogVisible"
-                @opened="loadDialogChart"
-                @closed="closeBarDialog"
-                width="90%">
-            <div class="per-dialog-chart" ref="dialogChart"></div>
-        </el-dialog>
-        <span v-show="false">{{ mapCode }}</span>
-        <span v-show="false">{{ dateSection }}</span>
     </div>
 </template>
 <script>
 	import { mapGetters, mapActions }                      from 'vuex';
+	import WaterPolo                                       from '@/components/common/water-polo';
 	import ECharts                                         from 'echarts';
 	import * as services                                   from './service';
 	import { verifyTriggerState, fillZero, textFormatter } from '@/utlis/helper';
 	import BjMap                                           from '@/components/common/map/index';
 	import { triggerMixin, mapComponentState }             from '@/components/mixin/trigger';
 	import YearSelector                                    from '@/components/common/year-selector';
-	import JudicialTitle from '@/components/judicial-case/judicial-case-title';
+	import JudicialTitle                                   from '@/components/judicial-case/judicial-case-title';
 	import {
 		mapTooltipConfig, territoryConfig,
-		CHART_COLOR_LIST, statisticsConfig,
+		CHART_COLOR_LIST, statisticsConfig, topDataConfig,
+		leftSideList, mapTableConfig,
+		mapLineLegend, superviseTheReplyConfig,
+		sourceOfCaseConfig,
 	}                                                      from './constant';
 
 	export default {
@@ -183,44 +165,43 @@
 					key : '',
 					data: []
 				},
-				casesAreHandledList           : [],
-				perCapitaHandlingList         : [],
 				trendsAcceptingCaseYear       : new Date().getFullYear(),
 			}
 		},
 		computed  : {
-			civilPublicList() {
-				return fillZero(this.civilPublicLitigation.zs, 6).split('');
-			},
-			administrationList() {
-				return fillZero(this.administrationPublicLitigation.zs, 6).split('');
-			},
 			...mapGetters('publicLitigation', ['mapCode']),
 			...mapGetters('judicial', ['dateSection']),
 		},
+		beforeCreate() {
+			this.mapTooltipConfig = mapTooltipConfig;
+			this.topDataConfig    = topDataConfig;
+			this.leftSideList     = leftSideList;
+			this.mapTableConfig   = mapTableConfig;
+			this.mapLineLegend    = mapLineLegend;
+		},
 		mounted() {
-			const params          = { ...this.mapCode, ...this.dateSection };
-			this.oldTriggerState  = params;
-			this.territoryChart   = ECharts.init(this.$refs.territoryChart);
-			this.tendencyChart    = ECharts.init(this.$refs.tendencyChart);
-			this.natureChart      = ECharts.init(this.$refs.natureChart);
-			this.investigateChart = ECharts.init(this.$refs.investigateChart);
-			this.statisticsChart  = ECharts.init(this.$refs.statisticsChart);
-			this.fileChart        = ECharts.init(this.$refs.fileChart);
-			this.capitaChart      = ECharts.init(this.$refs.capitaChart);
+			const params             = { ...this.mapCode, ...this.dateSection };
+			this.oldTriggerState     = params;
+			this.territoryChart      = ECharts.init(this.$refs.territoryChart);
+			this.tendencyChart       = ECharts.init(this.$refs.tendencyChart);
+			this.natureChart         = ECharts.init(this.$refs.natureChart);
+			this.investigateChart    = ECharts.init(this.$refs.investigateChart);
+			this.statisticsChart     = ECharts.init(this.$refs.statisticsChart);
+			this.superviseReplyChart = ECharts.init(this.$refs.superviseReplyChart);
+			this.sourceOfCaseChart   = ECharts.init(this.$refs.sourceOfCaseChart);
 
 			this.requestPublicLitigationData(params);
 			this.requestTopSlBjZb(params);
-			this.requestPerCapitaHandlingList(params);
 			this.requestCivilPublicLitigation(params);
 			this.requestCivilInvolvedField(params);
-			this.requestCasesAreHandledList(params);
 			this.requestAdministrationPublicLitigation(params);
 			this.requestTrendsInAcceptingCasesList({
 				year: this.trendsAcceptingCaseYear,
 				code: params.code,
 				lev : params.lev
 			});
+			this.requestSuperviseTheReply(params);
+			this.requestSourceOfCase(params);
 		},
 		updated() {
 			const params = { ...this.mapCode, ...this.dateSection };
@@ -235,11 +216,11 @@
 				this.oldTriggerState = params;
 				this.requestPublicLitigationData(params);
 				this.requestTopSlBjZb(params);
-				this.requestPerCapitaHandlingList(params);
 				this.requestCivilPublicLitigation(params);
 				this.requestCivilInvolvedField(params);
-				this.requestCasesAreHandledList(params);
 				this.requestAdministrationPublicLitigation(params);
+				this.requestSuperviseTheReply(params);
+				this.requestSourceOfCase(params);
 			}
 		},
 		methods   : {
@@ -251,8 +232,11 @@
 							  mapSlBjZb,
 							  natureOfTheCaseList, reviewTheSituationList,
 							  civilTheCaseCategory, administrationTheCaseCategory,
-						  }      = res.data;
-					this.loadMapContent({ ...mapSlBjZb, theMapList });
+						  } = res.data;
+					this.loadMapContent({
+						...mapSlBjZb,
+						theMapList
+					});
 					this.loadNatureChart(natureOfTheCaseList);
 					this.loadInvestigateChart(reviewTheSituationList);
 					this.loadStatisticsChart(civilTheCaseCategory, administrationTheCaseCategory);
@@ -276,16 +260,6 @@
 					this.$message.error(res.msg);
 				}
 			},
-			async requestPerCapitaHandlingList(params) {
-				const res = await services.getPerCapitaHandlingList(params);
-				if(res.code === 200) {
-					const data                 = res.data;
-					this.perCapitaHandlingList = data;
-					this.loadPerCapitaSettlementChart(data.slice(0, 6));
-				} else {
-					this.$message.error(res.msg);
-				}
-			},
 			async requestCivilPublicLitigation(params) {
 				const res = await services.getCivilPublicLitigation(params);
 				if(res.code === 200) {
@@ -302,12 +276,20 @@
 					this.$message.error(res.msg);
 				}
 			},
-			async requestCasesAreHandledList(params) {
-				const res = await services.getCasesAreHandledList(params);
+			// 督促回复
+			async requestSuperviseTheReply(params) {
+				const res = await services.getSuperviseTheReply(params);
 				if(res.code === 200) {
-					this.casesAreHandledList = res.data;
-					this.loadFileChart(res.data.slice(0, 5));
-
+					this.loadSuperviseTheReply(res.data);
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
+			// 督促回复
+			async requestSourceOfCase(params) {
+				const res = await services.getSourceOfCase(params);
+				if(res.code === 200) {
+					this.loadSourceOfCase(res.data);
 				} else {
 					this.$message.error(res.msg);
 				}
@@ -369,7 +351,7 @@
 						name     : '民事公益诉讼',
 						type     : 'pie',
 						radius   : '70%',
-						center   : ['30%', '48%'],
+						center   : ['22%', '48%'],
 						label    : {
 							show     : true,
 							formatter: '{d}%'
@@ -386,7 +368,7 @@
 						name     : '行政公益诉讼',
 						type     : 'pie',
 						radius   : '70%',
-						center   : ['70%', '48%'],
+						center   : ['78%', '48%'],
 						label    : {
 							show     : true,
 							formatter: '{d}%'
@@ -434,7 +416,7 @@
 						top         : '25%',
 						left        : 80,
 						right       : 150,
-						bottom      : 30,
+						bottom      : 15,
 						containLabel: true,
 					},
 					xAxis  : {
@@ -718,282 +700,41 @@
 					}]
 				});
 			},
-			// 案均办结数
-			loadFileChart(chartData) {
-				const { axisData, seriesData } = this.convertBarData(chartData, 'ajblts');
-				this.fileChart.setOption({
-					color  : ['#009FE8'],
-					tooltip: {
-						trigger    : 'axis',
-						axisPointer: {
-							type: 'shadow'
-						}
-					},
-					grid   : {
-						left  : '15%',
-						right : '10%',
-						bottom: '10%',
-						top   : "2%",
-					},
-					legend : {
-						show: false
-					},
-					xAxis  : {
-						type         : 'value',
-						name         : '天数',
-						nameTextStyle: {
-							padding: [30, 0, 0, 5],
-							color  : '#fff'
-						},
-						splitLine    : {
-							show: false
-						},
-						axisLine     : {
-							lineStyle: {
-								color: '#00FFFF'
-							}
-						},
-						axisLabel    : {
-							show     : true,
-							textStyle: {
-								fontSize: 14,
-								color   : '#fff'
-							},
-						},
-						axisTick     : {
-							show: false
-						},
-					},
-					yAxis  : {
-						type     : 'category',
-						data     : axisData,
-						axisLabel: {
-							textStyle: {
-								fontSize: 12,
-								color   : '#D5CBE8'
-							},
-							formatter: (name) => textFormatter(name, 4),
-						},
-						axisLine : {
-							lineStyle: {
-								color: '#00FFFF'
-							}
-						},
-						axisTick : {
-							show: false
-						}
-					},
-					series : [
-						{
-							name     : '案均办结数',
-							type     : 'bar',
-							barWidth : 22,
-							data     : seriesData,
-							itemStyle: {
-								color: new ECharts.graphic.LinearGradient(0, 0, 1, 0, [{
-									offset: 0,
-									color : '#1783E5'
-								}, {
-									offset: 1,
-									color : '#18CBFF'
-								}]),
-							}
-						}
-					]
+			// 督促回复
+			loadSuperviseTheReply(chartData) {
+				const seriesData = superviseTheReplyConfig.map(i => ({
+					name : i.name,
+					value: chartData[i.id]
+				}));
+				this.superviseReplyChart.setOption({
+                    color : ['#FBBA18', '#32E0FB', '#1BC85D'],
+					tooltip: {},
+					series : [{
+						name  : '督促回复',
+						type  : 'pie',
+						data  : seriesData,
+						radius: '70%',
+						center: ['50%', '60%'],
+					}]
 				})
 			},
-			// 人均办结天数
-			loadPerCapitaSettlementChart(chartData) {
-				const { axisData, seriesData } = this.convertBarData(chartData, 'rjbjs');
-				this.capitaChart.setOption({
-					color  : ['#05C2E2'],
-					tooltip: {
-						show       : true,
-						trigger    : 'axis',
-						axisPointer: {
-							type: 'shadow'
-						}
-					},
-					grid   : {
-						top   : '5%',
-						left  : '15%',
-						right : '4%',
-						bottom: '10%',
-					},
-					xAxis  : {
-						type     : 'category',
-						data     : axisData,
-						axisLine : {
-							show     : true,
-							lineStyle: {
-								color: '#aaa'
-							}
-						},
-						axisTick : {
-							show: false,
-						},
-						axisLabel: {
-							color     : '#fff',
-							interval  : 0,
-							width     : 20,
-							fontSize  : 14,
-							lineHeight: 21,
-							fontFamily: 'PingFangSC-Regular',
-							formatter : (name) => textFormatter(name, 4),
-						},
-						splitLine: {
-							show: false,
-						},
-					},
-					yAxis  : {
-						type     : 'value',
-						axisLine : {
-							show: false,
-						},
-						axisTick : {
-							show: false,
-						},
-						axisLabel: {
-							color: '#fff'
-						},
-						splitLine: {
-							show     : true,
-							interval : 0,
-							lineStyle: {
-								color: 'rgba(49, 219, 232, .2)',
-							}
-						}
-					},
-					series : [
-						{
-							name    : '人均办结数',
-							type    : 'bar',
-							barWidth: 22,
-							data    : seriesData,
-
-						}
-					]
+			// 案件来源
+			loadSourceOfCase(chartData) {
+				const seriesData = sourceOfCaseConfig.map(i => ({
+					name : i.name,
+					value: chartData[i.id] || 0
+				}));
+				this.sourceOfCaseChart.setOption({
+                    color : ['#F18126', '#1DDA31', '#F6B420', '#23A4E5', '#FF6C40', '#18D660', '#FBBA18', '#00FFF8', '#24DEE8'],
+					tooltip: {},
+					series : [{
+						name  : '案件来源',
+						type  : 'pie',
+						data  : seriesData,
+						radius: '70%',
+						center: ['50%', '60%'],
+					}]
 				})
-			},
-			setDialogVisible(name) {
-				let data = [],
-					key  = '';
-				switch(name) {
-					case '人均办结数' :
-						key  = 'rjbjs';
-						data = this.perCapitaHandlingList;
-						break;
-					case '案均办结天数':
-						key  = 'ajblts';
-						data = this.casesAreHandledList;
-						break;
-				}
-				this.dialogContext = {
-					name,
-					key,
-					data
-				};
-
-				this.dialogVisible = true;
-			},
-			loadDialogChart() {
-				const { data: chartData, key } = this.dialogContext,
-					  { axisData, seriesData } = this.convertBarData(chartData, key);
-
-				this.dialogBarChart = ECharts.init(this.$refs.dialogChart);
-
-				this.dialogBarChart.setOption({
-					tooltip   : {
-						show: false
-					},
-					legend    : {
-						show: false
-					},
-					grid      : {
-						top   : '4%',
-						left  : '3%',
-						right : '3%',
-						bottom: '20%',
-					},
-					calculable: true,
-					xAxis     : {
-						type     : 'category',
-						axisTick : { show: false },
-						data     : axisData,
-						axisLine : {
-							lineStyle: {
-								width: 2,
-								color: '#31DBE8'
-							}
-						},
-						axisLabel: {
-							color     : '#00ffff',
-							fontSize  : 21,
-							lineHeight: 25,
-							interval  : 0
-						}
-					},
-					yAxis     : {
-						type     : 'value',
-						axisLine : {
-							lineStyle: {
-								width: 2,
-								color: '#31DBE8'
-							}
-						},
-						splitLine: {
-							lineStyle: {
-								color: 'rgba(216,216,216,0.4)'
-							}
-						},
-						axisLabel: {
-							color: '#0ff',
-						},
-					},
-					series    : [
-						{
-							name       : '地区',
-							type       : 'bar',
-							data       : seriesData,
-							barMaxWidth: 40,
-							itemStyle  : {
-								normal: {
-									color: new ECharts.graphic.LinearGradient(0, 0, 0, 1, [{
-										offset: 0,
-										color : "#32EEEB"
-									}, {
-										offset: 1,
-										color : "#0379DB"
-									}])
-								}
-							},
-							label      : {
-								normal: {
-									"show"    : true,
-									"position": "top",
-									color     : '#00FFFF',
-								}
-							},
-						}
-					]
-				});
-			},
-			closeBarDialog() {
-				this.dialogBarChart && this.dialogBarChart.clear();
-			},
-			convertBarData(chartData, key) {
-				const axisData   = [],
-					  seriesData = chartData.map((i) => {
-						  axisData.push(i.city_name);
-						  return {
-							  name : i.city_name,
-							  value: i[key]
-						  }
-					  });
-				return {
-					axisData,
-					seriesData
-				};
 			},
 			...mapActions('publicLitigation', ['initMapState']),
 			...mapActions('publicLitigation', ['setMapData']),
@@ -1003,6 +744,7 @@
 			BjMap,
 			YearSelector,
 			JudicialTitle,
+			WaterPolo,
 		},
 	}
 </script>
@@ -1016,6 +758,7 @@
                 width: 100%;
                 display: flex;
                 justify-content: space-between;
+                flex-wrap: wrap;
                 .index-box {
                     width: 578px;
                     height: 210px;
@@ -1024,68 +767,20 @@
                         justify-content: center;
                         flex-wrap: wrap;
                         margin-top: 30px;
-                        .index-block {
-                            display: flex;
-                            justify-content: center;
-                            font-size: 18px;
-                            color: rgba(255, 255, 255, 1);
-                            min-width: 400px;
-                            li:first-of-type {
-                                border-left: 1px solid #26A3EF;
-                            }
-                            li {
-                                width: 48px;
-                                height: 48px;
-                                border-right: 1px solid #26A3EF;
-                                border-top: 1px solid #26A3EF;
-                                border-bottom: 1px solid #26A3EF;
-                                font-size: 36px;
-                                color: rgba(0, 255, 255, 1);
-                                text-align: center;
-                                line-height: 48px;
-                            }
-                            span {
-                                margin: 21px 0 0 30px;
-                            }
-                        }
                         .index-text {
-                            margin-top: 24px;
-                            margin-left: 40px;
+                            font-size: 16px;
+                            color: #dfdfdf;
+                            width: 200px;
                             p {
-                                line-height: 24px;
-                                font-size: 16px;
-                                font-family: MicrosoftYaHei;
-                                color: rgba(255, 255, 255, 1);
-                                color: #dfdfdf;
-                                span {
-                                    display: inline-block;
-                                    width: 200px;
-                                }
+                                line-height: 38px;
                             }
                         }
                     }
                 }
-            }
-            .territory-box {
-                position: relative;
-                width: 1304px;
-                margin-bottom: 20px;
                 .territory-chart {
-                    width: 100%;
-                    height: 300px;
-                }
-                .civil-text, .administration-text {
-                    position: absolute;
-                    top: 180px;
-                    font-size: 18px;
-                    color: rgba(255, 255, 255, 1);
-                    line-height: 18px;
-                }
-                .civil-text {
-                    left: 100px;
-                }
-                .administration-text {
-                    left: 640px;
+                    width: 1304px;
+                    height: 350px;
+                    margin-bottom: 20px;
                 }
             }
             .tendency-box {
@@ -1131,24 +826,11 @@
                 width: 100%;
                 display: flex;
                 justify-content: space-between;
-                .file-box {
+                .sourceCase-box {
                     width: 593px;
-                    .file-content {
-                        display: flex;
-                        margin: 20px 0;
-                        p {
-                            width: 60px;
-                            color: #F7931E;
-                        }
-                    }
                 }
-                .capita-box {
+                .superviseReply-box {
                     width: 546px;
-                    height: 240px;
-                    .capita-content {
-                        display: flex;
-                        margin-top: 20px;
-                    }
                 }
             }
         }

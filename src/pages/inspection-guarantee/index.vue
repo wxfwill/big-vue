@@ -7,6 +7,7 @@
             ></year-select>
         </div>
         <div class="JianWu-left-wrap">
+            <p class="iot-link" @click="generalTableVisible = true">收支总表</p>
             <left-box
                     ref='leftBox'
                     :income=income
@@ -31,6 +32,7 @@
             ></center-box>
         </div>
         <div class="JianWu-right-wrap">
+            <a class="iot-link" :href="`#/pc/inspectionGuarantee?${userId}`">PC端</a>
             <right-box
                     ref='rightBox'
                     :assetsSituation=assetsSituation
@@ -42,19 +44,29 @@
                     :inspectionServiceEquipmentDetails=inspectionServiceEquipmentDetails
             ></right-box>
         </div>
+        <el-dialog
+                title='收支总表'
+                :visible.sync="generalTableVisible"
+                width="2460px"
+                screenType="widescreen">
+            <general-table></general-table>
+        </el-dialog>
     </div>
 </template>
 <script>
+	import { mapGetters } from 'vuex';
 	import DatePicker    from '@/components/common/date-picker';
 	import LeftBox       from './components/left';
 	import CenterBox     from './components/Center';
 	import RightBox      from './components/Right';
 	import * as services from './service/index'
 	import YearSelect    from '@/components/inspection-guarantee/year-select';
+    import GeneralTable  from './components/general-table';
 
 	export default {
 		data() {
 			return {
+				generalTableVisible : false,
 				lev                              : 1,
 				code                             : 203,
 				income                           : {},
@@ -81,6 +93,9 @@
 				psGuaranteeMapList               : [],
 				spendingDetail                   : {},
 			}
+		},
+		computed  : {
+			...mapGetters('menuModules', ['userId']),
 		},
 		beforeCreate() {
 			this.nowDate = 2018;
@@ -165,6 +180,7 @@
 			CenterBox,
 			RightBox,
 			YearSelect,
+			GeneralTable,
 		},
 	}
 </script>
@@ -172,19 +188,37 @@
     .outer-home-page {
         position: relative;
         width: 100%;
-        .year-select{
+        .year-select {
             position: absolute;
             top: -65px;
             right: 38px;
         }
-        .JianWu-left-wrap{
-            width: 1234px;
+        .iot-link {
+            position: absolute;
+            color: #FBBA18;
+            cursor: pointer;
+            &:hover{
+                text-decoration: underline;
+            }
         }
-        .JianWu-center-wrap{
+        .JianWu-left-wrap {
+            position: relative;
+            width: 1234px;
+            .iot-link{
+                top: -37px;
+                left: 10px;
+            }
+        }
+        .JianWu-center-wrap {
             width: 1300px;
         }
-        .JianWu-right-wrap{
-            width: 1256px;;
+        .JianWu-right-wrap {
+            position: relative;
+            width: 1256px;
+            .iot-link{
+                right: 255px;
+                top: -59px;
+            }
         }
     }
 </style>

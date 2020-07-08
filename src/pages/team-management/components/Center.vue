@@ -21,7 +21,7 @@
 <script>
 	import * as services                    from '../service/index';
 	import { verifyTriggerState, fillZero } from '@/utlis/helper';
-	import BjMap                            from '@/components/common/map/team-manage-map';
+	import BjMap                            from '@/components/common/map/index';
 	import {
 		mapTooltipConfig,
 		topDataConfig,

@@ -4,16 +4,18 @@
                 :tooltipConfig="mapTooltipConfig"
                 :mapData="mapList"
                 :getNewRegionInfo="setMapData"
-                :totalSls="totalSls"
-                :totalBjs="totalBjs"
-                :totalZbs="totalZbs"
-                :sls="sls"
-                :bjs="bjs"
-                :zbs="zbs"
                 :lev="mapCode.lev"
+                :code="mapCode.code"
+                defaultCode="100000"
+                :topDataConfig="topDataConfig"
+                :topData="{ totalSls, totalBjs, totalZbs }"
+                :leftDataConfig="leftSideList"
+                :leftData='{ sls, bjs, zbs }'
+                :extraCityColumn="mapTableConfig"
+                highProcuratorCode="100000"
                 :nowSelectDate="dateSection"
+                :mapLineLegend="mapLineLegend"
         ></bj-map>
-        <span v-show="false">{{ mapCode }}</span>
     </div>
 </template>
 
@@ -21,23 +23,30 @@
 	import { mapGetters, mapActions }       from 'vuex';
 	import * as services                    from '../service';
 	import { verifyTriggerState, fillZero } from '@/utlis/helper';
-	import { mapTooltipConfig }             from '../constant';
 	import BjMap                            from '@/components/common/map/index';
-    import { mapComponentState }            from '@/components/mixin/trigger';
+	import { mapComponentState }            from '@/components/mixin/trigger';
+	import {
+		mapTooltipConfig, topDataConfig,
+		leftSideList, mapTableConfig,
+		mapLineLegend,
+	}                                       from '../constant';
 
 	export default {
 		data() {
-			return {
-				mapTooltipConfig,
-			}
+			return {}
 		},
 		computed  : {
 			...mapGetters('penal', ['mapCode']),
 			...mapGetters('judicial', ['dateSection']),
 		},
 		beforeCreate() {
-			this.trigger         = ['startdate', 'enddate', 'code', 'lev'];
-			this.oldTriggerState = {};
+			this.trigger          = ['startdate', 'enddate', 'code', 'lev'];
+			this.oldTriggerState  = {};
+			this.mapTooltipConfig = mapTooltipConfig;
+			this.topDataConfig    = topDataConfig;
+			this.leftSideList     = leftSideList;
+			this.mapTableConfig   = mapTableConfig;
+			this.mapLineLegend    = mapLineLegend;
 		},
 		mounted() {
 			const params         = { ...this.mapCode, ...this.dateSection };
@@ -58,7 +67,10 @@
 				const res = await services.getCriminalData(params);
 				if(res.code === 200) {
 					const { mapSlBjZb, theMapList } = res.data;
-					this.loadMapContent({ ...mapSlBjZb, theMapList });
+					this.loadMapContent({
+						...mapSlBjZb,
+						theMapList
+					});
 				} else {
 					this.sls     = 0;
 					this.bjs     = 0;

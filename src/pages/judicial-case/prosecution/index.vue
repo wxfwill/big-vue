@@ -68,14 +68,17 @@
                         :tooltipConfig="mapTooltipConfig"
                         :mapData="mapList"
                         :getNewRegionInfo="setMapData"
-                        :totalSls="totalSls"
-                        :totalBjs="totalBjs"
-                        :totalZbs="totalZbs"
-                        :sls="sls"
-                        :bjs="bjs"
-                        :zbs="zbs"
                         :lev="mapCode.lev"
+                        :code="mapCode.code"
+                        defaultCode="100000"
+                        :topDataConfig="topDataConfig"
+                        :topData="{ totalSls, totalBjs, totalZbs }"
+                        :leftDataConfig="leftSideList"
+                        :leftData='{ sls, bjs, zbs }'
+                        :extraCityColumn="mapTableConfig"
+                        highProcuratorCode="100000"
                         :nowSelectDate="dateSection"
+                        :mapLineLegend="mapLineLegend"
                 ></bj-map>
             </div>
             <div class="control-page-right">
@@ -154,15 +157,13 @@
                 width="90%">
             <div class="per-dialog-chart" ref="dialogChart"></div>
         </el-dialog>
-        <span v-show="false">{{ mapCode }}</span>
-        <span v-show="false">{{ dateSection }}</span>
     </div>
 </template>
 <script>
 	import { mapGetters, mapActions }          from 'vuex';
 	import ECharts                             from 'echarts';
 	import BoxHead                             from '@/components/common/box-head';
-	import BjMap                               from '@/components/common/map/index';
+	import BjMap                            from '@/components/common/map/index';
 	import JudicialTitle from '@/components/judicial-case/judicial-case-title';
 	import PenalGauge                          from '@/components/common/penal-gauge';
 	import * as services                       from './service/index';
@@ -177,7 +178,9 @@
 		chargeJunctionConfig, appealJunctionConfig,
 		disobeyCourtConfig, procuratorialOrganConfig,
 		mapTooltipConfig, compensationCaseConfig,
-
+		topDataConfig,
+		leftSideList, mapTableConfig,
+		mapLineLegend,
 	}                                          from './constant/index';
 
 	export default {
@@ -188,7 +191,6 @@
 				appealJunctionList    : appealJunctionConfig,
 				performanceAnalysis   : {},
 				procuratorialOrganList: procuratorialOrganConfig,
-				mapTooltipConfig,
 				dialogVisible         : false,
 				zbList                : [1, 2, 3, 4, 5, 6, 7],
 				lettersVisitsList     : [],
@@ -215,6 +217,13 @@
 			...mapGetters('prosecution', ['mapCode']),
 			...mapGetters('judicial', ['dateSection']),
 
+		},
+		beforeCreate() {
+			this.mapTooltipConfig = mapTooltipConfig;
+			this.topDataConfig    = topDataConfig;
+			this.leftSideList     = leftSideList;
+			this.mapTableConfig   = mapTableConfig;
+			this.mapLineLegend    = mapLineLegend;
 		},
 		mounted() {
 			const params         = { ...this.mapCode, ...this.dateSection };
@@ -251,7 +260,11 @@
 							  procuratorialOrgan, topSlBjZb,
 							  theMapList, mapSlBjZb,
 						  }                  = res.data;
-					this.chargeJunctionList  = this.configMatchIdValue(chargeJunctionConfig, chargeJunction);
+					this.chargeJunctionList  = chargeJunctionConfig.map(i => ({
+						...i,
+						value: chargeJunction[i.id],
+                        rate : (chargeJunction[i.id] / (mapSlBjZb[i.totalId] || 1) * 100).toFixed(2)
+					}));
 					this.appealJunctionList  = this.configMatchIdValue(appealJunctionConfig, appealJunction);
 					this.performanceAnalysis = performanceAnalysis;
 					this.loadCourtChart(disobeyCourt);
@@ -313,7 +326,12 @@
 			loadCourtChart(chartData) {
 				this.courtChart.setOption({
 					color  : ['#11C6FF', '#F7931E', '#2FE0BE', '#8766FE'],
-					tooltip: {},
+					tooltip: {
+						trigger    : 'axis',
+						axisPointer: {
+							type: 'shadow'
+						}
+					},
 					grid   : {//柱状图偏移
 						top         : '15%',
 						left        : '5%',

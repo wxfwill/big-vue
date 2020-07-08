@@ -57,7 +57,7 @@
                             </div>
                             <div class="staff-img">
                                 <img v-if='performanceInfo.sex=="女"' :src="staffImgwoman" alt="...">
-								<img v-else :src="staffImgman" alt="...">
+                                <img v-else :src="staffImgman" alt="...">
                             </div>
                             <div class="shade-img">
                                 <img :src="shadeBg" alt="...">
@@ -81,8 +81,8 @@
 			return {
 				bottomStageBg  : require('@/public/img/team-management/bottomStageBg.png'),
 				shadeBg        : require('@/public/img/team-management/shadeBg.png'),
-				staffImgman       : require('@/public/img/team-management/man.png'),
-				staffImgwoman:require('@/public/img/team-management/staff.png'),
+				staffImgman    : require('@/public/img/team-management/man.png'),
+				staffImgwoman  : require('@/public/img/team-management/staff.png'),
 				topBorderBg    : require('@/public/img/team-management/topBorderBg.png'),
 				sideBorderBg   : require('@/public/img/team-management/sideBorderBg.png'),
 				structureIcon  : require('@/public/img/team-management/structureIcon.png'),
@@ -99,15 +99,16 @@
 					  eduStructureList = eduStructureConfig;
 				this.personnelEducationdata.setOption({
 					color  : color,
+					tooltip: {},
 					graphic: {
 						elements: [{
 							type : 'image',
-							left : 105,
-							top  : 73,
+							left : 115,
+							top  : 95,
 							style: {
 								image : this.structureIcon,
-								width : 150,
-								height: 150
+								width : 130,
+                                height : 110,
 							},
 						}]
 					},
@@ -273,7 +274,7 @@
 			putOneDecimal(num) {
 				return (num * 100).toFixed(1);
 			},
-			async getStaffInfo({ name, company ,sex}, callback) {
+			async getStaffInfo({ name, company, sex }, callback) {
 				const res = await getPersonnelPerformance({
 					name,
 					company
@@ -407,7 +408,7 @@
                     z-index: 2;
                     img {
                         width: 100%;
-						height:100%;
+                        height: 100%;
                     }
                 }
                 .shade-img {

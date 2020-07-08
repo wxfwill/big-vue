@@ -20,16 +20,16 @@
 </template>
 
 <script>
-	import { mapGetters, mapActions }          from 'vuex';
-	import * as services                       from '../service';
-	import { verifyTriggerState, fillZero }    from '@/utlis/helper';
-	import BjMap                               from '@/components/common/map/team-manage-map';
-	import { mapComponentState }               from '@/components/mixin/trigger';
+	import { mapGetters, mapActions }       from 'vuex';
+	import * as services                    from '../service';
+	import { verifyTriggerState, fillZero } from '@/utlis/helper';
+	import BjMap                            from '@/components/common/map/index';
+	import { mapComponentState }            from '@/components/mixin/trigger';
 	import {
 		mapTooltipConfig, topDataConfig,
 		leftSideList, mapTableConfig,
 		mapLineLegend,
-    } from '../constant';
+	}                                       from '../constant';
 
 	export default {
 		data() {
@@ -39,13 +39,13 @@
 			...mapGetters('homePage', ['getSelectDateSection', 'getMapCode']),
 		},
 		beforeCreate() {
-			this.trigger         = ['startdate', 'enddate', 'code', 'lev'];
-			this.oldTriggerState = {};
+			this.trigger          = ['startdate', 'enddate', 'code', 'lev'];
+			this.oldTriggerState  = {};
 			this.mapTooltipConfig = mapTooltipConfig;
-			this.topDataConfig = topDataConfig;
-			this.leftSideList = leftSideList;
-			this.mapTableConfig = mapTableConfig;
-			this.mapLineLegend = mapLineLegend;
+			this.topDataConfig    = topDataConfig;
+			this.leftSideList     = leftSideList;
+			this.mapTableConfig   = mapTableConfig;
+			this.mapLineLegend    = mapLineLegend;
 		},
 		mounted() {
 			const params         = { ...this.getSelectDateSection, ...this.getMapCode };

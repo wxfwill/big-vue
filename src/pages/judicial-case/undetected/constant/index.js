@@ -1,21 +1,21 @@
 export const investigateNumConfig = [{
-	id   : 'bbjs',
-	name : '不捕件数',
-	color: '#1BC85D',
-}, {
 	id   : 'dbjs',
 	name : '逮捕件数',
 	color: '#F7931E',
+}, {
+	id   : 'bbjs',
+	name : '不捕件数',
+	color: '#1BC85D',
 }];
 
 export const investigatePerConfig = [{
-	id   : 'pbrs',
-	name : '批捕人数',
-	color: '#1BC85D',
-}, {
 	id   : 'bbrs',
 	name : '不捕人数',
 	color: '#F7931E',
+}, {
+	id   : 'pbrs',
+	name : '逮捕人数',
+	color: '#1BC85D',
 }];
 
 export const prosecuteNumConfig = [{
@@ -71,6 +71,54 @@ export const mapTooltipConfig = [{
 	id    : 'zbs',
 	name  : '在办数',
 	regExp: '{zbs}&nbsp;&nbsp;&nbsp; {zbs_zb}%',
+}];
+
+export const topDataConfig    = [{
+	id  : 'totalSls',
+	name: '受理总数',
+}, {
+	id  : 'totalBjs',
+	name: '办结总数',
+}, {
+	id  : 'totalZbs',
+	name: '在办总数',
+}];
+
+export const leftSideList = [{
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
+}];
+
+
+export const mapTableConfig = [{
+	id  : 'name',
+	name: '名称',
+}, {
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
+}];
+
+export const mapLineLegend = [{
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
 }];
 
 // 作案年龄分布

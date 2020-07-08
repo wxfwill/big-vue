@@ -20,8 +20,14 @@
                                 <li></li>
                             </ol>
                             <ul>
-                                <li>长期投资资产<br/><span>{{formatNum(assetsSituation.cqtzzc)}}</span></li>
-                                <li @mouseover="changeMask(true)" @mouseout="changeMask(false)">固定资产<br/><span>{{formatNum(assetsSituation.gdzc)}}</span>
+                                <li>长期投资资产<br/>
+                                    <span>{{formatNum(assetsSituation.cqtzzc)}}</span>
+                                    <p>{{ computeAssetRate(assetsSituation.cqtzzc) }}</p>
+                                </li>
+                                <li @mouseover="changeMask(true)" @mouseout="changeMask(false)">
+                                    固定资产<br/>
+                                    <span>{{formatNum(assetsSituation.gdzc)}}</span>
+                                    <p>{{ computeAssetRate(assetsSituation.gdzc) }}</p>
                                     <div class="hoverdiv" v-show='hoverdivisshow'>
                                         <span>房屋(平方米)数量：{{ formatNum(assetsSituation.fwsl) }}</span>
                                         <span>房屋(平方米)价值：{{formatNum(assetsSituation.fwjz)}}</span>
@@ -34,10 +40,22 @@
                                         <span>单价100万元(含)以上的专业设备价值：{{formatNum(assetsSituation.djybwyssbjz)}}</span>
                                     </div>
                                 </li>
-                                <li>流动资产<br/><span>{{formatNum(assetsSituation.ldzc)}}</span></li>
-                                <li>其他资产<br/><span>{{formatNum(assetsSituation.qtzc)}}</span></li>
-                                <li>无形资产<br/><span>{{formatNum(assetsSituation.wxzc)}}</span></li>
-                                <li>在建工程资产<br/><span>{{formatNum(assetsSituation.zjgczc)}}</span></li>
+                                <li>流动资产<br/>
+                                    <span>{{formatNum(assetsSituation.ldzc)}}</span>
+                                    <p>{{ computeAssetRate(assetsSituation.ldzc) }}</p>
+                                </li>
+                                <li>其他资产<br/>
+                                    <span>{{formatNum(assetsSituation.qtzc)}}</span>
+                                    <p>{{ computeAssetRate(assetsSituation.qtzc) }}</p>
+                                </li>
+                                <li>无形资产<br/>
+                                    <span>{{formatNum(assetsSituation.wxzc)}}</span>
+                                    <p>{{ computeAssetRate(assetsSituation.wxzc) }}</p>
+                                </li>
+                                <li>在建工程资产<br/>
+                                    <span>{{formatNum(assetsSituation.zjgczc)}}</span>
+                                    <p>{{ computeAssetRate(assetsSituation.zjgczc) }}</p>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -50,7 +68,7 @@
                     <p class='unit'>单位:万元</p>
                     <div class='service-content' ref="serviceChart"></div>
                     <div class="putinto">
-                        <p class="putinto-title">检察业务装备16、18年增长比例</p>
+                        <p class="putinto-title">检察业务装备2018年比2016年增长</p>
                         <ul>
                             <li @mouseover="righttableIsshowfn(0)" :class='{active:0==activeIndex}'>
                                 <i class='el-icon-tickets'></i>
@@ -169,7 +187,7 @@
                             <p class="unit">单位：个</p>
                             <p class="totalfiscal-text">
                                 <span>已设置计财部门</span>
-                                <span>{{financialInstitutions.jcbmszqk}}</span>
+                                <span class="totalfiscal-number">{{financialInstitutions.jcbmszqk}}</span>
                                 <span>未设置计财部门</span>
                             </p>
                             <ul>
@@ -378,9 +396,6 @@
 	import { mapGetters }                                   from 'vuex';
 	import { verifyTriggerState, numberInteger, formatNum } from '@/utlis/helper';
 	import 'echarts-liquidfill/src/liquidFill.js';
-	import * as services                                    from '../service';
-	import { propertyConfig, agencyConfig }                 from '../constant/index';
-
 
 	export default {
 		data() {
@@ -388,8 +403,6 @@
 				swiperTitle      : '',
 				civilBoxImg      : require('@/public/img/home/civilBox.png'),
 				empiricaIcon     : require('@/public/img/home/empirica-icon.png'),
-				propertyConfig   : propertyConfig,
-				agencyConfig     : agencyConfig,
 				righttableIsshow : false,
 				righttableIsshow2: false,
 				righttableIsshow3: false,
@@ -463,7 +476,7 @@
 			loadserviceChart(data) {
 				const numTotal = data.sfjczb_sl + data.jcywzhbzzb_sl + data.jcywjszb_sl;
 				this.serviceChart.setOption({
-					color  : ['#FBBA18', '#0CADE8', '#1BC85D'],
+					color  : ['#FFA11E', '#0cade8', '#22A95F'],
 					tooltip: {
 						show: false
 					},
@@ -550,17 +563,26 @@
 							value     : data.sfjczb_je,
 							name      : '司法警察装备',
 							num       : data.sfjczb_sl,
-							numPercent: (data.sfjczb_sl / numTotal * 10000).toFixed(0) / 100
+							numPercent: (data.sfjczb_sl / numTotal * 10000).toFixed(0) / 100,
+                            itemStyle : {
+								color : '#F3C85D'
+                            }
 						}, {
 							value     : data.jcywzhbzzb_je,
 							name      : '综合保障装备',
 							num       : data.jcywzhbzzb_sl,
-							numPercent: (data.jcywzhbzzb_sl / numTotal * 10000).toFixed(0) / 100
+							numPercent: (data.jcywzhbzzb_sl / numTotal * 10000).toFixed(0) / 100,
+                            itemStyle : {
+								color : '#1DCEEB'
+                            }
 						}, {
 							value     : data.jcywjszb_je,
 							name      : '技术装备',
 							num       : data.jcywjszb_sl,
-							numPercent: (data.jcywjszb_sl / numTotal * 10000).toFixed(0) / 100
+							numPercent: (data.jcywjszb_sl / numTotal * 10000).toFixed(0) / 100,
+                            itemStyle : {
+								color : '#4FDC99'
+                            }
 						}]
 					}]
 				})
@@ -775,6 +797,13 @@
 				this.hoverdivisshow2 = value
 			},
 			formatNum,
+            computeAssetRate(num){
+               let rate = ((num || 0) / (this.assetsSituation.zzc || 1) * 100).toFixed(2);
+               if(num > 0 && rate === '0.00'){
+               	    rate = '< 0.01';
+               }
+               return rate += '%';
+            },
 		},
 		components: {},
 	}
@@ -804,7 +833,7 @@
                         .propertyContent {
                             color: #fff;
                             text-align: center;
-                            p {
+                            &>p {
                                 width: 198px;
                                 height: 66px;
                                 border-radius: 2px;
@@ -848,12 +877,14 @@
                                 margin: 0 auto;
                                 li {
                                     flex: 1;
-                                    height: 59px;
                                     border-radius: 2px;
                                     border: 1px solid rgba(0, 216, 233, 1);
                                     margin-right: 10px;
-                                    padding-top: 8px;
+                                    padding: 8px;
                                     font-size: 12px;
+                                    p{
+                                        color: #009FE8;
+                                    }
                                 }
                                 li:nth-child(2) {
                                     position: relative;
@@ -1094,6 +1125,11 @@
                                 display: flex;
                                 justify-content: space-between;
                                 font-size: 14px;
+                                .totalfiscal-number{
+                                    display: inline-block;
+                                    margin-top: -28px;
+                                    font-size: 18px;
+                                }
                             }
                         }
 

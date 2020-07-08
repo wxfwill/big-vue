@@ -52,14 +52,17 @@
                         :tooltipConfig="mapTooltipConfig"
                         :mapData="mapList"
                         :getNewRegionInfo="setMapData"
-                        :totalSls="totalSls"
-                        :totalBjs="totalBjs"
-                        :totalZbs="totalZbs"
-                        :sls="sls"
-                        :bjs="bjs"
-                        :zbs="zbs"
                         :lev="mapCode.lev"
+                        :code="mapCode.code"
+                        defaultCode="100000"
+                        :topDataConfig="topDataConfig"
+                        :topData="{ totalSls, totalBjs, totalZbs }"
+                        :leftDataConfig="leftSideList"
+                        :leftData='{ sls, bjs, zbs }'
+                        :extraCityColumn="mapTableConfig"
+                        highProcuratorCode="100000"
                         :nowSelectDate="dateSection"
+                        :mapLineLegend="mapLineLegend"
                 ></bj-map>
             </div>
             <div class="inspect-page-right">
@@ -95,15 +98,7 @@
                 <div class="right-right">
                     <div class="no-catch-box">
                         <box-head title="不捕情况"></box-head>
-                        <ul class="no-catch-list">
-                            <li v-for="item in noCatchList" :key="item.id">
-                                <p class="nci-name">{{ item.name }}</p>
-                                <div class="nci-number">
-                                    <p class="line"></p>
-                                    <span>{{ item.value }}人</span>
-                                </div>
-                            </li>
-                        </ul>
+                        <div class="no-catch-chart" ref="noCatchChart"></div>
                     </div>
                     <div class="sexual-assault-box">
                         <box-head title="未成年人性侵犯罪趋势"></box-head>
@@ -137,8 +132,6 @@
                 width="90%">
             <div class="per-dialog-chart" ref="dialogChart"></div>
         </el-dialog>
-        <span v-show="false">{{ mapCode }}</span>
-        <span v-show="false">{{ dateSection }}</span>
     </div>
 </template>
 <script>
@@ -150,7 +143,7 @@
 	import * as services                       from './service/index';
 	import { triggerMixin, mapComponentState } from '@/components/mixin/trigger';
 	import PieGroup                            from '@/components/common/pie-group';
-	import JudicialTitle from '@/components/judicial-case/judicial-case-title';
+	import JudicialTitle                       from '@/components/judicial-case/judicial-case-title';
 	import {
 		verifyTriggerState, fillZero,
 		convertData, textFormatter,
@@ -159,8 +152,11 @@
 	import {
 		investigateNumConfig, investigatePerConfig,
 		prosecuteNumConfig, prosecutePeoConfig,
-		educationalProcedureConfig, mapTooltipConfig,
-		ageCrimeConfig, noCatchNumberConfig
+		educationalProcedureConfig,
+		ageCrimeConfig, noCatchNumberConfig,
+		mapTooltipConfig, topDataConfig,
+		leftSideList, mapTableConfig,
+		mapLineLegend,
 	}                                          from './constant/index';
 
 	export default {
@@ -181,7 +177,7 @@
 				noCatchList              : noCatchNumberConfig,
 				mapTooltipConfig,
 				ageCrimeList             : ageCrimeConfig,
-				ageCrimeDataSum     : 0,
+				ageCrimeDataSum          : 0,
 				prosecuteList            : [],
 				lineImg                  : require('@/public/img/judicature/line.png'),
 				crimeInvadingPropertyList: [],
@@ -192,6 +188,13 @@
 			...mapGetters('undetected', ['mapCode']),
 			...mapGetters('judicial', ['dateSection']),
 		},
+		beforeCreate() {
+			this.mapTooltipConfig = mapTooltipConfig;
+			this.topDataConfig    = topDataConfig;
+			this.leftSideList     = leftSideList;
+			this.mapTableConfig   = mapTableConfig;
+			this.mapLineLegend    = mapLineLegend;
+		},
 		mounted() {
 			const params                = { ...this.mapCode, ...this.dateSection };
 			this.oldTriggerState        = params;
@@ -201,7 +204,7 @@
 			this.prosecutePeopleBox     = ECharts.init(this.$refs.prosecutePeopleBox);
 			this.educationChart         = ECharts.init(this.$refs.educationChart);
 			this.percentChart           = ECharts.init(this.$refs.percentChart);
-
+			this.noCatchChart           = ECharts.init(this.$refs.noCatchChart);
 
 			this.requestUndetectedData(params);
 			this.requestPercentageOfCrime(params);
@@ -222,12 +225,12 @@
 				const res = await services.getUndetectedData(params);
 				if(res.code === 200) {
 					let {
-							  reviewArrest, prosecution,
-							  caseAcceptances, educationalProcedure,
-							  topSlBjZb, theMapList, mapSlBjZb,
-							  accusationRatioList, ageOfCommittingACrime,
-							  crimeOfInvadingPropertyList, sexualAssaultList
-						  } = res.data;
+							reviewArrest, prosecution,
+							caseAcceptances, educationalProcedure,
+							topSlBjZb, theMapList, mapSlBjZb,
+							accusationRatioList, ageOfCommittingACrime,
+							crimeOfInvadingPropertyList, sexualAssaultList
+						} = res.data;
 
 					this.prosecuteData             = {
 						sxpjrs: prosecution.sxpjrs,
@@ -235,13 +238,13 @@
 					};
 					this.caseAcceptances           = caseAcceptances;
 					this.prosecuteList             = accusationRatioList;
-					this.ageCrimeDataSum = Object.values(ageOfCommittingACrime).reduce((a, b) => a + b);
+					this.ageCrimeDataSum           = Object.values(ageOfCommittingACrime).reduce((a, b) => a + b);
 					this.ageCrimeList              = ageCrimeConfig.map(i => {
 						return {
 							...i,
 							percent: ageOfCommittingACrime[i.id]
 						};
-                    });
+					});
 					this.crimeInvadingPropertyList = crimeOfInvadingPropertyList;
 					this.sexualAssaultList         = sexualAssaultList;
 
@@ -268,11 +271,11 @@
 			async requestNoCatchNumber(params) {
 				const res = await services.getNoCatchNumber(params);
 				if(res.code === 200) {
-					const data       = res.data;
-					this.noCatchList = noCatchNumberConfig.map(i => ({
+					const data = res.data;
+					this.loadNoCatchChart(noCatchNumberConfig.map(i => ({
 						...i,
 						value: data[i.id]
-					}))
+					})));
 				} else {
 					this.$message.error(res.msg);
 				}
@@ -328,7 +331,7 @@
 						axisTick   : {
 							show: false,
 						},
-						data       : ['批捕件数'],
+						data       : [''],
 					},
 					yAxis  : {
 						name     : '',
@@ -525,6 +528,32 @@
 							value  : i.bfl,
 							wcn_sls: i.wcn_sls,
 						}))
+					}
+					]
+				});
+			},
+
+			// 不捕情况
+			loadNoCatchChart(chartData) {
+				this.noCatchChart.setOption({
+					color  : ['#F78350', '#26A3EF', '#31DBE8', '#2CE2A7', '#EAD61F', '#F7931E', '#8F71FA'],
+					tooltip: {
+						trigger  : 'item',
+						formatter: "{a} <br/>{b} : {c} ({d}%)"
+					},
+					series : [{
+						name     : '不捕情况',
+						type     : 'pie',
+						radius   : '55%',
+						center   : ['50%', '42%'],
+						data     : chartData,
+						itemStyle: {
+							emphasis: {
+								shadowBlur   : 10,
+								shadowOffsetX: 0,
+								shadowColor  : 'rgba(0, 0, 0, 0.5)'
+							}
+						}
 					}
 					]
 				});
@@ -824,52 +853,8 @@
                 .no-catch-box {
                     width: 547px;
                     height: 330px;
-                    .no-catch-list {
-                        width: 500px;
-                        margin: 30px auto 0;
-                        overflow: auto;
-                        overflow-x: hidden;
-                        li {
-                            float: left;
-                            width: 50%;
-                            max-width: 50%;
-                            margin-bottom: 15px;
-                            .nci-name {
-                                line-height: 19px;
-                                font-size: 14px;
-                                font-family: MicrosoftYaHei;
-                                color: rgba(255, 255, 255, 1);
-                            }
-                            .nci-number {
-                                display: flex;
-                                align-items: center;
-                                margin: 5px 0;
-                                .line {
-                                    position: relative;
-                                    width: 140px;
-                                    height: 8px;
-                                    border-radius: 8px;
-                                    background-color: rgba(7, 196, 255, .4);
-                                    &:after {
-                                        position: absolute;
-                                        left: 0;
-                                        top: 0;
-                                        width: 50px;
-                                        height: 8px;
-                                        content: ' ';
-                                        background-color: rgba(0, 255, 255, 1);
-                                        border-radius: 8px;
-                                    }
-                                }
-                                span {
-                                    font-size: 14px;
-                                    font-family: MicrosoftYaHei;
-                                    color: rgba(1, 224, 255, 1);
-                                    line-height: 19px;
-                                    margin-left: 10px;
-                                }
-                            }
-                        }
+                    .no-catch-chart {
+                        height: 100%;
                     }
                 }
                 .sexual-assault-box {

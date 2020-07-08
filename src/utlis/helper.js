@@ -87,7 +87,7 @@ export function textFormatter(text, interval = 3) {
 	let tempStr = '';
 	const len   = str.length;
 	for(let i = 0; i < len; i++) {
-		if((i + 1) % interval === 0 && (i+1) < len) {
+		if((i + 1) % interval === 0 && (i + 1) < len) {
 			tempStr += str[i] + '\n';
 		} else {
 			tempStr += str[i];
@@ -98,8 +98,8 @@ export function textFormatter(text, interval = 3) {
 
 
 export const formatNum = (number) => {
-	if(number && number != null && !isNaN(Number(number)) ) {
-		number     = String(number);
+	if(number && number != null && !isNaN(Number(number))) {
+		number    = String(number);
 		let left  = number.split('.')[0],
 			right = number.split('.')[1];
 		right     = right ? (right.length >= 2 ? '.' + right.substr(0, 2) : '.' + right + '0') : '';
@@ -111,3 +111,10 @@ export const formatNum = (number) => {
 		return "";
 	}
 };
+
+/**
+ * 获取URL中的参数对象
+ * */
+export const getURLParameters = url => (url
+	.match(/([^?=&]+)(=([^&]*))/g) || [])
+	.reduce((a, v) => ((a[v.slice(0, v.indexOf('='))] = v.slice(v.indexOf('=') + 1)), a), {});

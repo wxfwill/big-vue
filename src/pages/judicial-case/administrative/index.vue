@@ -55,14 +55,17 @@
                         :tooltipConfig="mapTooltipConfig"
                         :mapData="mapList"
                         :getNewRegionInfo="setMapData"
-                        :totalSls="totalSls"
-                        :totalBjs="totalBjs"
-                        :totalZbs="totalZbs"
-                        :sls="sls"
-                        :bjs="bjs"
-                        :zbs="zbs"
                         :lev="mapCode.lev"
+                        :code="mapCode.code"
+                        defaultCode="100000"
+                        :topDataConfig="topDataConfig"
+                        :topData="{ totalSls, totalBjs, totalZbs }"
+                        :leftDataConfig="leftSideList"
+                        :leftData='{ sls, bjs, zbs }'
+                        :extraCityColumn="mapTableConfig"
+                        highProcuratorCode="100000"
                         :nowSelectDate="dateSection"
+                        :mapLineLegend="mapLineLegend"
                 ></bj-map>
             </div>
             <div class="administrative-page-right">
@@ -116,36 +119,15 @@
                         <i class="fchc-btn fchc-icon el-icon-arrow-right" @click="classifyPageChange('add')"></i>
                     </div>
                 </div>
-                <div class="capita-box">
+                <div class="followup-box">
                     <div class="chart-box-title">
                         <span class="chart-label-dot"></span>
-                        <i>人均办结数</i>
+                        <i>跟进监督</i>
                     </div>
-                    <div class="capita-content">
-                        <div ref="capitaChart" :style="{width:'490px',height:'260px'}"></div>
-                        <p class="more-text-btn" @click="setDialogVisible('人均办结数')">更多>></p>
-                    </div>
-                </div>
-                <div class="file-box">
-                    <div class="chart-box-title">
-                        <span class="chart-label-dot"></span>
-                        <i>案均办理天数</i>
-                    </div>
-                    <div class="file-content">
-                        <div ref="fileChart" :style="{width:'490px',height:'280px'}"></div>
-                        <p class="more-text-btn" @click="setDialogVisible('案均办结天数')">更多>></p>
-                    </div>
+                    <div class="followup-chart" ref="followupChart"></div>
                 </div>
             </div>
         </div>
-        <el-dialog
-                :title="dialogContext.name"
-                :visible.sync="dialogVisible"
-                @opened="loadDialogChart"
-                @closed="closeBarDialog"
-                width="90%">
-            <div class="per-dialog-chart" ref="dialogChart"></div>
-        </el-dialog>
         <span v-show="false">{{ mapCode }}</span>
         <span v-show="false">{{ dateSection }}</span>
     </div>
@@ -154,7 +136,7 @@
 	import { mapGetters, mapActions } from 'vuex';
 	import ECharts                    from 'echarts';
 	import BjMap                      from '@/components/common/map/index';
-	import JudicialTitle from '@/components/judicial-case/judicial-case-title';
+	import JudicialTitle              from '@/components/judicial-case/judicial-case-title';
 	import * as services              from './service/index';
 	import { triggerMixin }           from '@/components/mixin/trigger';
 	import {
@@ -168,36 +150,35 @@
 		judgmentConfig,
 		mapTooltipConfig,
 		executeConfig,
-		classifyConfig,
+		classifyConfig, topDataConfig,
+		leftSideList, mapTableConfig,
+		mapLineLegend, followupConfig,
 	}                                 from './constant/index';
 
 	export default {
 		data() {
 			return {
-				conditionList        : conditionConfig,
-				behaviorList         : behaviorConfig,
-				judgmentList         : judgmentConfig,
-				executeList          : executeConfig,
-				lineImg              : require('@/public/img/judicature/line.png'),
-				reasonAnalysisList   : [],
-				totalSls             : [0, 0, 0, 0],
-				totalBjs             : [0, 0, 0, 0],
-				totalZbs             : [0, 0, 0, 0],
-				sls                  : 0,
-				bjs                  : 0,
-				zbs                  : 0,
-				mapList              : [],
-				mapTooltipConfig,
-				classifyNowPage      : 1,
-				classifyTotalPage    : 0,
-				dialogVisible        : false,
-				dialogContext        : {
+				conditionList     : conditionConfig,
+				behaviorList      : behaviorConfig,
+				judgmentList      : judgmentConfig,
+				executeList       : executeConfig,
+				lineImg           : require('@/public/img/judicature/line.png'),
+				reasonAnalysisList: [],
+				totalSls          : [0, 0, 0, 0],
+				totalBjs          : [0, 0, 0, 0],
+				totalZbs          : [0, 0, 0, 0],
+				sls               : 0,
+				bjs               : 0,
+				zbs               : 0,
+				mapList           : [],
+				classifyNowPage   : 1,
+				classifyTotalPage : 0,
+				dialogVisible     : false,
+				dialogContext     : {
 					name: '',
 					key : '',
 					data: []
 				},
-				perCapitaHandlingList: [],
-				casesAreHandledList  : [],
 			}
 		},
 		computed  : {
@@ -208,17 +189,24 @@
 			...mapGetters('administrative', ['mapCode']),
 			...mapGetters('judicial', ['dateSection']),
 		},
+		beforeCreate() {
+			this.mapTooltipConfig = mapTooltipConfig;
+			this.topDataConfig    = topDataConfig;
+			this.leftSideList     = leftSideList;
+			this.mapTableConfig   = mapTableConfig;
+			this.mapLineLegend    = mapLineLegend;
+		},
 		mounted() {
 			const params         = { ...this.mapCode, ...this.dateSection };
 			this.oldTriggerState = params;
 			this.trendencyChart  = ECharts.init(this.$refs.trendencyChart);
 			this.classifyChart   = ECharts.init(this.$refs.classifyChart);
-			this.fileChart       = ECharts.init(this.$refs.fileChart);
-			this.capitaChart     = ECharts.init(this.$refs.capitaChart);
+			this.followupChart   = ECharts.init(this.$refs.followupChart);
 
 			this.loadAdministrationData(params);
 			this.loadTopSlBjZb(params);
 			this.loadCivilDataTwo(params);
+			this.loadFollowupData(params);
 		},
 		updated() {
 			const params = { ...this.mapCode, ...this.dateSection };
@@ -227,6 +215,7 @@
 				this.loadAdministrationData(params);
 				this.loadTopSlBjZb(params);
 				this.loadCivilDataTwo(params);
+				this.loadFollowupData(params);
 			}
 		},
 		methods   : {
@@ -237,7 +226,6 @@
 							  acceptanceSituation, illegalBehavior,
 							  effectiveSupervision, acceptingCasesTrendAnalysisList,
 							  reviewCase, categoricalStatistics,
-							  perCapitaHandlingList, casesAreHandledList
 						  }            = res.data;
 					this.conditionList = conditionConfig.map(i => ({
 						...i,
@@ -257,10 +245,6 @@
 					}));
 					this.loadTrendencyChart(acceptingCasesTrendAnalysisList);
 					this.loadClassifyChart(categoricalStatistics);
-					this.casesAreHandledList   = casesAreHandledList;
-					this.perCapitaHandlingList = perCapitaHandlingList;
-					this.loadFileChart(casesAreHandledList.slice(0, 6));
-					this.loadPerCapitaSettlementChart(perCapitaHandlingList.slice(0, 6));
 				} else {
 					this.$message.error(res.msg);
 				}
@@ -291,7 +275,14 @@
 					this.$message.error(res.msg);
 				}
 			},
-
+			async loadFollowupData(params) {
+				const res = await services.getFollowUpSupervision(params);
+				if(res.code === 200) {
+					this.loadFollowupChart(res.data);
+				} else {
+					this.$message.error(res.msg);
+				}
+			},
 			// 加载受理案件趋势分析报表
 			loadTrendencyChart(chartData) {
 				const { axisData, seriesData } = convertLineData(chartData, 'year', 'sls');
@@ -441,96 +432,17 @@
 				});
 			},
 
-			// 案均办结数
-			loadFileChart(chartData) {
-				const { axisData, seriesData } = this.convertBarData(chartData, 'ajblts');
-				this.fileChart.setOption({
-					color  : ['#009FE8'],
-					tooltip: {
-						trigger    : 'axis',
-						axisPointer: {
-							type: 'shadow'
-						}
-					},
-					grid   : {
-						left  : '15%',
-						right : '10%',
-						bottom: '10%',
-						top   : "10%",
-					},
-					legend : {
-						show: false
-					},
-					xAxis  : {
-						type         : 'value',
-						name         : '天数',
-						nameTextStyle: {
-							padding: [30, 0, 0, 5],
-							color  : '#fff'
-						},
-						splitLine    : {
-							show: false
-						},
-						axisLine     : {
-							lineStyle: {
-								color: '#00FFFF'
-							}
-						},
-						axisLabel    : {
-							show     : true,
-							textStyle: {
-								fontSize: 14,
-								color   : '#fff'
-							},
-						},
-						axisTick     : {
-							show: false
-						},
-					},
-					yAxis  : {
-						type     : 'category',
-						data     : axisData,
-						inverse  : true,
-						axisLabel: {
-							textStyle: {
-								fontSize: 12,
-								color   : '#D5CBE8'
-							},
-							formatter: (name) => textFormatter(name, 4),
-						},
-						axisLine : {
-							lineStyle: {
-								color: '#00FFFF'
-							}
-						},
-						axisTick : {
-							show: false
-						}
-					},
-					series : [
-						{
-							name     : '案均办结数',
-							type     : 'bar',
-							barWidth : 22,
-							data     : seriesData,
-							itemStyle: {
-								color: new ECharts.graphic.LinearGradient(0, 0, 1, 0, [{
-									offset: 0,
-									color : '#1783E5'
-								}, {
-									offset: 1,
-									color : '#18CBFF'
-								}]),
-							}
-						}
-					]
-				})
-			},
-
-			// 人均办结天数
-			loadPerCapitaSettlementChart(chartData) {
-				const { axisData, seriesData } = this.convertBarData(chartData, 'rjbjs');
-				this.capitaChart.setOption({
+			// 加载跟进监督报表
+			loadFollowupChart(chartData) {
+				const axisData   = [],
+					  seriesData = followupConfig.map(i => {
+						  axisData.push(i.name);
+						  return {
+							  name : i.name,
+							  value: chartData[i.id]
+						  }
+					  });
+				this.followupChart.setOption({
 					color  : ['#05C2E2'],
 					tooltip: {
 						show       : true,
@@ -540,10 +452,11 @@
 						}
 					},
 					grid   : {
-						top   : '15%',
-						left  : '15%',
-						right : '4%',
-						bottom: '12%',
+						top         : 30,
+						left        : 20,
+						right       : 20,
+						bottom      : 10,
+						containLabel: true
 					},
 					xAxis  : {
 						type     : 'category',
@@ -551,7 +464,7 @@
 						axisLine : {
 							show     : true,
 							lineStyle: {
-								color: 'rgba(0, 255, 255, .5)'
+								color: '#aaa'
 							}
 						},
 						axisTick : {
@@ -564,7 +477,7 @@
 							fontSize  : 14,
 							lineHeight: 21,
 							fontFamily: 'PingFangSC-Regular',
-							formatter : (name) => textFormatter(name, 4),
+							formatter : (name) => textFormatter(name, 6),
 						},
 						splitLine: {
 							show: false,
@@ -572,11 +485,8 @@
 					},
 					yAxis  : {
 						type     : 'value',
-						axisLine: {
-							show     : true,
-							lineStyle: {
-								color: 'rgba(0, 255, 255, .5)'
-							}
+						axisLine : {
+							show: false,
 						},
 						axisTick : {
 							show: false,
@@ -592,13 +502,15 @@
 							}
 						}
 					},
-					series : [{
-						name    : '人均办结数',
-						type    : 'bar',
-						barWidth: 22,
-						data    : seriesData,
-					}]
-				})
+					series : [
+						{
+							name       : '数量',
+							type       : 'bar',
+							barMaxWidth: 40,
+							data       : seriesData,
+						}
+					]
+				});
 			},
 
 			classifyPageChange(type) {
@@ -617,127 +529,6 @@
 						break;
 				}
 			},
-			setDialogVisible(name) {
-				let data = [],
-					key  = '';
-				switch(name) {
-					case '人均办结数' :
-						key  = 'rjbjs';
-						data = this.perCapitaHandlingList;
-						break;
-					case '案均办结天数':
-						key  = 'ajblts';
-						data = this.casesAreHandledList;
-						break;
-				}
-				this.dialogContext = {
-					name,
-					key,
-					data
-				};
-
-				this.dialogVisible = true;
-			},
-			loadDialogChart() {
-				const { data: chartData, key } = this.dialogContext,
-					  { axisData, seriesData } = this.convertBarData(chartData, key);
-
-				this.dialogBarChart = ECharts.init(this.$refs.dialogChart);
-
-				this.dialogBarChart.setOption({
-					tooltip   : {
-						show: false
-					},
-					legend    : {
-						show: false
-					},
-					grid      : {
-						top   : '4%',
-						left  : '3%',
-						right : '3%',
-						bottom: '20%',
-					},
-					calculable: true,
-					xAxis     : {
-						type     : 'category',
-						axisTick : { show: false },
-						data     : axisData,
-						axisLine : {
-							lineStyle: {
-								width: 2,
-								color: '#31DBE8'
-							}
-						},
-						axisLabel: {
-							color     : '#00ffff',
-							fontSize  : 21,
-							lineHeight: 25,
-							interval  : 0
-						}
-					},
-					yAxis     : {
-						type     : 'value',
-						axisLine : {
-							lineStyle: {
-								width: 2,
-								color: '#31DBE8'
-							}
-						},
-						splitLine: {
-							lineStyle: {
-								color: 'rgba(216,216,216,0.4)'
-							}
-						},
-						axisLabel: {
-							color: '#0ff',
-						},
-					},
-					series    : [
-						{
-							name       : '地区',
-							type       : 'bar',
-							data       : seriesData,
-							barMaxWidth: 40,
-							itemStyle  : {
-								normal: {
-									color: new ECharts.graphic.LinearGradient(0, 0, 0, 1, [{
-										offset: 0,
-										color : "#32EEEB"
-									}, {
-										offset: 1,
-										color : "#0379DB"
-									}])
-								}
-							},
-							label      : {
-								normal: {
-									"show"    : true,
-									"position": "top",
-									color     : '#00FFFF',
-								}
-							},
-						}
-					]
-				});
-			},
-			closeBarDialog() {
-				this.dialogBarChart && this.dialogBarChart.clear();
-			},
-			convertBarData(chartData, key) {
-				const axisData   = [],
-					  seriesData = chartData.map((i) => {
-						  axisData.push(i.city_name);
-						  return {
-							  name : i.city_name,
-							  value: i[key]
-						  }
-					  });
-				return {
-					axisData,
-					seriesData
-				};
-			},
-
 			...mapActions('administrative', ['initMapState']),
 			...mapActions('administrative', ['setMapData']),
 		},
@@ -999,19 +790,14 @@
                     }
                 }
             }
-            .file-box {
-                width: 546px;
-                .file-content {
-                    display: flex;
-                }
-            }
-            .capita-box {
-                width: 593px;
-                margin-top: 20px;
-                .capita-content {
-                    display: flex;
+            .followup-box {
+                width: 100%;
+                height: 310px;
+                .followup-chart{
+                    height: 270px;
                 }
             }
         }
+
     }
 </style>

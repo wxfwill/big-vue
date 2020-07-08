@@ -1,17 +1,17 @@
 <template>
     <div class="bg_img home-page" :style="{ backgroundImage: `url(${bjBg})` }">
         <div class="bg_img bjt">最高人民检察院大数据决策支持平台</div>
-        <ul class="ul-title">
+        <ul class="ul-title" v-if="menuList.length > 1">
             <li class="bg_img"
                 v-for="item in menuList"
                 :key="item.id"
-                :style="{backgroundImage:`url(${item.id === nowRoute ? buttonColorImg: buttonImg})`}"
+                :style="{backgroundImage:`url(${selectMenu.indexOf(item.id) === -1 ? buttonImg : buttonColorImg})`}"
                 @click="pageRouterChange(item.id, item.url)"
             >
                 {{item.name}}
             </li>
         </ul>
-        <div class="time-box" v-if="nowRoute !== 'judicialCase'">
+        <div class="time-box" v-if="selectMenu.indexOf('judicial') === -1 ">
             <date-time></date-time>
         </div>
         <div class="container">
@@ -21,64 +21,31 @@
 </template>
 
 <script>
-	import DateTime from '@/components/common/DateTime.vue';
+	import { mapActions, mapGetters } from 'vuex';
+	import DateTime                   from '@/components/common/DateTime.vue';
 
 	export default {
-		name      : 'home',
 		data() {
 			return {
-				nowRoute      : 'homePage',
-				menuList      : [],
 				buttonImg     : require('@/public/img/home/home_08.png'),
 				bjBg          : require('@/public/img/home/bj.png'),
 				buttonColorImg: require('@/public/img/home/home_07.png'),
 				clock         : null,
 				week          : null,
+				hashRoute     : '',
 			}
 		},
-		created() {
-			if(this.$route.params.inspectionGuarantee === 'jwfinancial') {
-				this.menuList = [];
-			} else {
-				const menuList  = [{
-					id  : 'homePage',
-					name: '首页',
-					url : '/',
-				}, {
-					id  : 'judicialCase',
-					name: '司法办案',
-					url : '/judicial',
-				}, {
-					id  : 'teamManagement',
-					name: '队伍管理',
-					url : '/teamManagement',
-				}, {
-					id  : 'prosecutionOffice',
-					name: '检察办公',
-					url : '/checkOffice',
-				}, {
-					id  : 'inspectionGuarantee',
-					name: '检务保障',
-					url : '/inspectionGuarantee/largescreen',
-				}];
-				const hash      = location.hash.substr(1),
-					  parentUrl = hash.substring(0, hash.substr(1).indexOf('/') + 1) || hash,
-					  nowRoute  = menuList.find(i => parentUrl === i.url) || {};
-				this.menuList   = menuList;
-				this.nowRoute   = nowRoute.id;
-			}
-
+		computed  : {
+			...mapGetters('menuModules', ['menuList', 'userId', 'selectMenu']),
 		},
 		methods   : {
 			pageRouterChange(id, url) {
-				this.$router.push(url);
-				this.nowRoute = id;
+				this.$router.push(`${url}?${this.userId}`);
 			}
-		}
-		,
+		},
 		components: {
 			DateTime
-		}
+		},
 	}
 </script>
 

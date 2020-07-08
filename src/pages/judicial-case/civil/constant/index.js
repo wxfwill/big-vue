@@ -6,7 +6,7 @@ export const businessConfigList = [{
 	id   : 'spjdcnjcjys',
 	name : '审判监督采纳检察建议数',
 	color: '#00bff1',
-},  {
+}, {
 	id   : 'tckss',
 	name : '提出抗诉数',
 	color: '#2fdb81',
@@ -57,4 +57,84 @@ export const mapTooltipConfig = [{
 	id    : 'zbs',
 	name  : '在办数',
 	regExp: '{zbs}&nbsp;&nbsp;&nbsp; {zbs_zb}%',
+}];
+export const topDataConfig    = [{
+	id  : 'totalSls',
+	name: '受理总数',
+}, {
+	id  : 'totalBjs',
+	name: '办结总数',
+}, {
+	id  : 'totalZbs',
+	name: '在办总数',
+}];
+
+export const leftSideList = [{
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
+}];
+
+
+export const mapTableConfig = [{
+	id  : 'name',
+	name: '名称',
+}, {
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
+}];
+
+export const mapLineLegend = [{
+	id  : 'sls',
+	name: '受理数',
+}, {
+	id  : 'bjs',
+	name: '办结数',
+}, {
+	id  : 'zbs',
+	name: '在办数',
+}];
+
+// 复查纠正
+export const reviewCorrectiveConfig = [{
+	id  : 'ksjg',
+	name: '抗诉结果'
+}, {
+	id  : 'cnzsjcjy',
+	name: '采纳再审检察建议'
+}, {
+	id  : 'jdbzcjd',
+	name: '决定不支持监督'
+}];
+
+// 跟进监督
+export const followupSupConfig = [{
+	id  : 'tcks',
+	name: '提出抗诉'
+}, {
+	id  : 'tczsjcjy',
+	name: '提出再审检察建议'
+}, {
+	id  : 'fyzsks',
+	name: '法院再审抗诉'
+}, {
+	id  : 'ksjg',
+	name: '抗诉结果'
+}, {
+	id  : 'jdbzcjd',
+	name: '决定不支持监督'
+}, {
+	id  : 'zzsc',
+	name: '终止审查'
 }];

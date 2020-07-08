@@ -21,13 +21,6 @@ export const getTopSlBjZb = async (data) => await request({
 	params: data
 });
 
-// 公益诉讼:人均办结数
-export const getPerCapitaHandlingList = async (data) => await request({
-	method: 'get',
-	url   : '/api/v1.0/publicLitigation/getPerCapitaHandlingList',
-	params: data
-});
-
 // 公益诉讼:民事公益诉讼基本情况
 export const getCivilPublicLitigation = async (data) => await request({
 	method: 'get',
@@ -42,13 +35,6 @@ export const getCivilInvolvedField = async (data) => await request({
 	params: data
 });
 
-// 公益诉讼:案均办理天数
-export const getCasesAreHandledList = async (data) => await request({
-	method: 'get',
-	url   : '/api/v1.0/publicLitigation/getCasesAreHandledList',
-	params: data
-});
-
 // 获取公益诉讼:受理案件趋势
 export const getAdministrationPublicLitigation = async (data) => await request({
 	method: 'get',
@@ -60,5 +46,19 @@ export const getAdministrationPublicLitigation = async (data) => await request({
 export const getAdministrationInvolvedField = async (data) => await request({
 	method: 'get',
 	url   : '/api/v1.0/publicLitigation/getAdministrationInvolvedField',
+	params: data
+});
+
+// 获取公益诉讼:督促回复
+export const getSuperviseTheReply = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/publicLitigation/getSuperviseTheReply',
+	params: data
+});
+
+// 公益诉讼:案件来源
+export const getSourceOfCase = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/publicLitigation/getSourceOfCase',
 	params: data
 });

@@ -12,26 +12,29 @@
                     :defaultValue="nowDate"
                     :handleSelectDate="handleSelectDate"
             ></year-select>
+            <a :href="`#/inspectionGuarantee?${userId}`" class="lot-link">大屏</a>
         </div>
         <div class="container">
             <region-select
+                    v-if="areaIndex !== 3"
                 :selectRegion="handleSelectMap"
             ></region-select>
             <el-button-group class="container-head">
                 <el-button
+                        type="primary"
                         icon="el-icon-d-arrow-left"
                         size="small"
-                        :type="showArea === 'left' ? 'default' : 'primary'"
-                        :disabled="showArea === 'left'" @click="handleChangeShowArea('left')">
+                        :disabled="areaIndex <= 1" @click="handleChangeShowArea('sub')">
                 </el-button>
+                <span class="container-pagnation">{{ areaIndex }} / 3</span>
                 <el-button
+                        type="primary"
                         icon="el-icon-d-arrow-right"
                         size="small"
-                           :type="showArea === 'right' ? 'default' : 'primary'"
-                           :disabled="showArea === 'right'" @click="handleChangeShowArea('right')">
+                           :disabled="areaIndex >= 3" @click="handleChangeShowArea('add')">
                 </el-button>
             </el-button-group>
-            <div :class="{ visibility : showArea === 'left', hidden : showArea !== 'left' }">
+            <div :class="{ visibility : areaIndex === 1, hidden : areaIndex !== 1 }">
                 <left-box
                         ref='leftBox'
                         :income=income
@@ -44,7 +47,7 @@
                         screenType="pc"
                 ></left-box>
             </div>
-            <div :class="{ visibility : showArea === 'right', hidden : showArea !== 'right' }">
+            <div :class="{ visibility : areaIndex === 2, hidden : areaIndex !== 2 }">
                 <right-box
                         ref='rightBox'
                         :assetsSituation=assetsSituation
@@ -56,17 +59,25 @@
                         :inspectionServiceEquipmentDetails=inspectionServiceEquipmentDetails
                 ></right-box>
             </div>
+            <div :class="{ visibility : areaIndex === 3, hidden : areaIndex !== 3 }">
+                <general-table
+                    screenType="pc"
+                    tableHeight="750"
+                ></general-table>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+	import { mapGetters } from 'vuex';
 	import DateTime      from '@/components/common/DateTime.vue';
 	import YearSelect    from '@/components/inspection-guarantee/year-select';
 	import LeftBox       from '../components/left';
 	import RightBox      from '../components/Right';
 	import * as services from '../service/index';
 	import RegionSelect  from '../components/region-select';
+	import GeneralTable  from '../components/general-table';
 
 	export default {
 		data() {
@@ -96,8 +107,11 @@
 				inspectionServiceEquipmentDetails: {},
 				psGuaranteeMapList               : [],
 				spendingDetail                   : {},
-				showArea                         : 'left'
+				areaIndex                         : 1
 			}
+		},
+		computed  : {
+			...mapGetters('menuModules', ['userId']),
 		},
 		beforeMount() {
 			this.nowDate = 2018;
@@ -176,7 +190,11 @@
 				}
 			},
 			handleChangeShowArea(type) {
-				this.showArea = type;
+				 if(type === 'sub' && this.areaIndex > 1){
+					 this.areaIndex--;
+                 } else if(type === 'add' && this.areaIndex < 3) {
+				 	this.areaIndex++;
+                 }
 			},
 		},
 		components: {
@@ -185,6 +203,7 @@
 			LeftBox,
 			RightBox,
 			RegionSelect,
+			GeneralTable,
 		}
 	}
 </script>
@@ -208,10 +227,17 @@
             }
         }
         .option-item {
+            position: relative;
             display: flex;
             justify-content: space-between;
             padding: 0 60px;
             margin-top: -40px;
+            .lot-link{
+                position: absolute;
+                top: 6px;
+                color: #fbba18;
+                right: 283px;
+            }
         }
         .container {
             position: relative;
@@ -225,6 +251,7 @@
             .container-head {
                 display: flex;
                 justify-content: center;
+                align-items: center;
                 margin: 30px auto;
                 .left-text {
                     margin-right: 20px;
@@ -234,6 +261,9 @@
                 }
                 .active {
                     color: #409eff;
+                }
+                .container-pagnation{
+                    margin: 0 10px;
                 }
             }
             .JianWu-left-box {

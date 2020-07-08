@@ -27,3 +27,17 @@ export const getTopSlBjZb = async (data) => await request({
 	url   : '/api/v1.0/civil/getTopSlBjZb',
 	params: data
 });
+
+// 获取民事:跟进监督
+export const getFollowUpSupervision = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/civil/getFollowUpSupervision',
+	params: data
+});
+
+// 获取民事:复查纠正
+export const getReviewOfTheCorrective = async (data) => await request({
+	method: 'get',
+	url   : '/api/v1.0/civil/getReviewOfTheCorrective',
+	params: data
+});

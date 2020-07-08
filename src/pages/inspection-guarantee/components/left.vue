@@ -13,122 +13,23 @@
                     <span class="chart-label-dot"></span>
                     <i>支出</i>
                 </div>
-                <div class="pay-content">
+                <div class="pay-head">
+                    <p style="color: #00FFF8; float: left; font-size: 18px">总支出：{{ formatNum(expenditure.zzcs) }}</p>
                     <p class='unit'>单位:万元</p>
-                    <div class="payBox">
-                        <div class="boxborder">
-                            <div class='payBox-top'>
-                                <p>{{formatNum(expenditure.zzcs)}}</p>
-                                <p>
-                                    同比
-                                    <i class="el-icon-top"></i>{{expenditure.zzc_tb}}<br><span>{{expenditure.zzc_bfb}}%</span>
-                                </p>
-                            </div>
-                        </div>
-                        <div class='payBox-bottom'>总支出</div>
-                    </div>
-                    <div class="payBox">
-                        <div class="boxborder">
-                            <el-popover
-                                    popper-class="payBox-popover"
-                                    placement="bottom"
-                                    width="400"
-                                    trigger="hover">
-                                <div slot="reference"
-                                     class='payBox-top cur-pointer'>
-                                    <p>{{formatNum(expenditure.gnflzcs)}}</p>
-                                    <p>同比<i class="el-icon-top"></i>{{expenditure.gnflzc_tb}}<br><span>{{expenditure.gnflzc_bfb}}%</span>
-                                    </p>
-                                </div>
-                                <div class='boxtooltip'>
-                                    <p>一般公共服务支出：{{formatNum(spendingDetail.yybggfwzc)}}</p>
-                                    <p>外交支出：{{formatNum(spendingDetail.ewjzc)}}</p>
-                                    <p>国防支出：{{formatNum(spendingDetail.sgfzc)}}</p>
-                                    <p>公共安全支出：{{formatNum(spendingDetail.sggaqzc)}}</p>
-                                    <p>教育支出：{{formatNum(spendingDetail.wjyzc)}}</p>
-                                    <p>科学技术支出：{{formatNum(spendingDetail.lkxjzzc)}}</p>
-                                    <p>文化体育与传媒支出：{{formatNum(spendingDetail.qwhtyycmzc)}}</p>
-                                    <p>社会保障和就业支出：{{formatNum(spendingDetail.bshbzhjyzc)}}</p>
-                                    <p>医疗卫生与计划生育支出：{{formatNum(spendingDetail.jylwsyjhsyzc)}}</p>
-                                    <p>节能环保支出：{{formatNum(spendingDetail.sjnhbzc)}}</p>
-                                    <p>城乡社区支出：{{formatNum(spendingDetail.sycxsqzc)}}</p>
-                                    <p>农林水支出：{{formatNum(spendingDetail.senlszc)}}</p>
-                                    <p>交通运输支出：{{formatNum(spendingDetail.ssjtyszc)}}</p>
-                                    <p>资源勘探信息等支出：{{formatNum(spendingDetail.sszyktxxdzc)}}</p>
-                                    <p>商业服务业等支出：{{formatNum(spendingDetail.swsyfwydzc)}}</p>
-                                    <p>金融支出：{{formatNum(spendingDetail.sljrzc)}}</p>
-                                    <p>援助其他地区支出：{{formatNum(spendingDetail.sqyzqtdqzc)}}</p>
-                                    <p>国土海洋气象等支出：{{formatNum(spendingDetail.sbgthyqxdzc)}}</p>
-                                    <p>住房保障支出：{{formatNum(spendingDetail.sjzfbzzc)}}</p>
-                                    <p>粮油物资储备支出：{{formatNum(spendingDetail.eslywzcbzc)}}</p>
-                                    <p>其他支出：{{formatNum(spendingDetail.esyqtzc)}}</p>
-                                    <p>债务还本支出：{{formatNum(spendingDetail.esezwhbzc)}}</p>
-                                    <p>债务付息支出：{{formatNum(spendingDetail.esszwfxzc)}}</p>
-                                </div>
-                            </el-popover>
-                        </div>
-                        <div class='payBox-bottom'>功能分类支出</div>
-                    </div>
-                    <div class="payBox">
-                        <div class="boxborder">
-                            <el-popover
-                                    popper-class="payBox-popover"
-                                    placement="bottom"
-                                    width="400"
-                                    trigger="hover">
-                                <div slot="reference"
-                                     class='payBox-top cur-pointer'>
-                                    <p>{{formatNum(expenditure.zcxzs)}}</p>
-                                    <p>
-                                        同比
-                                        <i class="el-icon-top"></i>{{expenditure.zcxz_tb}}<br><span>{{expenditure.zcxz_bfb}}%</span>
-                                    </p>
-                                </div>
-                                <div class='boxtooltip'>
-                                    <p>基本支出：{{formatNum(spendingDetail.yjbzc)}}</p>
-                                    <p>人员经费：{{formatNum(spendingDetail.ryjf)}}</p>
-                                    <p>日常公用经费：{{formatNum(spendingDetail.rcgyjf)}}</p>
-                                    <p>项目支出：{{formatNum(spendingDetail.exmzc)}}</p>
-                                    <p>基本建设类项目：{{formatNum(spendingDetail.jbjslxm)}}</p>
-                                    <p>行政事业类项目：{{formatNum(spendingDetail.xzsylxm)}}</p>
-                                    <p>上缴上级支出：{{formatNum(spendingDetail.ssjsjzc)}}</p>
-                                    <p>经营支出：{{formatNum(spendingDetail.sjyzc)}}</p>
-                                    <p>对附属单位补助支出：{{formatNum(spendingDetail.wdfsdwbzzc)}}</p>
-                                </div>
-                            </el-popover>
-                        </div>
-                        <div class='payBox-bottom'>支出性质</div>
-                    </div>
-                    <div class="payBox">
-                        <div class="boxborder">
-                            <el-popover
-                                    popper-class="payBox-popover"
-                                    placement="bottom"
-                                    width="400"
-                                    trigger="hover">
-                                <div slot="reference"
-                                     class='payBox-top cur-pointer'>
-                                    <p>{{formatNum(expenditure.zcjjfls)}}</p>
-                                    <p>同比<i class="el-icon-top"></i>{{expenditure.zcjjfl_tb}}<br><span>{{expenditure.zcjjfl_bfb}}%</span>
-                                    </p>
-                                </div>
-                                <div class="boxtooltip">
-                                    <p>基本支出和项目支出合计：{{formatNum(spendingDetail.jbzchxmzchj)}}</p>
-                                    <p>工资福利支出：{{formatNum(spendingDetail.gzflzc)}}</p>
-                                    <p>商品和服务支出：{{formatNum(spendingDetail.sphfwzc)}}</p>
-                                    <p>对个人和家庭的补助：{{formatNum(spendingDetail.dgrhjtdbz)}}</p>
-                                    <p>债务利息及费用支出：{{formatNum(spendingDetail.zwlxjfyzc)}}</p>
-                                    <p>资本性支出（基本建设）：{{formatNum(spendingDetail.zbxzcJbjs)}}</p>
-                                    <p>资本性支出：{{formatNum(spendingDetail.zbxzc)}}</p>
-                                    <p>对企业补助（基本建设）：{{formatNum(spendingDetail.dqybzJbjs)}}</p>
-                                    <p>对企业补助：{{formatNum(spendingDetail.dqybz)}}</p>
-                                    <p>对社会保障基金补助：{{formatNum(spendingDetail.dshbzjjbz)}}</p>
-                                    <p>其他支出：{{formatNum(spendingDetail.qtzc)}}</p>
-                                </div>
-                            </el-popover>
-                        </div>
-                        <div class='payBox-bottom'>支出经济分类</div>
-                    </div>
+                </div>
+                <div class="pay-content">
+                    <pay-pie
+                            title="功能分类支出"
+                            :chartData="disFunctionList"
+                    ></pay-pie>
+                    <pay-pie
+                            title="支出性质"
+                            :chartData="expendNatureList"
+                    ></pay-pie>
+                    <pay-pie
+                            title="支出经济分类"
+                            :chartData="economyClassifyList"
+                    ></pay-pie>
                 </div>
             </div>
         </div>
@@ -137,7 +38,9 @@
                 <span class="chart-label-dot"></span>
                 <i>财政拨款收入分布</i>
             </div>
-            <p class='more-btn' @click="setDialogVisible('财政拨款收入分布')">更多>></p>
+            <p class='more-btn'
+               v-if="(screenType === 'pc' && financialAllocationList.length > 32) || (screenType === 'bj' && financialAllocationList.length > 15)"
+               @click="setDialogVisible('财政拨款收入分布')">更多>></p>
             <div class="caizheng-content" ref="caizhengChart"></div>
         </div>
         <div class="fraze-grid">
@@ -184,24 +87,29 @@
 
 <script>
 	import ECharts                                                         from 'echarts';
-	import * as services                                                   from '../service/index';
+	import PayPie                                                          from './pay-pie';
 	import { verifyTriggerState, numberInteger, textFormatter, formatNum } from '@/utlis/helper';
-	import { incomeChartConfig }                                           from '../constant/index';
+	import {
+		incomeChartConfig,
+		disFunctionConfig, expendNatureConfig, economyClassifyConfig,
+	}                                                                      from '../constant/index';
 
 	export default {
 		data() {
 			return {
-				dialogVisible : false,
-				dialogContext : {
+				dialogVisible      : false,
+				dialogContext      : {
 					name: '',
 					key : '',
 					data: []
 				},
-				// caizhengChartConfig:caizhengChartConfig
-				boxtooltip1   : false,
-				boxtooltip2   : false,
-				boxtooltip3   : false,
-				yearCheckTrend: [],
+				boxtooltip1        : false,
+				boxtooltip2        : false,
+				boxtooltip3        : false,
+				yearCheckTrend     : [],
+				disFunctionList    : [],
+				expendNatureList   : [],
+				economyClassifyList: [],
 			}
 		},
 		beforeCreate() {
@@ -209,8 +117,7 @@
 			this.oldTriggerState = {};
 		},
 		mounted() {
-			const params         = { ...this.getSelectDateSection, ...this.getMapCode };
-			this.oldTriggerState = params;
+			this.oldTriggerState = { ...this.getSelectDateSection, ...this.getMapCode };
 			this.incomeChart     = ECharts.init(this.$refs.incomeChart);
 			this.caizhengChart   = ECharts.init(this.$refs.caizhengChart);
 			this.jingfeiChart    = ECharts.init(this.$refs.jingfeiChart);
@@ -315,7 +222,8 @@
 				};
 			},
 			loadCaizhengChart(data) {
-				const { xAxisData, seriesData } = this.convertChartConfigczs(data.slice(0, 10));
+				const isPC                      = this.screenType === 'pc';
+				const { xAxisData, seriesData } = this.convertChartConfigczs(data.slice(0, isPC ? 32 : 15));
 				this.caizhengChart.setOption({
 					color  : ['#3398DB'],
 					tooltip: {
@@ -369,10 +277,11 @@
 					],
 					series : [
 						{
-							type       : 'bar',
-							barMaxWidth: 40,
-							data       : seriesData,
-							itemStyle  : {
+							type          : 'bar',
+							barMaxWidth   : 30,
+							data          : seriesData,
+							barCategoryGap: 10,
+							itemStyle     : {
 								normal: {
 									color: '#5C89FF'
 								}
@@ -1108,12 +1017,39 @@
 				} else if(target == 'boxtooltip3') {
 					this.boxtooltip3 = status
 				}
-				
 			},
 			formatNum,
 
+			/**
+			 * 支出数据分类
+			 * */
+			payDataClassify() {
+				this.disFunctionList     = this.orderTopData(disFunctionConfig.map(i => ({
+					...i,
+					value: this.spendingDetail[i.id] || 0,
+				})));
+				this.expendNatureList    = this.orderTopData(expendNatureConfig.map(i => ({
+					...i,
+					value: this.spendingDetail[i.id] || 0,
+				})));
+				this.economyClassifyList = this.orderTopData(economyClassifyConfig.map(i => ({
+					...i,
+					value: this.spendingDetail[i.id] || 0,
+				})));
+			},
+			orderTopData(list) {
+				const data         = list.sort((a, b) => b.value - a.value),
+					  topThreeList = data.splice(0, 3),
+					  surplusTotal = data.reduce((a, b) => a + Number(b.value), 0);
+				return [...topThreeList, {
+					name : '其他',
+					value: surplusTotal.toFixed(2)
+				}];
+			},
 		},
-		components: {},
+		components: {
+			PayPie,
+		},
 		props     : {
 			income                         : {
 				default: {}
@@ -1138,6 +1074,11 @@
 			},
 			screenType                     : {
 				default: 'pc'
+			}
+		},
+		watch     : {
+			spendingDetail() {
+				this.payDataClassify();
 			}
 		},
 	};
@@ -1204,75 +1145,20 @@
             .pay-box {
                 flex: 2;
                 position: relative;
-                .pay-content {
-                    width: 95%;
-                    height: 261px;
-                    margin: 0 auto;
-                    display: flex;
-                    justify-content: space-between;
+                .pay-head{
+                    height: 30px;
+                    line-height: 30px;
+                    padding: 0 30px;
                     .unit {
-                        position: absolute;
-                        right: 20px;
-                        top: 40px;
+                        float: right;
                         color: #FBBA18;
                     }
-                    .payBox {
-                        width: 160px;
-                        margin-top: 29px;
-                        margin-right: 24px;
-                        .boxborder {
-                            width: 160px;
-                            height: 160px;
-                            border-radius: 50%;
-                            box-sizing: border-box;
-                            padding: 14px;
-                            background-image: -webkit-linear-gradient(top, #01AFFF, #005FE8);
-                            position: relative;
-                            .boxtooltip {
-                                position: absolute;
-                                width: 400px;
-                                height: auto;
-                                color: #fff;
-                                background: rgba(3, 196, 195, 0.9);
-                                box-shadow: 0px 2px 4px 0px rgba(13, 61, 137, 0.5);
-                                border-radius: 4px;
-                                left: 70%;
-                                top: 70%;
-                                text-align: left;
-                                padding: 8px;
-                                line-height: 20px;
-                                z-index: 999;
-                            }
-                        }
-                        .payBox-top {
-                            width: 100%;
-                            height: 100%;
-                            text-align: center;
-                            border-radius: 50%;
-                            padding-top: 30px;
-                            background: #04092A;
-                            p {
-                                color: #00FFF8;
-                                padding-bottom: 14px;
-                                span {
-                                    color: #FF6C40;
-                                    padding-left: 40px;
-                                }
-                            }
-                            p:first-child {
-                                font-size: 18px;
-                            }
-                        }
-                        .payBox-bottom {
-                            width: 160px;
-                            color: #fff;
-                            text-align: center;
-                            margin-top: 13px;
-                        }
-                    }
-                    .payBox:last-child {
-                        margin-right: 0;
-                    }
+                }
+                .pay-content {
+                    width: 100%;
+                    height: 261px;
+                    display: flex;
+                    justify-content: space-between;
                 }
             }
         }
